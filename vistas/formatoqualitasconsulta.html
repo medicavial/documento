@@ -1,0 +1,75 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+	<div class="titulos">
+		<a href="#/formatoqualitas" class="icon-arrow-left"></a>
+		<h1>{{tituloCF}}</h1>
+	</div>
+	<form role="form" ng-submit="buscar()">
+	<div class="row">
+		<div class="col-md-3">
+			<fieldset>
+				<legend>Folio</legend>
+			</fieldset>
+			<div class="input-group">
+				<input type="text" ng-model="criterio" class="form-control" ng-keydown="presionaFolio" capitalize />
+				<span class="input-group-btn">
+			        <button class="btn btn-default" type="button" ng-click="verificaFolio()"><i class="glyphicon glyphicon-search"></i></button>
+			    </span>
+			</div>
+		</div>
+	</div>
+	</form>
+	<br>
+
+	<div class="loading-container" ng-show="cargando">
+	    <div class="loading"></div>
+	    <div id="loading-text">Cargando</div>
+	</div>
+	
+	<div class="row">
+		<div ng-show="mensaje != '' " class="alert alert-danger animate-show">{{mensaje}}</div>
+	</div>
+	
+	<div ng-show="busqueda">
+
+		<br>
+		<div class="table-responsive">
+			<table class="table">
+				
+		    <thead>
+		        <tr>
+		          <th>Folio QUA</th>
+		          <th>Reporte</th>
+		          <th>Siniestro</th>
+		          <th>Poliza</th>
+		          <th>Fecha Captura</th>
+		          <th>Fecha Recepción</th>
+		          <th>Lesionado</th>
+		          <th>Estatus</th>
+		          <th>Ultimo envio registrado</th>
+		          <th>Nombre esperado del archivo</th>
+		        </tr>
+		    </thead>
+
+		    <tbody>
+		        <tr>
+
+		          <td>{{listado.folioElectronico}}</td>
+		          <td>{{listado.Reporte}}</td>
+		          <td>{{listado.Siniestro}}</td>
+		          <td>{{listado.Poliza}}</td>
+		          <td>{{listado.FechaCaptura}}</td>
+		          <td>{{listado.FechaRecepcion}}</td>
+		          <td>{{listado.Lesionado}}</td>
+		          <td>{{listado.Estatus}}</td>
+		          <td>{{listado.ID_asociado}}</td>
+		          <td>{{listado.nombreArchivos}}</td>
+
+		        </tr> 
+		    </tbody>
+		    
+		    </table>
+		</div>
+
+	</div>
+
+</div>

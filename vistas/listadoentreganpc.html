@@ -1,0 +1,46 @@
+<div ng-init="inicio()">
+	<div class="titulos">
+		<a href="#/{{area}}" class="icon-arrow-left"></a>
+		<h1>{{tituloLE}}</h1>
+	</div>
+	<fieldset>
+		<legend>Filtro</legend>
+		<div class="row">
+			<div class="col-md-3">
+				<input type="text" ng-model="folio" class="form-control" ng-keydown="presionaFolio" ng-change="filtra()" placeholder="Folio" capitalize>
+			</div>
+			<div class="col-md-3">
+				<select class="form-control"  ng-change="filtra()"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes">
+					<option value="">Cliente</option>
+				</select>
+			</div>
+			<div class="col-md-3">
+				<select class="form-control"  ng-change="filtra()" ng-model="unidad" ng-options="unidad as unidad.nombre for unidad in unidades">
+					<option value="">Unidad</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<button type="button"  class="btn btn-danger icon-close"> Quitar Filtro</button>
+			</div>
+		</div>
+	</fieldset>
+		
+	<div class="row">
+		<div class="col-md-12">
+		</div>
+	</div>
+
+	<div class="gridStyle" ng-grid="gridOptions"></div>
+
+	<br>
+	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
+	<div class="row">
+		<div class="col-md-3">
+			<button type="button" id="boton" data-loading-text="Procesando..." ng-show="selectos.length > 0" ng-click="eliminaNPC()" class="btn btn-warning icon-close"> Quitar Folios Seleccionados</button>
+		</div>
+		<div class="col-md-3">
+		</div>
+	</div>
+	<br>
+
+</div>

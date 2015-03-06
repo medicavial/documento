@@ -1,0 +1,148 @@
+<div ng-init="inicio()" id="contenedor">
+	<div class="titulos">
+		<a href="#/" class="icon-arrow-left"></a>
+		<h1>{{tituloR}}</h1>
+	</div>
+	<ul id="rb-grid-small" class="rb-grid-small clearfix">
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Por Recibir<span ng-show=" recibidos > 0 " class="push">{{recibidos}}</span></h3>
+	        <a href="#/listadoRecepcion/captura">
+	            <span class="icon-box-add"></span>
+	        </a>
+	    </li>
+		
+		<li class="rb-span-1" id="color3">
+
+	        <h3>Traspasos</h3>
+	        <a href="#/traspasos/captura">
+	            <span class="icon-enter"></span>
+	        </a>
+	    </li>
+
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Rechazos<span ng-show=" rechazados > 0 " class="push">{{rechazados}}</span></h3>
+	        <a href="#/Rechazos/captura">
+	            <span class=" icon-cancel-circle"></span>
+	        </a>
+	    </li>
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Entregas Efectuada</h3>
+	        <a href="#/listadoEntregas/captura">
+	            <span class=" icon-list"></span>
+	        </a>
+	    </li>
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Mis Capturas</h3>
+	        <a href="#/capturados">
+	            <span class=" icon-search"></span>
+	        </a>
+	    </li>
+	</ul>
+	<h2>Tus Folios Activos</h2>
+	<div class="row">
+		<div class="col-md-3">
+			<fieldset>
+				<legend>Folio</legend>
+				<input type="text" ng-model="folio" class="form-control" ng-keydown="presionaFolio" ng-change="filtra()" capitalize>
+			</fieldset>
+		</div>
+		<div class="col-md-5">
+			<fieldset>
+				<legend>Lesionado</legend>
+				<input type="text" ng-model="lesionado" ng-keydown="presionaLesionado" class="form-control" ng-change="filtra()" capitalize>
+			</fieldset>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Filtros</legend>
+				<div class="row">
+					<div class="col-md-2">
+						<select class="form-control"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes" ng-change="filtra()">
+							<option value="">Cliente</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control"  ng-model="unidad" ng-options="unidad as unidad.nombre for unidad in unidades" ng-change="filtra()">
+							<option value="">Unidad</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control"  ng-model="tipo" ng-change="filtra()">
+							<option value="">Fax Y Original</option>
+							<option value="fax">Fax</option>
+							<option value="original">Original</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control" id="producto" ng-model="producto" ng-change="filtra()" ng-options="producto as producto.nombre for producto in productosini" required>
+							<option value="">Producto</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control" id="tipodoc" ng-change="filtra()" ng-model="etapa">
+							<option value="">Etapa</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+	<div class="gridStyle" ng-grid="gridOptions"></div>
+	<br>	
+	<!-- directiva para exportar a excel ver app.js mas nfo -->
+	<excel info="exportables"></excel>
+	<br>
+	<fieldset>
+		<legend>Datos de Entrega</legend>
+	</fieldset>
+	<div class="row">
+		<form name="formEntrega"  novalidate>
+
+			<div class="col-md-3">
+				<select class="form-control" id="area" ng-model="areaOp" ng-options="area.calve as area.nombre for area in areas" ng-change="altausuariosarea(areaOp)" required>
+					<option value="">Area Operativa</option>
+				</select>
+			</div>
+			
+			<div class="col-md-3">
+				<select class="form-control" ng-show="areaOp > 0" id="area" ng-model="user" ng-options="usuario.id as usuario.nombre for usuario in usuarios" required>
+					<option value="">Usuario</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<button type="button" id="boton" ng-disabled="formEntrega.$invalid" ng-click="entrega()" class="btn btn-primary btn-block icon-drawer2" data-loading-text="Entregando..."> Preparar Entrega</button>
+			</div>
+			<div class="col-md-2" id="estatus">
+				<!-- <input type="text" x-webkit-speech=""> -->
+				<button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
+			</div>
+
+			<div class="col-md-2">
+			</div>
+
+		</form>
+	</div>
+	<br>
+	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert alert-success animate-show">{{mensaje}}</div>
+	<br>
+	<br>
+</div>
+<script type="text/javascript">
+	$.datepicker.setDefaults($.datepicker.regional["es"]);
+	$( "#datepicker" ).datepicker({showButtonPanel: true});
+	$( "#datepicker2" ).datepicker({showButtonPanel: true});
+	$( "#datepicker3" ).datepicker({showButtonPanel: true});
+	$( "#datepicker4" ).datepicker({showButtonPanel: true});
+</script>

@@ -1,0 +1,136 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/formatoqualitas" class="icon-arrow-left"></a>
+        <h1>{{tituloFQE}}</h1>
+    </div>
+    <legend>Fecha Captura</legend>
+    <div class="row">
+        <div class="col-sm-2 col-md-2">
+            <input type="text" ng-model="fechaini" class="form-control" id="fechaini2" placeholder="inicial" />
+        </div>
+        <div class="col-sm-2 col-md-2">
+            <div class="input-group">
+                <input type="text" ng-model="fechafin" class="form-control" id="fechafin2" placeholder="Final" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="buscafacturas()"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="row">
+        <div class="col-sm-4 col-md-4">
+            <table class="table table-hover">
+              <thead>
+                <tr>
+                    <th>ID Envio</th>
+                    <th>Fecha</th>
+                    <th># de Folios</th>
+                    <th>Procesado</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="dato in envios">
+                    <td ng-click="detalle(dato.id,dato.procesado)">{{dato.id}}</td>
+                    <td ng-click="detalle(dato.id,dato.procesado)">{{dato.fecha}}</td>
+                    <td ng-click="detalle(dato.id,dato.procesado)">{{dato.folios}}</td>
+                    <td><i ng-show="dato.procesado == 1 " class="glyphicon glyphicon-thumbs-up"></i></td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+        <div class="col-sm-8 col-md-8 animate-show">
+            <div ng-show="cargadetalle" class='animate-show'>
+                <br>
+                <div class="progress progress-striped active">
+                  <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                    <span class="sr-only">100% Complete</span>
+                  </div>
+                </div>
+            </div>
+            <div class="alert alert-success animate-show" ng-show="procesado">Este envio ya fue procesado con {{validos}} folio(s) valido(s)</div>
+            <br>
+            <div ng-hide="cargadetalle" class="gridStyle" ng-grid="gridOptions"></div>
+            <br>
+            <div ng-show="mensajeA != '' " class="alert alert-success animate-show">{{mensaje}}</div>
+            <br>
+            <div class="text-center">
+                <button class="btn btn-success" id="boton" ng-click="guarda()" data-loading-text="Procesando..." ng-hide="procesado">Guardar</button>
+                <button class="btn btn-success" ng-disabled="selectos.length == 0" id="boton2" ng-click="generarArchivos()" data-loading-text="Generando...">Generar Archivos Seleccionados</button>
+            </div>
+
+            
+        </div>
+   </div>
+</div>
+
+<!--Ventana para mostrar los folios que se no se generaron-->
+<div class="modal fade" id="modalEx" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Asigar estatus a folios rechazados</h4>
+      </div>
+      <div class="modal-body">
+           <div class="gridStyle" ng-grid="gridOptions2"></div>
+           <br>
+           <p>Asignar estatus a archivos seleccionados</p>
+           <div class="dropdown">
+              <button class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown">
+                Errores Sugeridos
+                <span class="caret"></span>
+              </button>
+              <ul class="dropdown-menu" role="menu" aria-labelledby="dropdownMenu1">
+                <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="error('Poliza Invalida')" href="">Poliza Invalida</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="error('Reporte Invalido')" href="">Reporte Invalido</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="error('Siniestro Invalido')" href="">Siniestro invalido</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="error('Folio Qualtas Invalido')" href="">Folio Qualtas invalido</a></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" ng-click="error('otro')" href="">Otro..</a></li>
+                <!-- <li role="presentation" class="divider"></li>
+                <li role="presentation"><a role="menuitem" tabindex="-1" href="">Otro.</a></li> -->
+              </ul>
+            </div>
+           <br>
+           <div class="row">
+              <!-- <div class="col-md-4">
+
+              </div> -->
+              <div class="col-md-12 text-center">
+                  <button class="btn btn-primary" id="boton3" data-loading-text="Guardando..." ng-click="guardaRechazo()">Guardar Motivos</button>
+              </div>
+          </div>
+          <br>
+      </div>
+      <!-- <div class="modal-footer text-center">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar Ventana</button>
+      </div> -->
+    </div>
+  </div>
+</div>
+
+
+
+<!-- ng-show="muestra" -->
+<script>
+
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    $( "#fechaini2" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $(  "#fechafin2" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    $(  "#fechafin2" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#fechaini2" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+
+</script>

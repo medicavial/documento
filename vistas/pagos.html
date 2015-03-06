@@ -1,0 +1,180 @@
+<div ng-init="inicio()" id="contenedor">
+	<div class="titulos">
+		<a href="#/" class="icon-arrow-left"></a>
+		<h1>{{tituloR}}</h1>
+	</div>
+	<ul id="rb-grid-small" class="rb-grid-small clearfix">
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Por Recibir<span ng-show=" recibidos > 0 " class="push">{{recibidos}}</span></h3>
+	        <a href="#/listadoRecepcion/pagos">
+	            <span class="icon-box-add"></span>
+	        </a>
+	    </li>
+		
+		<li class="rb-span-1" id="color3">
+
+	        <h3>Generar Entrega</h3>
+	        <a href="#/entregas/pagos">
+	            <span class="icon-enter"></span>
+	        </a>
+	    </li>
+
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Rechazos<span ng-show=" rechazados > 0 " class="push">{{rechazados}}</span></h3>
+	        <a href="#/Rechazos/pagos">
+	            <span class=" icon-cancel-circle"></span>
+	        </a>
+	    </li>
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Entregas Efectuada</h3>
+	        <a href="#/listadoEntregas/pagos">
+	            <span class=" icon-list"></span>
+	        </a>
+	    </li>
+	</ul>
+	<h2>Folios activos en el area</h2>
+	<div class="row">
+		
+		
+		<div class="col-md-6">
+
+				<label>Fecha Recepción</label>
+				<div class="row">
+					<div class="col-md-6">
+						<input type="text" ng-model="fechainiRec" class="form-control" id="fechaRecIni" placeholder="inicial">
+					</div>
+					<div class="col-md-6">
+						<div class="input-group">
+							<input type="text" ng-model="fechafinRec" class="form-control" id="fechaRecFin" placeholder="Final">
+							<span class="input-group-btn">
+					        	<button class="btn btn-default" ng-disabled="fechainiRec == ''|| fechafinRec == '' " ng-click="foliosXfecha('Recepcion')" type="button"><i class="icon-search"></i></button>
+					      	</span>
+					    </div>
+					</div>
+				</div>
+
+		</div>
+
+		<div class="col-md-6">
+
+				<label>Fecha Recepción Pagos</label>
+				<div class="row">
+					<div class="col-md-6">
+						<input type="text" ng-model="fechainiPag" class="form-control" id="fechaPagIni" placeholder="inicial">
+					</div>
+					<div class="col-md-6">
+						<div class="input-group">
+							<input type="text" ng-model="fechafinPag" class="form-control" id="fechaPagFin" placeholder="Final">
+							<span class="input-group-btn">
+					        	<button class="btn btn-default" ng-disabled="fechainiPag == ''|| fechafinPag == '' " type="button" ng-click="foliosXfecha('Pagos')"><i class="icon-search"></i></button>
+					      	</span>
+					    </div>
+					</div>
+				</div>
+
+		</div>
+		
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+				<label>Folio</label>
+				<input type="text" ng-model="folio" class="form-control" ng-keydown="presionaFolio" ng-change="filtra()" capitalize>
+		</div>
+		<div class="col-md-4">
+
+				<label>Lesionado</label>
+				<input type="text" ng-model="lesionado" ng-keydown="presionaLesionado" class="form-control" ng-change="filtra()" capitalize>
+
+		</div>
+		<div class="col-md-3">
+
+				<label>Relación</label>
+				<input type="text" ng-model="relacion" class="form-control" ng-change="filtra()" capitalize>
+
+		</div>
+		<div class="col-md-3">
+			<br>
+			<br>
+			<div class="row">
+				<div class="col-md-5">
+					<div class="checkbox-inline">
+					  <label>
+					    <input type="checkbox"  ng-change="filtra()" ng-model="relacionado" value="">
+					    Relacionado
+					  </label>
+					</div>
+				</div>
+				<div class="col-md-3">
+					<div class="checkbox-inline">
+					  <label>
+					    <input type="checkbox"  ng-change="filtra()" ng-model="pagado" value="">
+					    Pagado
+					  </label>
+					</div>
+				</div>
+				<div class="col-md-4">
+					<div class="checkbox-inline">
+					  <label>
+					    <input type="checkbox"  ng-change="filtra()" ng-model="cobrado" value="">
+					    Cobrado
+					  </label>
+					</div>
+				</div>
+			</div>
+        </div>
+		
+	</div>
+	
+	<div class="row">
+		<div class="col-md-2">
+			<select class="form-control"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes" ng-change="filtra()">
+				<option value="">Cliente</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<select class="form-control"  ng-model="unidad" ng-options="unidad as unidad.nombre for unidad in unidades" ng-change="filtra()">
+				<option value="">Unidad</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<select class="form-control"  ng-model="tipo" ng-change="filtra()">
+				<option value="">Fax Y Original</option>
+				<option value="fax">Fax</option>
+				<option value="original">Original</option>
+			</select>
+		</div>
+		<!-- <div class="col-md-2">
+			<select class="form-control" id="producto" ng-model="producto" ng-change="filtra()" ng-options="producto as producto.nombre for producto in productosini" required>
+				<option value="">Producto</option>
+			</select>
+		</div> -->
+		<div class="col-md-2">
+			<select class="form-control" id="tipodoc" ng-change="filtra()" ng-model="etapa">
+				<option value="">Etapa</option>
+				<option value="1">1</option>
+				<option value="2">2</option>
+				<option value="3">3</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
+		</div>
+	</div>
+	<br>
+	<div class="gridStyle" ng-grid="gridOptions"></div>
+	<!-- <h4 ng-show="listado.length > 0">Documentos Encontrados: {{cantidad}} </h4> -->
+	<br>
+	<!-- directiva para exportar a excel ver app.js mas nfo de pagos -->
+	<excel info="listado"></excel>	
+	<br>
+</div>
+<script type="text/javascript">
+	$.datepicker.setDefaults($.datepicker.regional["es"]);
+	$( "#fechaRecIni" ).datepicker({showButtonPanel: true});
+	$( "#fechaRecFin" ).datepicker({showButtonPanel: true});
+	$( "#fechaPagIni" ).datepicker({showButtonPanel: true});
+	$( "#fechaPagFin" ).datepicker({showButtonPanel: true});
+</script>

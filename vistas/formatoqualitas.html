@@ -1,0 +1,184 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/" class="icon-arrow-left"></a>
+        <h1>{{tituloFQ}}</h1>
+    </div>
+    <ul id="rb-grid-small" class="rb-grid-small clearfix">
+        <li class="rb-span-1" id="color3">
+
+            <h3>Envios</h3>
+            <a href="#/formatoqualitasenviado">
+                <span class="glyphicon glyphicon-check"></span>
+            </a>
+        </li>
+        <li class="rb-span-1" id="color3">
+
+            <h3>Sin Archivos</h3>
+            <a href="#/formatoqualitasarchivos">
+                <span class="glyphicon glyphicon-picture"></span>
+            </a>
+        </li>
+        <li class="rb-span-1" id="color3">
+
+            <h3>Rechazados</h3>
+            <a href="#/formatoqualitasrechazados">
+                <span class="glyphicon glyphicon-remove"></span>
+            </a>
+        </li>
+
+        <li class="rb-span-1" id="color3">
+
+            <h3>Incompletos</h3>
+            <a href="#/formatoqualitasincompletos">
+                <span class="glyphicon glyphicon-list-alt"></span>
+            </a>
+
+        </li>
+
+        <li class="rb-span-1" id="color3">
+
+            <h3>Buscar</h3>
+            <a href="#/formatoqualitasconsulta">
+                <span class="glyphicon glyphicon-search"></span>
+            </a>
+
+        </li>
+
+
+    </ul>
+    <legend>Fecha Captura</legend>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <input type="text" ng-model="fechaini" class="form-control" id="datepicker" placeholder="inicial" />
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <div class="input-group">
+                <input type="text" ng-model="fechafin" class="form-control" id="datepicker2" placeholder="Final" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="buscafacturas()"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <select class="form-control" id="producto" ng-model="producto" ng-change="buscafacturas()" ng-options="producto.id as producto.nombre for producto in productosini">
+              <option value="">Producto</option>
+            </select>
+        </div>
+    </div>
+    <br>
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+    <br>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            Seleccionar los primeros:
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group">
+                    <button type="button"  ng-click="selecciona(10)" class="btn btn-default">10</button>
+                    <button type="button"  ng-click="selecciona(20)" class="btn btn-default">20</button>
+                    <button type="button"  ng-click="selecciona(30)" class="btn btn-default">30</button>
+                    <button type="button"  ng-click="selecciona(40)" class="btn btn-default">40</button>
+                    <button type="button"  ng-click="selecciona(50)" class="btn btn-default">50</button>
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-3 col-md-3">
+            <br>
+            <button type="button" ng-disabled="selectos.length == 0" class="btn btn-default btn-block" ng-click="quitaselectos()">Quitar Selección</button>
+        </div> 
+    </div> 
+    <br>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <button type="button" ng-disabled="listado.length == 0" class="btn btn-success btn-block" ng-click="generarListado()">Exportar Listado</button>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <button id="boton" type="button" ng-disabled="selectos.length == 0" data-loading-text="Verificando Información..." class="btn btn-success btn-block" ng-click="generarSelectos()">Generar Archivos Seleccionados</button>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <!-- <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->
+        </div>
+        <div class="col-sm-3 col-md-3">
+           <!--  <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->
+        </div>
+    </div> 
+    <br>
+    <br>
+</div>
+
+<!--Ventana para mostrar los folios que se no se generaron-->
+<div class="modal fade" id="modalEx" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Se generaron {{numerocorrectos}} de {{total}} folios</h4>
+      </div>
+      <div class="modal-body">
+           <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="alert alert-warning" ng-show="numerocorrectos > compresos" role="alert">
+                        Solo se generaran {{compresos}} folios validos para no sobrepasar el peso maximo permitido por Qualitas
+                    </div>
+                    <br>
+                    <p>¿Deseas Generar el archivo de los folios completos?</p>
+                    <button type="button" class="btn btn-success" ng-click="generaarchivos()">Descargar Archivos</button>
+                </div>
+           </div>    
+           <hr>
+           <div class="text-center">
+                <p>Detalle de archivos no generados por falta de archivo(s)</p>
+           </div>
+           <div id="tablaincorrectos">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Folio QUA</th>
+                      <th>Folio Sistema</th>
+                      <th>Reporte</th>
+                      <th>Poliza</th>
+                      <th>Lesionado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="dato in incorrectos">
+                      <td>{{dato.folioElectronico}}</td>
+                      <td>{{dato.folioSistema}}</td>
+                      <td>{{dato.Reporte}}</td>
+                      <td>{{dato.Poliza}}</td>
+                      <td>{{dato.Lesionado}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+           </div>
+      </div>
+      <div class="modal-footer text-center">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar Ventana</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    // $( "#datepicker" ).datepicker({showButtonPanel: true});
+    // $( "#datepicker2" ).datepicker({showButtonPanel: true});
+    $( "#datepicker" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker2" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    $( "#datepicker2" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+
+</script>

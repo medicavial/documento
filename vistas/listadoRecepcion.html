@@ -1,0 +1,56 @@
+<div ng-init="inicio()">
+	<div class="titulos">
+		<a href="#/{{area}}" class="icon-arrow-left"></a>
+		<h1>{{tituloLR}}</h1>
+	</div>
+	<fieldset>
+		<legend>Filtro</legend>
+		<div class="row">
+			<div class="col-md-2">
+				<input type="text" ng-model="folio" class="form-control" placeholder="Folio" ng-change="filtra()" capitalize>
+			</div>
+			<div class="col-md-3">
+				<select class="form-control"  ng-model="cliente" ng-change="filtra()" ng-options="cliente.nombre as cliente.nombre for cliente in clientes">
+					<option value="">Cliente</option>
+				</select>
+			</div>
+			<div class="col-md-3">
+				<select class="form-control"  ng-model="unidad" ng-change="filtra()" ng-options="unidad.nombre as unidad.nombre for unidad in unidades">
+					<option value="">Unidad</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<button type="button" ng-click="quitafiltro()" class="btn btn-danger btn-block icon-close"> Quitar Filtro</button>
+			</div>
+			<div class="col-md-2" id="estatus">
+				<!-- <input type="text" x-webkit-speech=""> -->
+				<button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
+			</div>
+		</div>
+	</fieldset>
+		
+	<div class="row">
+		<div class="col-md-12">
+		</div>
+	</div>
+
+	<div class="gridStyle" ng-grid="gridOptions"></div>
+	<br>
+	<div class="row">
+		<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert animate-show text-center">{{mensaje}}</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-3">
+			<button type="button" id="boton" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" class="btn btn-primary icon-checkmark-circle" ng-click="aceptaEntregas()" > Aceptar Entrega</button>
+		</div>
+		<div class="col-md-3">
+			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="rechazaEntregas()" class="btn btn-warning icon-cancel-circle"> Rechazar Entrega</button>
+		</div>
+		<!-- <div class="col-md-3">
+			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="rechazaEntregas()" class="btn btn-warning icon-cancel-circle"> Reasignar</button>
+		</div> -->
+	</div>
+	<br>
+	<br>
+</div>

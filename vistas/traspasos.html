@@ -1,0 +1,37 @@
+<div ng-init="inicio()">
+	<div class="titulos">
+		<a href="#/{{area}}" class="icon-arrow-left"></a>
+		<h1>{{tituloT}}</h1>
+	</div>
+	<div class="row">
+		<div class="col-md-5">
+			<fieldset>
+				<legend>Tus Folios</legend>
+			</fieldset>
+			<div class="gridStyle" ng-grid="gridOptions"></div>
+		</div>
+		<div class="col-md-2">
+			<button class="btn btn-block btn-success" ng-disabled="verificacampo()" ng-click="mandaFolios(1)" style="margin-top:5em;"><i class="glyphicon glyphicon-forward" style="font-size:30px;"></i></button>
+
+			<button class="btn btn-block btn-success" ng-disabled="verificacampo2()" ng-click="mandaFolios(2)" style="margin-top:5em;"><i class="glyphicon glyphicon-backward" style="font-size:30px;"></i></button>
+		</div>
+		<div class="col-md-5">
+			<fieldset>
+				<legend>
+					<div class="row">
+						<div class="col-md-6">
+							Asigar a Usuario:
+						</div>
+						<div class="col-md-6">
+							<select class="form-control" id="area" ng-change="buscaFolios(user)" ng-model="user" ng-options="usuario.id as usuario.nombre for usuario in usuarios" required>
+									<option value="">Usuario</option>
+							</select>
+						</div>
+					</div> 
+				</legend>
+			</fieldset>
+			<div class="gridStyle" ng-grid="gridOptions2"></div>
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,315 @@
+#contenedor{
+  position: relative;
+}
+
+.animate-repeat.ng-enter { 
+    -webkit-animation: enter 650ms cubic-bezier(0.860, 0.000, 0.070, 1.000);
+    animation: enter 650ms cubic-bezier(0.860, 0.000, 0.070, 1.000);
+    display: block;
+    position: relative;
+} 
+@-webkit-keyframes enter {
+    from {
+        opacity: 0;
+        height: 0px;
+        left: -70px;
+    }
+    75% {
+        left: 15px;
+    }
+    to {
+        opacity: 1;
+        height: 30px;
+        left: 0px;
+    }
+}
+@keyframes enter {
+    from {
+        opacity: 0;
+        height: 0px;
+        left: -70px;
+    }
+    75% {
+        left: 15px;
+    }
+    to {
+        opacity: 1;
+        height: 30px;
+        left: 0px;
+    }
+}
+ 
+.animate-repeat.ng-leave { 
+    -webkit-animation: leave 650ms cubic-bezier(0.860, 0.000, 0.070, 1.000);
+    animation: leave 650ms cubic-bezier(0.860, 0.000, 0.070, 1.000);
+    display: block;
+    position: relative;
+} 
+
+@-webkit-keyframes leave {
+    to {
+        opacity: 0;
+        height: 0px;
+        left: -70px;
+    }
+    25% {
+        left: 15px;
+    }
+    from {
+        opacity: 1;
+        height: 30px;
+        left: 0px;
+    }
+}
+@keyframes leave {
+    to {
+        opacity: 0;
+        height: 0px;
+        left: -70px;
+    }
+    25% {
+        left: 15px;
+    }
+    from {
+        opacity: 1;
+        height: 30px;
+        left: 0px;
+    }
+}
+
+
+
+.container{
+    position:relative;
+}
+
+
+.reveal-animation.ng-add {
+ -webkit-transition: 2s linear all; /* Safari/Chrome */
+ -moz-transition: 2s linear all;
+ -ms-transition: 2s linear all;
+  -o-transition: 2s linear all;
+ transition: 2s linear all; /* All other modern browsers and IE10+ */
+ 
+ /* The animation preparation code */
+ opacity: 0;
+}
+ 
+/*
+ Keep in mind that you want to combine both CSS
+ classes together to avoid any CSS-specificity
+ conflicts
+*/
+.reveal-animation.ng-remove.ng-remove-active {
+ /* The animation code itself */
+ opacity: 1;
+}
+
+/*
+.view-animate.ng-enter, .view-animate.ng-leave {
+
+    -webkit-transition: 500ms cubic-bezier(0.390, 0.575, 0.565, 1.000) all;
+    -moz-transition: 500ms cubic-bezier(0.390, 0.575, 0.565, 1.000) all;
+    -ms-transition: 500ms cubic-bezier(0.390, 0.575, 0.565, 1.000) all;
+    -o-transition: 500ms cubic-bezier(0.390, 0.575, 0.565, 1.000) all;
+    transition: 500ms cubic-bezier(0.390, 0.575, 0.565, 1.000) all;
+ 
+    display:block;
+    width:90%;
+    position:absolute;
+    top:0;
+    left:0;
+    right:0;
+    bottom:0;
+}
+ 
+.view-animate.ng-enter {
+    left: -100%;
+}
+.view-animate.ng-enter.ng-enter-active {
+    left:0;
+}
+.view-animate.ng-leave.ng-leave-active {
+    left: 100%;
+}
+
+.view-animate.ng-leave {
+    left:0;
+}
+*/
+.view-animate{
+    width: 100%;
+}
+
+.view-animate.ng-enter, .view-animate.ng-leave {
+    /*display:block;*/
+    position:absolute;
+    transition: 1s ease all;
+}
+
+.view-animate.ng-enter {
+
+    -webkit-animation: fadeInUp 1s;
+    -moz-animation: fadeInUp 1s;
+    -ms-animation: fadeInUp 1s;
+    -o-animation: fadeInUp 1s;
+    animation: fadeInUp 1s;
+    opacity: 1;
+
+
+ 
+}
+.view-animate.ng-leave {
+
+    -webkit-animation: fadeOutDownBig 1s;
+    -moz-animation: fadeOutDownBig 1s;
+    -ms-animation: fadeOutDownBig 1s;
+    -o-animation: fadeOutDownBig 1s;
+    animation: fadeOutDownBig 1s;
+    opacity: 0.4;
+
+}
+
+
+.animate-show {
+
+  
+  
+
+
+}
+
+.animate-show.ng-hide {
+
+    opacity: 1;
+    position: relative;
+    -webkit-transition:1s easein all;
+    -moz-transition:1s easein all;
+    -ms-transition:1s easein all;
+    -o-transition:1s easein all;
+    transition:1s easein all;
+
+
+}
+
+.animate-show.ng-hide-add {
+  /* this needs to be here to make it visible during the animation
+     since the .ng-hide class is already on the element rendering
+     it as hidden. */
+    -webkit-animation: fadeOutDown 0.5s;
+    -moz-animation: fadeOutDown 0.5s;
+    -ms-animation: fadeOutDown 0.5s;
+    -o-animation: fadeOutDown 0.5s;
+    animation: fadeOutDown 0.5s;
+    opacity: 0;
+
+}
+
+.animate-show.ng-hide-remove{
+    
+    -webkit-animation: fadeInDown 0.5s;
+    -moz-animation: fadeInDown 0.5s;
+    -ms-animation: fadeInDown 0.5s;
+    -o-animation: fadeInDown 0.5s;
+    animation: fadeInDown 0.5s;
+
+ }
+
+
+.animate-repeat {
+
+}
+
+
+.animate-repeat.ng-enter{
+
+    -webkit-animation: fadeInLeft 0.5s;
+    -moz-animation: fadeInLeft 0.5s;
+    -ms-animation: fadeInLeft 0.5s;
+    -o-animation: fadeInLeft 0.5s;
+    animation: fadeInLeft 0.5s;
+    position: relative;
+}
+/*
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave {
+  -webkit-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+}
+
+.animate-repeat.ng-leave.ng-leave-active,
+.animate-repeat.ng-move,
+.animate-repeat.ng-enter {
+  opacity:0;
+  max-height:0;
+}
+
+.animate-repeat.ng-leave,
+.animate-repeat.ng-move.ng-move-active,
+.animate-repeat.ng-enter.ng-enter-active {
+  opacity:1;
+  max-height:40px;
+}*/
+
+
+/*.animate-repeat {
+    position: absolute;
+
+}
+
+
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave {
+  -webkit-transition:all linear 1s;
+  transition:all linear 1s;
+}
+/*.animate-repeat.ng-move,
+.animate-repeat.ng-enter*/
+
+
+
+.animate-repeat.ng-enter,
+.animate-repeat.ng-leave.ng-leave-active{
+
+    -webkit-animation: fadeOutLeft 0.5s;
+    -moz-animation: fadeOutLeft 0.5s;
+    -ms-animation: fadeOutLeft 0.5s;
+    -o-animation: fadeOutLeft 0.5s;
+    animation: fadeOutLeft 0.5s;
+    /*opacity:0;*/
+}
+
+
+.animate-repeat.ng-leave,
+.animate-repeat.ng-enter.ng-enter-active {
+
+    -webkit-animation: fadeInLeft 0.5s;
+    -moz-animation: fadeInLeft 0.5s;
+    -ms-animation: fadeInLeft 0.5s;
+    -o-animation: fadeInLeft 0.5s;
+    animation: fadeInLeft 0.5s;
+    /*opacity:1;*/
+
+}*/
+
+
+/*
+
+.animate-show.ng-hide-add.ng-hide-ng-hide-active{ 
+  -webkit-transition:0.5s linear all;
+  transition:0.5s linear all;
+  opacity: 0;
+}
+.animate-show.ng-hide-remove.ng-hide-remove-active { 
+    opacity: 1;
+}
+
+*/
+
+/*
+.my-element.ng-hide-add { ... }
+.my-element.ng-hide-add.ng-hide-add-active { ... }
+.my-element.ng-hide-remove { ... }
+.my-element.ng-hide-remove.ng-hide-remove-active { ... }
+*/

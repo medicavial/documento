@@ -1,0 +1,109 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+	<div class="titulos">
+		<a href="#/" class="icon-arrow-left"></a>
+		<h1>{{tituloCon}}</h1>
+	</div>
+	<form role="form" ng-submit="verificaFolio()">
+	<div class="row">
+		<div class="col-md-6">
+			<!-- <div class="btn-group" data-toggle="buttons">
+			  <label class="btn btn-primary">
+			    <input type="radio" ng-model="tipo" value="folio"> Busqueda X Folio
+			  </label>
+			  <label class="btn btn-primary">
+			    <input type="radio" ng-model="tipo" value="lesionado"> Busqueda X Lesionado
+			  </label>
+			</div> -->
+			<div class="radio-inline">
+			  <label>
+			    <input type="radio" name="optionsRadios" id="optionsRadios1" ng-model="tipo" value="folio" checked>
+			    Busqueda X Folio
+			  </label>
+			</div>
+			<div class="radio-inline">
+			  <label>
+			    <input type="radio" name="optionsRadios" id="optionsRadios2"  ng-model="tipo" value="lesionado">
+			    Busqueda X Lesionado
+			  </label>
+			</div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-5">
+			<input type="text" ng-model="criterio" class="form-control" placeholder="Busqueda" ng-keydown="presionaFolio" capitalize>
+		</div>
+		<div class="col-md-2">
+			<button type="submit" id="boton" ng-click="verificaFolio()" class="btn btn-primary"  data-loading-text="Consultando...">Consultar</button>
+		</div>
+		<div class="col-md-2">
+            <img ng-show="cargar" class="animate-show" src="images/cargando.gif">
+        </div>
+	</div>
+	</form>
+	<br>
+
+	<div class="loading-container" ng-show="cargando">
+	    <div class="loading"></div>
+	    <div id="loading-text">Cargando</div>
+	</div>
+	
+	<div class="row">
+		<div ng-show="mensaje != '' " class="alert alert-danger animate-show">{{mensaje}}</div>
+	</div>
+	
+	<div ng-show="busqueda">
+
+		<div class="panel panel-info" ng-repeat="expediente in listado">
+	      <div class="panel-heading">
+	        <h3 class="panel-title">Folio: {{expediente.Folio}} -- Lesionado: {{expediente.Lesionado}} --  Etapa: {{expediente.Etapa}} - {{expediente.Numero}} </h3>
+	      </div>
+	      <div class="panel-body">
+	        <div class="row">
+	        	<div class="col-md-10">
+	        		<div class="row">
+
+	        			<div class="col-md-4">
+	        				<ul class="list-unstyled">
+	        					<li>Cliente: {{expediente.Empresa}}</li>
+							  	<li>Unidad Medica: {{expediente.Unidad}}</li>
+							  	<li>Situación: {{expediente.Situacion}}</li>
+							  	<li>Fax: {{expediente.Fax}}</li>
+							  	<li>Original: {{expediente.Original}}</li>
+							</ul>
+	        			</div>
+
+	        			<div class="col-md-4">
+	        				<ul class="list-unstyled">
+	        					<li>Fecha Captura: {{expediente.FechaCaptura}}</li>
+							  	<li>Cancelado: {{expediente.Cancelado}}</li>
+							  	<li>Producto: {{expediente.Producto}}</li>
+							  	<li>Remesa: {{expediente.Remesa}}</li>
+							</ul>
+	        			</div>
+
+	        			<div class="col-md-4">
+	        				
+	        				<ul class="list-unstyled" ng-repeat="ticket in expediente.ticket">
+	        					<li>Ticket Asociado</li>
+	        					<li>Folio Interno: {{ticket.Folio_Interno}}</li>
+							  	<li>Status: {{ticket.Status}}</li>
+							  	<li>Categoria: {{ticket.Categoria}}</li>
+							  	<li>Subcategoria: {{ticket.Subcategoria}}</li>
+							</ul>
+	        			</div>
+
+	        		</div>
+	        	</div>
+	        	<div class="col-md-2">
+					<a href="#/historial/{{expediente.Folio}}/{{expediente.Etapa}}/{{expediente.Numero}}" class="btn btn-info btn-block">Ver historial</a>
+        			<br>
+        			<a href="#/infopase/{{expediente.Folio}}" class="btn btn-warning btn-block">Ver Detalle</a>
+	        	</div>
+	        </div>
+	      </div>
+	    </div>
+
+	</div>
+	<br>
+			
+</div>

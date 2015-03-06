@@ -1,0 +1,24 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+	<div class="titulos">
+		<a href="#/consulta" class="icon-arrow-left"></a>
+		<h1>{{tituloTL}}</h1>
+	</div>
+	<div ng-show="historial" class="animate-show">
+		<h3>{{folio}} - {{historias.lesionado}} - {{historias.cliente}} - {{historias.unidad}} con E{{tipoDoc}}</h3>
+			<ul class="cbp_tmtimeline">
+				<li class="animate-repeat" ng-repeat="historia in historias.movimientos">
+					<time class="cbp_tmtime"><span>{{historia.fecha}}</span> <span>{{historia.hora}}</span></time>
+					<div class="cbp_tmicon cbp_tmicon-earth"></div>
+					<div class="cbp_tmlabel">
+						<h2>{{historia.titulo}}</h2>
+						<p>{{historia.descripcion}}</p>
+					</div>
+				</li>
+			</ul>
+	</div>
+	<br>
+	<div class="row">
+		<div ng-show="mensaje != '' " class="alert alert-danger animate-show">{{mensaje}}</div>
+	</div>
+			
+</div>

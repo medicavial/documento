@@ -1,0 +1,196 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/formatoqualitas" class="icon-arrow-left"></a>
+        <h1>{{tituloFQA}}</h1>
+    </div>
+    <legend>Fecha Captura</legend>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <input type="text" ng-model="fechaini" class="form-control" id="datepicker3" placeholder="inicial" />
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <div class="input-group">
+                <input type="text" ng-model="fechafin" class="form-control" id="datepicker4" placeholder="Final" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="buscafacturas()"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+    <br>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            Seleccionar los primeros:
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group">
+                    <button type="button"  ng-click="selecciona(10)" class="btn btn-default">10</button>
+                    <button type="button"  ng-click="selecciona(20)" class="btn btn-default">20</button>
+                    <button type="button"  ng-click="selecciona(30)" class="btn btn-default">30</button>
+                    <button type="button"  ng-click="selecciona(40)" class="btn btn-default">40</button>
+                    <button type="button"  ng-click="selecciona(50)" class="btn btn-default">50</button>
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-3 col-md-3">
+            <br>
+            <button type="button" ng-disabled="selectos.length == 0" class="btn btn-default btn-block" ng-click="quitaselectos()">Quitar Selección</button>
+        </div> 
+    </div> 
+    <br>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <button type="button" ng-disabled="listado.length == 0" class="btn btn-success btn-block" ng-click="generarListado()">Exportar Listado</button>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <button id="boton" type="button" ng-disabled="selectos.length == 0" data-loading-text="Verificando Información..." class="btn btn-success btn-block" ng-click="generarSelectos()">Generar Archivos Seleccionados</button>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <!-- <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->
+        </div>
+        <div class="col-sm-3 col-md-3">
+           <!--  <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->
+        </div>
+    </div> 
+    <br>
+    <br>
+</div>
+
+<div>
+    <br>
+
+    <h4>Archivos</h4>
+    <div class="table-responsive">
+      <table class="table gridStyle2">
+        <thead>
+            <tr>
+              <th>Folio</th>
+              <th>QS_07</th>
+              <th>ME_021</th>
+              <th>ME_022</th>
+              <th>ME_023</th>
+              <th>ME_024</th>
+              <th>GN_19</th>
+              <th>QS07</th>
+              <th>ME021</th>
+              <th>ME022</th>
+              <th>ME023</th>
+              <th>ME024</th>
+              <th>GN19</th>
+              <th>ME02</th>
+              <th>Nombre Actual</th>
+              <th>Nombre Requerido</th>
+              <th>Fecha Captura</th>
+            </tr>
+        </thead>
+
+        <tbody>
+            <tr ng-repeat="folio in listado">
+              <td>{{folio.folioSistema}}</td>
+              <td> 
+                <!-- <i ng-show="folio.imagenes.QS_07 == 1" class="glyphicon glyphicon-glyphicon-ok"></i> -->
+                <i class="glyphicon glyphicon-glyphicon-remove"></i>
+                {{folio.imagenes.QS_07}}</td>
+              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME_021 == 1, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME_021 == 0}"></i>{{folio.imagenes.ME_021}}</td>
+              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME_022 == 1, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME_022 == 0}"></i>{{folio.imagenes.ME_022}}</td>
+              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME_023 == 1, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME_023 == 0}"></i>{{folio.imagenes.ME_023}}</td>
+              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME_024, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME_024}"></i>{{folio.imagenes.ME_024}}</td>
+              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.GN_19, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.GN_19}"></i>{{folio.imagenes.GN_19}}</td>
+              <td><i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.QS07, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.QS07}"></i>{{folio.imagenes.QS07}}</td>
+              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME021, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME021}"></i>{{folio.imagenes.ME021}}</td>
+              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME022, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME022}"></i>{{folio.imagenes.ME022}}</td>
+              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME_023, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME_023}"></i>{{folio.imagenes.ME_023}}</td>
+              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME024, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME024}"></i>{{folio.imagenes.ME024}}</td>
+              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.GN19, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.GN19}"></i>{{folio.imagenes.GN19}}</td>
+              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME02, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME02}"></i>{{folio.imagenes.ME02}}</td>
+              <td>{{folio.imagenes.nombre}}</td>
+              <td>{{folio.nombreArchivo}}</td>
+              <td>{{folio.FechaCaptura}}</td>
+            </tr> 
+        </tbody>
+        </table>
+    </div>
+  </div>
+
+
+
+<!--Ventana para mostrar los folios que se no se generaron-->
+<div class="modal fade" id="modalEx" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Se generaron {{numerocorrectos}} de {{total}} folios</h4>
+      </div>
+      <div class="modal-body">
+           <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="alert alert-warning" ng-show="numerocorrectos > compresos" role="alert">
+                        Solo se generaran {{compresos}} folios validos para no sobrepasar el peso maximo permitido por Qualitas
+                    </div>
+                    <br>
+                    <p>¿Deseas Generar el archivo de los folios completos?</p>
+                    <button type="button" class="btn btn-success" ng-click="generaarchivos()">Descargar Archivos</button>
+                </div>
+           </div>    
+           <hr>
+           <div class="text-center">
+                <p>Detalle de archivos no generados por falta de archivo(s)</p>
+           </div>
+           <div id="tablaincorrectos">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Folio QUA</th>
+                      <th>Folio Sistema</th>
+                      <th>Reporte</th>
+                      <th>Poliza</th>
+                      <th>Lesionado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="dato in incorrectos">
+                      <td>{{dato.folioElectronico}}</td>
+                      <td>{{dato.folioSistema}}</td>
+                      <td>{{dato.Reporte}}</td>
+                      <td>{{dato.Poliza}}</td>
+                      <td>{{dato.Lesionado}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+           </div>
+      </div>
+      <div class="modal-footer text-center">
+            <button type="button" class="btn btn-success" ng-click="generarListadoIn()">Exportar Sin Archivos</button>
+            <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar Ventana</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    // $.datepicker.setDefaults($.datepicker.regional["es"]);
+    // $( "#datepicker3" ).datepicker({showButtonPanel: true});
+    // $( "#datepicker4" ).datepicker({showButtonPanel: true});
+
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    $( "#datepicker3" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker4" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    
+    $( "#datepicker4" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker3" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+</script>

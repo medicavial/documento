@@ -1,0 +1,67 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+	<div class="titulos">
+		<a href="#/" class="icon-arrow-left"></a>
+		<h1>{{tituloCF}}</h1>
+	</div>
+	<form role="form" ng-submit="buscar()">
+	<div class="row">
+		<div class="col-md-3">
+			<fieldset>
+				<legend>Folio</legend>
+			</fieldset>
+			<div class="input-group">
+				<input type="text" ng-model="criterio" class="form-control" ng-keydown="presionaFolio" capitalize />
+				<span class="input-group-btn">
+			        <button class="btn btn-default" type="button" ng-click="verificaFolio()"><i class="glyphicon glyphicon-search"></i></button>
+			    </span>
+			</div>
+		</div>
+	</div>
+	</form>
+	<br>
+
+	<div class="loading-container" ng-show="cargando">
+	    <div class="loading"></div>
+	    <div id="loading-text">Cargando</div>
+	</div>
+	
+	<div class="row">
+		<div ng-show="mensaje != '' " class="alert alert-danger animate-show">{{mensaje}}</div>
+	</div>
+	
+	<div ng-show="busqueda">
+
+		<br>
+		<div class="table-responsive">
+			<table class="table">
+				
+		    <thead>
+		        <tr>
+		          <th>Usuario</th>
+		          <th>Tipo</th>
+		          <th>Area</th>
+		          <th>Etapa</th>
+		          <th>Entrega</th>
+		          <th>Status</th>
+		        </tr>
+		    </thead>
+
+		    <tbody>
+		        <tr ng-repeat="flujo in listado" >
+
+		          <td>{{flujo.Usuario}}</td>
+		          <td>{{flujo.Tipo}}</td>
+		          <td>{{flujo.Area}}</td>
+		          <td>{{flujo.Etapa}}</td>
+		          <td>{{flujo.Entrega}}</td>
+		          <td>{{flujo.Status}}</td>
+
+		        </tr> 
+		    </tbody>
+		    
+		    </table>
+		</div>
+
+	</div>
+			
+</div>

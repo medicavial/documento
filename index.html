@@ -1,0 +1,154 @@
+<!doctype html>
+<html id="ng-app" ng-app="app" lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Flujo de Documentos</title>
+		<link rel="stylesheet" type="text/css" href="css/bootstrap.min.css" />
+		<link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.4.custom.css" />
+		<link rel="stylesheet" href="css/ng-grid.min.css" />
+		<link rel="stylesheet" href="css/iconos.css" />
+		<link rel="stylesheet" href="css/style.css" />
+		<link rel="stylesheet" href="css/animate.css"/>
+		<link rel="stylesheet" href="css/animacion.css"/>
+		<link rel="stylesheet" href="css/loading.min.css" />
+		<link rel="stylesheet" href="css/ngProgress.css" />
+		<link rel="stylesheet" href="css/datatables/dataTables.bootstrap.css" />
+		<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+		<script src="js/prefixfree.min.js"></script>
+
+		<!--[if lt IE 9]>
+		    <script>
+		        location.href="navegadorviejo.html";
+		    </script>
+		<![endif]-->
+		<!--[if gte IE 9]>
+		  <style type="text/css">
+		    .gradient {
+		       filter: none;
+		    }
+		  </style>
+		<![endif]-->
+		<!--[if IE 8]>
+	      <script src="js/json3.min.js"></script>
+	      <script>
+	        document.createElement('ng-include');
+	        document.createElement('ng-pluralize');
+	        document.createElement('ng-view');
+	 
+	        // Optionally these for CSS
+	        document.createElement('ng:include');
+	        document.createElement('ng:pluralize');
+	        document.createElement('ng:view');
+	      </script>
+	    <![endif]-->
+
+	</head>
+	<body class="ng-cloak">
+		
+		<!--panel de usuario -->
+		<div ng-show="username != '' " class="animate-show">
+			<div id="panelusuario">
+				<a href="#/logout" class="icon-switch" id="tooltip1" rel="tooltip"  title="Cerrar Sesión"></a>
+				<!-- <a href="#/infopase" class="icon-newspaper" id="tooltip5" rel="tooltip"  title="Info Pase"></a> -->
+				<a href="#/control" class="icon-drawer2" id="tooltip2" rel="tooltip"  title="Control de Documentos"></a>
+				<!-- <a href="#/consultaflujo" class="glyphicon glyphicon-search" id="tooltip3" rel="tooltip"  title="Buscar Folio en Flujo"></a> -->
+				<a href="#/" class="icon-home" id="tooltip4" rel="tooltip"  title="Ir al Inicio"></a>
+				<!-- <button type="button" class="panelicon icon-bell" id="notificacion" rel="tooltip"  title="Mis Notificaciones" rel="popover"><span ng-show="push > 0" class="badge pull-right">{{push}}</span></button> -->
+				<h2>{{ username }}</h2>
+			</div>
+		</div>
+		<br>
+		<br>
+		<!--contenedor de las vistas de todo la app -->
+		<div class="container">
+			<div class="ng-view view-animate"></div>
+			<br>
+		</div>
+
+		<!--imagen para cuando este cargando folio o contenido que el usuario busca-->
+		<div ng-show="cargando" class='centrar animate-show'>
+			<br>
+			<div ng-show="loading" class="progress progress-striped active">
+			  <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+			    <span class="sr-only">100% Complete</span>
+			  </div>
+			</div>
+			<h3 class="animate-show">{{label}}</h3>
+		</div>
+
+
+		<!--imagen para cuando este cargando folio o contenido que el usuario busca-->
+		<div ng-show="error" class='centrarerror animate-show'>
+			<button type="button" class="close" ng-click="error=false">&times;</button>
+			<h3 class="animate-show">{{label}}</h3>
+		</div>
+		
+
+		<!--Ventana para mostrar al usuario sus notificaciones pendientes solo funciona cuando inicia sesion-->
+		<div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">Notificaciones Pendientes</h4>
+		      </div>
+		      <div class="modal-body">
+		        	<div id="contenidonot">
+		        		<div ng-show="push == 0" class="list-group">
+		        			<a href="" class="list-group-item">
+		        				<h3 class="list-group-item-heading"></h3>
+		        				<span class="list-group-item-text">Sin Notificaciones</span>
+		        			</a>
+		        		</div>
+		        		<div ng-show="existen" class="list-group"  ng-repeat="notificacion in notificaciones">
+		        			
+		        			<a href="{{notificacion.link}}" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()" class="list-group-item">
+		        				<h3 class="list-group-item-heading">{{notificacion.titulo}}</h3>
+		        				<p class="list-group-item-text">{{notificacion.detalle}}</p>
+		        				<p ng-show="hoverEdit" class="animate-show glyphicon glyphicon-trash">LOL</p>
+		        			</a>
+		        			<!-- <a href="#" ng-show="hover" class="glyphicon glyphicon-trash"> LOL</a> -->
+		        		</div>
+		        	</div>
+		        	<br>
+		        	<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+			
+		<script src="js/jquery-1.10.2.js"></script>
+		<!-- Firebase 
+		<script src="https://cdn.firebase.com/js/client/1.0.17/firebase.js"></script>-->
+		<script src="modulos/angular-file-upload-shim.min.js" ></script> 
+		<script src="modulos/angular.min.js" ></script>
+		<script src="modulos/angular-file-upload.min.js" ></script> 
+		<script src="modulos/angular-route.js" ></script>
+		<script src="modulos/cookies.js" ></script>
+		<script src="modulos/angular-idle.min.js"></script>
+		<script src="modulos/angular-animate.min.js" ></script>
+		<script src="modulos/ng-grid.min.js" ></script>
+		<script src="modulos/ng-grid-csv-export.js"></script>
+		<script src="modulos/angular-strap.min.js"></script>
+		<script src="modulos/angular-strap.tpl.min.js"></script>
+		<script src="modulos/ngProgress.min.js"></script>
+		<script src="js/amcharts.js"></script> 
+		<script src="js/serial.js"></script> 
+		<script src="js/amstock.js"></script>
+		<!--<script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.min.js"></script>-->
+		<script src="js/bootstrap.min.js"></script>
+		<script src="js/jquery.ui.datepicker-es.js"></script>
+		<script src="js/jquery-ui-1.10.4.custom.min.js"></script>
+		<script src="js/date.format.js"></script>
+		<script src="js/jquery.backstretch.min.js"></script>
+		<script src="js/datatables/jquery.dataTables.js" type="text/javascript"></script>
+        <script src="js/datatables/dataTables.bootstrap.js" type="text/javascript"></script>
+        <!-- archivos de la aplicacion -->
+		<script src="app/app.js" ></script>
+		<script src="app/controller.js"></script>
+		<script src="app/controllerQualitas.js"></script>
+		<!--<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB0QfDzSwjO83J-ozcaXmd0KKsDTgOxE9M&sensor=true"></script>-->
+	</body>
+</html>	

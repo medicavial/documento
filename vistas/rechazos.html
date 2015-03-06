@@ -1,0 +1,71 @@
+<div ng-init="inicio()">
+	<div class="titulos">
+		<a href="#/{{area}}" class="icon-arrow-left"></a>
+		<h1>{{tituloRC}}</h1>
+	</div>
+	<fieldset>
+		<legend>Filtro</legend>
+		<div class="row">
+			<div class="col-md-2">
+				<input type="text" ng-model="folio" class="form-control" ng-keydown="presionaFolio" ng-change="filtra()" placeholder="Folio" capitalize>
+			</div>
+			<div class="col-md-3">
+				<select class="form-control"  ng-model="cliente" ng-change="filtra()" ng-options="cliente as cliente.nombre for cliente in clientes">
+					<option value="">Cliente</option>
+				</select>
+			</div>
+			<div class="col-md-3">
+				<select class="form-control"  ng-model="unidad" ng-change="filtra()" ng-options="unidad as unidad.nombre for unidad in unidades">
+					<option value="">Unidad</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<button type="button" class="btn btn-danger btn-block icon-close"> Quitar Filtro</button>
+			</div>
+			<div class="col-md-2" id="estatus">
+				<!-- <input type="text" x-webkit-speech=""> -->
+				<button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
+			</div>
+		</div>
+	</fieldset>
+		
+	<div class="row">
+		<div class="col-md-12">
+		</div>
+	</div>
+
+	<div class="gridStyle" ng-grid="gridOptions"></div>
+
+	<br>
+	<div class="row">
+
+		<form name="formEntrega"  novalidate>
+
+			<div class="col-md-3">
+				<select class="form-control" id="area" ng-model="areaOp" ng-options="area.calve as area.nombre for area in areas" ng-change="altausuariosarea(areaOp)" required>
+					<option value="">Area Operativa</option>
+				</select>
+			</div>
+			
+			<div class="col-md-3">
+				<select class="form-control" ng-show="areaOp > 0" id="area" ng-model="user" ng-options="usuario.id as usuario.nombre for usuario in usuarios" required>
+					<option value="">Usuario</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<button type="button" id="boton" ng-disabled="formEntrega.$invalid" ng-click="entrega()" class="btn btn-primary btn-block icon-drawer2" data-loading-text="Entregando..."> Preparar Entrega</button>
+			</div>
+
+			<div class="col-md-2">
+				<!-- <a href="#/listadoEntregas/{{area}}" type="button" class="btn btn-primary btn-block icon-list"> Listado Entrega</a> -->
+			</div>
+			<div class="col-md-2">
+			</div>
+
+		</form>
+	</div>
+	<br>
+	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
+</div>
+<br>
+<br>

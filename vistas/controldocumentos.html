@@ -1,0 +1,103 @@
+<div ng-init="inicio()">
+	<div class="titulos">
+		<a href="#/" class="icon-arrow-left"></a>
+		<h1>{{tituloCD}}</h1>
+	</div>
+	
+	<div class="row">
+		<div class="col-md-4">
+			<fieldset>
+				<legend>Buscar Folio</legend>
+				<div class="row">
+					<div class="col-md-6">
+						<input type="text" ng-model="fechaini" class="form-control" id="datepicker" placeholder="inicial" />
+					</div>
+					<div class="col-md-6">
+						<div class="input-group">
+							<input type="text" ng-model="fechafin" class="form-control" id="datepicker2" placeholder="Final" />
+							<span class="input-group-btn">
+						        <button class="btn btn-default" type="button" ng-click="foliosxfecha()"><i class="glyphicon glyphicon-search"></i></button>
+						    </span>
+						</div>
+						
+					</div>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col-md-3">
+			<fieldset>
+				<legend>Folio</legend>
+				<div class="input-group">
+					<input type="text" ng-model="folio" class="form-control" ng-keydown="presionaFolio" ng-change="filtra()" capitalize />
+					<span class="input-group-btn">
+				        <button class="btn btn-default" type="button" ng-click="verificaFolio()"><i class="glyphicon glyphicon-search"></i></button>
+				    </span>
+				</div>
+			</fieldset>
+		</div>
+		<div class="col-md-5">
+			<fieldset>
+				<legend>Lesionado</legend>
+				<div class="input-group">
+					<input type="text" ng-model="lesionado" class="form-control" ng-keydown="presionaLesionado" ng-change="filtra()" capitalize />
+					<span class="input-group-btn">
+				        <button class="btn btn-default" ng-click="foliosxlesionado()" type="button"><i class="glyphicon glyphicon-search"></i></button>
+				    </span>
+				</div>
+				
+			</fieldset>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Filtros</legend>
+				<div class="row">
+					<div class="col-md-2">
+						<select class="form-control"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes" ng-change="filtra()">
+							<option value="">Cliente</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control"  ng-model="unidad" ng-options="unidad as unidad.nombre for unidad in unidades" ng-change="filtra()">
+							<option value="">Unidad</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control"  ng-model="tipo" ng-change="filtra()">
+							<option value="">Fax Y Original</option>
+							<option value="fax">Fax</option>
+							<option value="original">Original</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control" id="producto" ng-model="producto" ng-change="filtra()" ng-options="producto as producto.nombre for producto in productosini" required>
+							<option value="">Producto</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control" id="tipodoc" ng-change="filtra()" ng-model="etapa">
+							<option value="">Etapa</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+	<div id="copiar" class="gridStyle" ng-grid="gridOptions"></div>
+	<br>	
+	<br>
+	<!-- directiva para exportar a excel ver app.js mas nfo -->
+	<excel info="exportables"></excel>
+</div>
+<script type="text/javascript">
+	$.datepicker.setDefaults($.datepicker.regional["es"]);
+	$( "#datepicker" ).datepicker({showButtonPanel: true});
+	$( "#datepicker2" ).datepicker({showButtonPanel: true});
+</script>

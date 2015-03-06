@@ -1,0 +1,77 @@
+<div class="center" ng-init="inicio()">  
+
+   <div class="headline text-center" id="time"></div>
+    
+    <div class="lockscreen-name">{{nombre}}</div>
+    
+    <div class="lockscreen-item">
+
+        <div class="lockscreen-image">
+            <img src="images/user.png" alt="usuario"/>
+        </div>
+
+        <div class="lockscreen-credentials">   
+		    <form novalidate>
+            <div class="input-group">
+                    <input type="text" ng-model="usuario" class="form-control" placeholder="Usuario" />
+                </div>
+
+            <div class="input-group">
+                
+                <input type="password" ng-model="password" class="form-control" placeholder="password" />
+                <div class="input-group-btn">
+                    <button type="submit" ng-click="login()" class="btn btn-flat"><i class="glyphicon glyphicon-arrow-right fa fa-arrow-right text-muted"></i></button>
+                </div>
+            </div>
+            </form>
+        
+        </div>
+
+    </div>
+    <div class="lockscreen-link">
+        <a href="#/logout">Entrar con diferente usuario</a>
+    </div>   
+    <br>
+	<div ng-show="mensaje != '' " class="alert alert-warning animate-show text-center">{{mensaje}}</div> 
+	<br>        
+</div>
+<script type="text/javascript">
+	
+	//funcion que muestra la hora 
+    startTime();
+
+    function startTime()
+    {
+        var today = new Date();
+        var h = today.getHours();
+        var m = today.getMinutes();
+        var s = today.getSeconds();
+
+        // add a zero in front of numbers<10
+        m = checkTime(m);
+        s = checkTime(s);
+
+        //Check for PM and AM
+        var day_or_night = (h > 11) ? "PM" : "AM";
+
+        //Convert to 12 hours system
+        if (h > 12)
+            h -= 12;
+
+        //Add time to the headline and update every 500 milliseconds
+        $('#time').html(h + ":" + m + ":" + s + " " + day_or_night);
+        setTimeout(function() {
+            startTime()
+        }, 500);
+    }
+
+    function checkTime(i)
+    {
+        if (i < 10)
+        {
+            i = "0" + i;
+        }
+        return i;
+    }
+
+</script>
