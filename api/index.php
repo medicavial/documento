@@ -154,21 +154,23 @@ function conectarActual(){
 
 		$db_server = 'GEN'; 
 		$db_name = 'MV'; 
-		$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";	
-		$con = odbc_connect($dsn,'','');
+
 
 	}else{
 
 		//Declaramos variables de conexion a SQL Server
 		//Trusted_Connection=yes;
-		$db_usr = 'sa'; 
-		$db_pass = 'ACc3soMv'; 
-		$db_server = 'SISTEMAS4'; 
-		$db_name = 'MV';
-		$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;charset=UTF-8";
-		$con = odbc_connect($dsn,$db_usr,$db_pass);
+		$db_server = 'GEN';
+		$db_name = 'MV2';
+
+		$db_usr = 'acceso';
+		$db_pass = 'ACc3soMv';
 
 	}
+
+	$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";
+
+	$con = odbc_connect($dsn,'','');
 
 	//regresa la conexion
 	return $con;
@@ -2156,7 +2158,7 @@ $app->get('/escolaridad', function(){
 
 });
 
-//facturas de qualitas formatos 
+//facturas de qualitas formatos
 $app->post('/facturasQualitas', function(){
 
 	$request = \Slim\Slim::getInstance()->request();
@@ -2165,6 +2167,7 @@ $app->post('/facturasQualitas', function(){
 	$valores = array();
 	$fechaini = $datos->fechaini;
 	$fechafin = $datos->fechafin;
+	$producto = $datos->producto;
 
 	$fechafin = $fechafin . ' 23:59:58.999';
 
@@ -2177,23 +2180,23 @@ $app->post('/facturasQualitas', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-		
-		
 
-		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin'";
+
+
+		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin', @prodcuto = $producto";
 
 		$rs= odbc_exec($conexion,$sql);
 
 		// $resultado = odbc_prepare($conexión, $sql);
 		// odbc_setoption($resultado, 2, 0, 350);
-		// $rs = odbc_execute($resultado); 
+		// $rs = odbc_execute($resultado);
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) { 
+		if( odbc_num_rows($rs) > 0 ) {
 
-			while (odbc_fetch_row($rs)){ 
+			while (odbc_fetch_row($rs)){
 
 				$valor1 = odbc_result($rs,"folioElectronico");
 	            $valor2 = odbc_result($rs,"folioAdministradora");
@@ -2217,7 +2220,7 @@ $app->post('/facturasQualitas', function(){
 	            if ($valor6 != $valor7) {
 
 	            	if ($valor10 != 99) {
-	            		
+
 	            		if ($valor5 == '07370') {
 
 
@@ -2270,10 +2273,10 @@ $app->post('/facturasQualitas', function(){
 				            $i++;
 
 	            		}
-	            		
+
 
 	            	}
-	            
+
 	            }
 
 			}
@@ -2293,7 +2296,7 @@ $app->post('/facturasQualitas', function(){
 
 		}
 
-		// 
+		//
 
 	}
 

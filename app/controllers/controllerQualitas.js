@@ -2,12 +2,12 @@
 app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, loading){
 
 	$scope.inicio = function(){
-		
 		$scope.tituloFQ = "Formato de Facturas Qualitas";
 		$scope.fechaini = FechaAct;
 		$scope.fechafin = FechaAct;
 		$scope.listado = [];
-		$scope.buscafacturas();
+		// $scope.buscafacturas();
+		$scope.productos();
 		$('#modalEx').on('hidden.bs.modal', function (e) {
 
 			$scope.gridOptions.$gridScope.toggleSelectAll(false);
@@ -16,44 +16,61 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
 		});
 	}
 
+	//busca productos
+	$scope.productos = function(){
+
+		find.productos().success( function (data) {
+
+			$scope.productosini = data;
+
+		 });
+	}
+
 	$scope.buscafacturas = function(){
 
-		loading.cargando('Buscando Factura(s)');
+		if ($scope.producto) {
 
-		//armamos los datos a enviar segun tipo de consulta (tipo)
-		$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
-		console.log($scope.datos);
+			loading.cargando('Buscando Factura(s)');
 
-		$http({
-			url:'/documento/api/facturasQualitas',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin}
-		}).success( function (data){
-			 
-			console.log(data)
-			if(data.respuesta){
+			//armamos los datos a enviar segun tipo de consulta (tipo)
+			$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
+			console.log($scope.datos);
 
-        	
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
+			$http({
+				url:'/documento/api/facturasQualitas',
+				method:'POST', 
+				contentType: 'application/json', 
+				dataType: "json", 
+				data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin,producto:$scope.producto}
+			}).success( function (data){
+				 
+				console.log(data)
+				if(data.respuesta){
 
-        	}else{
+	        	
+	        		loading.mensaje(data.respuesta);
+	        		loading.despedida();
+	        		$scope.listado = [];
 
-  
-        		$scope.listado = data;
-        		$scope.cantidad = data.length -1;
-        		loading.despedida();
-        	}
-			
-		}).error( function (xhr,status,data){
+	        	}else{
 
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+	  
+	        		$scope.listado = data;
+	        		$scope.cantidad = data.length -1;
+	        		loading.despedida();
+	        	}
+				
+			}).error( function (xhr,status,data){
 
-		});
+				loading.despedida();
+				alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+
+			});
+
+		}else{
+
+			alert('debes ingresar un prodcuto');
+		}
 
 	}
 
@@ -163,8 +180,6 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
 			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		});
-
-
 
     }
 
@@ -1023,45 +1038,61 @@ app.controller('formatoQualitasIncompletosCtrl', function ($scope, $rootScope,$h
 		$scope.fechafin = FechaAct;
 		$scope.muestra = false;
 		$scope.mensaje = '';
+		$scope.productos();
 
+	}
+
+	//busca productos
+	$scope.productos = function(){
+
+		find.productos().success( function (data) {
+
+			$scope.productosini = data;
+
+		 });
 	}
 
 	$scope.buscafacturas = function(){
 
-		loading.cargando('Buscando Factura(s)');
+		if ($scope.producto) {
 
-		//armamos los datos a enviar segun tipo de consulta (tipo)
-		console.log($scope.datos);
+			loading.cargando('Buscando Factura(s)');
 
-		$http({
-			url:'/documento/api/facturasQualitasIncompleto',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin}
-		}).success( function (data){
-			 
-			console.log(data);
-			if(data.respuesta){
+			//armamos los datos a enviar segun tipo de consulta (tipo)
 
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
+			$http({
+				url:'/documento/api/facturasQualitas',
+				method:'POST', 
+				contentType: 'application/json', 
+				dataType: "json", 
+				data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin,producto:$scope.producto}
+			}).success( function (data){
+				 
+				console.log(data)
+				if(data.respuesta){
+	        	
+	        		loading.mensaje(data.respuesta);
+	        		loading.despedida();
+	        		$scope.listado = [];
 
+	        	}else{
+	  
+	        		$scope.listado = data;
+	        		$scope.cantidad = data.length -1;
+	        		loading.despedida();
+	        	}
+				
+			}).error( function (xhr,status,data){
 
-        	}else{
+				loading.despedida();
+				alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
-        		$scope.listado = data;
-        		$scope.cantidad = data.length -1;
-        		loading.despedida();
-        	}
-			
-		}).error( function (xhr,status,data){
+			});
 
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+		}else{
 
-		});
+			alert('debes ingresar un prodcuto');
+		}
 
 	}
 
