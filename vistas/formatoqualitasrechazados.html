@@ -3,19 +3,38 @@
         <a href="#/formatoqualitas" class="icon-arrow-left"></a>
         <h1>{{tituloFQR}}</h1>
     </div>
-    <legend>Fecha Captura</legend>
+    
     <div class="row">
-        <div class="col-sm-3 col-md-3">
-            <input type="text" ng-model="fechaini" class="form-control" id="datepicker3" placeholder="inicial" />
-        </div>
-        <div class="col-sm-3 col-md-3">
-            <div class="input-group">
-                <input type="text" ng-model="fechafin" class="form-control" id="datepicker4" placeholder="Final" />
-                <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="buscafacturas()"><i class="glyphicon glyphicon-search"></i></button>
-                </span>
-            </div>
-        </div>
+
+          <div class="col-md-6">
+              <legend>Fecha Facturación</legend>
+              <div class="col-sm-6 col-md-6">
+                  <input type="text" ng-model="fechaini" class="form-control" id="datepicker3" placeholder="inicial" />
+              </div>
+              <div class="col-sm-6 col-md-6">
+                  <div class="input-group">
+                      <input type="text" ng-model="fechafin" class="form-control" id="datepicker4" placeholder="Final" />
+                      <span class="input-group-btn">
+                          <button class="btn btn-default" type="button" ng-click="buscafacturas()"><i class="glyphicon glyphicon-search"></i></button>
+                      </span>
+                  </div>
+              </div>
+          </div>
+          <div class="col-md-6">
+              <legend>Fecha Captura</legend>
+              <div class="col-sm-6 col-md-6">
+                  <input type="text" ng-model="fechaini" class="form-control" id="datepicker3" placeholder="inicial" />
+              </div>
+              <div class="col-sm-6 col-md-6">
+                  <div class="input-group">
+                      <input type="text" ng-model="fechafin" class="form-control" id="datepicker4" placeholder="Final" />
+                      <span class="input-group-btn">
+                          <button class="btn btn-default" type="button" ng-click="buscafacturas()"><i class="glyphicon glyphicon-search"></i></button>
+                      </span>
+                  </div>
+              </div>
+          </div>
+
     </div>
     <br>
     <div class="gridStyle" ng-grid="gridOptions"></div>

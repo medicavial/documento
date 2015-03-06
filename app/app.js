@@ -1,189 +1,189 @@
 //creamos la aplicacion
-app = angular.module('app', ['ngRoute','angularFileUpload','ngCookies','ngAnimate','ngGrid','ngIdle','mgcrea.ngStrap','ngProgress']);
+var app = angular.module('app', ['ngRoute','angularFileUpload','ngCookies','ngAnimate','ngGrid','ngIdle','ngProgress']);
 
 //configuramos las rutas y asignamos html y controlador segun la ruta
 app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     //Configuramos la ruta que queremos el html que le toca y que controlador usara
 	$routeProvider.when('/',{
-			templateUrl: 'vistas/home.html',
+			templateUrl: '../documento/vistas/home.html',
 			controller : 'homeCtrl'
 	});
 
     $routeProvider.when('/archivo',{
-            templateUrl   : 'vistas/archivo.html',
+            templateUrl   : '../documento/vistas/archivo.html',
             controller    : 'archivoCtrl'
     });
 
     $routeProvider.when('/bloqueo',{
-            templateUrl: 'vistas/bloqueo.html',
+            templateUrl: '../documento/vistas/bloqueo.html',
             controller : 'bloqueoCtrl'
     });
 
     $routeProvider.when('/captura',{
-            templateUrl    :'vistas/captura.html',
+            templateUrl    :'../documento/vistas/captura.html',
             controller     :'capturaCtrl'
     });
 
     $routeProvider.when('/consulta',{
-            templateUrl   : 'vistas/consulta.html',
-            controller    : 'consultaCtrl'   
+            templateUrl   : '../documento/vistas/consulta.html',
+            controller    : 'consultaCtrl'
     });
 
     $routeProvider.when('/control',{
-            templateUrl   : 'vistas/controldocumentos.html',
-            controller    : 'controlDocumentosCtrl'   
+            templateUrl   : '../documento/vistas/controldocumentos.html',
+            controller    : 'controlDocumentosCtrl'
     });
 
     $routeProvider.when('/consultaflujo',{
-            templateUrl   : 'vistas/consultaflujo.html',
-            controller    : 'consultaFlujoCtrl'   
+            templateUrl   : '../documento/vistas/consultaflujo.html',
+            controller    : 'consultaFlujoCtrl'
     });
 
     $routeProvider.when('/cordinacion',{
-            templateUrl    :'vistas/cordinacion.html',
+            templateUrl    :'../documento/vistas/cordinacion.html',
             controller     :'cordinacionCtrl'
     });
 
     $routeProvider.when('/editaticket/:foliointerno/:folioweb',{
-            templateUrl   : 'vistas/ticket.html',
+            templateUrl   : '../documento/vistas/ticket.html',
             controller    : 'editaTicketCtrl'
     });
 
     $routeProvider.when('/entregas/:area',{
-            templateUrl   : 'vistas/entregas.html',
-            controller    : 'entregasCtrl'   
+            templateUrl   : '../documento/vistas/entregas.html',
+            controller    : 'entregasCtrl'
     });
 
     $routeProvider.when('/facturacion',{
-            templateUrl    :'vistas/facturacion.html',
+            templateUrl    :'../documento/vistas/facturacion.html',
             controller     :'facturacionCtrl'
     });
 
     $routeProvider.when('/flujo',{
-            templateUrl    :'vistas/flujo.html',
+            templateUrl    :'../documento/vistas/flujo.html',
             controller     :'flujoCtrl'
     });
 
     $routeProvider.when('/flujopagos',{
-            templateUrl   : 'vistas/flujopagos.html',
-            controller    : 'flujoPagosCtrl'   
+            templateUrl   : '../documento/vistas/flujopagos.html',
+            controller    : 'flujoPagosCtrl'
     });
 
     $routeProvider.when('/formatoqualitas',{
-            templateUrl   : 'vistas/formatoqualitas.html',
-            controller    : 'formatoQualitasCtrl'   
+            templateUrl   : '../documento/vistas/formatoqualitas.html',
+            controller    : 'formatoQualitasCtrl'
     });
 
     $routeProvider.when('/formatoqualitasconsulta',{
-            templateUrl   : 'vistas/formatoqualitasconsulta.html',
-            controller    : 'formatoQualitasConsultaCtrl'   
+            templateUrl   : '../documento/vistas/formatoqualitasconsulta.html',
+            controller    : 'formatoQualitasConsultaCtrl'
     });
 
     $routeProvider.when('/formatoqualitasarchivos',{
-            templateUrl   : 'vistas/formatoqualitasarchivos.html',
-            controller    : 'formatoQualitasArchivosCtrl'   
+            templateUrl   : '../documento/vistas/formatoqualitasarchivos.html',
+            controller    : 'formatoQualitasArchivosCtrl'
     });
 
     $routeProvider.when('/formatoqualitasenviado',{
-            templateUrl   : 'vistas/formatoqualitasenviado.html',
-            controller    : 'formatoQualitasEnviadoCtrl'   
+            templateUrl   : '../documento/vistas/formatoqualitasenviado.html',
+            controller    : 'formatoQualitasEnviadoCtrl'
     });
 
     $routeProvider.when('/formatoqualitasrechazados',{
-            templateUrl   : 'vistas/formatoqualitasrechazados.html',
-            controller    : 'formatoQualitasRechazadosCtrl'   
+            templateUrl   : '../documento/vistas/formatoqualitasrechazados.html',
+            controller    : 'formatoQualitasRechazadosCtrl'
     });
 
     $routeProvider.when('/formatoqualitasincompletos',{
-            templateUrl   : 'vistas/formatoqualitasincompletos.html',
-            controller    : 'formatoQualitasIncompletosCtrl'   
+            templateUrl   : '../documento/vistas/formatoqualitasincompletos.html',
+            controller    : 'formatoQualitasIncompletosCtrl'
     });
 
 
     $routeProvider.when('/generaticket',{
-            templateUrl   : 'vistas/ticket.html',
+            templateUrl   : '../documento/vistas/ticket.html',
             controller    : 'ticketCtrl'
     });
 
     $routeProvider.when('/historial/:folio/:etapa/:entrega',{
-            templateUrl   : 'vistas/timeline.html',
-            controller    : 'historialCtrl'        
+            templateUrl   : '../documento/vistas/timeline.html',
+            controller    : 'historialCtrl'
     });
 
     $routeProvider.when('/infopase',{
-            templateUrl   : 'vistas/infopase.html',
+            templateUrl   : '../documento/vistas/infopase.html',
             controller    : 'infoPaseCtrl'
     });
 
     $routeProvider.when('/infopase/:folio',{
-            templateUrl   : 'vistas/infopase.html',
+            templateUrl   : '../documento/vistas/infopase.html',
             controller    : 'infoPaseCtrl'
     });
 
     $routeProvider.when('/listadoEntregas/:area',{
-            templateUrl   : 'vistas/listadoentrega.html',
-            controller    : 'listadoEntregasCtrl'        
+            templateUrl   : '../documento/vistas/listadoentrega.html',
+            controller    : 'listadoEntregasCtrl'
     });
 
     $routeProvider.when('/listadoRecepcion/:area',{
-            templateUrl   : 'vistas/listadoRecepcion.html',
-            controller    : 'listadoRecepcionCtrl'      
+            templateUrl   : '../documento/vistas/listadoRecepcion.html',
+            controller    : 'listadoRecepcionCtrl'
     });
 
    $routeProvider.when('/login',{
-            templateUrl   : 'vistas/login.html',
-            controller    : 'loginCtrl'       
+            templateUrl   : '../documento/vistas/login.html',
+            controller    : 'loginCtrl'
     });
 
 
    $routeProvider.when('/logout',{
-            templateUrl   : 'vistas/adios.html',
-            controller    : 'logoutCtrl'       
+            templateUrl   : '../documento/vistas/adios.html',
+            controller    : 'logoutCtrl'
     });
 
    $routeProvider.when('/mapa',{
-            templateUrl   : 'vistas/mapa.html',
-            controller    : 'mapaCtrl'       
+            templateUrl   : '../documento/vistas/mapa.html',
+            controller    : 'mapaCtrl'
     });
 
    $routeProvider.when('/mesacontrol',{
-            templateUrl   : 'vistas/mesacontrol.html',
-            controller    : 'mesaControlCtrl'       
+            templateUrl   : '../documento/vistas/mesacontrol.html',
+            controller    : 'mesaControlCtrl'
     });
 
    $routeProvider.when('/nopagar',{
-            templateUrl   : 'vistas/listadoentreganpc.html',
-            controller    : 'nopagarCtrl'        
+            templateUrl   : '../documento/vistas/listadoentreganpc.html',
+            controller    : 'nopagarCtrl'
     });
 
    $routeProvider.when('/pagos',{
-            templateUrl   : 'vistas/pagos.html',
-            controller    : 'pagosCtrl'       
+            templateUrl   : '../documento/vistas/pagos.html',
+            controller    : 'pagosCtrl'
     });
 
    $routeProvider.when('/Rechazos/:area',{
-            templateUrl   : 'vistas/rechazos.html',
-            controller    : 'rechazosCtrl'       
+            templateUrl   : '../documento/vistas/rechazos.html',
+            controller    : 'rechazosCtrl'
     });
 
    $routeProvider.when('/Recepcion',{
-            templateUrl   : 'vistas/recepcion.html',
+            templateUrl   : '../documento/vistas/recepcion.html',
             controller    : 'recepcionCtrl'
     });
 
    $routeProvider.when('/seguimiento',{
-            templateUrl   : 'vistas/seguimiento.html',
+            templateUrl   : '../documento/vistas/seguimiento.html',
             controller    : 'seguimientoCtrl'
     });
 
    $routeProvider.when('/ticket',{
-            templateUrl   : 'vistas/menuticket.html',
+            templateUrl   : '../documento/vistas/menuticket.html',
             controller    : 'menuticketCtrl'
     });
 
    $routeProvider.when('/traspasos/:area',{
-            templateUrl   : 'vistas/traspasos.html',
+            templateUrl   : '../documento/vistas/traspasos.html',
             controller    : 'traspasosCtrl'
     });
 
@@ -193,9 +193,9 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     //$locationProvider.html5Mode(true);
 
-    $idleProvider.idleDuration(900); // tiempo en activarse el modo en reposo 
+    $idleProvider.idleDuration(900); // tiempo en activarse el modo en reposo
     $idleProvider.warningDuration(10); // tiempo que dura la alerta de sesion cerrada
-    $keepaliveProvider.interval(10); // 
+    $keepaliveProvider.interval(10); //
 
 });
 
@@ -221,6 +221,7 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
         $rootScope.userWeb = $cookies.userWeb;
 
         auth.checkStatus();
+			
     });
 
 
@@ -233,7 +234,7 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
     };
 
 
-    ///Esto es para ver notificaciones existentes aun es manual 
+    ///Esto es para ver notificaciones existentes aun es manual
 
 
     // notificaciones.on('child_added',function(dataSnapshot){
@@ -284,7 +285,7 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
     // $rootScope.loading=false;
     // $rootScope.label='Buscando Folios';
 
-    //generamos al rootscope las variables que tenemos en las cookies para no perder la sesion 
+    //generamos al rootscope las variables que tenemos en las cookies para no perder la sesion
     $rootScope.username = $cookies.username;
     $rootScope.id = $cookies.id;
     $rootScope.areaUsuario = $cookies.areaUsuario;
@@ -295,11 +296,11 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
     $idle.watch();
 
     $rootScope.$on('$idleStart', function() {
-        // the user appears to have gone idle  
-        
+        // the user appears to have gone idle
+
         if($location.path() != "/login"){
-            console.log('iniciando estado temporal'); 
-        }                
+            console.log('iniciando estado temporal');
+        }
     });
 
     $rootScope.$on('$idleWarn', function(e, countdown) {
@@ -310,29 +311,29 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
         if($location.path() != "/login"){
             //console.log('Cuidado se va a bloquear');
         }
-         
+
     });
 
     $rootScope.$on('$idleTimeout', function() {
        //Entra en el estado de reposo cerramos session guardamos la ultima ruta en la que se encontraba
-       //ademas de verificar si no estaban en la pagina del login ni en la de bloqueo 
+       //ademas de verificar si no estaban en la pagina del login ni en la de bloqueo
         if($location.path() != "/login"){
 
             if ($location.path() != "/bloqueo") {
 
                 $('#myModal2').modal('hide');
                 $('#myModal').modal('hide');
-                $rootScope.ruta = $location.path(); //Guardamos 
+                $rootScope.ruta = $location.path(); //Guardamos
                 $location.path('/bloqueo');
             };
-        
+
         }
-        
+
     })
 
     $rootScope.$on('$idleEnd', function() {
-        // the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog 
-         
+        // the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog
+
         if($location.path() != "/login"){
             //console.log('llegaste bienvenido');
         }
@@ -341,10 +342,14 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
     $rootScope.$on('$keepalive', function() {
         // do something to keep the user's session alive
         if($location.path() != "/login"){
-            //console.log('Activo en el sitio'); 
+            //console.log('Activo en el sitio');
         }
-        
+
     });
+
+    $rootScope.logout = function(){
+        auth.logout();
+    }
 
 });
 
@@ -358,21 +363,21 @@ app.factory("auth", function($cookies,$cookieStore,$location, $rootScope, $http)
 {
     return{
         login : function(username, password)
-        {   
+        {
             $('#boton').button('loading');
             $http({
                 url:'/documento/api/login',
-                method:'POST', 
-                contentType: 'application/json', 
-                dataType: "json", 
+                method:'POST',
+                contentType: 'application/json',
+                dataType: "json",
                 data:{user:username,psw:password}
             }).success( function (data){
-                
+
                 $('#boton').button('reset');
                 if(data.respuesta){
                     $rootScope.mensaje = data.respuesta;
                 }else{
-                    
+
                     //creamos la cookie con el nombre que nos han pasado
                     $cookies.username = data[0].nombre;
                     $cookies.id = data[0].clave;
@@ -389,10 +394,10 @@ app.factory("auth", function($cookies,$cookieStore,$location, $rootScope, $http)
                     //mandamos a la home o a la ventana que estaba antes de entrar a bloqueo
                     $('html').removeClass('lockscreen');
                     if ($rootScope.ruta != undefined){
-                        
+
                         $location.path($rootScope.ruta);
                         $rootScope.ruta = '';
-                        
+
                     }else{
 
                         $location.path("/");
@@ -402,7 +407,7 @@ app.factory("auth", function($cookies,$cookieStore,$location, $rootScope, $http)
                         }
 
                     }
-                    
+
 
                     if (navigator.geolocation) {
 
@@ -412,11 +417,11 @@ app.factory("auth", function($cookies,$cookieStore,$location, $rootScope, $http)
                             console.log($rootScope.localidad);
 
                         });
-                        
+
                     };
 
                 }
-                
+
                 //console.log(data);
             }).error( function (xhr,status,data){
 
@@ -425,7 +430,7 @@ app.factory("auth", function($cookies,$cookieStore,$location, $rootScope, $http)
 
             });
 
-            
+
         },
         logout : function()
         {
@@ -447,7 +452,7 @@ app.factory("auth", function($cookies,$cookieStore,$location, $rootScope, $http)
             //creamos un array con las rutas que queremos controlar
             var rutasPrivadas = ["/","/login","/Recepcion", "/entregas/:area", "/listadoEntregas/:area", "/listadoRecepcion/:area" ,"/historial", "/Rechazos/:area"];
             if($location.path() != "/login" && typeof($cookies.username) == "undefined")
-            {   
+            {
                 $('html').removeClass('lockscreen');
                 $location.path("/login");
             }
@@ -605,7 +610,7 @@ app.factory("loading", function($rootScope){
             $rootScope.label= mensaje;
         }
     }
-})
+});
 
 app.factory("barra", function(ngProgress){
     return{
@@ -629,7 +634,7 @@ app.directive('fileUpload', function () {
                 for (var i = 0;i<files.length;i++) {
                     //emit event upward
                     scope.$emit("fileSelected", { file: files[i] });
-                }                                       
+                }
             });
         }
     };
@@ -663,7 +668,7 @@ app.directive('capitalize', function() {
            if(capitalized !== inputValue) {
               modelCtrl.$setViewValue(capitalized);
               modelCtrl.$render();
-            }         
+            }
             return capitalized;
          }
          modelCtrl.$parsers.push(capitalize);
@@ -684,8 +689,8 @@ app.directive('excel', function(){
             $scope.click = function(info){
 
                 var arrData = typeof info != 'object' ? JSON.parse(info) : info;
-                var CSV = ''; 
-                var ReportTitle ='';   
+                var CSV = '';
+                var ReportTitle ='';
                 //Set Report title in first row or line
 
                 //CSV += ReportTitle + '\r\n\n';
@@ -695,7 +700,7 @@ app.directive('excel', function(){
 
                 //This loop will extract the label from 1st index of on array
                 for (var index in arrData[0]) {
-                    
+
                     //Now convert each value to string and comma-seprated
                     row += index + ',';
                 }
@@ -708,27 +713,27 @@ app.directive('excel', function(){
                 //1st loop is to extract each row
                 for (var i = 0; i < arrData.length; i++) {
                     var row = "";
-                    
+
                     //2nd loop will extract each column and convert it in string comma-seprated
                     for (var index in arrData[i]) {
                         row += '"' + arrData[i][index] + '",';
                     }
 
                     row.slice(0, row.length - 1);
-                    
+
                     //add a line break after each row
                     CSV += row + '\r\n';
                 }
 
-                if (CSV == '') {        
+                if (CSV == '') {
                     alert("Invalid data");
                     return;
-                }   
+                }
 
                 //Generate a file name
                 var fileName = "Reporte_";
                 //this will remove the blank-spaces from the title and replace it with an underscore
-                fileName += ReportTitle.replace(/ /g,"_");   
+                fileName += ReportTitle.replace(/ /g,"_");
 
                 //Initialize file format you want csv or xls
                 var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
@@ -736,10 +741,10 @@ app.directive('excel', function(){
                 // Now the little tricky part.
                 // you can use either>> window.open(uri);
                 // but this will not work in some browsers
-                // or you will not get the correct file extension    
+                // or you will not get the correct file extension
 
                 //this trick will generate a temp <a /> tag
-                var link = document.createElement("a");    
+                var link = document.createElement("a");
                 link.href = uri;
 
                 //set the visibility hidden so it will not effect on your web-layout
@@ -865,4 +870,3 @@ app.directive('money', function () {
     link: link
   };
 });
- 

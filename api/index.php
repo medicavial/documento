@@ -4,6 +4,7 @@ set_time_limit(3600);
 ini_set('memory_limit', '-1');
 date_default_timezone_set('America/Mexico_City'); //Ajustando zona horaria
 
+
 require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
 
@@ -12,36 +13,31 @@ $traspasosResultado = array();
 $valores = array();
 $resultado = array();
 
-
 //declaro una nueva aplicacion segun la ruta
 $app = new \Slim\Slim();
 
 
 function generaacceso($long=10) {
+  
+    $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";  
+    mt_srand((double)microtime()*1000000);   
+    $i=0;  
+    while ($i != $long) {  
+        $rand=mt_rand() % strlen($chars);  
+        $tmp=$chars[$rand];  
+        $pass=$pass . $tmp;  
+        $chars=str_replace($tmp, "", $chars);  
+        $i++;  
+    }  
+    return strrev($pass);  
 
-    $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    mt_srand((double)microtime()*1000000);
-    $i=0;
-    while ($i != $long) {
-        $rand=mt_rand() % strlen($chars);
-        $tmp=$chars[$rand];
-        $pass=$pass . $tmp;
-        $chars=str_replace($tmp, "", $chars);
-        $i++;
-    }
-    return strrev($pass);
-
-}
+} 
 
 function creaPDF($ruta,$archivo,$numeroarchivos){
 
-	// $archivo1 = "C:\\Users\\salcala.MEDICAVIAL\\Desktop\\MV\\QUALITAS\\2014\\05\\CEMS002449\\04140387958_21737_14M101525149_QS07.jpg";
-	// $archivo2 = "C:\\Users\\salcala.MEDICAVIAL\\Desktop\\MV\\QUALITAS\\2014\\05\\CEMS002449\\04140387958_21737_14M101525149_GN19.jpg";
-	// $archivo3 = "C:\\Users\\salcala.MEDICAVIAL\\Desktop\\MV\\QUALITAS\\2014\\05\\CEMS002449\\04140387958_21737_14M101525149_ME021.jpg";
-
 	// Include the main TCPDF library (search for installation path).
 	try {
-
+		
 		require_once('tcpdf/tcpdf.php');
 
 		// create new PDF document
@@ -68,7 +64,7 @@ function creaPDF($ruta,$archivo,$numeroarchivos){
 
 		// -------------------------------------------------------------------
 
-		for ($i=1; $i = $numeroarchivos; $i++) {
+		for ($i=1; $i = $numeroarchivos; $i++) { 
 
 			$imagen = $ruta."\\".$archivo."ME02".$i.".jpg";
 
@@ -83,9 +79,9 @@ function creaPDF($ruta,$archivo,$numeroarchivos){
 				$pdf->Image($imagen, '', '', 340, 400, '', '', 'T', false, 400, '', false, false, 1, false, false, false);
 
 			}
-
+			
 		}
-
+		
 		// -------------------------------------------------------------------
 
 		//Close and output PDF document
@@ -94,14 +90,14 @@ function creaPDF($ruta,$archivo,$numeroarchivos){
 		return true;
 
 	} catch (Exception $e) {
-
+		
 		return false;
 	}
 
 }
 
 
-function generar_clave(){
+function generar_clave(){ 
        	$str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 		$cad = "";
 		for($i=0;$i<12;$i++) {
@@ -109,83 +105,77 @@ function generar_clave(){
 		}
 		return $cad;
 
-}
+} 
 
-function eliminarDirectorio($dirname,$only_empty=false) {
-   if (!is_dir($dirname))
-       return false;
-   $dscan = array(realpath($dirname));
-   $darr = array();
-   while (!empty($dscan)) {
-       $dcur = array_pop($dscan);
-       $darr[] = $dcur;
-       if ($d=opendir($dcur)) {
-           while ($f=readdir($d)) {
-               if ($f=='.' || $f=='..')
-                   continue;
-               $f=$dcur.'/'.$f;
-               if (is_dir($f))
-                   $dscan[] = $f;
-               else
-                   unlink($f);
-           }
-           closedir($d);
-       }
-   }
-   $i_until = ($only_empty)? 1 : 0;
-   for ($i=count($darr)-1; $i>=$i_until; $i--) {
-       echo "\nDeleting '".$darr[$i]."' ... ";
-       if (rmdir($darr[$i]))
-           echo "ok";
-       else
-           echo "FAIL";
-   }
-   return (($only_empty)? (count(scandir)<=2) : (!is_dir($dirname)));
+function eliminarDirectorio($dirname,$only_empty=false) { 
 
-}
+	if (!is_dir($dirname))
+	return false; 
 
+	$dscan = array(realpath($dirname)); 
+	$darr = array(); 
 
-//Conecto a SQl Server mediante ODBC
-function conectar(){
+	while (!empty($dscan)) { 
+	   $dcur = array_pop($dscan); 
+	   $darr[] = $dcur; 
+	   if ($d=opendir($dcur)) { 
+	       while ($f=readdir($d)) { 
+	           if ($f=='.' || $f=='..') 
+	               continue; 
+	           $f=$dcur.'/'.$f; 
+	           if (is_dir($f)) 
+	               $dscan[] = $f; 
+	           else 
+	               unlink($f); 
+	       } 
+	       closedir($d); 
+	   } 
+	} 
 
-	//Declaramos variables de conexion a SQL Server
-	$db_usr = 'acceso';
-	$db_pass = 'acceso';
-	$db_server = 'SVRCONTA\SVRCONTA';
-	$db_name = 'MVD';
+	$i_until = ($only_empty)? 1 : 0; 
+   
+	for ($i=count($darr)-1; $i>=$i_until; $i--) { 
+	   echo "\nDeleting '".$darr[$i]."' ... "; 
+	   if (rmdir($darr[$i])) 
+	       echo "ok"; 
+	   else 
+	       echo "FAIL"; 
+	} 
 
-	$dsn = "Driver={SQL Server Native Client 10.0};Server=$db_server;Database=$db_name;charset=UTF-8";
-	//SQL_ODBC
-	$con = odbc_connect($dsn, $db_usr, $db_usr);
-	//Se realiza la conexón  con los datos correspondientes
+    return (($only_empty)? (count(scandir)<=2) : (!is_dir($dirname))); 
 
-
-	//regresa la conexion
-	return $con;
-
-}
+} 
 
 function conectarActual(){
 
-	//Declaramos variables de conexion a SQL Server
+	$produccion = false;
+	
+	if ($produccion) {
 
-	$db_server = 'GEN';
-	$db_name = 'MV';
+		$db_server = 'GEN'; 
+		$db_name = 'MV'; 
+		$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";	
+		$con = odbc_connect($dsn,'','');
 
-	$db_usr = 'acceso';
-	$db_pass = 'ACc3soMv';
+	}else{
 
-	$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";
+		//Declaramos variables de conexion a SQL Server
+		//Trusted_Connection=yes;
+		$db_usr = 'sa'; 
+		$db_pass = 'ACc3soMv'; 
+		$db_server = 'SISTEMAS4'; 
+		$db_name = 'MV';
+		$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;charset=UTF-8";
+		$con = odbc_connect($dsn,$db_usr,$db_pass);
 
-	$con = odbc_connect($dsn,'','');
-	//Se realiza la conexón  con los datos correspondientes
+	}
 
 	//regresa la conexion
 	return $con;
 
 }
 
-//funcion para conectar a Mysql
+//funcion para conectar a Mysql 
 function conectarMySQL(){
 
 	$dbhost="www.medicavial.net";
@@ -206,14 +196,14 @@ function BuscaDocumento($folio){
 		    die('Something went wrong while connecting to MSSQL');
 
 		}else{
-
+			
 
 			$sql = "SELECT DOC_claveint FROM Documento WHERE DOC_folio = '$folio' ";
 
-						// FLD_AROrec = $arearecibe, USU_rec = $usuariorecibe, FLD_fechaRec = '$fecha'
+						// FLD_AROrec = $arearecibe, USU_rec = $usuariorecibe, FLD_fechaRec = '$fecha' 
 						// USU_activo = $usuariorecibe
 
-			$rs = odbc_exec($conexion,$sql);
+			$rs = odbc_exec($conexion,$sql); 
 
 			$valor = odbc_result($rs,"DOC_claveint");
 
@@ -246,53 +236,51 @@ function filedata($path) {
         $data["filename"] = (($data["name"] OR $data["ext"]) ? $data["name"].($data["ext"] ? "." : "").$data["ext"] : FALSE);
         // Devolvemos los resultados
         return $data;
-
 }
 
 //funcion que retorna un arreglo del contenido en folder de folios Qualitas
 function archivos($folio, $fecha){
 
-
 	$MesNro = date('m', strtotime($fecha));
 	$DiaNro = date('d', strtotime($fecha));
 	$AnyoNro = date('Y', strtotime($fecha));
+	
 
+	if($MesNro=='01'){ 
+		$MesNro="1"; 
+	} 
 
-	if($MesNro=='01'){
-		$MesNro="1";
-	}
+	if($MesNro=='02'){ 
+		$MesNro="2"; 
+	} 
 
-	if($MesNro=='02'){
-		$MesNro="2";
-	}
+	if($MesNro=='03'){ 
+		$MesNro="3"; 
+	} 
 
-	if($MesNro=='03'){
-		$MesNro="3";
-	}
+	if($MesNro=='04'){ 
+		$MesNro="4"; 
+	} 
 
-	if($MesNro=='04'){
-		$MesNro="4";
-	}
+	if($MesNro=='05'){ 
+		$MesNro="5"; 
+	} 
 
-	if($MesNro=='05'){
-		$MesNro="5";
-	}
+	if($MesNro=='06'){ 
+		$MesNro="6"; 
+	} 
 
-	if($MesNro=='06'){
-		$MesNro="6";
-	}
+	if($MesNro=='07'){ 
+		$MesNro="7"; 
+	} 
 
-	if($MesNro=='07'){
-		$MesNro="7";
-	}
+	if($MesNro=='08'){ 
+		$MesNro="8"; 
+	} 
 
-	if($MesNro=='08'){
-		$MesNro="8";
-	}
-
-	if($MesNro=='09'){
-		$MesNro="9";
-	}
+	if($MesNro=='09'){ 
+		$MesNro="9"; 
+	} 
 
 	//$ruta = "C:\\Users\\salcala.MEDICAVIAL\\Desktop\\MV\\QUALITAS\\". $AnyoNro . "\\" . $MesNro . "\\". $folio;
 	//ruta en producción
@@ -301,7 +289,7 @@ function archivos($folio, $fecha){
 
 	$encontrados = array();
 
-
+	//verifica 
 	if (file_exists($ruta)){
 
 		$directorio = opendir($ruta); //ruta actual
@@ -324,7 +312,7 @@ function archivos($folio, $fecha){
 		while ($archivo = readdir($directorio)) //obtenemos un archivo y luego otro sucesivamente
 		{
 		    if (!is_dir($archivo))//verificamos si es o no un directorio
-		    {
+		    {	
 		    	//originales
 
 		    	if (preg_match('/QS_07.jpg/' , $archivo)) {
@@ -422,7 +410,7 @@ function archivos($folio, $fecha){
 	return $encontrados;
 
 }
-//modulo para subir info de sql server a mysql
+//modulo para subir info de sql server a mysql 
 
 $app->get('/altainfoweb', function(){
 
@@ -433,14 +421,14 @@ $app->get('/altainfoweb', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
+		
 
-
-		//primero la consulta a sql server
+		//primero la consulta a sql server 
 
 		$sql = "SELECT *
 				FROM Lesion";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 
 
 		$i = 0;
@@ -454,7 +442,7 @@ $app->get('/altainfoweb', function(){
 
 		}else{
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$LES_clave  = odbc_result($rs,"LES_clave");
 				$LES_nombre  = odbc_result($rs,"LES_nombre");
@@ -469,8 +457,8 @@ $app->get('/altainfoweb', function(){
 				$LES_activa  = odbc_result($rs,"LES_activa");
 
 
-
-				//consulta para Mysql
+				
+				//consulta para Mysql 
 				//$sql = "UPDATE Unidad SET LOC_claveint = :lesion WHERE Uni_clave = :clave;";
         		$sql = "INSERT INTO LesionMV (
         			LES_clave
@@ -502,8 +490,8 @@ $app->get('/altainfoweb', function(){
 		        $temporal->bindParam("LES_semanas", $LES_semanas, PDO::PARAM_INT);
 		        $temporal->bindParam("TLE_claveint", $TLE_claveint, PDO::PARAM_INT);
 		        $temporal->bindParam("LES_activa", $LES_activa, PDO::PARAM_INT);
-
-
+		        
+		        
 		        if ($temporal->execute()){
 		            $respuesta = array('respuesta' => "Los Datos se guardaron Correctamente");
 		        }else{
@@ -519,17 +507,18 @@ $app->get('/altainfoweb', function(){
 
 
 	}
-
+	
 });
 
 
 $app->get('/documentos/folios', function(){
 
+	$conexionSQLserver = conectarActual();
 
 	$conexion = conectarMySQL();
 
-	$sql = "SELECT 	Expediente.Exp_folio as folio, EXP_fechaCaptura as fechacaptura , CASE when FAC_fecha = '1900-01-01 00:00:00' then null ELSE FAC_fecha END as fechafactura, FAC_serie AS serie, FAC_folio as facfolio ,
-			CASE WHEN  Expediente.Cia_clave IN(35,36,37) THEN 'MULTIASISTENCIA' ELSE Cia_nombrecorto END AS Cliente FROM Expediente
+	$sql = "SELECT 	Expediente.Exp_folio as folio, EXP_fechaCaptura as fechacaptura , CASE when FAC_fecha = '1900-01-01 00:00:00' then null ELSE FAC_fecha END as fechafactura, FAC_serie AS serie, FAC_folio as facfolio , 
+			CASE WHEN  Expediente.Cia_clave IN(35,36,37) THEN 'MULTIASISTENCIA' ELSE Cia_nombrecorto END AS Cliente FROM Expediente 
 			INNER JOIN ExpedienteInfo ON ExpedienteInfo.EXP_folio = Expediente.Exp_folio
 			INNER JOIN Compania ON Compania.Cia_clave = Expediente.Cia_clave
 			WHERE Exp_cancelado = 0 and Expediente.Uni_clave <> 8 and Exp_fecreg between '2014-08-01' and '2014-10-31 23:59:59' order by Cliente limit 0,10000";
@@ -537,83 +526,96 @@ $app->get('/documentos/folios', function(){
 
 	$result = $conexion->query($sql);
 
+
+	//recorremos consulta
 	foreach ($result as $valor) {
 
+		//obtenemos parametros para buscar en las carpetas
 		$cliente = $valor['Cliente'];
 		$fechaCaptura = $valor['fechacaptura'];
 		$folio = $valor['folio'];
 
+		$serie = $valor['serie'];
+		$serie = $valor['facfolio'];
+
 		$MesNro = date('m', strtotime($fechaCaptura));
 		$DiaNro = date('d', strtotime($fechaCaptura));
 		$AnyoNro = date('Y', strtotime($fechaCaptura));
+		
 
+		if($MesNro=='01'){ 
+			$MesNro="ENERO"; 
+		} 
 
-		if($MesNro=='01'){
-			$MesNro="ENERO";
-		}
+		if($MesNro=='02'){ 
+			$MesNro="FEBRERO"; 
+		} 
 
-		if($MesNro=='02'){
-			$MesNro="FEBRERO";
-		}
+		if($MesNro=='03'){ 
+			$MesNro="MARZO"; 
+		} 
 
-		if($MesNro=='03'){
-			$MesNro="MARZO";
-		}
+		if($MesNro=='04'){ 
+			$MesNro="ABRIL"; 
+		} 
 
-		if($MesNro=='04'){
-			$MesNro="ABRIL";
-		}
+		if($MesNro=='05'){ 
+			$MesNro="MAYO"; 
+		} 
 
-		if($MesNro=='05'){
-			$MesNro="MAYO";
-		}
+		if($MesNro=='06'){ 
+			$MesNro="JUNIO"; 
+		} 
 
-		if($MesNro=='06'){
-			$MesNro="JUNIO";
-		}
+		if($MesNro=='07'){ 
+			$MesNro="JULIO"; 
+		} 
 
-		if($MesNro=='07'){
-			$MesNro="JULIO";
-		}
+		if($MesNro=='08'){ 
+			$MesNro="AGOSTO"; 
+		} 
 
-		if($MesNro=='08'){
-			$MesNro="AGOSTO";
-		}
+		if($MesNro=='09'){ 
+			$MesNro="SEPTIEMBRE"; 
+		} 
 
-		if($MesNro=='09'){
-			$MesNro="SEPTIEMBRE";
-		}
+		if($MesNro=='10'){ 
+			$MesNro="OCTUBRE"; 
+		} 
 
-		if($MesNro=='10'){
-			$MesNro="OCTUBRE";
-		}
+		if($MesNro=='11'){ 
+			$MesNro="NOVIEMBRE"; 
+		} 
 
-		if($MesNro=='11'){
-			$MesNro="NOVIEMBRE";
-		}
-
-		if($MesNro=='12'){
-			$MesNro="DICIEMBRE";
-		}
+		if($MesNro=='12'){ 
+			$MesNro="DICIEMBRE"; 
+		} 
 
 		$fechacapturalarga = $DiaNro . " " . strtolower($MesNro) . " " . $AnyoNro;
 
 		$ruta = "\\\\Aaa\\g\\SOPORTES\\". $cliente . "\\". $AnyoNro . "\\" . $MesNro . "\\". $fechacapturalarga  . "\\". strtolower($folio);
 
+		$ruta = "\\\\Eaa\\medica\\Facturas\\PDF\\". $AnyoNro . "\\". $MesNro  . "\\" . $cliente . "\\". $folio ;
+		
+
+		$rs= odbc_exec($conexionSQLserver,$sqlS); 
 
 
+		//verifica si la ruta o archivo existe
 		if (file_exists($ruta)) {
 
+			//abrimos el directorio
 			$directorio = opendir($ruta);
-
+			
 			echo "<-" .  $ruta . "-><br>";
+
 
 			while ($archivo = readdir($directorio)) //obtenemos un archivo y luego otro sucesivamente
 			{
-
+			    
 			    if (!is_dir($archivo))//verificamos si es o no un directorio
-			    {
-
+			    {	
+			    	
 			    	echo $archivo . "<br>";
 
 			    }
@@ -630,49 +632,49 @@ $app->get('/documentos/folios', function(){
 });
 
 
-//busca categorias para tickets en web
+//busca categorias para tickets en web 
 $app->get('/archivos', function(){
 
 	$MesNro = date('m', strtotime($fecha));
 	$DiaNro = date('d', strtotime($fecha));
 	$AnyoNro = date('Y', strtotime($fecha));
+	
 
+	if($MesNro=='01'){ 
+		$MesNro="1"; 
+	} 
 
-	if($MesNro=='01'){
-		$MesNro="1";
-	}
+	if($MesNro=='02'){ 
+		$MesNro="2"; 
+	} 
 
-	if($MesNro=='02'){
-		$MesNro="2";
-	}
+	if($MesNro=='03'){ 
+		$MesNro="3"; 
+	} 
 
-	if($MesNro=='03'){
-		$MesNro="3";
-	}
+	if($MesNro=='04'){ 
+		$MesNro="4"; 
+	} 
 
-	if($MesNro=='04'){
-		$MesNro="4";
-	}
+	if($MesNro=='05'){ 
+		$MesNro="5"; 
+	} 
 
-	if($MesNro=='05'){
-		$MesNro="5";
-	}
+	if($MesNro=='06'){ 
+		$MesNro="6"; 
+	} 
 
-	if($MesNro=='06'){
-		$MesNro="6";
-	}
+	if($MesNro=='07'){ 
+		$MesNro="7"; 
+	} 
 
-	if($MesNro=='07'){
-		$MesNro="7";
-	}
+	if($MesNro=='08'){ 
+		$MesNro="8"; 
+	} 
 
-	if($MesNro=='08'){
-		$MesNro="8";
-	}
-
-	if($MesNro=='09'){
-		$MesNro="9";
-	}
+	if($MesNro=='09'){ 
+		$MesNro="9"; 
+	} 
 
 	//$ruta = "C:\\Users\\salcala.MEDICAVIAL\\Desktop\\MV\\QUALITAS\\". $AnyoNro . "\\" . $MesNro . "\\". $folio;
 	//ruta en producción
@@ -699,7 +701,7 @@ $app->get('/archivos', function(){
 	while ($archivo = readdir($directorio)) //obtenemos un archivo y luego otro sucesivamente
 	{
 	    if (!is_dir($archivo))//verificamos si es o no un directorio
-	    {
+	    {	
 	    	//originales
 	    	//preg_match realiza una comparación archivos por nombre y verifica que contenga el parametro 1
 	    	if (preg_match('/QS_07.jpg/' , $archivo)) {
@@ -778,8 +780,8 @@ $app->get('/altahospitalarios', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-		$sql = "SELECT
+		
+		$sql = "SELECT 
 				  'H' + RIGHT('0000' + CAST(HOS_claveint as varchar),4) as HOS_claveint
 				  ,PAS_folio
 				  ,HOS_lesionado
@@ -816,7 +818,7 @@ $app->get('/altahospitalarios', function(){
 				inner join Unidad on Unidad.UNI_claveint = Hospitalario.Uni_claveint
 				inner join Empresa on Empresa.EMP_claveint = Hospitalario.EMP_claveint";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 
 
 		$i = 0;
@@ -830,7 +832,7 @@ $app->get('/altahospitalarios', function(){
 
 		}else{
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$clave  = odbc_result($rs,"HOS_claveint");
 				$folio  = odbc_result($rs,"PAS_folio");
@@ -866,25 +868,25 @@ $app->get('/altahospitalarios', function(){
 				$empresaMV = odbc_result($rs,"EMP_claveint");
 
 				$sql = "INSERT INTO Hospitalario
-                (
+                ( 
                    EXP_folio,         HOS_lesionado,         HOS_reporte,      HOS_siniestro,
                    HOS_fechaAtencion, HOS_fechaHospitalario, UNI_claveint,     EMP_claveint,
-                   HOS_poliza,        HOS_inciso,            HOS_asegurado,    HOS_horaIniRep,
+                   HOS_poliza,        HOS_inciso,            HOS_asegurado,    HOS_horaIniRep, 
                    HOS_domicilio,     RIE_claveInt,          POS_clave,        HOS_ajustador,
-                   HOS_ajustadorClave,HOS_quienReporta,      HOS_quienAutoriza,HOS_trasladoA,
-                   HOS_ambulancia,    HOS_motivoHos,         HOS_observaciones,HOS_otros,
-                   HOS_horaFinRep,    USU_capturo, 			 HOS_edad, 		   HOS_fechaCaptura,
+                   HOS_ajustadorClave,HOS_quienReporta,      HOS_quienAutoriza,HOS_trasladoA, 
+                   HOS_ambulancia,    HOS_motivoHos,         HOS_observaciones,HOS_otros, 
+                   HOS_horaFinRep,    USU_capturo, 			 HOS_edad, 		   HOS_fechaCaptura, 
                    HOS_clave,		  UNI_claveMV,			 EMP_claveMV
                 )
                 VALUES
                 (  :folio,              :lesionado,              :reporte,            :siniestro,
-                   :fechaAtencion,      :fechaHospitalario,      :unidad,             :empresa,
-                   :poliza,             :inciso,                 :asegurado,          :horaIniRep,
+                   :fechaAtencion,      :fechaHospitalario,      :unidad,             :empresa, 
+                   :poliza,             :inciso,                 :asegurado,          :horaIniRep, 
                    :domicilio,          :riesgo,                 :posicion,           :ajustador,
                    :ajustadorClave,     :quienReporta,           :quienAutoriza,      :trasladoA,
                    :ambulancia,         :motivoHos,              :observaciones,      :otros,
                    :horaFinRep,         :usuario,                :edad,               :fechaCaptura,
-                   :clave,				:unidadMV,				 :empresaMV
+                   :clave,				:unidadMV,				 :empresaMV	
                 )";
 
 		        $temporal = $db->prepare($sql);
@@ -928,7 +930,7 @@ $app->get('/altahospitalarios', function(){
 		            $respuesta = array('respuesta' => "Los Datos No se Guardaron Verifique su Información");
 		        }
 
-
+				
 
 			}
 
@@ -937,7 +939,7 @@ $app->get('/altahospitalarios', function(){
 
 
 	}
-
+	
 });
 
 
@@ -950,7 +952,7 @@ $app->get('/altamovimientos', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT AUM_clave
 					  ,MOA_claveint
 					  ,TIM_claveint
@@ -963,7 +965,7 @@ $app->get('/altamovimientos', function(){
 				FROM MovimientoAut
 				WHERE MOA_fechaReg BETWEEN '30/07/2014 14:20' AND '04/08/2014 11:55' ";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 
 		$i = 0;
 
@@ -976,7 +978,7 @@ $app->get('/altamovimientos', function(){
 
 		}else{
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$AUMClave  = odbc_result($rs,"AUM_clave");
 				$MOAClave  = odbc_result($rs,"MOA_claveint");
@@ -986,7 +988,7 @@ $app->get('/altamovimientos', function(){
 				$usuario  = odbc_result($rs,"USU_registro");
 				$fecharegistro  = odbc_result($rs,"MOA_fechaReg");
 				$claveaut  = odbc_result($rs,"MOA_claveAut");
-
+				
 				$sql = "INSERT INTO MovimientoAut
 		              (
 		                   AUM_clave,
@@ -998,10 +1000,10 @@ $app->get('/altamovimientos', function(){
 		                   MOA_claveAut,
 		                   MOA_autorizado,
 		                   MOA_fechaReg
-		              )
+		              )   
 		              VALUES
 		              (
-		                    :AUMClave,
+		                    :AUMClave,                     
 		                    :MOAClave,
 		                    :TIMClave,
 		                    :fecha,
@@ -1035,26 +1037,21 @@ $app->get('/altamovimientos', function(){
 
 
 	}
-
+	
 });
 
 
 
 $app->get('/', function(){
-
-    echo "Hola Mundo";
-    $conexion = conectarActual();
-
-	    if(!$conexion) {
-
-		    echo "Something went wrong while connecting to MSSQL";
-
-		}else{
-
-
-			echo "Conecto";
-
-		}
+	
+    //echo "Hola Mundo";
+    //Trusted_Connection=yes;
+    $db_usr = 'sa'; 
+	$db_pass = 'ACc3soMv'; 
+	$db_server = 'SISTEMAS4'; 
+	$db_name = 'MV2';
+	$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";
+	$con = odbc_connect($dsn,$db_usr,$db_pass);
 
 });
 
@@ -1064,11 +1061,11 @@ $app->post('/actualizaoriginal', function(){
 	$request = \Slim\Slim::getInstance()->request();
 	$datos = json_decode($request->getBody());
 
-	$folio =  $datos->folio;
+	$folio =  $datos->folio; 
 	$claveint =  $datos->documento;
-    $usuario =  $datos->usuario;
-    $fecha =  $datos->fecha;
-    $remesa =  $datos->remesa;
+    $usuario =  $datos->usuario; 
+    $fecha =  $datos->fecha;  
+    $remesa =  $datos->remesa; 
     $lesionado =  $datos->lesionado;
     $totalfactura = $datos->totalfactura;
     $factura = $datos->factura;
@@ -1088,12 +1085,12 @@ $app->post('/actualizaoriginal', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
+		
 
-
-		$sql2 = "EXEC MV_DCU_ActualizaDocumento @claveint = $claveint, @lesionado = '$lesionado', @ambulancia = 0, @fechapago = '',  @originalfecha = '$fecha',
+		$sql2 = "EXEC MV_DCU_ActualizaDocumento @claveint = $claveint, @lesionado = '$lesionado', @ambulancia = 0, @fechapago = '',  @originalfecha = '$fecha',  
 				@usuario = $usuario, @remesa = '$remesa', @folioFac = '$factura', @totalFac = $totalfactura";
 
-		$rs = odbc_exec($conexion,$sql2);
+		$rs = odbc_exec($conexion,$sql2); 
 
 		if ($rs){
 
@@ -1101,11 +1098,11 @@ $app->post('/actualizaoriginal', function(){
               $arr = array('respuesta' => 'Folio Actualizado Correctamente' , 'Historial' => $historico);
         }else {
               $arr = array('respuesta' => 'Error al Actualizar: '.odbc_error());
-        }
+        }   
 
 		echo json_encode($arr);
 
-		//
+		// 
 
 	}
 
@@ -1151,9 +1148,9 @@ $app->post('/actualizaticket', function(){
 
 	}else{
 
+    	
 
-
-    	$query= "UPDATE TicketSeguimiento SET TCat_clave = :categoria , TSub_clave = :subcategoria, TSeg_fechaactualizacion = now(), Usu_actualiza=:usuario,
+    	$query= "UPDATE TicketSeguimiento SET TCat_clave = :categoria , TSub_clave = :subcategoria, TSeg_fechaactualizacion = now(), Usu_actualiza=:usuario, 
                 TStatus_clave = :status, TSeg_asignado = :asignado, TSeg_asignadofecha = :fechaasignado Where TSeg_clave =:foliointerno And Exp_folio = :folioweb";
 
         $stmt = $db->prepare($query);
@@ -1186,9 +1183,9 @@ $app->post('/actualizaticket', function(){
             $altanota->bindParam("fecha", $fecha);
             $altanota->bindParam("usuario", $usuario);
             $altanota->execute();
-
+            
         }
-
+        
         // if($comunicacion<>""){
         //     $qrycomunicacion="INSERT INTO TicketComunicacion (TSeg_clave,Exp_folio,TC_descripcion,TC_correofecha,TC_fechareg,Usu_registro)
         //          			 VALUES(:foliointerno,:folioweb,:comunicacion,:comunicacionfecha,:fecha,:usuario)";
@@ -1204,13 +1201,13 @@ $app->post('/actualizaticket', function(){
 
         echo json_encode($respuesta);
         $db = null;
-
+        
 
     }
 
 });
 
-//Se acepta el folio
+//Se acepta el folio 
 $app->post('/aceptaentrega', function(){
 
 
@@ -1218,20 +1215,20 @@ $app->post('/aceptaentrega', function(){
 		$datos = json_decode($request->getBody());
 
 		//datos para guardar historico
-		$folio =  $datos->Folio;
+		$folio =  $datos->Folio; 
 	    $etapa =  $datos->Etapa;
 		$numentrega = $datos->Cantidad;
 
-		$documento =  $datos->DOC_claveint;
-	    $areaentrega =  $datos->FLD_AROent;
+		$documento =  $datos->DOC_claveint; 
+	    $areaentrega =  $datos->FLD_AROent; 
 	    $usuarioentrega =  $datos->USU_ent;
 
-	    $usuariorecibe =  $datos->USU_recibe;
+	    $usuariorecibe =  $datos->USU_recibe; 
 	    $arearecibe =  $datos->ARO_porRecibir;
 	    $clave = $datos->FLD_claveint;
 
 
-
+	    
 	    $fecha = date("d/m/Y");
 	    $hoy = date("H:i:s");
 	    $fecha = $fecha . " " . $hoy;
@@ -1246,15 +1243,15 @@ $app->post('/aceptaentrega', function(){
 		    die('Something went wrong while connecting to MSSQL');
 
 		}else{
+			
 
-
-			$sql = "UPDATE FlujoDoc SET FLD_AROrec = $arearecibe, USU_rec = $usuariorecibe,  FLD_porRecibir = 0, FLD_rechazado = 0, USU_recibe = NULL, ARO_porRecibir = NULL,
+			$sql = "UPDATE FlujoDoc SET FLD_AROrec = $arearecibe, USU_rec = $usuariorecibe,  FLD_porRecibir = 0, FLD_rechazado = 0, USU_recibe = NULL, ARO_porRecibir = NULL, 
 					USU_activo = $usuariorecibe, ARO_activa = $arearecibe , FLD_fechaRec = CONVERT (datetime, GETDATE()) WHERE FLD_claveint = $clave";
 
-						// FLD_AROrec = $arearecibe, USU_rec = $usuariorecibe, FLD_fechaRec = '$fecha'
+						// FLD_AROrec = $arearecibe, USU_rec = $usuariorecibe, FLD_fechaRec = '$fecha' 
 						// USU_activo = $usuariorecibe
 
-			$rs = odbc_exec($conexion,$sql);
+			$rs = odbc_exec($conexion,$sql); 
 
 			if ($rs){
 
@@ -1266,25 +1263,25 @@ $app->post('/aceptaentrega', function(){
 
 					$sqlPagos = "EXEC MV_FLD_InsertaRelacionPago @FLDClave= $clave, @folio= $folio, @etapa= $etapa ,@entrega = $numentrega";
 					$rs = odbc_exec($conexion,$sqlPagos);
-					$detalle = "";
+					$detalle = ""; 
 				}
 				else{
 					$detalle = "";
 				}
-
+				
 				$historico = altahistorial($usuariorecibe, $folio, $etapa, $numentrega, $fecha, 4 ,$detalle,$usuarioentrega,$areaentrega,$arearecibe,$documento);
 
 	            $arr = array('respuesta' => 'Documento(s) aceptados Correctamente' , 'historial' => $historico);
-
+	              
 	        }else{
 
 	            $arr = array('respuesta' => 'Error durante el proceso : '.odbc_error());
 
-	        }
+	        }   
 
-			echo json_encode($arr);
+			echo json_encode($arr); 
 
-			//
+			// 
 
 		}
 
@@ -1296,20 +1293,12 @@ $app->post('/altaentrega', function(){
 	$request = \Slim\Slim::getInstance()->request();
 	$datos = json_decode($request->getBody());
 
-	//datos para guardar historico
-	$folio =  $datos->folio;
-    $etapa =  $datos->etapa;
-	$numentrega = $datos->cantidad;
-
-	$documento =  $datos->documento;
-    $usuarioentrega =  $datos->usuarioentrega;
-    $areaentrega =  $datos->areaentrega;
-    $usuariorecibe =  $datos->usuariorecibe;
+	$folios =  $datos->folios; 
+    $usuarioentrega =  $datos->usuarioentrega; 
+    $areaentrega =  $datos->areaentrega; 
+    $usuariorecibe =  $datos->usuariorecibe; 
     $arearecibe =  $datos->arearecibe;
-    $clave = $datos->clave;
-    $observaciones = $datos->observaciones;
-
-
+    
     $fecha = date("d/m/Y");
     $hoy = date("H:i:s");
     $fecha = $fecha . " " . $hoy;
@@ -1324,46 +1313,119 @@ $app->post('/altaentrega', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
+		
+
+		foreach ($folios as $foliodato) {
+
+			//datos para guardar historico
+			$folio =  $foliodato->Folio;
+		    $etapa =  $foliodato->Etapa;
+			$numentrega = $foliodato->Cantidad;
+			$documento =  $foliodato->documento; 
+		    $clave = $foliodato->FLD_claveint;
+		    $observaciones = $foliodato->Observaciones;
+
+			$sql = "EXEC MV_FLU_insertaflujo 
+					@documento = $documento, 
+					@usuarioentrega = $usuarioentrega, 
+					@areaentrega = $areaentrega, 
+					@usuariorecibe = $usuariorecibe, 
+					@observaciones = '$observaciones',
+					@arearecibe = $arearecibe";
+
+			$rs = odbc_exec($conexion,$sql); 
+
+			if ($rs){
+
+				$detalle = "el juego de facturación en espera de ser aceptado";
+				$sql = "UPDATE FlujoDoc SET FLD_envFac = 1, FLD_rechazado = 0 where DOC_claveint = $documento and FLD_formaRecep = 'O'";
+				$rs2 = odbc_exec($conexion,$sql);
+				
+				$historico = altahistorialfactura($usuarioentrega, $folio, $etapa, $numentrega, $fecha, 3 ,$detalle,$usuariorecibe,$areaentrega,$arearecibe,$documento);
+				
+
+	            $arr = array('respuesta' => 'Documento(s) enviado Correctamente');
+	              
+	        }else{
+
+	            $arr = array('respuesta' => 'Error durante el Guardado : '.odbc_error());
+
+	        }   
+
+		}
+
+		echo json_encode($arr); 
 
 
-		$sql = "EXEC MV_FLU_insertaflujo
-				@documento = $documento,
-				@usuarioentrega = $usuarioentrega,
-				@areaentrega = $areaentrega,
-				@usuariorecibe = $usuariorecibe,
-				@observaciones = '$observaciones',
-				@arearecibe = $arearecibe";
-		//$sql = "INSERT INTO FlujoDoc (FLD_formaRecep, USU_ent, FLD_fechaent, USU_activo, ARO_activa, FLD_porRecibir, USU_recibe, ARO_porRecibir, DOC_claveint) VALUES ('JF', $usuarioentrega, '$fecha', $usuarioentrega, $areaentrega, 1, $usuariorecibe, $arearecibe, $documento);";
-				// @documento = 492259,
-				// @usuarioentrega = 16,
-				// @areaentrega = 4,
-				// @usuariorecibe = 29,
-				// @arearecibe = 5,
-				// @observaciones = N'Hola Mundo'
-		$rs = odbc_exec($conexion,$sql);
+	}
 
-		if ($rs){
+});
 
-			$detalle = "el juego de facturación en espera de ser aceptado";
-			//$nombre = nombrecompleto($usuarioentrega);
+//alta de entregas de un area a otra se actualiza en el flujo
+$app->post('/actualizaentrega', function(){
 
-			$historico = altahistorialfactura($usuarioentrega, $folio, $etapa, $numentrega, $fecha, 3 ,$detalle,$usuariorecibe,$areaentrega,$arearecibe,$documento);
+	$request = \Slim\Slim::getInstance()->request();
+	$datos = json_decode($request->getBody());
 
-			$sql = "UPDATE FlujoDoc SET FLD_envFac = 1, FLD_rechazado = 0 where DOC_claveint = $documento and FLD_formaRecep = 'O'";
-			$rs2 = odbc_exec($conexion,$sql);
+	//datos para guardar historico
+	$folios =  $datos->folios; 
+    $usuarioentrega =  $datos->usuarioentrega; 
+    $areaentrega =  $datos->areaentrega; 
+    $usuariorecibe =  $datos->usuariorecibe; 
+    $arearecibe =  $datos->arearecibe;
+    
+    $fecha = date("d/m/Y");
+    $hoy = date("H:i:s");
+    $fecha = $fecha . " " . $hoy;
+    $conexion = conectarActual();
 
-            $arr = array('respuesta' => 'Documento(s) enviado Correctamente');
+    if(!$conexion) {
 
-        }else{
+	    die('Something went wrong while connecting to MSSQL');
 
-            $arr = array('respuesta' => 'Error durante el Guardado : '.odbc_error());
+	}else{
+		
 
-        }
+		foreach ($folios as $foliodato) {
 
-		echo json_encode($arr);
+		    $folio =  $foliodato->Folio;
+		    $etapa =  $foliodato->Etapa;
+			$numentrega = $foliodato->Cantidad;
+			$documento =  $foliodato->documento; 
+		    $clave = $foliodato->FLD_claveint;
+		    $observaciones = $foliodato->Observaciones;
+			
+			$sql = "UPDATE FlujoDoc SET USU_ent = $usuarioentrega, FLD_fechaEnt = '$fecha' , FLD_AROent = $areaentrega, ARO_porRecibir = $arearecibe, USU_recibe = $usuariorecibe, FLD_rechazado = 0, FLD_observaciones = '$observaciones'";
+
+			//Si es archivo se autorecibe el documento con usuario recepcionautomatica que es 36 
+			if ($arearecibe == 7) {
+				$sql .= ", USU_rec = $usuariorecibe, FLD_fechaRec = '$fecha', FLD_AROrec = $arearecibe, ARO_Activa = $arearecibe, USU_activo = $usuariorecibe WHERE FLD_claveint = $clave";
+				$detalle = "con autorecepcion del documento";
+			}
+			elseif ($arearecibe == 8) {
+				$detalle = " se asigno por motivo de: " . $observaciones;
+			}
+			else{
+				$sql = $sql . ", FLD_porRecibir = 1 WHERE FLD_claveint = $clave";
+				$detalle = "en espera de ser aceptado";
+			}
+
+			$rs = odbc_exec($conexion,$sql); 
+
+			if ($rs){
 
 
-		//
+				  $historico = altahistorial($usuarioentrega, $folio, $etapa, $numentrega, $fecha, 3 ,$detalle,$usuariorecibe,$areaentrega,$arearecibe,$documento); 
+	              $arr = array('respuesta' => 'Documento(s) enviado Correctamente', 'Historial' => $historico);
+	              
+	        }else {
+
+	              $arr = array('respuesta' => 'Error durante el Guardado : '.odbc_error());
+	        }
+
+		}
+
+		echo json_encode($arr); 
 
 	}
 
@@ -1376,15 +1438,15 @@ $app->post('/altafoliofax', function(){
 	$request = \Slim\Slim::getInstance()->request();
 	$datos = json_decode($request->getBody());
 
-    $usuario =  $datos->usuario;
-    $folio =  $datos->folio;
-    $lesionado =  $datos->lesionado;
-    $unidad =  $datos->unidad;
-    $fecha =  $datos->fecha;
-    $empresa =  $datos->cliente;
-    $producto =  $datos->producto;
-    $escolaridad =  $datos->escolaridad;
-    $internet =  $datos->internet;
+    $usuario =  $datos->usuario; 
+    $folio =  $datos->folio; 
+    $lesionado =  $datos->lesionado; 
+    $unidad =  $datos->unidad; 
+    $fecha =  $datos->fecha; 
+    $empresa =  $datos->cliente; 
+    $producto =  $datos->producto; 
+    $escolaridad =  $datos->escolaridad; 
+    $internet =  $datos->internet; 
 
     $hoy = date("H:i:s");
     $fecha = $fecha . " " . $hoy;
@@ -1395,17 +1457,17 @@ $app->post('/altafoliofax', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
+		
 
-
-		$sql = "EXEC MV_DCU_CapturaFax @folio='$folio', @lesionado='$lesionado',  @unidad=$unidad, @ambulancia=0,  @faxfecha='$fecha',
+		$sql = "EXEC MV_DCU_CapturaFax @folio='$folio', @lesionado='$lesionado',  @unidad=$unidad, @ambulancia=0,  @faxfecha='$fecha',  
 				@empresa=$empresa, @usuario=$usuario, @producto=$producto, @escolaridad=$escolaridad, @internet=$internet";
 
-		$rs = odbc_exec($conexion,$sql);
+		$rs = odbc_exec($conexion,$sql); 
 
 		if ($rs){
 
 				$sql2 = "SELECT * FROM Documento where DOC_folio = '$folio'";
-				$rs2 = odbc_exec($conexion,$sql2);
+				$rs2 = odbc_exec($conexion,$sql2); 
 				$documento = odbc_result($rs2,"DOC_claveint");
 
               	// $historico = altahistorial($usuario, $folio, $etapa, $numentrega, $datos->fecha, 2 ,'','','','',$documento);
@@ -1415,11 +1477,11 @@ $app->post('/altafoliofax', function(){
 
         }else {
               $arr = array('respuesta' => 'Error durante el Guardado: '.odbc_error());
-        }
+        }   
 
-		echo json_encode($arr);
+		echo json_encode($arr); 
 
-		//
+		// 
 
 	}
 
@@ -1479,7 +1541,7 @@ $app->post('/altaticket', function(){
 	};
 
 	if (isset($datos->pase) && $datos->pase == true) {
-		array_push($observaciones,'PASE MÉDICO ALTERADO');
+		array_push($observaciones,'PASE MÉDICO ALTERADO'); 
 	};
 
 	if (isset($datos->suministro) && $datos->suministro == true) {
@@ -1563,7 +1625,7 @@ $app->post('/altaticket', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT * FROM TicketSeguimiento WHERE TSeg_clave='".$folioin."'";
 
 		$result = $db->query($sql);
@@ -1571,16 +1633,16 @@ $app->post('/altaticket', function(){
         $cuenta = $result->rowCount();
 
         if ($cuenta > 0) {
-
+         	
          	$respuesta = array('respuesta' => 'Ya existe el folio interno intente guardar para generar el folio interno siguiente' );
-
+         	
         }else{
 
 
 
         	$query="INSERT INTO TicketSeguimiento (TSeg_clave,Exp_folio,TSeg_etapa,TCat_clave,TSub_clave,TSeg_obs,TStatus_clave,Uni_clave,Cia_clave,TSeg_asignado,TSeg_asignadofecha,TSeg_fechareg,TSeg_fechaactualizacion,Usu_registro,Usu_actualiza)
                      VALUES(:foliointerno,:folioweb,:etapa,:categoria,:subcategoria,:observaciones,:status,:unidad,:cliente,:asignado,:fechaasignado,now(),now(),:usuario,:usuario2)";
-
+            
             $stmt = $db->prepare($query);
             $stmt->bindParam("foliointerno", $folioin);
             $stmt->bindParam("folioweb", $folioweb);
@@ -1616,9 +1678,9 @@ $app->post('/altaticket', function(){
 	            $altanota->bindParam("fecha", $fecha);
 	            $altanota->bindParam("usuario", $usuario);
 	            $altanota->execute();
-
+                
             }
-
+            
             if($comunicacion<>""){
                 $qrycomunicacion="INSERT INTO TicketComunicacion (TSeg_clave,Exp_folio,TC_descripcion,TC_correofecha,TC_fechareg,Usu_registro)
                      			 VALUES(:foliointerno,:folioweb,:comunicacion,:comunicacionfecha,:fecha,:usuario)";
@@ -1636,97 +1698,31 @@ $app->post('/altaticket', function(){
 
         echo json_encode($respuesta);
         $db = null;
-
+        
 
     }
 
 });
 
-//alta de entregas de un area a otra se actualiza en el flujo
-$app->post('/actualizaentrega', function(){
-
-	$request = \Slim\Slim::getInstance()->request();
-	$datos = json_decode($request->getBody());
-
-	//datos para guardar historico
-	$folio =  $datos->folio;
-    $etapa =  $datos->etapa;
-	$numentrega = $datos->cantidad;
-
-	$documento =  $datos->documento;
-    $usuarioentrega =  $datos->usuarioentrega;
-    $areaentrega =  $datos->areaentrega;
-    $usuariorecibe =  $datos->usuariorecibe;
-    $arearecibe =  $datos->arearecibe;
-    $clave = $datos->clave;
-    $observaciones = $datos->observaciones;
-
-    $fecha = date("d/m/Y");
-    $hoy = date("H:i:s");
-    $fecha = $fecha . " " . $hoy;
-    $conexion = conectarActual();
-
-    if(!$conexion) {
-
-	    die('Something went wrong while connecting to MSSQL');
-
-	}else{
-
-		$sql = "UPDATE FlujoDoc SET USU_ent = $usuarioentrega, FLD_fechaEnt = '$fecha' , FLD_AROent = $areaentrega, ARO_porRecibir = $arearecibe, USU_recibe = $usuariorecibe, FLD_rechazado = 0, FLD_observaciones = '$observaciones'";
-
-		//Si es archivo se autorecibe el documento con usuario recepcionautomatica que es 36
-		if ($arearecibe == 7) {
-			$sql .= ", USU_rec = $usuariorecibe, FLD_fechaRec = '$fecha', FLD_AROrec = $arearecibe, ARO_Activa = $arearecibe, USU_activo = $usuariorecibe WHERE FLD_claveint = $clave";
-			$detalle = "con autorecepcion del documento";
-		}
-		elseif ($arearecibe == 8) {
-			$detalle = " se asigno por motivo de: " . $observaciones;
-		}
-		else{
-			$sql = $sql . ", FLD_porRecibir = 1 WHERE FLD_claveint = $clave";
-			$detalle = "en espera de ser aceptado";
-		}
-
-		$rs = odbc_exec($conexion,$sql);
-
-		if ($rs){
-
-
-			  $historico = altahistorial($usuarioentrega, $folio, $etapa, $numentrega, $fecha, 3 ,$detalle,$usuariorecibe,$areaentrega,$arearecibe,$documento);
-              $arr = array('respuesta' => 'Documento(s) enviado Correctamente', 'Historial' => $historico);
-
-        }else {
-
-              $arr = array('respuesta' => 'Error durante el Guardado : '.odbc_error());
-        }
-
-		echo json_encode($arr);
-
-		//
-
-	}
-
-});
-
-//insertamos bit para que se ponga en no pagar hasta cobrar
+//insertamos bit para que se ponga en no pagar hasta cobrar 
 $app->post('/insertanpc', function(){
 
 	$request = \Slim\Slim::getInstance()->request();
 	$datos = json_decode($request->getBody());
 
 	//datos para guardar historico
-	$folio =  $datos->folio;
+	$folio =  $datos->folio; 
     $etapa =  $datos->etapa;
 	$numentrega = $datos->cantidad;
 
-	$documento =  $datos->documento;
-    $usuarioentrega =  $datos->usuarioentrega;
-    $areaentrega =  $datos->areaentrega;
-    // '' =  $datos-'';
+	$documento =  $datos->documento; 
+    $usuarioentrega =  $datos->usuarioentrega; 
+    $areaentrega =  $datos->areaentrega; 
+    // '' =  $datos-''; 
     // $arearecibe =  $datos->arearecibe;
     $clave = $datos->clave;
     $observaciones = $datos->observaciones;
-
+    
     $fecha = date("d/m/Y");
     $hoy = date("H:i:s");
     $fecha = $fecha . " " . $hoy;
@@ -1737,24 +1733,24 @@ $app->post('/insertanpc', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "UPDATE FlujoDoc SET FLD_envNPC = 1 WHERE FLD_claveint = $clave";
 
-		$rs = odbc_exec($conexion,$sql);
+		$rs = odbc_exec($conexion,$sql); 
 
 		if ($rs){
 
-			  $historico = altahistorial($usuarioentrega, $folio, $etapa, $numentrega, $fecha, 10 ,'','',$areaentrega,'',$documento);
+			  $historico = altahistorial($usuarioentrega, $folio, $etapa, $numentrega, $fecha, 10 ,'','',$areaentrega,'',$documento); 
               $arr = array('respuesta' => 'Documento(s) enviado Correctamente', 'Historial' => $historico);
-
+              
         }else {
 
               $arr = array('respuesta' => 'Error durante el Guardado : '.odbc_error());
-        }
+        }   
 
-		echo json_encode($arr);
+		echo json_encode($arr); 
 
-		//
+		// 
 
 	}
 
@@ -1768,18 +1764,18 @@ $app->post('/eliminanpc', function(){
 	$datos = json_decode($request->getBody());
 
 	//datos para guardar historico
-	$folio =  $datos->folio;
+	$folio =  $datos->folio; 
     $etapa =  $datos->etapa;
 	$numentrega = $datos->cantidad;
 
-	$documento =  $datos->documento;
-    $usuarioentrega =  $datos->usuarioentrega;
-    $areaentrega =  $datos->areaentrega;
-    // '' =  $datos-'';
+	$documento =  $datos->documento; 
+    $usuarioentrega =  $datos->usuarioentrega; 
+    $areaentrega =  $datos->areaentrega; 
+    // '' =  $datos-''; 
     // $arearecibe =  $datos->arearecibe;
     $clave = $datos->clave;
     $observaciones = $datos->observaciones;
-
+    
     $fecha = date("d/m/Y");
     $hoy = date("H:i:s");
     $fecha = $fecha . " " . $hoy;
@@ -1790,24 +1786,24 @@ $app->post('/eliminanpc', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "UPDATE FlujoDoc SET FLD_envNPC = 0 WHERE FLD_claveint = $clave";
 
-		$rs = odbc_exec($conexion,$sql);
+		$rs = odbc_exec($conexion,$sql); 
 
 		if ($rs){
 
-			  $historico = altahistorial($usuarioentrega, $folio, $etapa, $numentrega, $fecha, 11 ,'','',$areaentrega,'',$documento);
+			  $historico = altahistorial($usuarioentrega, $folio, $etapa, $numentrega, $fecha, 11 ,'','',$areaentrega,'',$documento); 
               $arr = array('respuesta' => 'Documento(s) enviado Correctamente', 'Historial' => $historico);
-
+              
         }else {
 
               $arr = array('respuesta' => 'Error durante el Guardado : '.odbc_error());
-        }
+        }   
 
-		echo json_encode($arr);
+		echo json_encode($arr); 
 
-		//
+		// 
 
 	}
 
@@ -1820,21 +1816,21 @@ $app->post('/altafoliooriginal', function(){
 	$request = \Slim\Slim::getInstance()->request();
 	$datos = json_decode($request->getBody());
 
-    $usuario =  $datos->usuario;
-    $folio =  $datos->folio;
+    $usuario =  $datos->usuario; 
+    $folio =  $datos->folio; 
     $etapa =  $datos->tipoDoc;
-    $lesionado =  $datos->lesionado;
-    $unidad =  $datos->unidad;
-    $fecha =  $datos->fecha;
-    $empresa =  $datos->cliente;
-    $producto =  $datos->producto;
-    $remesa =  $datos->remesa;
-    $escolaridad =  $datos->escolaridad;
-    $internet =  $datos->internet;
+    $lesionado =  $datos->lesionado; 
+    $unidad =  $datos->unidad; 
+    $fecha =  $datos->fecha; 
+    $empresa =  $datos->cliente; 
+    $producto =  $datos->producto; 
+    $remesa =  $datos->remesa; 
+    $escolaridad =  $datos->escolaridad; 
+    $internet =  $datos->internet; 
     $numentrega = $datos->numentrega;
     $totalfactura = $datos->totalfactura;
     $factura = $datos->factura;
-
+    
     if ($totalfactura == '') {
     	$totalfactura = 0;
     }
@@ -1850,31 +1846,29 @@ $app->post('/altafoliooriginal', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
+		
 
-
-		$sql = "EXEC MV_DCU_CapturaOriginal @folio = '$folio', @etapa = $etapa, @lesionado = '$lesionado',  @unidad = $unidad, @empresa = $empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = '$fecha',
+		$sql = "EXEC MV_DCU_CapturaOriginal @folio = '$folio', @etapa = $etapa, @lesionado = '$lesionado',  @unidad = $unidad, @empresa = $empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = '$fecha',  
 				@usuario = $usuario, @remesa = '$remesa',@numentrega = $numentrega  , @producto = $producto, @folioFac = '$factura', @totalFac = $totalfactura, @escolaridad = $escolaridad, @internet = $internet ";
 
-		$rs = odbc_exec($conexion,$sql);
+		$rs = odbc_exec($conexion,$sql); 
 
 		if ($rs){
 
 
 				$sql2 = "SELECT * FROM Documento where DOC_folio = '$folio'";
-				$rs2 = odbc_exec($conexion,$sql2);
+				$rs2 = odbc_exec($conexion,$sql2); 
 				$documento = odbc_result($rs2,"DOC_claveint");
 
 				$historico = altahistorial($usuario, $folio, $etapa, $numentrega, $datos->fecha, 2 ,'','','','',$documento);
+				
 				$arr = array('respuesta' => 'Folio Guardado Correctamente', 'Historial' => $historico);
-
+              
         }else {
               $arr = array('respuesta' => 'Error durante el Guardado: '.odbc_error());
-        }
+        }   
 
-		echo json_encode($arr);
-
-
-		//
+		echo json_encode($arr); 
 
 	}
 
@@ -1890,16 +1884,16 @@ $app->get('/areas', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-		$rs= odbc_exec($conexion,"select * from AreaOperativa where ARO_activa = 1");
+	
+		$rs= odbc_exec($conexion,"select * from AreaOperativa where ARO_activa = 1"); 
 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"ARO_claveint"));
 	            $valor2 = utf8_encode(odbc_result($rs,"ARO_Nombre"));
@@ -1908,7 +1902,7 @@ $app->get('/areas', function(){
 	            //echo $valor2;
 				$traspasosResultado['calve'] = $valor1;
 	            $traspasosResultado['nombre'] = $valor2;
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
@@ -1923,7 +1917,7 @@ $app->get('/areas', function(){
 
 		}
 
-		//
+		// 
 
 	}
 
@@ -1939,30 +1933,30 @@ $app->get('/areaoperativa/:usuario', function($usuario){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_FLU_ListaAreaOperativa @usuario = $usuario";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"ARO_claveint"));
 	            $valor2 = utf8_encode(odbc_result($rs,"ARO_nombre"));
 
 				$traspasosResultado['id'] = $valor1;
 	            $traspasosResultado['nombre'] = $valor2;
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
-			echo json_encode($valores);
-
+			echo json_encode($valores); 
+		
 		}
 		else{
 
@@ -1974,12 +1968,12 @@ $app->get('/areaoperativa/:usuario', function($usuario){
 		//$arr = array('a' => $sql);
 		//echo json_encode($arr);
 
-		//
+		// 
 	}
 
 });
 
-//busca categorias para tickets en web
+//busca categorias para tickets en web 
 $app->get('/categorias', function(){
 
     $conexion = conectarMySQL();
@@ -1989,7 +1983,7 @@ $app->get('/categorias', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT TCat_clave as Clave, TCat_nombre as Nombre FROM TicketCat order by TCat_clave";
 
 
@@ -1998,7 +1992,7 @@ $app->get('/categorias', function(){
         $conexion = null;
         echo json_encode($categorias);
 
-
+        
 
 	}
 
@@ -2014,15 +2008,15 @@ $app->get('/empresas', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-		$rs= odbc_exec($conexion,"EXEC MV_DCU_Empresas");
+	
+		$rs= odbc_exec($conexion,"EXEC MV_DCU_Empresas"); 
 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
 
-		while (odbc_fetch_row($rs)){
+		while (odbc_fetch_row($rs)){ 
 
 			$valor1 = odbc_result($rs,"emp_claveint");
             $valor2 = utf8_encode(odbc_result($rs,"emp_nombrecorto"));
@@ -2031,7 +2025,7 @@ $app->get('/empresas', function(){
             //echo $valor2;
 			$traspasosResultado['id'] = $valor1;
             $traspasosResultado['nombre'] = $valor2;
-
+			
 			$valores[$i] = $traspasosResultado;
             $i++;
 
@@ -2039,7 +2033,7 @@ $app->get('/empresas', function(){
 
 		echo json_encode($valores);
 
-
+		
 
 	}
 
@@ -2054,7 +2048,7 @@ $app->get('/empresasweb', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT Cia_clave as Clave, Cia_nombrecorto as Nombre FROM Compania WHERE Cia_Activa='S' ORDER BY Cia_nombrecorto";
 
 		$result = $db->query($sql);
@@ -2062,7 +2056,7 @@ $app->get('/empresasweb', function(){
         $db = null;
         echo json_encode($empresas);
 
-        //
+        // 
 
     }
 
@@ -2089,7 +2083,7 @@ $app->post('/eliminaentrega/:tipo/:usuario', function($tipo,$usuario){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		//verificamos la operacion a efectuar y asignamos la operacion al historial con $tipo
 		if ($tipo == "facturacion") {
 			$sql = "DELETE FROM FlujoDoc WHERE FLD_claveint = $clave";
@@ -2099,8 +2093,8 @@ $app->post('/eliminaentrega/:tipo/:usuario', function($tipo,$usuario){
 			$tipo = 5;
 		}
 
-		$rs= odbc_exec($conexion,$sql);
-
+		$rs= odbc_exec($conexion,$sql); 
+		
 		if ($rs){
 
 		      $historico = altahistorial($usuario, $folio, $etapa, $cantidad, $fecha, $tipo,'','',$area,'',$documento);
@@ -2109,8 +2103,8 @@ $app->post('/eliminaentrega/:tipo/:usuario', function($tipo,$usuario){
 
         }else {
               $arr = array('respuesta' => 'Error al Actualizar: '.odbc_error());
-        }
-
+        }   
+		
 
 		echo json_encode($arr);
 
@@ -2128,17 +2122,17 @@ $app->get('/escolaridad', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "MV_DCU_Escolaridad";
 
-		$rs= odbc_exec($conexion, $sql);
+		$rs= odbc_exec($conexion, $sql); 
 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
 
-		while (odbc_fetch_row($rs)){
+		while (odbc_fetch_row($rs)){ 
 
 			$valor1 = utf8_encode(odbc_result($rs,"ESCclave"));
             $valor2 = utf8_encode(odbc_result($rs,"Nombre"));
@@ -2147,7 +2141,7 @@ $app->get('/escolaridad', function(){
             //echo $valor2;
 			$traspasosResultado['id'] = $valor1;
             $traspasosResultado['nombre'] = $valor2;
-
+			
 			$valores[$i] = $traspasosResultado;
             $i++;
 
@@ -2156,13 +2150,13 @@ $app->get('/escolaridad', function(){
 		echo json_encode($valores);
 
 
-
+		
 
 	}
 
 });
 
-//facturas de qualitas formatos
+//facturas de qualitas formatos 
 $app->post('/facturasQualitas', function(){
 
 	$request = \Slim\Slim::getInstance()->request();
@@ -2171,7 +2165,6 @@ $app->post('/facturasQualitas', function(){
 	$valores = array();
 	$fechaini = $datos->fechaini;
 	$fechafin = $datos->fechafin;
-	$producto = $datos->producto;
 
 	$fechafin = $fechafin . ' 23:59:58.999';
 
@@ -2184,23 +2177,23 @@ $app->post('/facturasQualitas', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
+		
+		
 
-
-
-		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin', @prodcuto = $producto";
+		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin'";
 
 		$rs= odbc_exec($conexion,$sql);
 
 		// $resultado = odbc_prepare($conexión, $sql);
 		// odbc_setoption($resultado, 2, 0, 350);
-		// $rs = odbc_execute($resultado);
+		// $rs = odbc_execute($resultado); 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = odbc_result($rs,"folioElectronico");
 	            $valor2 = odbc_result($rs,"folioAdministradora");
@@ -2224,7 +2217,7 @@ $app->post('/facturasQualitas', function(){
 	            if ($valor6 != $valor7) {
 
 	            	if ($valor10 != 99) {
-
+	            		
 	            		if ($valor5 == '07370') {
 
 
@@ -2277,10 +2270,10 @@ $app->post('/facturasQualitas', function(){
 				            $i++;
 
 	            		}
-
+	            		
 
 	            	}
-
+	            
 	            }
 
 			}
@@ -2300,7 +2293,7 @@ $app->post('/facturasQualitas', function(){
 
 		}
 
-		//
+		// 
 
 	}
 
@@ -2318,8 +2311,8 @@ $app->get('/facturasQualitasConsulta/:folio', function($folio){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-
+		
+		
 
 		$sql = "EXEC MVQualitasWSconsulta @folio = '$folio'";
 
@@ -2327,14 +2320,14 @@ $app->get('/facturasQualitasConsulta/:folio', function($folio){
 
 		// $resultado = odbc_prepare($conexión, $sql);
 		// odbc_setoption($resultado, 2, 0, 350);
-		// $rs = odbc_execute($resultado);
+		// $rs = odbc_execute($resultado); 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = odbc_result($rs,"folioElectronico");
 	            $valor2 = odbc_result($rs,"folioAdministradora");
@@ -2357,12 +2350,12 @@ $app->get('/facturasQualitasConsulta/:folio', function($folio){
 	            $valor19 = utf8_encode(odbc_result($rs,"Estatus"));
 	            $valor20 = odbc_result($rs,"FechaRecepcion");
 	            $valor21 = odbc_result($rs,"ID_asociado");
-
+	            
 	            $sql2 = "EXEC MVImgs_Datos @folio = '$folio'";
 				$rs2 = odbc_exec($conexion,$sql2);
 
 				$nombre = odbc_result($rs2,"Archivo");
-
+				
 				$nombre .= "(QS07.jpg,GN19.jpg,ME02.pdf)";
 
 
@@ -2413,13 +2406,13 @@ $app->get('/facturasQualitasConsulta/:folio', function($folio){
 
 		}
 
-		//
+		// 
 
 	}
 
 });
 
-//facturas de qualitas formatos
+//facturas de qualitas formatos 
 $app->post('/facturasQualitasIncompleto', function(){
 
 	$request = \Slim\Slim::getInstance()->request();
@@ -2440,8 +2433,8 @@ $app->post('/facturasQualitasIncompleto', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-
+		
+		
 
 		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin'";
 
@@ -2449,14 +2442,14 @@ $app->post('/facturasQualitasIncompleto', function(){
 
 		// $resultado = odbc_prepare($conexión, $sql);
 		// odbc_setoption($resultado, 2, 0, 350);
-		// $rs = odbc_execute($resultado);
+		// $rs = odbc_execute($resultado); 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = odbc_result($rs,"folioElectronico");
 	            $valor2 = odbc_result($rs,"folioAdministradora");
@@ -2506,7 +2499,7 @@ $app->post('/facturasQualitasIncompleto', function(){
 
 						$valores[$i] = $traspasosResultado;
 			            $i++;
-
+	            
 	            }
 
 			}
@@ -2526,14 +2519,14 @@ $app->post('/facturasQualitasIncompleto', function(){
 
 		}
 
-		//
+		// 
 
 	}
 
 });
 
 
-//facturas de qualitas formatos
+//facturas de qualitas formatos 
 $app->post('/facturasQualitasArchivos', function(){
 
 	$request = \Slim\Slim::getInstance()->request();
@@ -2554,8 +2547,8 @@ $app->post('/facturasQualitasArchivos', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-
+		
+		
 
 		$sql = "EXEC MVQualitasWSarchivos @fechaini = '$fechaini', @fechafin = '$fechafin'";
 
@@ -2564,9 +2557,9 @@ $app->post('/facturasQualitasArchivos', function(){
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = odbc_result($rs,"folioElectronico");
 	            $valor2 = odbc_result($rs,"folioAdministradora");
@@ -2593,7 +2586,7 @@ $app->post('/facturasQualitasArchivos', function(){
 				$rs2 = odbc_exec($conexion,$sql2);
 
 				$nombre = odbc_result($rs2,"Archivo");
-
+				
 				$nombre .= "(QS07.jpg,GN19.jpg,ME02.pdf)";
 
 
@@ -2601,13 +2594,13 @@ $app->post('/facturasQualitasArchivos', function(){
 	            if ($valor6 != $valor7) {
 
 	            	if ($valor10 != 99) {
-
+	            		
 	            		if ($valor5 == '07370') {
 
 
 	            			if ($valor18 == 33) {
 
-
+	            				
 
 	            				$traspasosResultado['folioElectronico'] =  $valor1;
 					            $traspasosResultado['folioAdministradora'] =  $valor2;
@@ -2659,10 +2652,10 @@ $app->post('/facturasQualitasArchivos', function(){
 				            $i++;
 
 	            		}
-
+	            		
 
 	            	}
-
+	            
 	            }
 
 			}
@@ -2682,7 +2675,7 @@ $app->post('/facturasQualitasArchivos', function(){
 
 		}
 
-		//
+		// 
 
 	}
 
@@ -2735,9 +2728,9 @@ $app->post('/facturasQualitasVerifica', function(){
 		$maximofolios = 50;//maximo de folios por archivo
 		$folio = 0;
 
-		//verificamos folio x folio para ver si cumople con
+		//verificamos folio x folio para ver si cumople con 
 		foreach ($datos as $dato) {
-
+			
 
 			$folio = $dato->folioSistema;
 			$fecha = $dato->FechaCaptura;
@@ -2745,43 +2738,43 @@ $app->post('/facturasQualitasVerifica', function(){
 			$MesNro = date('m', strtotime($fecha));
 			$DiaNro = date('d', strtotime($fecha));
 			$AnyoNro = date('Y', strtotime($fecha));
+			
 
+			if($MesNro=='01'){ 
+				$MesNro="1"; 
+			} 
 
-			if($MesNro=='01'){
-				$MesNro="1";
-			}
+			if($MesNro=='02'){ 
+				$MesNro="2"; 
+			} 
 
-			if($MesNro=='02'){
-				$MesNro="2";
-			}
+			if($MesNro=='03'){ 
+				$MesNro="3"; 
+			} 
 
-			if($MesNro=='03'){
-				$MesNro="3";
-			}
+			if($MesNro=='04'){ 
+				$MesNro="4"; 
+			} 
 
-			if($MesNro=='04'){
-				$MesNro="4";
-			}
+			if($MesNro=='05'){ 
+				$MesNro="5"; 
+			} 
 
-			if($MesNro=='05'){
-				$MesNro="5";
-			}
+			if($MesNro=='06'){ 
+				$MesNro="6"; 
+			} 
 
-			if($MesNro=='06'){
-				$MesNro="6";
-			}
+			if($MesNro=='07'){ 
+				$MesNro="7"; 
+			} 
 
-			if($MesNro=='07'){
-				$MesNro="7";
-			}
+			if($MesNro=='08'){ 
+				$MesNro="8"; 
+			} 
 
-			if($MesNro=='08'){
-				$MesNro="8";
-			}
-
-			if($MesNro=='09'){
-				$MesNro="9";
-			}
+			if($MesNro=='09'){ 
+				$MesNro="9"; 
+			} 
 
 
 			$sql = "EXEC MVImgs_Datos @folio = '$folio'";
@@ -2802,7 +2795,7 @@ $app->post('/facturasQualitasVerifica', function(){
 			// }else{
 			// 	$archivo3 = $ruta . "\\" . $nombre . "ME02.pdf";
 			// }
-
+			
 
 			if (file_exists($archivo1) && file_exists($archivo2) && file_exists($archivo3)) {
 
@@ -2810,16 +2803,16 @@ $app->post('/facturasQualitasVerifica', function(){
 				if ($peso < $pesototal ) {
 
 					if ($folio <= $maximofolios) {
-
+						
 						$pesoarchivo1 = filesize($archivo1);
 						$pesoarchivo2 = filesize($archivo2);
 						$pesoarchivo3 = filesize($archivo3);
 
 						//sumamos el peso de los tres archivos del folio
 						$pesofolio = $pesoarchivo1 + $pesoarchivo2 + $pesoarchivo3;
-
+					    
 					    $peso = $pesofolio + $peso;
-
+						
 						$rs= odbc_exec($conexion,$sql);
 
 					    $zip->addFile($archivo1,$nombre . "QS07.jpg");
@@ -2832,13 +2825,13 @@ $app->post('/facturasQualitasVerifica', function(){
 
 					}
 
-				}
+				}  
 
 				array_push($correctos, $dato);
-
+			   
 			}else {
 
-
+				
 				array_push($incorrectos, $dato);
 
 			}
@@ -2850,8 +2843,8 @@ $app->post('/facturasQualitasVerifica', function(){
 
 		echo json_encode($resultado);
 
-
-
+		
+		
 	}
 
 });
@@ -2903,9 +2896,9 @@ $app->post('/facturasQualitasImagenes', function(){
 		$maximofolios = 50;//maximo de folios por archivo
 		$folio = 0;
 
-		//verificamos folio x folio para ver si cumople con
+		//verificamos folio x folio para ver si cumople con 
 		foreach ($datos as $dato) {
-
+			
 
 			$folio = $dato->folioSistema;
 			$fecha = $dato->FechaCaptura;
@@ -2913,43 +2906,43 @@ $app->post('/facturasQualitasImagenes', function(){
 			$MesNro = date('m', strtotime($fecha));
 			$DiaNro = date('d', strtotime($fecha));
 			$AnyoNro = date('Y', strtotime($fecha));
+			
 
+			if($MesNro=='01'){ 
+				$MesNro="1"; 
+			} 
 
-			if($MesNro=='01'){
-				$MesNro="1";
-			}
+			if($MesNro=='02'){ 
+				$MesNro="2"; 
+			} 
 
-			if($MesNro=='02'){
-				$MesNro="2";
-			}
+			if($MesNro=='03'){ 
+				$MesNro="3"; 
+			} 
 
-			if($MesNro=='03'){
-				$MesNro="3";
-			}
+			if($MesNro=='04'){ 
+				$MesNro="4"; 
+			} 
 
-			if($MesNro=='04'){
-				$MesNro="4";
-			}
+			if($MesNro=='05'){ 
+				$MesNro="5"; 
+			} 
 
-			if($MesNro=='05'){
-				$MesNro="5";
-			}
+			if($MesNro=='06'){ 
+				$MesNro="6"; 
+			} 
 
-			if($MesNro=='06'){
-				$MesNro="6";
-			}
+			if($MesNro=='07'){ 
+				$MesNro="7"; 
+			} 
 
-			if($MesNro=='07'){
-				$MesNro="7";
-			}
+			if($MesNro=='08'){ 
+				$MesNro="8"; 
+			} 
 
-			if($MesNro=='08'){
-				$MesNro="8";
-			}
-
-			if($MesNro=='09'){
-				$MesNro="9";
-			}
+			if($MesNro=='09'){ 
+				$MesNro="9"; 
+			} 
 
 
 			$sql = "EXEC MVImgs_Datos @folio = '$folio'";
@@ -2970,7 +2963,7 @@ $app->post('/facturasQualitasImagenes', function(){
 			// }else{
 			// 	$archivo3 = $ruta . "\\" . $nombre . "ME02.pdf";
 			// }
-
+			
 
 			if (file_exists($archivo1) && file_exists($archivo2) && file_exists($archivo3)) {
 
@@ -2978,16 +2971,16 @@ $app->post('/facturasQualitasImagenes', function(){
 				// if ($peso < $pesototal ) {
 
 				// 	if ($folio <= $maximofolios) {
-
+						
 				$pesoarchivo1 = filesize($archivo1);
 				$pesoarchivo2 = filesize($archivo2);
 				$pesoarchivo3 = filesize($archivo3);
 
 				//sumamos el peso de los tres archivos del folio
 				$pesofolio = $pesoarchivo1 + $pesoarchivo2 + $pesoarchivo3;
-
+			    
 			    $peso = $pesofolio + $peso;
-
+				
 				$rs= odbc_exec($conexion,$sql);
 
 			    $zip->addFile($archivo1,$nombre . "QS07.jpg");
@@ -3000,13 +2993,13 @@ $app->post('/facturasQualitasImagenes', function(){
 
 				// 	}
 
-				// }
+				// }  
 
 				array_push($correctos, $dato);
-
+			   
 			}else {
 
-
+				
 				array_push($incorrectos, $dato);
 
 			}
@@ -3018,8 +3011,8 @@ $app->post('/facturasQualitasImagenes', function(){
 
 		echo json_encode($resultado);
 
-
-
+		
+		
 	}
 
 });
@@ -3045,8 +3038,8 @@ $app->post('/facturasQualitasenviadas', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-
+		
+		
 
 		$sql = "SELECT EnviosQualitas.ENQ_claveint, ENQ_fechaenvio,ENQ_procesado, (SELECT COUNT(*) from DetalleEnvio where DetalleEnvio.ENQ_claveint = EnviosQualitas.ENQ_claveint) as Cuenta
 				FROM EnviosQualitas  WHERE ENQ_fechaenvio BETWEEN '$fechaini' and '$fechafin'";
@@ -3056,9 +3049,9 @@ $app->post('/facturasQualitasenviadas', function(){
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 
 	            $valor1 = odbc_result($rs,"ENQ_claveint");
@@ -3077,7 +3070,7 @@ $app->post('/facturasQualitasenviadas', function(){
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -3086,7 +3079,7 @@ $app->post('/facturasQualitasenviadas', function(){
 
 		}
 
-
+		
 
 	}
 
@@ -3104,8 +3097,8 @@ $app->get('/facturasQualitasenviadas/:envio', function($envio){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-
+		
+		
 
 		$sql = "EXEC MVQualitasWSenviado @idenvio = $envio";
 
@@ -3113,14 +3106,14 @@ $app->get('/facturasQualitasenviadas/:envio', function($envio){
 
 		// $resultado = odbc_prepare($conexión, $sql);
 		// odbc_setoption($resultado, 2, 0, 350);
-		// $rs = odbc_execute($resultado);
+		// $rs = odbc_execute($resultado); 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = odbc_result($rs,"folioElectronico");
 	            $valor2 = odbc_result($rs,"folioAdministradora");
@@ -3166,7 +3159,7 @@ $app->get('/facturasQualitasenviadas/:envio', function($envio){
 				}else{
 					$traspasosResultado['Procesado'] = false;
 				}
-
+				
 
 
 				$valores[$i] = $traspasosResultado;
@@ -3176,12 +3169,12 @@ $app->get('/facturasQualitasenviadas/:envio', function($envio){
 
 			echo json_encode($valores);
 			// $datos = array();
-			// while( $row = odbc_fetch_array($rs) ) {
-			//     $datos[] = $row;
+			// while( $row = odbc_fetch_array($rs) ) { 
+			//     $datos[] = $row; 
 			// }
 
 			// echo json_encode($datos);
-
+		
 		}
 		else{
 
@@ -3190,7 +3183,7 @@ $app->get('/facturasQualitasenviadas/:envio', function($envio){
 
 		}
 
-		//
+		// 
 
 	}
 
@@ -3210,7 +3203,7 @@ $app->post('/facturasQualitasPrincipal', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		foreach ($datos as $folio) {
 
 			$folio = $folio->folioSistema;
@@ -3238,8 +3231,8 @@ $app->get('/facturasQualitasProcesadas/:envio', function($envio){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-
+		
+		
 
 		$sql = "EXEC MVQualitasWSenviado @idenvio = $envio";
 
@@ -3247,14 +3240,14 @@ $app->get('/facturasQualitasProcesadas/:envio', function($envio){
 
 		// $resultado = odbc_prepare($conexión, $sql);
 		// odbc_setoption($resultado, 2, 0, 350);
-		// $rs = odbc_execute($resultado);
+		// $rs = odbc_execute($resultado); 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = odbc_result($rs,"folioElectronico");
 	            $valor2 = odbc_result($rs,"folioAdministradora");
@@ -3295,17 +3288,17 @@ $app->get('/facturasQualitasProcesadas/:envio', function($envio){
 					$traspasosResultado['TipoUnidad'] = $valor16;
 					$traspasosResultado['FechaCaptura'] = $valor17;
 					$traspasosResultado['Procesado'] = true;
-
+					
 					$valores[$i] = $traspasosResultado;
 		            $i++;
-
+	            	
 	            }
 
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}else{
 
 			$arr = array('respuesta' => 'Datos No Encontrados');
@@ -3313,7 +3306,7 @@ $app->get('/facturasQualitasProcesadas/:envio', function($envio){
 
 		}
 
-		//
+		// 
 
 	}
 
@@ -3340,8 +3333,8 @@ $app->post('/facturasQualitasprocesadas', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-
+		
+		
 
 		$sql = "EXEC MVQualitasWSprocesado @fechaini = '$fechaini', @fechafin = '$fechafin'";
 
@@ -3349,14 +3342,14 @@ $app->post('/facturasQualitasprocesadas', function(){
 
 		// $resultado = odbc_prepare($conexión, $sql);
 		// odbc_setoption($resultado, 2, 0, 350);
-		// $rs = odbc_execute($resultado);
+		// $rs = odbc_execute($resultado); 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"folioElectronico"));
 	            $valor2 = utf8_encode(odbc_result($rs,"folioAdministradora"));
@@ -3402,12 +3395,12 @@ $app->post('/facturasQualitasprocesadas', function(){
 
 			echo json_encode($valores);
 			// $datos = array();
-			// while( $row = odbc_fetch_array($rs) ) {
-			//     $datos[] = $row;
+			// while( $row = odbc_fetch_array($rs) ) { 
+			//     $datos[] = $row; 
 			// }
 
 			// echo json_encode($datos);
-
+		
 		}
 		else{
 
@@ -3416,13 +3409,13 @@ $app->post('/facturasQualitasprocesadas', function(){
 
 		}
 
-		//
+		// 
 
 	}
 
 });
 
-//inserta el motivo de rechazo del portal de qualitas
+//inserta el motivo de rechazo del portal de qualitas 
 $app->post('/facturasQualitasRechazosQ', function(){
 
 	$request = \Slim\Slim::getInstance()->request();
@@ -3450,15 +3443,15 @@ $app->post('/facturasQualitasRechazosQ', function(){
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = odbc_result($rs,"folioElectronico");
 	            $valor2 = odbc_result($rs,"folioAdministradora");
-	            $valor3 = odbc_result($rs,"folioSistema");
+	            $valor3 = odbc_result($rs,"folioSistema"); 
 	            $valor4 = odbc_result($rs,"claveproovedor");
-	            $valor5 = odbc_result($rs,"claveprestador");
+	            $valor5 = odbc_result($rs,"claveprestador"); 
 	            $valor6 = odbc_result($rs,"Siniestro");
 	            $valor7 = odbc_result($rs,"Reporte");
 	            $valor8 = odbc_result($rs,"Poliza");
@@ -3497,7 +3490,7 @@ $app->post('/facturasQualitasRechazosQ', function(){
 
 				$valores[$i] = $traspasosResultado;
 	            $i++;
-
+	 
 
 			}
 
@@ -3516,9 +3509,9 @@ $app->post('/facturasQualitasRechazosQ', function(){
 
 		}
 
+		
 
-
-
+		
 	}
 
 });
@@ -3544,7 +3537,7 @@ $app->post('/facturasQualitasRechazos', function(){
 	}else{
 
 		foreach ($datos as $dato) {
-
+				
 				$folio = $dato->folioSistema;
 				$observaciones = $dato->Motivo;
 
@@ -3553,7 +3546,7 @@ $app->post('/facturasQualitasRechazos', function(){
 
 		}
 
-
+		
 	}
 
 });
@@ -3574,7 +3567,7 @@ $app->post('/facturasQualitasInserta', function(){
 
     //$conexion = conectarActual();
 
-
+   
 
     if(!$conexion) {
 
@@ -3591,7 +3584,7 @@ $app->post('/facturasQualitasInserta', function(){
 		$ultimo = odbc_result($rs2,"Ultimo");
 		//
 		foreach ($datos->correctos as $dato) {
-
+				
 				$folio = $dato->folioSistema;
 
 				$sql3 = "INSERT INTO DetalleEnvio (ENQ_claveint,PAS_folio,DEE_procesado) VALUES ( $ultimo,'$folio',0)";
@@ -3603,7 +3596,7 @@ $app->post('/facturasQualitasInserta', function(){
 		}
 
 		foreach ($datos->incorrectos as $dato) {
-
+				
 				$folio = $dato->folioSistema;
 
 				$sql5 ="UPDATE Pase SET PAS_procQ = 3 where PAS_folio = '$folio'";
@@ -3611,7 +3604,7 @@ $app->post('/facturasQualitasInserta', function(){
 
 		}
 
-
+		
 	}
 
 });
@@ -3633,7 +3626,7 @@ $app->post('/facturasQualitasInsertaFaltaArchivos', function(){
 
     //$conexion = conectarActual();
 
-
+   
 
     if(!$conexion) {
 
@@ -3642,7 +3635,7 @@ $app->post('/facturasQualitasInsertaFaltaArchivos', function(){
 	}else{
 
 		foreach ($datos->incorrectos as $dato) {
-
+				
 				$folio = $dato->folioSistema;
 
 				$sql5 ="UPDATE Pase SET PAS_procQ = 3 where PAS_folio = '$folio'";
@@ -3650,7 +3643,7 @@ $app->post('/facturasQualitasInsertaFaltaArchivos', function(){
 
 		}
 
-
+		
 	}
 
 });
@@ -3673,7 +3666,7 @@ $app->post('/facturasQualitasActualiza/:id', function($id){
 
     //$conexion = conectarActual();
 
-
+   
 
     if(!$conexion) {
 
@@ -3685,7 +3678,7 @@ $app->post('/facturasQualitasActualiza/:id', function($id){
 		$rs = odbc_exec($conexion,$sql);
 
 		foreach ($datos as $dato) {
-
+				
 				$folio = $dato->folioSistema;
 
 				$sql3 ="UPDATE DetalleEnvio SET DEE_procesado = 1 where PAS_folio = '$folio' and ENQ_claveint = $id";
@@ -3695,19 +3688,19 @@ $app->post('/facturasQualitasActualiza/:id', function($id){
 				$rs4 = odbc_exec($conexion,$sql4);
 
 		}
-
+		
 		$sql = "UPDATE Pase SET PAS_procQ = 0 where PAS_folio in ( SELECT PAS_folio FROM DetalleEnvio where ENQ_claveint = $id and DEE_procesado = 0) ";
 		$rs = odbc_exec($conexion,$sql);
-
+		
 
 		$sql2 = "SELECT * FROM DetalleEnvio where ENQ_claveint = $id and DEE_procesado = 0";
 		$rs2 = odbc_exec($conexion,$sql2);
 
-		if( odbc_num_rows($rs2) > 0 ) {
+		if( odbc_num_rows($rs2) > 0 ) { 
 
-			while (odbc_fetch_row($rs2)){
+			while (odbc_fetch_row($rs2)){ 
 
-	            $valor1 = odbc_result($rs2,"PAS_folio");
+	            $valor1 = odbc_result($rs2,"PAS_folio"); 
 	            $traspasosResultado['folioSistema'] = $valor1;
 
 	            $valores[$i] = $traspasosResultado;
@@ -3734,17 +3727,17 @@ $app->get('/folioactivoarea/:area', function($area){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_DCU_ListadoDocumentosXArea  @area=$area";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
-
+			while (odbc_fetch_row($rs)){ 
+				
 				$valor1 = utf8_encode(odbc_result($rs,"folio"));
 	            $valor2 = utf8_encode(odbc_result($rs,"etapa"));
 	            $valor3 = utf8_encode(odbc_result($rs,"fax"));
@@ -3790,14 +3783,14 @@ $app->get('/folioactivoarea/:area', function($area){
 	            $traspasosResultado['Cancelado'] = $valor18;
 	            $traspasosResultado['Numero'] = $valor19;
 	            $traspasosResultado['Empresa'] = $valor20;
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -3829,19 +3822,19 @@ $app->post('/folioactivoareafecha', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sqlAux = "EXEC MV_DCU_ListadoDocumentosXAreaXfecha @area = $area,
 		@fechaIni = N'$fechaini',
 		@fechaFin = N'$fechafin'";
 
-		$rs= odbc_exec($conexion,$sqlAux);
+		$rs= odbc_exec($conexion,$sqlAux); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
-
+			while (odbc_fetch_row($rs)){ 
+				
 				$valor1 = utf8_encode(odbc_result($rs,"folio"));
 	            $valor2 = utf8_encode(odbc_result($rs,"etapa"));
 	            $valor3 = utf8_encode(odbc_result($rs,"fax"));
@@ -3887,14 +3880,14 @@ $app->post('/folioactivoareafecha', function(){
 	            $traspasosResultado['Cancelado'] = $valor18;
 	            $traspasosResultado['Numero'] = $valor19;
 	            $traspasosResultado['Empresa'] = $valor20;
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -3909,7 +3902,7 @@ $app->post('/folioactivoareafecha', function(){
 
 });
 
-///buscamos folios web
+///buscamos folios web 
 $app->get('/folioweb/:folio', function($folio){
 
     $db = conectarMySQL();
@@ -3919,7 +3912,7 @@ $app->get('/folioweb/:folio', function($folio){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT EXP_nombre as Nombre,
 				             EXP_paterno as Paterno,
 				             EXP_materno as Materno,
@@ -3931,7 +3924,7 @@ $app->get('/folioweb/:folio', function($folio){
 				             Expediente.Uni_clave
 				FROM Expediente INNER JOIN Compania    ON Compania.CIA_clave=Expediente.CIA_clave
 				                INNER JOIN Unidad        ON Unidad.UNI_clave=Expediente.UNI_clave
-				                LEFT    JOIN Escolaridad ON Escolaridad.ESC_clave = Expediente.ESC_clave
+				                LEFT    JOIN Escolaridad ON Escolaridad.ESC_clave = Expediente.ESC_clave 
 				WHERE EXP_folio = '$folio'";
 
 		$result = $db->query($sql);
@@ -3953,16 +3946,16 @@ $app->get('/listarecepcion/:usuario', function($usuario){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_FLU_ListaRecepcionXUsu  @usuario=$usuario";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"PAS_folio"));
 	            $valor2 = utf8_encode(odbc_result($rs,"FLD_etapa"));
@@ -4001,14 +3994,14 @@ $app->get('/listarecepcion/:usuario', function($usuario){
 				$traspasosResultado['ARO_porRecibir'] = $valor18;
 				$traspasosResultado['FLD_AROent'] = $valor19;
 				$traspasosResultado['USU_ent'] = $valor20;
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -4017,17 +4010,17 @@ $app->get('/listarecepcion/:usuario', function($usuario){
 
 		}
 
-		//
+		// 
 	}
 
 });
 
-//manda correo a responsable operativo para
+//manda correo a responsable operativo para 
 $app->post('/generapeticion',function(){
-
+	
 	$request = \Slim\Slim::getInstance()->request();
 	$datos = json_decode($request->getBody());
-
+	
 
 
 
@@ -4045,7 +4038,7 @@ $app->post('/generapeticion',function(){
 	<html>
 	<head>
 	  <title>Recordatorio de cumpleaños para Agosto</title>
-	  <style>' . $bootstrap .
+	  <style>' . $bootstrap . 
 	  '</style>
 	</head>
 	<body>
@@ -4074,10 +4067,10 @@ $app->post('/generapeticion',function(){
 
 	// Enviarlo
 	mail($para, $título, $mensaje, $cabeceras);
-
+	
 });
 
-//Entrega al usuario los documentos pendientes por recibir
+//Entrega al usuario los documentos pendientes por recibir 
 $app->get('/listaentrega/:usuario', function($usuario){
 
     $conexion = conectarActual();
@@ -4087,16 +4080,16 @@ $app->get('/listaentrega/:usuario', function($usuario){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_FLU_ListaEntregaXUsu  @usuario=$usuario";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"PAS_folio"));
 	            $valor2 = utf8_encode(odbc_result($rs,"FLD_etapa"));
@@ -4133,7 +4126,7 @@ $app->get('/listaentrega/:usuario', function($usuario){
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -4142,7 +4135,7 @@ $app->get('/listaentrega/:usuario', function($usuario){
 
 		}
 
-
+		
 
 	}
 
@@ -4159,16 +4152,16 @@ $app->get('/listaflujo/:folio', function($folio){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_FLU_BuscaDocumento  @folio='$folio'";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"Usuario"));
 	            $valor2 = utf8_encode(odbc_result($rs,"Tipo"));
@@ -4176,7 +4169,7 @@ $app->get('/listaflujo/:folio', function($folio){
 	            $valor4 = odbc_result($rs,"FLD_etapa"); //utf8_encode(odbc_result($rs,"fechafax"));
 	            $valor5 = odbc_result($rs,"FLD_numeroEntrega");
 	            $valor6 = utf8_encode(odbc_result($rs,"Status")); //utf8_encode(odbc_result($rs,"fechaoriginal"));
-
+	           
 
 				$traspasosResultado['Usuario'] = $valor1;
 	            $traspasosResultado['Tipo'] = $valor2;
@@ -4184,15 +4177,15 @@ $app->get('/listaflujo/:folio', function($folio){
 	            $traspasosResultado['Etapa'] = $valor4;
 	            $traspasosResultado['Entrega'] = $valor5;
 	            $traspasosResultado['Status'] = $valor6;
-
-
+	            
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -4205,7 +4198,7 @@ $app->get('/listaflujo/:folio', function($folio){
 		//echo json_encode($arr);
 
 
-
+		
 
 	}
 
@@ -4221,17 +4214,17 @@ $app->get('/listageneral/:usuario', function($usuario){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_FLU_ListaGralXUsu  @usuario=$usuario";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
-
+			while (odbc_fetch_row($rs)){ 
+				
 				$valor1 = utf8_encode(odbc_result($rs,"PAS_folio"));
 	            $valor2 = utf8_encode(odbc_result($rs,"FLD_etapa"));
 	            $valor4 = utf8_encode(odbc_result($rs,"FLD_numeroEntrega")); //utf8_encode(odbc_result($rs,"fechafax"));
@@ -4246,9 +4239,9 @@ $app->get('/listageneral/:usuario', function($usuario){
 	            $valor14 = odbc_result($rs,"FLD_claveint");
 	            $valor15 = odbc_result($rs,"ARO_Activa");
 	            $valor16 = odbc_result($rs,"DOC_claveint");
-	            $valor17 = odbc_result($rs,"FLD_observaciones");
-
-
+	            $valor17 = odbc_result($rs,"FLD_observaciones"); 
+	            
+	            
 
 				$traspasosResultado['Folio'] = $valor1;
 	            $traspasosResultado['Etapa'] = $valor2;
@@ -4265,14 +4258,14 @@ $app->get('/listageneral/:usuario', function($usuario){
 	            $traspasosResultado['area'] = $valor15;
 	            $traspasosResultado['documento'] = $valor16;
 	            $traspasosResultado['Observaciones'] = $valor17;
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -4297,17 +4290,17 @@ $app->get('/listageneralnpc/:usuario', function($usuario){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_FLU_ListaGralXUsuNPC  @usuario=$usuario";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
-
+			while (odbc_fetch_row($rs)){ 
+				
 				$valor1 = utf8_encode(odbc_result($rs,"PAS_folio"));
 	            $valor2 = utf8_encode(odbc_result($rs,"FLD_etapa"));
 	            $valor4 = utf8_encode(odbc_result($rs,"FLD_numeroEntrega")); //utf8_encode(odbc_result($rs,"fechafax"));
@@ -4322,9 +4315,9 @@ $app->get('/listageneralnpc/:usuario', function($usuario){
 	            $valor14 = odbc_result($rs,"FLD_claveint");
 	            $valor15 = odbc_result($rs,"ARO_Activa");
 	            $valor16 = odbc_result($rs,"DOC_claveint");
-	            $valor17 = odbc_result($rs,"FLD_observaciones");
-
-
+	            $valor17 = odbc_result($rs,"FLD_observaciones"); 
+	            
+	            
 
 				$traspasosResultado['Folio'] = $valor1;
 	            $traspasosResultado['Etapa'] = $valor2;
@@ -4341,14 +4334,14 @@ $app->get('/listageneralnpc/:usuario', function($usuario){
 	            $traspasosResultado['area'] = $valor15;
 	            $traspasosResultado['documento'] = $valor16;
 	            $traspasosResultado['Observaciones'] = $valor17;
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -4373,16 +4366,16 @@ $app->get('/listapagos', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_FLU_ListaPagos";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"USUNombre"));
 	            $valor2 = utf8_encode(odbc_result($rs,"Cliente"));
@@ -4439,7 +4432,7 @@ $app->get('/listapagos', function(){
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -4448,10 +4441,10 @@ $app->get('/listapagos', function(){
 
 		}
 
-
+		
 
 	}
-
+	
 });
 
 
@@ -4474,28 +4467,28 @@ $app->post('/listapagosfechas', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-
+		
+		
 
 		$sql = "EXEC MV_FLU_ListaPagosXfechaRecepcionPagos @fechaini = '$fechaini', @fechafin = '$fechafin'";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
-				$valor1 = utf8_encode(odbc_result($rs,"USUNombre"));
-	            $valor2 = utf8_encode(odbc_result($rs,"Cliente"));
-	            $valor3 = utf8_encode(odbc_result($rs,"Unidad")); //utf8_encode(odbc_result($rs,"fechafax"));
-	            $valor4 = utf8_encode(odbc_result($rs,"Folio"));
-	            $valor5 = utf8_encode(odbc_result($rs,"Lesionado")); //utf8_encode(odbc_result($rs,"fechaoriginal"));
-	            $valor6 = utf8_encode(odbc_result($rs,"Etapa"));
-	            $valor7 = utf8_encode(odbc_result($rs,"Entrega"));
-	            $valor8 = utf8_encode(odbc_result($rs,"FormaRecep"));
-	            $valor9 = utf8_encode(odbc_result($rs,"fechaRecepcion"));
+				$valor1  = utf8_encode(odbc_result($rs,"USUNombre"));
+	            $valor2  = utf8_encode(odbc_result($rs,"Cliente"));
+	            $valor3  = utf8_encode(odbc_result($rs,"Unidad")); //utf8_encode(odbc_result($rs,"fechafax"));
+	            $valor4  = utf8_encode(odbc_result($rs,"Folio"));
+	            $valor5  = utf8_encode(odbc_result($rs,"Lesionado")); //utf8_encode(odbc_result($rs,"fechaoriginal"));
+	            $valor6  = utf8_encode(odbc_result($rs,"Etapa"));
+	            $valor7  = utf8_encode(odbc_result($rs,"Entrega"));
+	            $valor8  = utf8_encode(odbc_result($rs,"FormaRecep"));
+	            $valor9  = utf8_encode(odbc_result($rs,"fechaRecepcion"));
 	            $valor10 = utf8_encode(odbc_result($rs,"FechaRecepPag"));
 	            $valor11 = utf8_encode(odbc_result($rs,"Relacion"));
 	            $valor12 = utf8_encode(odbc_result($rs,"RelP"));
@@ -4542,7 +4535,7 @@ $app->post('/listapagosfechas', function(){
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -4551,7 +4544,7 @@ $app->post('/listapagosfechas', function(){
 
 		}
 
-
+		
 
 	}
 
@@ -4576,13 +4569,13 @@ $app->post('/listapagosfechasrecepcion', function(){
 
 		$sql = "EXEC MV_FLU_ListaPagosXfechaRecepcion @fechaini = '$fechaini', @fechafin = '$fechafin'";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"USUNombre"));
 	            $valor2 = utf8_encode(odbc_result($rs,"Cliente"));
@@ -4639,7 +4632,7 @@ $app->post('/listapagosfechasrecepcion', function(){
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -4648,7 +4641,7 @@ $app->post('/listapagosfechasrecepcion', function(){
 
 		}
 
-		//
+		// 
 
 	}
 
@@ -4665,18 +4658,18 @@ $app->get('/listarechazos/:usuario', function($usuario){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 
 		//verificar filtro de rechazo
 		$sql = "EXEC MV_FLU_ListaGralXUsuRechazo  @usuario=$usuario";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"PAS_folio"));
 	            $valor2 = utf8_encode(odbc_result($rs,"FLD_etapa"));
@@ -4711,14 +4704,14 @@ $app->get('/listarechazos/:usuario', function($usuario){
 				$traspasosResultado['FLD_AROent'] = $valor16;
 				$traspasosResultado['USU_rec'] = $valor17;
 				$traspasosResultado['Observaciones'] = $valor18;
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -4728,10 +4721,10 @@ $app->get('/listarechazos/:usuario', function($usuario){
 		}
 
 
-		//
+		// 
 
 	}
-
+		
 });
 
 //Lista de tickets que estan registrados por filtro de fechas
@@ -4740,13 +4733,13 @@ $app->post('/listatickets', function(){
 	$request = \Slim\Slim::getInstance()->request();
 	$datos = json_decode($request->getBody());
 
-	$fecha1 = $datos->fechaini;
-	$fecha2 = $datos->fechafin;
+	$fecha1 = $datos->fechaini; 
+	$fecha2 = $datos->fechafin; 
 
     $fechaIni =  date('Y-m-d', strtotime(str_replace('/', '-', $fecha1)));
     $fechaFin = date('Y-m-d', strtotime(str_replace('/', '-', $fecha2)));
-
-
+    
+    
     $conexion = conectarMySQL();
 
     if(!$conexion) {
@@ -4754,7 +4747,7 @@ $app->post('/listatickets', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT TSeg_clave as Folio_Interno, TicketSeguimiento.Exp_folio as Folio_Web, TSeg_etapa as Etapa, TCat_nombre as Categoria, TSub_nombre as Subcategoria,
 				TStatus_nombre as Status, TSeg_obs as Observaciones, Uni_nombre as Unidad, TSeg_Asignado as Asignado, TSeg_fechareg as Registro,
 				Usu_nombre as Usuario_Registro, Tseg_fechaactualizacion as Ultima_Actualizacion,Concat(Exp_nombre,' ', Exp_paterno,' ', Exp_materno) As Lesionado,Cia_nombrecorto as Cliente,
@@ -4787,13 +4780,13 @@ $app->get('/listatickets/:interno', function($interno){
 	// $request = \Slim\Slim::getInstance()->request();
 	// $datos = json_decode($request->getBody());
 
-	// $fecha1 = $datos->fechaini;
-	// $fecha2 = $datos->fechafin;
+	// $fecha1 = $datos->fechaini; 
+	// $fecha2 = $datos->fechafin; 
 
  //    $fechaIni =  date('Y-m-d', strtotime(str_replace('/', '-', $fecha1)));
  //    $fechaFin = date('Y-m-d', strtotime(str_replace('/', '-', $fecha2)));
-
-
+    
+    
     $conexion = conectarMySQL();
 
     if(!$conexion) {
@@ -4801,7 +4794,7 @@ $app->get('/listatickets/:interno', function($interno){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT TSeg_clave as Folio_Interno, TicketSeguimiento.Exp_folio as Folio_Web, TSeg_etapa as Etapa, TCat_nombre as Categoria, TSub_nombre as Subcategoria,
 				TStatus_nombre as Status, TSeg_obs as Observaciones, Uni_nombre as Unidad, TSeg_Asignado as Asignado, TSeg_fechareg as Registro,
 				Usu_nombre as Usuario_Registro, Tseg_fechaactualizacion as Ultima_Actualizacion,Concat(Exp_nombre,' ', Exp_paterno,' ', Exp_materno) As Lesionado,Cia_nombrecorto as Cliente,
@@ -4828,19 +4821,19 @@ $app->get('/listatickets/:interno', function($interno){
 });
 
 
-//busca tickets con folio web
+//busca tickets con folio web 
 $app->get('/listaticketsfolio/:web', function($web){
 
 	// $request = \Slim\Slim::getInstance()->request();
 	// $datos = json_decode($request->getBody());
 
-	// $fecha1 = $datos->fechaini;
-	// $fecha2 = $datos->fechafin;
+	// $fecha1 = $datos->fechaini; 
+	// $fecha2 = $datos->fechafin; 
 
  //    $fechaIni =  date('Y-m-d', strtotime(str_replace('/', '-', $fecha1)));
  //    $fechaFin = date('Y-m-d', strtotime(str_replace('/', '-', $fecha2)));
-
-
+    
+    
     $conexion = conectarMySQL();
 
     if(!$conexion) {
@@ -4848,7 +4841,7 @@ $app->get('/listaticketsfolio/:web', function($web){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT TSeg_clave as Folio_Interno, TicketSeguimiento.Exp_folio as Folio_Web, TSeg_etapa as Etapa, TCat_nombre as Categoria, TSub_nombre as Subcategoria,
 				TStatus_nombre as Status, TSeg_obs as Observaciones, Uni_nombre as Unidad, TSeg_Asignado as Asignado, TSeg_fechareg as Registro,
 				Usu_nombre as Usuario_Registro, Tseg_fechaactualizacion as Ultima_Actualizacion,Concat(Exp_nombre,' ', Exp_paterno,' ', Exp_materno) As Lesionado,Cia_nombrecorto as Cliente,
@@ -4882,7 +4875,7 @@ $app->post('/login', function(){
 	$entrada = json_decode($request->getBody());
 
     $usuario =  $entrada->user;
-    $contrasena =  md5($entrada->psw);
+    $contrasena =  md5($entrada->psw); 
 
     $conexion = conectarActual();
 
@@ -4891,15 +4884,15 @@ $app->post('/login', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-		$rs= odbc_exec($conexion,"select * from Usuario left join UsuarioArea on Usuario.USU_claveint = UsuarioArea.USU_claveint where USU_login = '$usuario' and USU_password = '$contrasena' ");
+	
+		$rs= odbc_exec($conexion,"select * from Usuario left join UsuarioArea on Usuario.USU_claveint = UsuarioArea.USU_claveint where USU_login = '$usuario' and USU_password = '$contrasena' "); 
 
 
 		$i = 0;
 
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = odbc_result($rs,"USU_claveint");
 	            $valor2 = utf8_encode(odbc_result($rs,"USU_Nombre"));
@@ -4923,7 +4916,7 @@ $app->post('/login', function(){
 	            	$arr = array('respuesta' => 'El Usuario no esta Activo');
 					echo json_encode($arr);
 	            }
-
+				
 
 			}
 
@@ -4936,14 +4929,14 @@ $app->post('/login', function(){
 
 		}
 
-
+		
 
 	}
 
 });
 
 $app->get('/muestrahistorico/:folio/:etapa/:entrega',function ($folio,$etapa,$entrega){
-
+ 	
 
     $conexion = conectarActual();
 
@@ -4960,14 +4953,14 @@ $app->get('/muestrahistorico/:folio/:etapa/:entrega',function ($folio,$etapa,$en
 				inner join Unidad on Unidad.UNI_claveint = Documento.UNI_claveint
 				where HistorialFlujo.his_folio = '$folio' and HistorialFlujo.his_etapa = $etapa and Documento.DOC_etapa = $etapa and HistorialFlujo.his_entrega = $entrega and Documento.DOC_numeroEntrega = $entrega";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-
-			while (odbc_fetch_row($rs)){
+			
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"his_folio"));
 				$valor7 = odbc_result($rs,"EMP_NombreCorto");
@@ -4991,7 +4984,7 @@ $app->get('/muestrahistorico/:folio/:etapa/:entrega',function ($folio,$etapa,$en
 	            $valor3 = strtotime($valor3);
 	            $valor3 = date('G:ia', $valor3);
 
-
+	            
 	            if ($valor6 == "Fax") {
 	            	$valor6 = 'icon-drawer';
 	            }
@@ -5008,7 +5001,7 @@ $app->get('/muestrahistorico/:folio/:etapa/:entrega',function ($folio,$etapa,$en
 	            if ($valor6 = "Rechazo") {
 	            	$valor6 = 'icon-sad';
 	            }
-
+	       
 	            //echo $valor1;
 	            //echo $valor2;
 
@@ -5019,8 +5012,8 @@ $app->get('/muestrahistorico/:folio/:etapa/:entrega',function ($folio,$etapa,$en
 	            $traspasosResultado['titulo'] = utf8_encode($valor4);
 	            $traspasosResultado['descripcion'] = utf8_encode($valor5);
 	            $traspasosResultado['accion'] = $valor6;
-
-
+	            
+	    				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
@@ -5028,7 +5021,7 @@ $app->get('/muestrahistorico/:folio/:etapa/:entrega',function ($folio,$etapa,$en
 
 			$resultado['movimientos'] = $valores;
 			echo json_encode($resultado);
-
+		
 		}
 
 		else{
@@ -5038,7 +5031,7 @@ $app->get('/muestrahistorico/:folio/:etapa/:entrega',function ($folio,$etapa,$en
 
 		}
 
-
+		
 
 	}
 
@@ -5053,17 +5046,17 @@ $app->get('/producto/:empresa', function($empresa){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_DCU_ProductoXEmpresa @empresa = $empresa";
 
-		$rs= odbc_exec($conexion, $sql);
+		$rs= odbc_exec($conexion, $sql); 
 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
 
-		while (odbc_fetch_row($rs)){
+		while (odbc_fetch_row($rs)){ 
 
 			$valor1 = utf8_encode(odbc_result($rs,"PRO_claveint"));
             $valor2 = utf8_encode(odbc_result($rs,"PRO_nombre"));
@@ -5072,7 +5065,7 @@ $app->get('/producto/:empresa', function($empresa){
             //echo $valor2;
 			$traspasosResultado['id'] = $valor1;
             $traspasosResultado['nombre'] = $valor2;
-
+			
 			$valores[$i] = $traspasosResultado;
             $i++;
 
@@ -5095,17 +5088,17 @@ $app->get('/productos', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT * FROM Producto";
 
-		$rs= odbc_exec($conexion, $sql);
+		$rs= odbc_exec($conexion, $sql); 
 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
 
-		while (odbc_fetch_row($rs)){
+		while (odbc_fetch_row($rs)){ 
 
 			$valor1 = utf8_encode(odbc_result($rs,"PRO_claveint"));
             $valor2 = utf8_encode(odbc_result($rs,"PRO_nombre"));
@@ -5114,7 +5107,7 @@ $app->get('/productos', function(){
             //echo $valor2;
 			$traspasosResultado['id'] = $valor1;
             $traspasosResultado['nombre'] = $valor2;
-
+			
 			$valores[$i] = $traspasosResultado;
             $i++;
 
@@ -5128,7 +5121,7 @@ $app->get('/productos', function(){
 
 });
 
-//Se rechaza el folio
+//Se rechaza el folio 
 $app->post('/rechazoentrega', function(){
 
 
@@ -5136,20 +5129,20 @@ $app->post('/rechazoentrega', function(){
 		$datos = json_decode($request->getBody());
 
 		//datos para guardar historico
-		$folio =  $datos->Folio;
+		$folio =  $datos->Folio; 
 	    $etapa =  $datos->Etapa;
 		$numentrega = $datos->Cantidad;
 
-		$documento =  $datos->DOC_claveint;
-	    $areaentrega  =  $datos->FLD_AROent;
+		$documento =  $datos->DOC_claveint; 
+	    $areaentrega  =  $datos->FLD_AROent; 
 	    $usuarioentrega =  $datos->USU_ent;
 
-	    $usuariorecibe =  $datos->USU_recibe;
+	    $usuariorecibe =  $datos->USU_recibe; 
 	    $arearecibe =  $datos->ARO_porRecibir;
 	    $clave = $datos->FLD_claveint;
 
 	    $rechazo = $datos->motivo;
-
+	    
 	    $fecha = date("d/m/Y");
 	    $hoy = date("H:i:s");
 	    $fecha = $fecha . " " . $hoy;
@@ -5164,14 +5157,14 @@ $app->post('/rechazoentrega', function(){
 		    die('Something went wrong while connecting to MSSQL');
 
 		}else{
-
-
-			$sql = "UPDATE FlujoDoc SET
-					USU_ent = NULL, FLD_fechaEnt = NULL, FLD_porRecibir = 0, USU_recibe = NULL, ARO_porRecibir = NULL,
-					FLD_rechazado = 1, USU_Rechazo = $usuariorecibe, FLD_fechaRechazo = CONVERT (datetime, GETDATE()),
+			
+ 
+			$sql = "UPDATE FlujoDoc SET 
+					USU_ent = NULL, FLD_fechaEnt = NULL, FLD_porRecibir = 0, USU_recibe = NULL, ARO_porRecibir = NULL, 
+					FLD_rechazado = 1, USU_Rechazo = $usuariorecibe, FLD_fechaRechazo = CONVERT (datetime, GETDATE()), 
 					FLD_MotivoRechazo = '$rechazo' WHERE FLD_claveint = $clave";
 
-			$rs = odbc_exec($conexion,$sql);
+			$rs = odbc_exec($conexion,$sql); 
 
 			if ($rs){
 
@@ -5180,19 +5173,19 @@ $app->post('/rechazoentrega', function(){
 				}else{
 					$detalle = $rechazo;
 				}
-
+				
 				// //$nombre = nombrecompleto($usuarioentrega);
 				$historico = altahistorial($usuariorecibe, $folio, $etapa, $numentrega, $fecha, 6 ,$detalle,$usuarioentrega,$areaentrega,$arearecibe,$documento);
 
 	            $arr = array('respuesta' => 'Documento(s) rechazados Correctamente');
-
+	              
 	        }else{
 
 	            $arr = array('respuesta' => 'Error durante el proceso : '.odbc_error());
 
-	        }
+	        }   
 
-			echo json_encode($arr);
+			echo json_encode($arr); 
 
 			odbc_close($conexion);
 
@@ -5216,16 +5209,16 @@ $app->post('/recepcionfoliosfecha', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_DCU_ListadoDocumentosXFecha  @fechaIni='$fechaini', @fechaFin='$fechafin'";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"folio"));
 	            $valor2 = utf8_encode(odbc_result($rs,"etapa"));
@@ -5272,14 +5265,14 @@ $app->post('/recepcionfoliosfecha', function(){
 	            $traspasosResultado['Cancelado'] = $valor18;
 	            $traspasosResultado['Numero'] = $valor19;
 	            $traspasosResultado['Empresa'] = $valor20;
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -5308,16 +5301,16 @@ $app->get('/recepcionfolios/:folio', function($folio){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_DCU_ListadoDocumentosXFolio  @folio='$folio'";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"folio"));
 	            $valor2 = utf8_encode(odbc_result($rs,"etapa"));
@@ -5340,14 +5333,14 @@ $app->get('/recepcionfolios/:folio', function($folio){
 	            $valor19 = utf8_encode(odbc_result($rs,"etapaEntrega"));
 	            $valor20 = utf8_encode(odbc_result($rs,"EMP_nombrecorto"));
 
-
+	            
 
 			    if(!$conexionMysql) {
 
 				    $tickets = array('respuesta' => 'Sin Ticket');
 
 				}else{
-
+					
 					$sql = "SELECT TSeg_clave as Folio_Interno, TicketSeguimiento.Exp_folio as Folio_Web, TSeg_etapa as Etapa, TCat_nombre as Categoria, TSub_nombre as Subcategoria,
 							TStatus_nombre as Status, TSeg_obs as Observaciones, Uni_nombre as Unidad, TSeg_Asignado as Asignado, TSeg_fechareg as Registro,
 							Usu_nombre as Usuario_Registro, Tseg_fechaactualizacion as Ultima_Actualizacion,Concat(Exp_nombre,' ', Exp_paterno,' ', Exp_materno) As Lesionado,Cia_nombrecorto as Cliente,
@@ -5366,11 +5359,11 @@ $app->get('/recepcionfolios/:folio', function($folio){
 
 					$result = $conexionMysql->query($sql);
 			        $tickets = $result->fetchAll(PDO::FETCH_OBJ);
-
+			        
 
 				}
 
-
+	            
 
 				$traspasosResultado['Folio'] = $valor1;
 	            $traspasosResultado['Etapa'] = $valor2;
@@ -5394,14 +5387,14 @@ $app->get('/recepcionfolios/:folio', function($folio){
 	            $traspasosResultado['Empresa'] = $valor20;
 	            $traspasosResultado['ticket'] = $tickets;
 
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -5432,16 +5425,16 @@ $app->get('/recepcionfoliosxlesionado/:lesionado', function($lesionado){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_DCU_ListadoDocumentosXLesionado  @lesionado='% $lesionado %'";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"folio"));
 	            $valor2 = utf8_encode(odbc_result($rs,"etapa"));
@@ -5469,7 +5462,7 @@ $app->get('/recepcionfoliosxlesionado/:lesionado', function($lesionado){
 				    $tickets = array('respuesta' => 'Sin Ticket');
 
 				}else{
-
+					
 					$sql = "SELECT TSeg_clave as Folio_Interno, TicketSeguimiento.Exp_folio as Folio_Web, TSeg_etapa as Etapa, TCat_nombre as Categoria, TSub_nombre as Subcategoria,
 							TStatus_nombre as Status, TSeg_obs as Observaciones, Uni_nombre as Unidad, TSeg_Asignado as Asignado, TSeg_fechareg as Registro,
 							Usu_nombre as Usuario_Registro, Tseg_fechaactualizacion as Ultima_Actualizacion,Concat(Exp_nombre,' ', Exp_paterno,' ', Exp_materno) As Lesionado,Cia_nombrecorto as Cliente,
@@ -5488,7 +5481,7 @@ $app->get('/recepcionfoliosxlesionado/:lesionado', function($lesionado){
 
 					$result = $conexionMysql->query($sql);
 			        $tickets = $result->fetchAll(PDO::FETCH_OBJ);
-
+			        
 
 				}
 
@@ -5516,14 +5509,14 @@ $app->get('/recepcionfoliosxlesionado/:lesionado', function($lesionado){
 	            $traspasosResultado['Empresa'] = $valor20;
 	            $traspasosResultado['ticket'] = $tickets;
 
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -5551,14 +5544,14 @@ $app->get('/referenciaunidad/:unidad', function($unidad){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-		$rs= odbc_exec($conexion,"EXEC MV_DCU_referenciaXunidad @unidad = $unidad ");
+	
+		$rs= odbc_exec($conexion,"EXEC MV_DCU_referenciaXunidad @unidad = $unidad "); 
 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
 
 			$valor1 = utf8_encode(odbc_result($rs,"uni_ref"));
@@ -5588,7 +5581,7 @@ $app->get('/statusweb', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT TStatus_clave as Clave, TStatus_nombre as Nombre FROM TicketStatus ";
 
 		$result = $db->query($sql);
@@ -5600,7 +5593,7 @@ $app->get('/statusweb', function(){
 
 });
 
-//busca categorias para tickets en web
+//busca categorias para tickets en web 
 $app->get('/subcategorias/:categoria', function($subcategoria){
 
     $conexion = conectarMySQL();
@@ -5610,7 +5603,7 @@ $app->get('/subcategorias/:categoria', function($subcategoria){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT TSub_clave as Clave, TSub_nombre as Nombre FROM TicketSubcat where TCat_clave= $subcategoria";
 
 
@@ -5624,10 +5617,10 @@ $app->get('/subcategorias/:categoria', function($subcategoria){
 
 });
 
-//busca tickets con folio web
+//busca tickets con folio web 
 $app->get('/ticket', function(){
-
-
+    
+    
     $conexion = conectarMySQL();
 
     if(!$conexion) {
@@ -5635,7 +5628,7 @@ $app->get('/ticket', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT MAX(TSeg_clave) as ultimo FROM TicketSeguimiento";
 
 
@@ -5648,10 +5641,10 @@ $app->get('/ticket', function(){
 
 });
 
-//busca tickets con folio web
+//busca tickets con folio web 
 $app->get('/ticketinfo/:id/:folio', function($id,$folio){
-
-
+    
+    
     $conexion = conectarMySQL();
     $datos = array();
 
@@ -5660,14 +5653,13 @@ $app->get('/ticketinfo/:id/:folio', function($id,$folio){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		//info del ticket
 		$query = "SELECT * FROM TicketSeguimiento where TSeg_clave=$id";
-
+		
 		$result = $conexion->query($query);
         $ticket = $result->fetchAll(PDO::FETCH_OBJ);
-
-
+        
 		//Obtener comunicacion
 		$querycomunicacion="SELECT TC_descripcion as Descripcion, TC_fechareg as Fecha, Usuario.Usu_nombre as Usuario
 		FROM TicketComunicacion
@@ -5679,7 +5671,7 @@ $app->get('/ticketinfo/:id/:folio', function($id,$folio){
 
 		//Obtener notas
 		$querynotas="SELECT TN_descripcion as Descripcion, TN_fechareg as Fecha, Usuario.Usu_nombre as Usuario
-		FROM TicketNotas
+		FROM TicketNotas 
 		inner join Usuario on Usuario.Usu_login=TicketNotas.Usu_registro
 		where TSeg_clave=$id And Exp_folio='$folio'";
 
@@ -5695,12 +5687,12 @@ $app->get('/ticketinfo/:id/:folio', function($id,$folio){
 
 		$result = $conexion->query($qryexp);
         $expediente = $result->fetchAll(PDO::FETCH_OBJ);
-
+		
         $datos['expediente'] = $expediente;
         $datos['ticket'] = $ticket;
         $datos['notas'] = $notas;
         $datos['comunicacion'] = $comunicacion;
-
+        
         echo json_encode($datos);
 
 	}
@@ -5716,19 +5708,19 @@ $app->post('/traspaso', function(){
 	$datos = json_decode($request->getBody());
 
 	//datos para guardar historico
-	$folio =  $datos->folio;
+	$folio =  $datos->folio; 
     $etapa =  $datos->etapa;
 	$numentrega = $datos->cantidad;
-	$areaentrega =  $datos->areaentrega; //es la misma area asi que se deja solo una
+	$areaentrega =  $datos->areaentrega; //es la misma area asi que se deja solo una 
 
-	$documento =  $datos->documento;
-    $usuarioentrega =  $datos->usuarioentrega;
-    $usuariorecibe =  $datos->usuariorecibe;
+	$documento =  $datos->documento; 
+    $usuarioentrega =  $datos->usuarioentrega; 
+    $usuariorecibe =  $datos->usuariorecibe; 
 
     $usuarioactivo =  $datos->uasuarioemitio;
 
     $clave = $datos->clave;
-
+    
     $fecha = date("d/m/Y");
     $hoy = date("H:i:s");
     $fecha = $fecha . " " . $hoy;
@@ -5739,30 +5731,30 @@ $app->post('/traspaso', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "UPDATE FlujoDoc SET USU_activo = $usuariorecibe WHERE FLD_claveint = $clave";
 
-		$rs = odbc_exec($conexion,$sql);
+		$rs = odbc_exec($conexion,$sql); 
 
 		if ($rs){
 
-			  //en este caso se genero un paso de documentos por lo que al mandar la area2 al historico
-			  //se necesita que se mande el usuario que realizo todo el cambio ya que usuentrega y usurecibe pueden variar
-			  $historico = altahistorial($usuarioentrega, $folio, $etapa, $numentrega, $fecha, 7 ,'', $usuariorecibe,$areaentrega,$usuarioactivo,$documento);
+			  //en este caso se genero un paso de documentos por lo que al mandar la area2 al historico 
+			  //se necesita que se mande el usuario que realizo todo el cambio ya que usuentrega y usurecibe pueden variar 
+			  $historico = altahistorial($usuarioentrega, $folio, $etapa, $numentrega, $fecha, 7 ,'', $usuariorecibe,$areaentrega,$usuarioactivo,$documento); 
               $arr = array('respuesta' => 'Documento(s) enviado Correctamente', 'Historial' => $historico);
-
+              
         }else {
 
               $arr = array('respuesta' => 'Error durante el Guardado : '.odbc_error());
-        }
+        }   
 
-		echo json_encode($arr);
+		echo json_encode($arr); 
 
 	}
 
 });
 
-//modulo donde verificamos la entrega
+//modulo donde verificamos la entrega 
 $app->get('/verificaetapaentrega/:folio/:etapa', function($folio, $etapa){
 
     $conexion = conectarActual();
@@ -5772,26 +5764,26 @@ $app->get('/verificaetapaentrega/:folio/:etapa', function($folio, $etapa){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_DCU_VerificaEtapaEntrega @folio ='$folio', @etapa = $etapa";
-		$rs = odbc_exec($conexion,$sql);
+		$rs = odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
 			$valor1 = odbc_result($rs,"total");
 
 			//Esto es para ver el numero de documentos en el historial
 			$detalle = array();
 
-			for ($i=0; $i < $valor1; $i++) {
+			for ($i=0; $i < $valor1; $i++) { 
 				$detalle[$i]['valor'] = $i +1;
 			}
 
 			$arr = array('total' => $valor1, 'detalle' => $detalle);
 			echo json_encode($arr);
-
+		
 		}
 		else{
 
@@ -5816,14 +5808,14 @@ $app->get('/verificafolio/:folio/:etapa', function($folio,$etapa){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_DCU_VerificaFolio  @folio=$folio, @etapa=$etapa";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
 
 			$valor1 = utf8_encode(odbc_result($rs,"DOC_original"));
@@ -5842,7 +5834,7 @@ $app->get('/verificafolio/:folio/:etapa', function($folio,$etapa){
 			$arr = array('respuesta' => 'El folio ya se encuentra registrado en Control de Documentos','original' => $valor1,'clave' => $valor2,'fax' => $valor3,'fechafax' => $valor4,'fe' => $valor5,
 				'fefecha' => $valor6,'lesionado' => $valor7,'unidad' => $valor8,'empresa' => $valor9,'producto' => $valor10,'escuela' => $valor11);
 			echo json_encode($arr);
-
+		
 		}
 		else{
 
@@ -5867,26 +5859,26 @@ $app->get('/verificafoliopase/:folio', function($folio){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_DCU_VerificaFolioEnPase  @folio=$folio";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
 			$valor1 = odbc_result($rs,"total");
 			if ($valor1 > 0) {
 
 				$arr = array('respuesta' => 'El folio ya se encuentra registrado en Modulo de Capturas');
-
+				
 			}else{
 				$arr = array('siguiente' => 'true');
 			}
-
+			
 			echo json_encode($arr);
-
+		
 		}
 		else{
 
@@ -5902,7 +5894,6 @@ $app->get('/verificafoliopase/:folio', function($folio){
 
 $app->get('/verificaprefijo/:prefijo/:empresa', function($prefijo, $empresa){
 
-
     $conexion = conectarActual();
 
     if(!$conexion) {
@@ -5910,10 +5901,10 @@ $app->get('/verificaprefijo/:prefijo/:empresa', function($prefijo, $empresa){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_DCU_ValidaPrefijoFolio  @prefijo='$prefijo', @empresa='$empresa'";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
@@ -5924,7 +5915,7 @@ $app->get('/verificaprefijo/:prefijo/:empresa', function($prefijo, $empresa){
 	}
 
 	odbc_close($conexion);
-
+	
 });
 
 $app->get('/unidades', function(){
@@ -5936,15 +5927,15 @@ $app->get('/unidades', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-		$rs= odbc_exec($conexion,"EXEC MV_DCU_Unidades");
+	
+		$rs= odbc_exec($conexion,"EXEC MV_DCU_Unidades"); 
 
 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
 
-		while (odbc_fetch_row($rs)){
+		while (odbc_fetch_row($rs)){ 
 
 			$valor1 = utf8_encode(odbc_result($rs,"uni_claveint"));
             $valor2 = utf8_encode(odbc_result($rs,"uni_nombrecorto"));
@@ -5953,7 +5944,7 @@ $app->get('/unidades', function(){
             //echo $valor2;
 			$traspasosResultado['id'] = $valor1;
             $traspasosResultado['nombre'] = $valor2;
-
+			
 			$valores[$i] = $traspasosResultado;
             $i++;
 
@@ -5964,7 +5955,7 @@ $app->get('/unidades', function(){
 		// odbc_close($conexion);
 
 	}
-
+	
 });
 
 $app->get('/unidadesweb', function(){
@@ -5976,7 +5967,7 @@ $app->get('/unidadesweb', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "SELECT Uni_clave as UnidadClave, Uni_nombre as Nombre FROM Unidad Where Uni_activa='S' ORDER BY Uni_nombre";
 
 		$result = $db->query($sql);
@@ -5985,7 +5976,7 @@ $app->get('/unidadesweb', function(){
         echo json_encode($unidades);
 
     }
-
+    
 });
 
 $app->get('/usuariosarea/:area', function($area){
@@ -5998,30 +5989,30 @@ $app->get('/usuariosarea/:area', function($area){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+		
 		$sql = "EXEC MV_FLU_UsuarioXArea  @areaclave=$area";
 
-		$rs= odbc_exec($conexion,$sql);
+		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
 
 		//echo odbc_fetch_row($rs);
-		if( odbc_num_rows($rs) > 0 ) {
+		if( odbc_num_rows($rs) > 0 ) { 
 
-			while (odbc_fetch_row($rs)){
+			while (odbc_fetch_row($rs)){ 
 
 				$valor1 = utf8_encode(odbc_result($rs,"USU_claveint"));
 	            $valor2 = utf8_encode(odbc_result($rs,"USU_login"));
 
 				$traspasosResultado['id'] = $valor1;
 	            $traspasosResultado['nombre'] = $valor2;
-
+				
 				$valores[$i] = $traspasosResultado;
 	            $i++;
 
 			}
 
 			echo json_encode($valores);
-
+		
 		}
 		else{
 
@@ -6036,7 +6027,7 @@ $app->get('/usuariosarea/:area', function($area){
 		// odbc_close($conexion);
 
 	}
-
+	
 });
 
 //verifica los usuarios en el protal web
@@ -6049,9 +6040,9 @@ $app->get('/usuariosweb', function(){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
-		$sql = "SELECT Usuario.Usu_login as Clave, Usu_nombre as Nombre
-				FROM Usuario
+		
+		$sql = "SELECT Usuario.Usu_login as Clave, Usu_nombre as Nombre 
+				FROM Usuario 
 				Inner Join Permiso on Permiso.Usu_login=Usuario.Usu_login
 				Where Usu_activo='S' and Per_seguimiento='S' and Usuario.Usu_login <> 'lendex' ";
 
@@ -6061,11 +6052,11 @@ $app->get('/usuariosweb', function(){
         echo json_encode($usuarios);
 
     }
-
+    
 });
 
 $app->get('/historico',function (){
-
+ 	
  	$usuario = 1;
  	$fecha = '18/03/2014';
  	$folio = 'UMEG001235';
@@ -6085,14 +6076,14 @@ $app->get('/historico',function (){
 	}else{
 
 		$sql = "select * from Usuario where USU_claveint = $usuario";
-		$usu = odbc_exec($conexion,$sql);
+		$usu = odbc_exec($conexion,$sql); 
 		$nombre = utf8_encode(odbc_result($usu,"USU_nombre"));
 
 		if($accion = 'Fax'){
 
 	    	$titulo = "Se emitio Fax";
 	    	$descripcion = "Se emitio Fax del folio por el usuario " . $nombre;
-
+ 
 	    }elseif ($accion = 'Original') {
 
 	    	$titulo = "Se emitio Original por el usuario: ". $nombre;
@@ -6104,21 +6095,21 @@ $app->get('/historico',function (){
 	    	}else{
 	    		$descripcion = "Se emitio Rehabilitación del folio";
 	    	}
-
+	    	
 	    }elseif ($accion == 'Envio') {
 
 	    	$titulo = "Se envio por: ". $nombre ." al usuario ";
-
+	    	
 	    }elseif ($accion == 'Rechazo') {
-
+	    	
 	    	$titulo = "Se rechazo por: ". $nombre;
 
 	    }
-
+		
 
 		$sql = "EXEC MV_HIS_GuardaHistorial @folio='$folio', @fecha='$fecha', @hora = '$hora', @titulo = '$titulo', @descripcion = '$descripcion' , @etapa = $etapa, @entrega = $entrega, @usuario = $usuario, @accion = '$accion' ";
 
-		$rs = odbc_exec($conexion,$sql);
+		$rs = odbc_exec($conexion,$sql); 
 
 		if ($rs){
 
@@ -6132,7 +6123,7 @@ $app->get('/historico',function (){
         odbc_close($conexion);
 
 	}
-
+	
 });
 
 //funcion para buscar nombre completo del usuario
@@ -6143,7 +6134,7 @@ function nombrecompleto($usuario){
     if($conexion){
 
 		$sql = "SELECT USU_nombre FROM Usuario where USU_claveint = $usuario";
-		$usu = odbc_exec($conexion,$sql);
+		$usu = odbc_exec($conexion,$sql); 
 		$nombre = odbc_result($usu,"USU_nombre");
 
 		return $nombre;
@@ -6163,7 +6154,7 @@ function nombrearea($area){
     if($conexion){
 
 		$sql = "SELECT ARO_Nombre FROM AreaOperativa where ARO_activa = 1 and ARO_claveint = $area";
-		$are = odbc_exec($conexion,$sql);
+		$are = odbc_exec($conexion,$sql); 
 		$nombre = odbc_result($are,"ARO_Nombre");
 
 		return $nombre;
@@ -6179,12 +6170,12 @@ function nombrearea($area){
 //'83', 'PEMV023870', 1, 1, '10/07/2014 14:0...', 1, '', '', '', '', '', '512283'
 ///////funcion para agregar el historial de cada folio
 function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $detalle, $usuario2, $area , $area2, $documento){
-
+ 	
  	if ($documento == '') {
  		$documento = 0;
  	}
 
- 	//existen cuatro tipos de acciones
+ 	//existen cuatro tipos de acciones 
  	// 1.- evio de fax 2.- envio de original 3.- se envio el documento 4 .- se rechazo el documento
 	$fechaI = date("d/m/Y");
     $hora =  date("d/m/Y H:i:s");
@@ -6197,7 +6188,7 @@ function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $det
 
 	}else{
 
-
+		 
 		$nombre = nombrecompleto($usuario);
 		//se genera este debido a que no se pudo generar un orden al mandar los suarios =(
 		$areaaccion = 0;
@@ -6208,7 +6199,7 @@ function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $det
 	    	$descripcion =  mb_convert_encoding("Se emitio Fax del folio por el usuario ", "ISO-8859-1", "UTF-8") . $nombre;
 	    	$icono = 'Fax';
 	    	$areaaccion = 1;
-
+ 
 	    }
 
 	    if ($accion == 2) {
@@ -6226,7 +6217,7 @@ function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $det
 	    	$icono = 'Original';
 
 	    	$areaaccion = 1;
-
+	    	
 	    }
 
 	    if ($accion == 3) {
@@ -6242,40 +6233,40 @@ function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $det
 	    	$icono = 'Entrega';
 
 	    	$areaaccion = $area;
-
+	    	
 	    }
 
 	    if ($accion == 4) {
-
+	    	
 	    	$nombrearea = nombrearea($area);
-
+	    	
 	    	$nombre2 = nombrecompleto($usuario2);
 	    	$nombrearea2 = nombrearea($area2);
-
+	    	
 	    	$titulocont = " Aceptó entrega";
 	    	$contenido = "Se aceptó el documento mandado por el area de ";
-
+	    	
 	    	$titulo = "El Usuario " . $nombre . mb_convert_encoding($titulocont, "ISO-8859-1", "UTF-8");
 	    	$descripcion = mb_convert_encoding($contenido , "ISO-8859-1", "UTF-8") . $nombrearea2 . " por el usuario: " . $nombre2 . " " . $detalle;
 	    	$icono = 'Recepcion';
-
+	    	
 	    	$areaaccion = $area2;
 
 	    }
 
 	    if ($accion == 5) {
-
+	    	
 	    	$nombrearea = nombrearea($area);
 	    	$titulo = "Se quito como entrega de docuemnto";
 	    	$descripcion = mb_convert_encoding("El Usuario " . $nombre . " removio el documento impidiendo que llegara al area: " , "ISO-8859-1", "UTF-8"). $nombrearea;
 	    	$icono = 'Removido';
-
+	    	
 	    	$areaaccion = $area;
-
+	    	
 	    }
 
 	    if ($accion == 6) {
-
+	    	
 	    	$nombrearea = nombrearea($area);
 	    	$nombre2 = nombrecompleto($usuario2);
 	    	$nombrearea2 = nombrearea($area2);
@@ -6299,7 +6290,7 @@ function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $det
 	    	$nombrerecibe = nombrecompleto($usuario2);
 
 	    	$nombrearea = nombrearea($area);
-
+	    	
 	    	$titulocont = " generó un traspaso";
 	    	$contenido = "El usuario ";
 
@@ -6308,7 +6299,7 @@ function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $det
 	    	$icono = 'Traspaso';
 
 	    	$areaaccion = $area;
-
+	    	
 	    }
 
 	    if($accion == 8){
@@ -6316,7 +6307,7 @@ function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $det
 	    	$titulo = "Se emitio Un Ticket";
 	    	$descripcion = "Se emitio Ticket del folio por el usuario " . $nombre . " con el folio interno: " . $detalle;
 	    	$icono = 'Ticket';
-
+ 
 	    }
 
 	    if($accion == 9){
@@ -6324,7 +6315,7 @@ function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $det
 	    	$titulo = "Se Actualizo Ticket";
 	    	$descripcion = "El Ticket con folio interno: " . $detalle ." del folio fue actualizado por el usuario " . $nombre;
 	    	$icono = 'Ticket';
-
+ 
 	    }
 
 	    if($accion == 10){
@@ -6332,22 +6323,22 @@ function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $det
 	    	$titulo = "Se Envio a No pagar hasta cobrar";
 	    	$descripcion = "El Folio se movio a no pagar hasta cobrar por el usuario: " . $nombre;
 	    	$icono = 'NPC';
-
+ 
 	    }
 
 	    if($accion == 11){
-
+	    	
 	    	$nombrearea = nombrearea($area);
 
 	    	$titulo = "Se Quito de No pagar hasta cobrar";
 	    	$descripcion = "El Folio se movio de No pagar hasta cobrar por el usuario: " . $nombre . " regresando al area de " . $nombrearea;
 	    	$icono = 'NPC';
-
+ 
 	    }
-
+		
 
 		//$sql = "EXEC MV_HIS_GuardaHistorial @folio='$folio', @fecha='$fecha', @hora = '$hora', @titulo = '$titulo', @descripcion = '$descripcion' , @etapa = $etapa, @entrega = $entrega, @usuario = $usuario, @accion = '$icono'";
-		$sql = "EXEC [dbo].[MV_HIS_GuardaHistorial]
+		$sql = "EXEC [dbo].[MV_HIS_GuardaHistorial] 
 				@folio = N'$folio',
 				@etapa = $etapa,
 				@entrega = $entrega,
@@ -6360,7 +6351,7 @@ function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $det
 				@area = $areaaccion,
 				@documento = $documento";
 
-		$rs = odbc_exec($conexion,$sql);
+		$rs = odbc_exec($conexion,$sql); 
 
 		if ($rs){
 
@@ -6380,9 +6371,9 @@ function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $det
 ///Se creo este modulo solo para agregar en facturacion razon desconocida por la cual no podia guardarse
 //en el modulo de arriba marcaba error de SQL ejecutado directamente WTF???
 function altahistorialfactura($usuario, $folio, $etapa, $entrega, $fecha, $accion, $detalle, $usuario2, $area , $area2,$documento){
+ 	
 
-
- 	//existen cuatro tipos de acciones
+ 	//existen cuatro tipos de acciones 
  	// 1.- evio de fax 2.- envio de original 3.- se envio el documento 4 .- se rechazo el documento
 
     $hora = date("H:i:s");
@@ -6394,7 +6385,7 @@ function altahistorialfactura($usuario, $folio, $etapa, $entrega, $fecha, $accio
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-
+ 
 		$nombre = nombrecompleto($usuario);
 
     	$nombrearea = nombrearea($area);
