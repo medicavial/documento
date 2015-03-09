@@ -160,7 +160,7 @@ function conectarActual(){
 
 		//Declaramos variables de conexion a SQL Server
 		//Trusted_Connection=yes;
-		$db_server = 'GEN';
+		$db_server = 'SISTEMAS4';
 		$db_name = 'MV2';
 
 		$db_usr = 'acceso';

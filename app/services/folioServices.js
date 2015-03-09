@@ -70,8 +70,9 @@ app.factory("checkFolios", function($q,$http){
                         var ruta = '/documento/api/actualizaentrega';                    
                     }
 
+                    //armamos la estructura de nuestros datos a enviar
                     var datos = {
-                        folios:respuesta[0],
+                        folios:respuesta[0],//este el el conjunto de folios validos de nuestra primer promesa devuelta
                         usuarioentrega:Number(usuarioEntrega),
                         areaentrega:Number(areaEntrega),
                         usuariorecibe:Number(usuarioRecibe),
@@ -106,6 +107,28 @@ app.factory("checkFolios", function($q,$http){
             
             // 
             return promesa.promise;
+
+        }
+    }
+});
+
+
+//servicio de chekeo de folios para las entregas verifica cada condicion 
+app.factory("carga", function($q,$http,find){
+    return{
+        informacion:function(area){
+
+            var promesa        = $q.defer(),
+                cliente        = find.empresas(),
+                unidades       = find.unidades(),
+                productos      = find.productos(),
+                areaOperativa  = find.areaoperativa(),
+                listadoactivo  = find.listadogeneral(area),
+                listarechazos  = find.listadorechazos(area); 
+
+            $q.all([cliente, unidades,productos,areaOperativa,listadoactivo,listarechazos]).then(function(data) { 
+                console.log(data);
+            });
 
         }
     }

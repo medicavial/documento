@@ -1,5 +1,5 @@
 ///Area recepcion de Documentos
-app.controller('recepcionCtrl', function ( $scope, $rootScope, $filter, $location, $http, find, loading, barra, checkFolios){
+function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loading, barra, checkFolios,carga){
 	
 	//Con parametros de inicio
 	$scope.inicio = function(){
@@ -16,6 +16,7 @@ app.controller('recepcionCtrl', function ( $scope, $rootScope, $filter, $locatio
 			cliente:'',
 			unidad:''
 		};
+
 		$scope.fechaini = '';
 		$scope.fechafin = '';
 		$scope.folio = '';
@@ -24,13 +25,58 @@ app.controller('recepcionCtrl', function ( $scope, $rootScope, $filter, $locatio
 		$scope.cargar = false;
 		$scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];	
 		$scope.FaxOriginal = true;
-		$scope.empresas();
-		$scope.Altaunidades();
-		$scope.productos();
-		$scope.verareaoperativa();
-		$scope.cargaEntrada();
-		$scope.Altarechazados();
+
+		carga.informacion($rootScope.id);
+		// $scope.empresas();
+		// $scope.Altaunidades();
+		// $scope.productos();
+		// $scope.verareaoperativa();
+		// $scope.cargaEntrada();
+		// $scope.Altarechazados();
 		
+	}
+
+	//busca clientes
+	$scope.empresas = function(){
+
+		find.empresas().success( function (data) {
+
+			$scope.clientes = data;
+
+		 });
+	}
+
+	//busca unidades
+	$scope.Altaunidades = function(){
+
+		find.unidades().success( function (data) {
+
+			$scope.unidades = data;
+
+		 });
+
+	}
+
+	// busca de productos
+	$scope.productos = function(){
+
+		find.productos().success( function (data) {
+
+			$scope.productosini = data;
+
+		 });
+
+	}
+
+	///Enlista las areas disponibles
+	$scope.verareaoperativa = function(){
+
+		find.areaoperativa().success( function (data) {
+
+			$scope.areas = data;
+
+		 });
+
 	}
 
 	//carga todos los folios del area activos por usuario
@@ -59,6 +105,39 @@ app.controller('recepcionCtrl', function ( $scope, $rootScope, $filter, $locatio
 
 		});
 		
+	}
+
+	//busca rechazos
+	$scope.Altarechazados = function(){
+
+		find.listadorechazos($rootScope.id).success( function (data) {
+			
+			if(data.respuesta){
+        		$scope.rechazados = 0;
+        	}else{
+        		$scope.rechazados = data.length;
+        	}
+
+        	barra.termina();
+        	
+
+		 });
+
+	}
+
+
+
+
+
+
+	//busca escolaridad
+	$scope.escolaridad = function(){
+
+		find.escolaridad().success( function (data) {
+
+			$scope.escolaridades = data;
+
+		 });
 	}
 
 	//muestra Ventan de alta de fax
@@ -711,81 +790,6 @@ app.controller('recepcionCtrl', function ( $scope, $rootScope, $filter, $locatio
 		
 	}
 
-	//Verifica como se escribe bien el folio 4letras - 6numeros y detecta la tecla enter
-	// $scope.presionaFolioFax = function(evento){
-
-	// 	//contamos la cadena completa
-	// 	var cantidad = $scope.fax.folio.length;
-
-	// 	//los primero cuatro caracteres NO deben ser numeros
-	// 	if(cantidad < 4){
-	// 		if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
-	// 	      	evento.preventDefault();
-	// 	    }
-	// 	}
-
-	// 	//los ultimos 6 NO deben ser letras
-	// 	if(cantidad > 3 && cantidad < 9){
-	// 		if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-	// 	      	evento.preventDefault();
-	// 	    }
-	// 	}
-
-	// 	//Si son mas de 10 digitos no escribas mas
-	// 	if(cantidad > 9){
-	// 		if (evento.keyCode != 8  && evento.keyCode != 46 && evento.keyCode != 9) {
-
-	// 	      	evento.preventDefault();
-	// 	    }      	
-	// 	}
-
-	// 	//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
-	// 	if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-	// 		$scope.mensaje = '';
-	//       	$scope.verificaFolio('Fax',  $scope.fax.folio);
-
-	//     }
-
-	// }
-	
-	// $scope.presionaFolioOriginal = function(evento){
-
-	// 	//contamos la cadena completa
-	// 	var cantidad = $scope.original.folio.length;
-
-	// 	//los primero cuatro caracteres NO deben ser numeros
-	// 	if(cantidad < 4){
-	// 		if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
-	// 	      	evento.preventDefault();
-	// 	    }
-	// 	}
-
-	// 	//los ultimos 6 NO deben ser letras
-	// 	if(cantidad > 3 && cantidad < 9){
-	// 		if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-	// 	      	evento.preventDefault();
-	// 	    }
-	// 	}
-
-	// 	//Si son mas de 10 digitos no escribas mas
-	// 	if(cantidad > 9){
-	// 		if (evento.keyCode != 8  && evento.keyCode != 46 && evento.keyCode != 9) {
-
-	// 	      	evento.preventDefault();
-	// 	    }      	
-	// 	}
-
-	// 	//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
-	// 	if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-	// 		$scope.mensaje = '';
-	//       	$scope.verificaFolio('Original',  $scope.original.folio);
-
-	//     }
-
-	// }
-
 	$scope.presionaFolio = function(evento){
 
 		//contamos la cadena completa
@@ -866,68 +870,6 @@ app.controller('recepcionCtrl', function ( $scope, $rootScope, $filter, $locatio
 	
 
 	//aqui termina 
-
-	
-	///////////////////Seccion de busquedas
-
-	//Busca folio en la base del portal web 
-	// $scope.folioWeb = function(tipo,folio){
-
-	// 	if(tipo == 'Fax'){
-
-	// 		$scope.limpiaVariablesF();
-
-	// 		find.folioweb(folio).success( function (data){
-				
-	// 			$scope.fax.cliente = data[0].CIAClaveMV;
-	// 			$scope.fax.lesionado = data[0].Nombre + " " + data[0].Paterno + " " + data[0].Materno;
-	// 			$scope.fax.unidad = data[0].UNIClaveMV;
-	// 			$scope.productoFax($scope.fax.cliente);
-	// 			$scope.fax.producto = data[0].PROClave;
-	// 			$scope.fax.escolaridad = data[0].ESCClaveMV;
-	// 			$scope.fax.internet = 1;
-	// 			$scope.cargar = false;
-				
-	// 		}).error( function (xhr,status,data){
-
-	// 			//Manda un error por que no se logro conectar a la base web
-	// 			$scope.cargar = false;
-	// 			$scope.fax.internet = 0;
-	// 			$scope.mensaje = 'No es posible conectar con el folio Web. Para reiniciar la conexión favor de notificar al área de sistemas.';
-	// 			$scope.tipoalerta = 'alert-danger';
-
-	// 		});
-
-	// 	}else if(tipo == 'Original'){
-
-	// 		find.folioweb(folio).success( function (data){
-
-	// 			//console.log(data);
-	// 			$scope.original.cliente = data[0].CIAClaveMV;
-	// 			$scope.original.lesionado = data[0].Nombre + " " + data[0].Paterno + " " + data[0].Materno;
-	// 			$scope.productoOriginal($scope.original.cliente);
-	// 			$scope.unidadref = data[0].UNIClaveMV;
-	// 			$scope.original.unidad = data[0].UNIClaveMV;
-	// 			$scope.original.producto = data[0].PROClave;
-	// 			$scope.original.escolaridad = data[0].ESCClaveMV;
-	// 			$scope.original.internet = 1;
-	// 			$scope.label2 = 'NO SE RECIBIO FAX';
-	// 			$scope.label3 = 'NO ES FAC. EXPRESS';
-	// 			$scope.referencia($scope.original.unidad);
-	// 			$scope.cargar = false;
-				
-	// 		}).error( function (xhr,status,data){
-
-	// 			//Manda un error por que no se logro conectar a la base web
-	// 			$scope.original.internet = 0;
-	// 			$scope.tipoalerta = 'alert-danger';
-	// 			$scope.mensaje ='No es posible conectar con el folio Web. Para reiniciar la conexión favor de notificar al área de sistemas.';
-	// 			$scope.cargar = false;
-
-	// 		});
-	// 	}
-		
-	// }
 
 	//Busca folio en la base del portal web 
 	$scope.folioWebOriginal = function(folio){
@@ -1012,67 +954,6 @@ app.controller('recepcionCtrl', function ( $scope, $rootScope, $filter, $locatio
 
 	}
 
-	//busca escolaridad
-	$scope.escolaridad = function(){
-
-		find.escolaridad().success( function (data) {
-
-			$scope.escolaridades = data;
-
-		 });
-	}
-
-	//busca clientes
-	$scope.empresas = function(){
-
-		find.empresas().success( function (data) {
-
-			$scope.clientes = data;
-
-		 });
-
-	}
-
-
-	$scope.productos = function(){
-
-		find.productos().success( function (data) {
-
-			$scope.productosini = data;
-
-		 });
-	}
-
-
-	//busca unidades
-	$scope.Altaunidades = function(){
-
-		find.unidades().success( function (data) {
-
-			$scope.unidades = data;
-
-		 });
-
-	}
-
-	//busca rechazos
-	$scope.Altarechazados = function(){
-
-		find.listadorechazos($rootScope.id).success( function (data) {
-			
-			if(data.respuesta){
-        		$scope.rechazados = 0;
-        	}else{
-        		$scope.rechazados = data.length;
-        	}
-
-        	barra.termina();
-        	
-
-		 });
-
-	}
-
 
 	//Busqueda de folios x area
 	$scope.foliosxarea = function(){
@@ -1152,16 +1033,6 @@ app.controller('recepcionCtrl', function ( $scope, $rootScope, $filter, $locatio
 
 	}
 	
-	///Enlista las areas disponibles
-	$scope.verareaoperativa = function(){
-
-		find.areaoperativa().success( function (data) {
-
-			$scope.areas = data;
-
-		 });
-
-	}
 
 	//enlista los usuarios de cada area 
 	$scope.altausuariosarea = function(area){
@@ -1447,4 +1318,6 @@ app.controller('recepcionCtrl', function ( $scope, $rootScope, $filter, $locatio
     
     }
 
-});
+}
+
+app.controller('recepcionCtrl', ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'barra', 'checkFolios','carga', recepcionCtrl]);
