@@ -1846,22 +1846,19 @@ $app->post('/altafoliooriginal', function(){
 	}else{
 		
 
-		$sql = "EXEC MV_DCU_CapturaOriginal @folio = '$folio', @etapa = $etapa, @lesionado = '$lesionado',  @unidad = $unidad, @empresa = $empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = '$fecha',  
+		$sql = "EXEC MV_DOC_CapturaOriginal @folio = '$folio', @etapa = $etapa, @lesionado = '$lesionado',  @unidad = $unidad, @empresa = $empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = '$fecha',  
 				@usuario = $usuario, @remesa = '$remesa',@numentrega = $numentrega  , @producto = $producto, @folioFac = '$factura', @totalFac = $totalfactura, @escolaridad = $escolaridad, @internet = $internet ";
 
 		$rs = odbc_exec($conexion,$sql); 
 
 		if ($rs){
-
-
-				$sql2 = "SELECT * FROM Documento where DOC_folio = '$folio'";
+				$sql2 = "SELECT DOC_claveint FROM Documento where DOC_folio = '$folio'";
 				$rs2 = odbc_exec($conexion,$sql2); 
 				$documento = odbc_result($rs2,"DOC_claveint");
-
+				
 				$historico = altahistorial($usuario, $folio, $etapa, $numentrega, $datos->fecha, 2 ,'','','','',$documento);
 				
 				$arr = array('respuesta' => 'Folio Guardado Correctamente', 'Historial' => $historico);
-              
         }else {
               $arr = array('respuesta' => 'Error durante el Guardado: '.odbc_error());
         }   
@@ -4213,7 +4210,7 @@ $app->get('/listageneral/:usuario', function($usuario){
 
 	}else{
 		
-		$sql = "EXEC MV_FLU_ListaGralXUsu  @usuario=$usuario";
+		$sql = "EXEC MV_FLD_ListaGralXUsu  @usuario=$usuario";
 
 		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;

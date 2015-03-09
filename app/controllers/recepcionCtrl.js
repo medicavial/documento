@@ -371,6 +371,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 								
 							});
 						}
+						
 					}).error( function (xhr,status,data){
 
 						$('#boton2').button('reset');

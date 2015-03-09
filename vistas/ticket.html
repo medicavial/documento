@@ -1,54 +1,54 @@
 <div id="contenedor" ng-init="inicio()">
-    <div class="titulos">
-      <a href="#/ticket" class="icon-arrow-left"></a>
-      <h1>{{tituloT}}</h1>
-    </div>
+  <div class="titulos">
+    <a href="#/ticket" class="icon-arrow-left"></a>
+    <h1>{{tituloT}}</h1>
+  </div>
 
-    <div class="row" ng-show="edicion">
-      <div class="col-md-12">
-      
-        <fieldset>
-          <legend>Datos del Expediente</legend>
-        </fieldset>
-        <div class="row">
-            <div class="col-md-4">
-                Nombre:<span style="margin-left:0.5em;">{{nombre}}</span>
-            </div>
-            <div class="col-md-4">
-              Compañia:<span style="margin-left:0.5em;">{{compania}}</span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                Siniestro:<span style="margin-left:0.5em;">{{siniestro}}</span>
-            </div>
-            <div class="col-md-3">
-                Reporte:<span style="margin-left:0.5em;">{{reporte}}</span>
-            </div>
-            <div class="col-md-3">
-                Póliza:<span style="margin-left:0.5em;">{{poliza}}</span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                Telefono:<span style="margin-left:0.5em;">{{siniestro}}</span>
-            </div>
-            <div class="col-md-3">
-                Mail:<span style="margin-left:0.5em;">{{mail}}</span>
-            </div>
-            <div class="col-md-3">
-                F. Nacimiento:<span style="margin-left:0.5em;">{{fechana | date:'medium'}}</span>
-            </div>
-            <div class="col-md-3">
-                Sexo:<span style="margin-left:0.5em;">{{sexo}}</span>
-            </div>
-        </div>
-
+  <div class="row" ng-show="edicion">
+    <div class="col-md-12">
+    
+      <fieldset>
+        <legend>Datos del Expediente</legend>
+      </fieldset>
+      <div class="row">
+          <div class="col-md-4">
+              Nombre:<span style="margin-left:0.5em;">{{nombre}}</span>
+          </div>
+          <div class="col-md-4">
+            Compañia:<span style="margin-left:0.5em;">{{compania}}</span>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-3">
+              Siniestro:<span style="margin-left:0.5em;">{{siniestro}}</span>
+          </div>
+          <div class="col-md-3">
+              Reporte:<span style="margin-left:0.5em;">{{reporte}}</span>
+          </div>
+          <div class="col-md-3">
+              Póliza:<span style="margin-left:0.5em;">{{poliza}}</span>
+          </div>
+      </div>
+      <div class="row">
+          <div class="col-md-3">
+              Telefono:<span style="margin-left:0.5em;">{{siniestro}}</span>
+          </div>
+          <div class="col-md-3">
+              Mail:<span style="margin-left:0.5em;">{{mail}}</span>
+          </div>
+          <div class="col-md-3">
+              F. Nacimiento:<span style="margin-left:0.5em;">{{fechana | date:'medium'}}</span>
+          </div>
+          <div class="col-md-3">
+              Sexo:<span style="margin-left:0.5em;">{{sexo}}</span>
+          </div>
       </div>
 
     </div>
+
+  </div>
   
-    <br>
+  <br>
   <form name="formTicket"  novalidate>
     <div class="row">
         <div class="col-md-2">
