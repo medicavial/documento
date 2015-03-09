@@ -138,6 +138,86 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 	}
 
+	///limpia variables del modal del fax
+	$scope.limpiaVariablesF = function(){
+
+		$scope.fax.internet =  1;
+		$scope.fax.fecha = FechaAct; 
+		$scope.fax.cliente = ''; 
+		$scope.fax.lesionado = '';
+		$scope.fax.unidad = '';
+		$scope.fax.producto = '';
+		$scope.fax.escolaridad = '';
+		//$scope.mensaje = '';
+
+	}
+
+	//Guarda los datos de fax
+	$scope.guardaFax = function(){
+
+		$scope.mensaje = '';
+		
+
+		if($scope.revisado == 1){
+					
+			//Verificamos que el folio no este dado de alta en documentos
+			find.verificafolio($scope.fax.folio, 1).success( function (data){
+
+				if(data.respuesta){
+
+					$('#otro').button('reset');
+					$scope.mensaje = data.respuesta;
+					$scope.tipoalerta = 'alert-danger';
+
+				}else{
+								
+					//Segunda validacion para verificar que no esta en la tabla pase
+					find.verificafoliopase($scope.fax.folio).success( function (data){
+
+						if(data.respuesta){
+
+							$('#otro').button('reset');
+							$scope.mensaje = data.respuesta;
+							$scope.tipoalerta = 'alert-danger';
+
+						}else{
+
+							console.log($scope.fax);
+
+							$http({
+								url:'/documento/api/altafoliofax',
+								method:'POST', 
+								contentType: 'application/json', 
+								dataType: "json", 
+								data:$scope.fax
+							}).success( function (data){
+								        	
+								$('#otro').button('reset');
+								$scope.mensaje = data.respuesta;
+								$scope.tipoalerta = 'alert-success';
+								$scope.limpiaVariablesF();
+								$scope.fax.folio = '';
+								$('#folioF').focus();
+
+
+							});
+						}
+									
+					});
+				}
+
+			}).error( function (xhr,status,data){
+
+				$('#otro').button('reset');
+				alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+			});
+
+		}
+
+	}
+
+
+
 	//muestra Ventan de alta de Original
 	$scope.muestraOriginal = function(){
 
@@ -221,19 +301,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 	}
 
-	///limpia variables del modal del fax
-	$scope.limpiaVariablesF = function(){
-
-		$scope.fax.internet =  1;
-		$scope.fax.fecha = FechaAct; 
-		$scope.fax.cliente = ''; 
-		$scope.fax.lesionado = '';
-		$scope.fax.unidad = '';
-		$scope.fax.producto = '';
-		$scope.fax.escolaridad = '';
-		//$scope.mensaje = '';
-
-	}
+	
 
 	/////////Inicia proceso de guardado 
 
@@ -249,69 +317,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 	}
 
-	//Guarda los datos de fax
-	$scope.guardaFax = function(){
-
-		$scope.mensaje = '';
-		
-
-		if($scope.revisado == 1){
-					
-			//Verificamos que el folio no este dado de alta en documentos
-			find.verificafolio($scope.fax.folio, 1).success( function (data){
-
-				if(data.respuesta){
-
-					$('#otro').button('reset');
-					$scope.mensaje = data.respuesta;
-					$scope.tipoalerta = 'alert-danger';
-
-				}else{
-								
-					//Segunda validacion para verificar que no esta en la tabla pase
-					find.verificafoliopase($scope.fax.folio).success( function (data){
-
-						if(data.respuesta){
-
-							$('#otro').button('reset');
-							$scope.mensaje = data.respuesta;
-							$scope.tipoalerta = 'alert-danger';
-
-						}else{
-
-							console.log($scope.fax);
-
-							$http({
-								url:'/documento/api/altafoliofax',
-								method:'POST', 
-								contentType: 'application/json', 
-								dataType: "json", 
-								data:$scope.fax
-							}).success( function (data){
-								        	
-								$('#otro').button('reset');
-								$scope.mensaje = data.respuesta;
-								$scope.tipoalerta = 'alert-success';
-								$scope.limpiaVariablesF();
-								$scope.fax.folio = '';
-								$('#folioF').focus();
-
-
-							});
-						}
-									
-					});
-				}
-
-			}).error( function (xhr,status,data){
-
-				$('#otro').button('reset');
-				alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-			});
-
-		}
-
-	}
+	
 
 	//Guarda los datos de Original
 	$scope.guardaOriginal = function(){
@@ -1143,6 +1149,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			$scope.tipoalerta = 'alert-warning';
 
 		});
+
 	}
 
 	//////LLena el grid y toma filtros

@@ -25,7 +25,6 @@ function conectarActual(){
 		$db_server = 'GEN'; 
 		$db_name = 'MV'; 
 
-
 	}else{
 
 		//Declaramos variables de conexion a SQL Server
@@ -1460,7 +1459,7 @@ $app->post('/altafoliofax', function(){
 	}else{
 		
 
-		$sql = "EXEC MV_DCU_CapturaFax @folio='$folio', @lesionado='$lesionado',  @unidad=$unidad, @ambulancia=0,  @faxfecha='$fecha',  
+		$sql = "EXEC MV_DOC_CapturaFax @folio='$folio', @lesionado='$lesionado',  @unidad=$unidad, @ambulancia=0,  @faxfecha='$fecha',  
 				@empresa=$empresa, @usuario=$usuario, @producto=$producto, @escolaridad=$escolaridad, @internet=$internet";
 
 		$rs = odbc_exec($conexion,$sql); 
