@@ -100,14 +100,14 @@
         </div>
         <div class="col-md-3">
             <label for="subcategoria">Subcategoria</label>
-            <select id="subcategoria" class="form-control"  ng-model="datos.subcategoria" ng-options="subcategoria.Clave as subcategoria.Nombre for subcategoria in subcategorias">
+            <select id="subcategoria" class="form-control"  ng-model="datos.subcategoria" ng-options="subcategoria.Clave as subcategoria.Nombre for subcategoria in subcategorias" >
                 <option value="">Subcategoria</option>
             </select>
         </div> 
         
         <div class="col-md-3">
             <label for="status">Status</label>
-            <select id="status" class="form-control"  ng-model="datos.statusa" ng-options="statu.Clave as statu.Nombre for statu in status">
+            <select id="status" class="form-control"  ng-model="datos.statusa" ng-options="statu.Clave as statu.Nombre for statu in status" required>
                 <option value="">Status</option>
             </select>
         </div> 
@@ -256,7 +256,7 @@
     <br>
     <button ng-hide="edicion" type="reset" class="btn btn-success" ng-click="inicio()">Limpiar</button>
     <a ng-show="edicion" type="reset" class="btn btn-success" href="#/generaticket">Nuevo Ticket</a>
-    <button id="boton" type="button" ng-disabled="bloqueado" ng-click="siguiente()" data-loading-text="Guardando..." class="btn btn-primary">Guardar</button>
+    <button id="boton" type="button" ng-disabled="ValidaInfo()" ng-click="siguiente()" data-loading-text="Guardando..." class="btn btn-primary">Guardar</button>
   </form>
   <br>
   <br>

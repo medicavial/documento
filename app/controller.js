@@ -3031,6 +3031,12 @@ function editaTicketCtrl($scope,$rootScope, $http, find, $routeParams){
 			usuario:$rootScope.userWeb,
 			usuariomv:$rootScope.id
 		}
+
+		if ($rootScope.userWeb == undefined){
+			$scope.mensaje = 'No tienes usuario para editar ticket solicitalo en el area de sistemas';
+			$scope.bloqueado = true;
+		};
+
 		$scope.cargar = false;
 		$scope.edicion = true;
 		$scope.altacategorias();
@@ -3040,6 +3046,15 @@ function editaTicketCtrl($scope,$rootScope, $http, find, $routeParams){
 
 		$scope.muestraticket();
 
+	}
+
+	$scope.ValidaInfo = function(){
+
+		if ($scope.bloqueado) {
+			return true;
+		}else{
+			return $scope.formTicket.$invalid;
+		}
 	}
 
 	//busca clientes
@@ -9105,7 +9120,6 @@ function ticketCtrl($scope,$rootScope, $http, find){
 			$scope.bloqueado = true;
 		};
 
-
 		$scope.tituloT = "Generar Ticket"
 		$scope.mensaje2 = '';
 		$scope.datos = {
@@ -9138,6 +9152,15 @@ function ticketCtrl($scope,$rootScope, $http, find){
 		$scope.datos.folioIn = 'NUEVO';
 
 
+	}
+
+	$scope.ValidaInfo = function(){
+
+		if ($scope.bloqueado) {
+			return true;
+		}else{
+			return $scope.formTicket.$invalid;
+		}
 	}
 
 	$scope.siguiente = function(){
