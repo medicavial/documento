@@ -123,12 +123,23 @@ app.factory("carga", function($q,$http,find){
                 unidades       = find.unidades(),
                 productos      = find.productos(),
                 areaOperativa  = find.areaoperativa(),
-                listadoactivo  = find.listadogeneral(area),
-                listarechazos  = find.listadorechazos(area); 
+                escolaridad    = find.escolaridad();
 
-            $q.all([cliente, unidades,productos,areaOperativa,listadoactivo,listarechazos]).then(function(data) { 
-                console.log(data);
+            $q.all([cliente,unidades,productos,areaOperativa,escolaridad]).then(function(data) { 
+                
+                var datos = {
+                    clientes:data[0].data,
+                    unidades:data[1].data,
+                    productos:data[2].data,
+                    areaOperativa:data[3].data,
+                    escolaridad:data[4].data
+                }
+
+                promesa.resolve(datos);
             });
+
+
+            return promesa.promise;
 
         }
     }

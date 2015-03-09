@@ -16,6 +16,49 @@ $resultado = array();
 //declaro una nueva aplicacion segun la ruta
 $app = new \Slim\Slim();
 
+function conectarActual(){
+
+	$produccion = false;
+	
+	if ($produccion) {
+
+		$db_server = 'GEN'; 
+		$db_name = 'MV'; 
+
+
+	}else{
+
+		//Declaramos variables de conexion a SQL Server
+		//Trusted_Connection=yes;
+		$db_server = 'SISTEMAS4';
+		$db_name = 'MV2';
+
+		$db_usr = 'acceso';
+		$db_pass = 'ACc3soMv';
+
+	}
+
+	$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";
+
+	$con = odbc_connect($dsn,'','');
+
+	//regresa la conexion
+	return $con;
+
+}
+
+//funcion para conectar a Mysql 
+function conectarMySQL(){
+
+	$dbhost="www.medicavial.net";
+    $dbuser="medica_webusr";
+    $dbpass="tosnav50";
+    $dbname="medica_registromv";
+    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $dbh;
+    
+}
 
 function generaacceso($long=10) {
   
@@ -96,7 +139,6 @@ function creaPDF($ruta,$archivo,$numeroarchivos){
 
 }
 
-
 function generar_clave(){ 
        	$str = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 		$cad = "";
@@ -145,49 +187,6 @@ function eliminarDirectorio($dirname,$only_empty=false) {
     return (($only_empty)? (count(scandir)<=2) : (!is_dir($dirname))); 
 
 } 
-
-function conectarActual(){
-
-	$produccion = false;
-	
-	if ($produccion) {
-
-		$db_server = 'GEN'; 
-		$db_name = 'MV'; 
-
-
-	}else{
-
-		//Declaramos variables de conexion a SQL Server
-		//Trusted_Connection=yes;
-		$db_server = 'SISTEMAS4';
-		$db_name = 'MV2';
-
-		$db_usr = 'acceso';
-		$db_pass = 'ACc3soMv';
-
-	}
-
-	$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";
-
-	$con = odbc_connect($dsn,'','');
-
-	//regresa la conexion
-	return $con;
-
-}
-
-//funcion para conectar a Mysql 
-function conectarMySQL(){
-
-	$dbhost="www.medicavial.net";
-    $dbuser="medica_webusr";
-    $dbpass="tosnav50";
-    $dbname="medica_registromv";
-    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    return $dbh;
-}
 
 function BuscaDocumento($folio){
 
@@ -238,6 +237,7 @@ function filedata($path) {
         $data["filename"] = (($data["name"] OR $data["ext"]) ? $data["name"].($data["ext"] ? "." : "").$data["ext"] : FALSE);
         // Devolvemos los resultados
         return $data;
+
 }
 
 //funcion que retorna un arreglo del contenido en folder de folios Qualitas
@@ -1043,7 +1043,6 @@ $app->get('/altamovimientos', function(){
 });
 
 
-
 $app->get('/', function(){
 	
     //echo "Hola Mundo";
@@ -1489,7 +1488,6 @@ $app->post('/altafoliofax', function(){
 
 });
 
-
 //alta de un ticket
 $app->post('/altaticket', function(){
 
@@ -1757,7 +1755,6 @@ $app->post('/insertanpc', function(){
 	}
 
 });
-
 
 //insertamos bit para que se quite de no pagar hasta cobrar
 $app->post('/eliminanpc', function(){
@@ -2527,7 +2524,6 @@ $app->post('/facturasQualitasIncompleto', function(){
 	}
 
 });
-
 
 //facturas de qualitas formatos 
 $app->post('/facturasQualitasArchivos', function(){
@@ -4938,6 +4934,7 @@ $app->post('/login', function(){
 
 });
 
+
 $app->get('/muestrahistorico/:folio/:etapa/:entrega',function ($folio,$etapa,$entrega){
  	
 
@@ -5039,6 +5036,7 @@ $app->get('/muestrahistorico/:folio/:etapa/:entrega',function ($folio,$etapa,$en
 	}
 
 });
+
 
 $app->get('/producto/:empresa', function($empresa){
 

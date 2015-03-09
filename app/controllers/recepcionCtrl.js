@@ -25,8 +25,8 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		$scope.cargar = false;
 		$scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];	
 		$scope.FaxOriginal = true;
-
-		carga.informacion($rootScope.id);
+		$scope.cargaInfo();
+		
 		// $scope.empresas();
 		// $scope.Altaunidades();
 		// $scope.productos();
@@ -36,48 +36,26 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		
 	}
 
-	//busca clientes
-	$scope.empresas = function(){
+	$scope.cargaInfo = function(){
 
-		find.empresas().success( function (data) {
+		carga.informacion($rootScope.id).then(function(data){
 
-			$scope.clientes = data;
+			// console.log(data);
+			$scope.clientes = data.clientes;
+			$scope.unidades = data.unidades;
+			$scope.productosini = data.productos;
+			$scope.productos = data.productos;
+			$scope.areas = data.areaOperativa;
+			$scope.escolaridades = data.escolaridad;
 
-		 });
+			$scope.cargaEntrada();
+			$scope.Altarechazados();
+
+        	$scope.mensaje = '';
+
+		});
 	}
 
-	//busca unidades
-	$scope.Altaunidades = function(){
-
-		find.unidades().success( function (data) {
-
-			$scope.unidades = data;
-
-		 });
-
-	}
-
-	// busca de productos
-	$scope.productos = function(){
-
-		find.productos().success( function (data) {
-
-			$scope.productosini = data;
-
-		 });
-
-	}
-
-	///Enlista las areas disponibles
-	$scope.verareaoperativa = function(){
-
-		find.areaoperativa().success( function (data) {
-
-			$scope.areas = data;
-
-		 });
-
-	}
 
 	//carga todos los folios del area activos por usuario
 	$scope.cargaEntrada = function(){
@@ -126,20 +104,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	}
 
 
-
-
-
-
-	//busca escolaridad
-	$scope.escolaridad = function(){
-
-		find.escolaridad().success( function (data) {
-
-			$scope.escolaridades = data;
-
-		 });
-	}
-
 	//muestra Ventan de alta de fax
 	$scope.muestraFax = function(){
 
@@ -157,9 +121,9 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			usuario: $rootScope.id
 		};
 
-		$scope.escolaridad();
-		$scope.empresas();
-		$scope.Altaunidades();
+		// $scope.escolaridad();
+		// $scope.empresas();
+		// $scope.Altaunidades();
 		$scope.cargar = false;
 		$scope.valor = false;
 		$scope.revisado = 0;
@@ -201,9 +165,9 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			totalfactura:''
 		};
 
-		$scope.escolaridad();
-		$scope.empresas();
-		$scope.Altaunidades();
+		// $scope.escolaridad();
+		// $scope.empresas();
+		// $scope.Altaunidades();
 		$scope.mensaje = '';
 		$scope.remesa = '';
 		$scope.label1 = '';
@@ -866,8 +830,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	    }
 
 	}
-
-	
 
 	//aqui termina 
 
