@@ -10,6 +10,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 			controller : 'homeCtrl'
 	});
 
+    $routeProvider.when('/altarechazo',{
+            templateUrl   : 'vistas/altarechazo.html',
+            controller    : 'altaRechazosCtrl'
+    });
+
     $routeProvider.when('/archivo',{
             templateUrl   : 'vistas/archivo.html',
             controller    : 'archivoCtrl'
@@ -148,8 +153,8 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
     });
 
    $routeProvider.when('/mesacontrol',{
-            templateUrl   : 'vistas/mesacontrol.html',
-            controller    : 'mesaControlCtrl'       
+            templateUrl   : 'vistas/menuRechazo.html',
+            controller    : 'rechazosCtrl'       
     });
 
    $routeProvider.when('/nopagar',{

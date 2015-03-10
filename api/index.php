@@ -169,8 +169,11 @@ function conectarActual(){
 
 	//Declaramos variables de conexion a SQL Server
 
-	$db_server = 'GEN';
-	$db_name = 'MV';
+	// $db_server = 'GEN';
+	// $db_name = 'MV';
+
+	$db_server = 'SISTEMAS4';
+	$db_name = 'MV2';
 
 	$db_usr = 'acceso';
 	$db_pass = 'ACc3soMv';
