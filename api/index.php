@@ -17,6 +17,38 @@ $resultado = array();
 $app = new \Slim\Slim();
 
 
+function conectarActual(){
+
+	//Declaramos variables de conexion a SQL Server
+	
+	$db_server = 'SISTEMAS4';
+	$db_name = 'MV2';
+
+	$db_usr = 'acceso';
+	$db_pass = 'ACc3soMv';
+
+	$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";
+
+	$con = odbc_connect($dsn,'','');
+	//Se realiza la conexón  con los datos correspondientes
+
+	//regresa la conexion
+	return $con;
+
+}
+
+//funcion para conectar a Mysql
+function conectarMySQL(){
+
+	$dbhost="www.medicavial.net";
+    $dbuser="medica_webusr";
+    $dbpass="tosnav50";
+    $dbname="medica_registromv";
+    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
+    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+    return $dbh;
+}
+
 function generaacceso($long=10) {
 
     $chars = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
@@ -163,41 +195,6 @@ function conectar(){
 	//regresa la conexion
 	return $con;
 
-}
-
-function conectarActual(){
-
-	//Declaramos variables de conexion a SQL Server
-
-	// $db_server = 'GEN';
-	// $db_name = 'MV';
-
-	$db_server = 'SISTEMAS4';
-	$db_name = 'MV2';
-
-	$db_usr = 'acceso';
-	$db_pass = 'ACc3soMv';
-
-	$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";
-
-	$con = odbc_connect($dsn,'','');
-	//Se realiza la conexón  con los datos correspondientes
-
-	//regresa la conexion
-	return $con;
-
-}
-
-//funcion para conectar a Mysql
-function conectarMySQL(){
-
-	$dbhost="www.medicavial.net";
-    $dbuser="medica_webusr";
-    $dbpass="tosnav50";
-    $dbname="medica_registromv";
-    $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
-    $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-    return $dbh;
 }
 
 function BuscaDocumento($folio){
@@ -2431,6 +2428,7 @@ $app->post('/facturasQualitasIncompleto', function(){
 	$valores = array();
 	$fechaini = $datos->fechaini;
 	$fechafin = $datos->fechafin;
+	$producto = $datos->producto;
 
 	$fechafin = $fechafin . ' 23:59:58.999';
 
@@ -2446,7 +2444,7 @@ $app->post('/facturasQualitasIncompleto', function(){
 
 
 
-		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin'";
+		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin', @prodcuto = $producto";
 
 		$rs= odbc_exec($conexion,$sql);
 
@@ -3926,15 +3924,18 @@ $app->get('/folioweb/:folio', function($folio){
 		$sql = "SELECT EXP_nombre as Nombre,
 				             EXP_paterno as Paterno,
 				             EXP_materno as Materno,
-				             IFNULL(PRO_clave,-1) as PROClave,
+				             IFNULL(PRO_claveMV,-1) as PROClave,
 				             IFNULL(CIA_claveMV,-1) as CIAClaveMV,
 				             IFNULL(UNI_claveMV,-1) as UNIClaveMV,
 				             IFNULL(ESC_claveMV,-1) as ESCClaveMV,
 				             Expediente.Cia_clave,
 				             Expediente.Uni_clave
-				FROM Expediente INNER JOIN Compania    ON Compania.CIA_clave=Expediente.CIA_clave
+				FROM Expediente 
+								INNER JOIN Compania    ON Compania.CIA_clave=Expediente.CIA_clave
 				                INNER JOIN Unidad        ON Unidad.UNI_clave=Expediente.UNI_clave
-				                LEFT    JOIN Escolaridad ON Escolaridad.ESC_clave = Expediente.ESC_clave
+				                INNER JOIN Producto 		ON Producto.PRO_clave = Expediente.PRO_clave
+				                LEFT  JOIN Escolaridad ON Escolaridad.ESC_clave = Expediente.ESC_clave
+
 				WHERE EXP_folio = '$folio'";
 
 		$result = $db->query($sql);
@@ -5130,6 +5131,160 @@ $app->get('/productos', function(){
 	}
 
 });
+
+
+$app->get('/rechazos', function(){
+
+    $conexion = conectarActual();
+
+    if(!$conexion) {
+
+	    die('Something went wrong while connecting to MSSQL');
+
+	}else{
+
+		$sql = "SELECT REZ_claveint as id, REZ_motivo as motivo, REZ_monto as monto, DOC_folio as folio, REZ_fechaReg as registro, USU_login as usuario FROM Rechazos";
+		$rs = odbc_exec($conexion,$sql);
+		
+		$i = 0;
+        while (odbc_fetch_row($rs)){
+
+			$valor1 = odbc_result($rs,"id");
+            $valor2 = utf8_encode(odbc_result($rs,"motivo"));
+            $valor3 = utf8_encode(odbc_result($rs,"monto"));
+            $valor4 = odbc_result($rs,"folio");
+            $valor5 = odbc_result($rs,"registro");
+            $valor6 = odbc_result($rs,"usuario");
+
+			$traspasosResultado['id'] = $valor1;
+            $traspasosResultado['motivo'] = $valor2;
+            $traspasosResultado['monto'] = $valor3;
+            $traspasosResultado['folio'] = $valor4;
+            $traspasosResultado['registro'] = $valor5;
+            $traspasosResultado['usuario'] = $valor6;
+
+			$valores[$i] = $traspasosResultado;
+            $i++;
+
+		}
+
+		echo json_encode($valores);
+
+	}
+
+});
+
+$app->post('/rechazos/busqueda', function(){
+
+    $conexion = conectarActual();
+
+    if(!$conexion) {
+
+	    die('Something went wrong while connecting to MSSQL');
+
+	}else{
+
+		$request = \Slim\Slim::getInstance()->request();
+		$datos = json_decode($request->getBody());
+
+		$folio = $datos->folio;
+		$fechaini = $datos->fechaini;
+		$fechafin = $datos->fechafin;
+		
+		$sql = "SELECT REZ_claveint as id, REZ_motivo as motivo, REZ_monto as monto, DOC_folio as folio, REZ_fechaReg as registro, USU_login as usuario FROM Rechazos WHERE ";
+		
+		if ($folio) {
+			$sql .= " DOC_folio = '$folio' ";
+		}elseif ($fechaini && $fechafin) {
+			$sql .= " REZ_fechaReg between '$fechaini' and '$fechafin 23:59:58.999'";
+		}
+		
+		$rs = odbc_exec($conexion,$sql);
+		
+		$i = 0;
+        while (odbc_fetch_row($rs)){
+
+			$valor1 = odbc_result($rs,"id");
+            $valor2 = utf8_encode(odbc_result($rs,"motivo"));
+            $valor3 = utf8_encode(odbc_result($rs,"monto"));
+            $valor4 = odbc_result($rs,"folio");
+            $valor5 = odbc_result($rs,"registro");
+            $valor6 = odbc_result($rs,"usuario");
+
+			$traspasosResultado['id'] = $valor1;
+            $traspasosResultado['motivo'] = $valor2;
+            $traspasosResultado['monto'] = $valor3;
+            $traspasosResultado['folio'] = $valor4;
+            $traspasosResultado['registro'] = $valor5;
+            $traspasosResultado['usuario'] = $valor6;
+
+			$valores[$i] = $traspasosResultado;
+            $i++;
+
+		}
+
+		echo json_encode($valores);
+
+	}
+
+});
+
+$app->post('/rechazos', function(){
+
+	$request = \Slim\Slim::getInstance()->request();
+	$datos = json_decode($request->getBody());
+
+	$folio = $datos->folio;
+	$motivo = $datos->motivo;
+	$monto = $datos->monto;
+	$usuario = $datos->usuario;
+
+    $conexion = conectarActual();
+
+    if(!$conexion) {
+
+	    die('Something went wrong while connecting to MSSQL');
+
+	}else{
+
+		$sql = "INSERT INTO Rechazos (DOC_folio,REZ_motivo,REZ_monto,REZ_fechaReg,USU_login) 
+				VALUES(
+					'$folio',
+					'$motivo',
+					$monto,
+					GETDATE(),
+					$usuario
+				)";
+
+		if (odbc_exec($conexion,$sql)){	
+
+            $arr = array('respuesta' => 'Reachazo guardado correctamente');
+
+        }else{
+
+            $arr = array('respuesta' => 'Error durante el proceso : '.odbc_error());
+
+        }
+
+		echo json_encode($arr);
+		//echo $sql;
+	}
+
+});
+
+// $app->put('/rechazos', function(){
+
+//     $conexion = conectarActual();
+
+//     if(!$conexion) {
+
+// 	    die('Something went wrong while connecting to MSSQL');
+
+// 	}else{
+
+// 	}
+
+// });
 
 //Se rechaza el folio
 $app->post('/rechazoentrega', function(){

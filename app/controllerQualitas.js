@@ -1063,7 +1063,7 @@ function formatoQualitasIncompletosCtrl($scope, $rootScope,$http, find, loading)
 			//armamos los datos a enviar segun tipo de consulta (tipo)
 
 			$http({
-				url:'/documento/api/facturasQualitas',
+				url:'/documento/api/facturasQualitasIncompleto',
 				method:'POST', 
 				contentType: 'application/json', 
 				dataType: "json", 
