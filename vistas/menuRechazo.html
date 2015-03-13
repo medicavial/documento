@@ -13,59 +13,62 @@
 	    </li>
 	</ul>
 	<h2>Rechazos Generados</h2>
-	<div class="row">
-		<div class="col-md-4">
-			<fieldset>
-				<legend>Fecha Registro</legend>
-				<div class="row">
-					<div class="col-md-6">
-						<input type="text" ng-model="datos.fechaini" class="form-control" id="datepicker" placeholder="inicial" ng-change="datos.fechafin = datos.fechaini" />
-					</div>
-					<div class="col-md-6">
-						<div class="input-group">
-							<input type="text" ng-model="datos.fechafin" class="form-control" id="datepicker2" placeholder="Final" />
-							<span class="input-group-btn">
-						        <button class="btn btn-default" type="button" ng-click="ticketsxfecha()"><i class="glyphicon glyphicon-search"></i></button>
-						    </span>
+		<div class="row">
+			<div class="col-md-6">
+				<fieldset>
+				<form name="1" ng-submit="buscar()">
+					<legend>Fecha Registro</legend>
+					<div class="row">
+						<div class="col-md-6">
+							<input type="text" ng-model="info.fechaini" class="form-control" id="datepicker" placeholder="inicial" ng-change="info.fechafin = info.fechaini" required/>
+						</div>
+						<div class="col-md-6">
+							<div class="input-group">
+								<input type="text" ng-model="info.fechafin" class="form-control" id="datepicker2" placeholder="Final" required/>
+								<span class="input-group-btn">
+							        <button class="btn btn-default" type="submit" ng-click="ticketsxfecha()" ng-disabled="mostrando"><i class="glyphicon glyphicon-search"></i></button>
+							    </span>
+							</div>
 						</div>
 					</div>
-				</div>
-			</fieldset>
-		</div>
-		<div class="col-md-2">
-			<fieldset>
-				<form ng-submit="ticketxfolio()">
-				<legend>Folio</legend>
-				<div class="input-group">
-					<input type="text" ng-model="datos.folio" class="form-control" ng-change="filtra()" folio/>
-					<span class="input-group-btn">
-				        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-				    </span>
-				</div>
 				</form>
-			</fieldset>
+				</fieldset>
+			</div>
+			<div class="col-md-3">
+				<fieldset>
+					<form name="2" ng-submit="buscar()">
+					<legend>Folio</legend>
+					<div class="input-group">
+						<input type="text" ng-model="info.folio" class="form-control" ng-change="filtra()" folio required/>
+						<span class="input-group-btn">
+					        <button class="btn btn-default" type="submit" ng-disabled="mostrando"><i class="glyphicon glyphicon-search"></i></button>
+					    </span>
+					</div>
+					</form>
+				</fieldset>
+			</div>
+			<!-- <div class="col-md-6">
+				<fieldset>
+					<legend>Filtros</legend>
+					<div class="row">
+						<div class="col-md-4">
+							<select class="form-control"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes" ng-change="filtra()">
+								<option value="">Cliente</option>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<select class="form-control"  ng-model="unidad" ng-options="unidad as unidad.nombre for unidad in unidades" ng-change="filtra()">
+								<option value="">Unidad</option>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
+						</div>
+					</div>
+				</fieldset>
+			</div> -->
 		</div>
-		<!-- <div class="col-md-6">
-			<fieldset>
-				<legend>Filtros</legend>
-				<div class="row">
-					<div class="col-md-4">
-						<select class="form-control"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes" ng-change="filtra()">
-							<option value="">Cliente</option>
-						</select>
-					</div>
-					<div class="col-md-4">
-						<select class="form-control"  ng-model="unidad" ng-options="unidad as unidad.nombre for unidad in unidades" ng-change="filtra()">
-							<option value="">Unidad</option>
-						</select>
-					</div>
-					<div class="col-md-4">
-						<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
-					</div>
-				</div>
-			</fieldset>
-		</div> -->
-	</div>
+	
 	<br>
 	<div class="table-responsive">
 		<table class="table table-hover table-bordered">

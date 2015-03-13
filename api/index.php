@@ -176,7 +176,6 @@ function eliminarDirectorio($dirname,$only_empty=false) {
 
 }
 
-
 //Conecto a SQl Server mediante ODBC
 function conectar(){
 
@@ -1037,7 +1036,6 @@ $app->get('/altamovimientos', function(){
 	}
 
 });
-
 
 
 $app->get('/', function(){
@@ -3933,9 +3931,8 @@ $app->get('/folioweb/:folio', function($folio){
 				FROM Expediente 
 								INNER JOIN Compania    ON Compania.CIA_clave=Expediente.CIA_clave
 				                INNER JOIN Unidad        ON Unidad.UNI_clave=Expediente.UNI_clave
-				                INNER JOIN Producto 		ON Producto.PRO_clave = Expediente.PRO_clave
+				                LEFT JOIN Producto 		ON Producto.PRO_clave = Expediente.PRO_clave
 				                LEFT  JOIN Escolaridad ON Escolaridad.ESC_clave = Expediente.ESC_clave
-
 				WHERE EXP_folio = '$folio'";
 
 		$result = $db->query($sql);
@@ -5191,14 +5188,20 @@ $app->post('/rechazos/busqueda', function(){
 		$fechaini = $datos->fechaini;
 		$fechafin = $datos->fechafin;
 		
-		$sql = "SELECT REZ_claveint as id, REZ_motivo as motivo, REZ_monto as monto, DOC_folio as folio, REZ_fechaReg as registro, USU_login as usuario FROM Rechazos WHERE ";
+		$sql = "SELECT TOP 500 REZ_claveint as id, REZ_motivo as motivo, REZ_monto as monto, DOC_folio as folio, REZ_fechaReg as registro, USU_login as usuario FROM Rechazos ";
 		
 		if ($folio) {
-			$sql .= " DOC_folio = '$folio' ";
-		}elseif ($fechaini && $fechafin) {
-			$sql .= " REZ_fechaReg between '$fechaini' and '$fechafin 23:59:58.999'";
+			$sql .= "WHERE DOC_folio = '$folio' ";
 		}
-		
+
+		if ($fechaini && $fechafin) {
+			if ($folio) {
+				$sql .= "AND REZ_fechaReg between '$fechaini' and '$fechafin 23:59:58.999'";
+			}else{
+				$sql .= "WHERE REZ_fechaReg between '$fechaini' and '$fechafin 23:59:58.999'";
+			}
+		}
+
 		$rs = odbc_exec($conexion,$sql);
 		
 		$i = 0;
@@ -5864,6 +5867,103 @@ $app->get('/ticketinfo/:id/:folio', function($id,$folio){
 	}
 
 	$conexion = null;
+
+});
+
+
+//busca tickets con folio web
+$app->get('/ticketpagos', function(){
+
+    $conexion = conectarMySQL();
+
+    if(!$conexion) {
+
+	    die('Something went wrong while connecting to MSSQL');
+
+	}else{
+
+		$sql = "SELECT MAX(TSeg_clave) as ultimo FROM TicketSeguimiento";
+
+
+		$result = $conexion->query($sql);
+        $ticket = $result->fetchAll(PDO::FETCH_OBJ);
+        $conexion = null;
+        echo json_encode($ticket);
+
+	}
+
+});
+
+
+//busca tickets con folio web
+$app->get('/ticketpagos/:id', function($id){
+
+
+    $conexion = conectarMySQL();
+
+    if(!$conexion) {
+
+	    die('Something went wrong while connecting to MSSQL');
+
+	}else{
+
+		$sql = "SELECT MAX(TSeg_clave) as ultimo FROM TicketSeguimiento";
+
+
+		$result = $conexion->query($sql);
+        $ticket = $result->fetchAll(PDO::FETCH_OBJ);
+        $conexion = null;
+        echo json_encode($ticket);
+
+	}
+
+});
+
+//busca tickets con folio web
+$app->post('/ticketpagos', function(){
+
+
+    $conexion = conectarMySQL();
+
+    if(!$conexion) {
+
+	    die('Something went wrong while connecting to MSSQL');
+
+	}else{
+
+		$sql = "SELECT MAX(TSeg_clave) as ultimo FROM TicketSeguimiento";
+
+
+		$result = $conexion->query($sql);
+        $ticket = $result->fetchAll(PDO::FETCH_OBJ);
+        $conexion = null;
+        echo json_encode($ticket);
+
+	}
+
+});
+
+
+$app->post('/ticketpagos/busqueda', function(){
+
+
+    $conexion = conectarMySQL();
+
+    if(!$conexion) {
+
+	    die('Something went wrong while connecting to MSSQL');
+
+	}else{
+
+		$sql = "SELECT MAX(TSeg_clave) as ultimo FROM TicketSeguimiento";
+
+
+		$result = $conexion->query($sql);
+        $ticket = $result->fetchAll(PDO::FETCH_OBJ);
+        $conexion = null;
+        echo json_encode($ticket);
+
+	}
 
 });
 

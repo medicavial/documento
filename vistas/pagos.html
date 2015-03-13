@@ -4,7 +4,7 @@
 		<h1>{{tituloR}}</h1>
 	</div>
 	<ul id="rb-grid-small" class="rb-grid-small clearfix">
-	    <li class="rb-span-1" id="color3">
+	    <!-- <li class="rb-span-1" id="color3">
 
 	        <h3>Por Recibir<span ng-show=" recibidos > 0 " class="push">{{recibidos}}</span></h3>
 	        <a href="#/listadoRecepcion/pagos">
@@ -33,9 +33,19 @@
 	        <a href="#/listadoEntregas/pagos">
 	            <span class=" icon-list"></span>
 	        </a>
+	    </li> -->
+
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Ticket Pago</h3>
+	        <a href="#/ticketpagos">
+	            <span class="icon-box-add"></span>
+	        </a>
+
 	    </li>
+
 	</ul>
-	<h2>Folios activos en el area</h2>
+	<!-- <h2>Folios activos en el area</h2>
 	<div class="row">
 		
 		
@@ -146,11 +156,6 @@
 				<option value="original">Original</option>
 			</select>
 		</div>
-		<!-- <div class="col-md-2">
-			<select class="form-control" id="producto" ng-model="producto" ng-change="filtra()" ng-options="producto as producto.nombre for producto in productosini" required>
-				<option value="">Producto</option>
-			</select>
-		</div> -->
 		<div class="col-md-2">
 			<select class="form-control" id="tipodoc" ng-change="filtra()" ng-model="etapa">
 				<option value="">Etapa</option>
@@ -162,14 +167,15 @@
 		<div class="col-md-2">
 			<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
 		</div>
+
 	</div>
 	<br>
 	<div class="gridStyle" ng-grid="gridOptions"></div>
-	<!-- <h4 ng-show="listado.length > 0">Documentos Encontrados: {{cantidad}} </h4> -->
+	
 	<br>
-	<!-- directiva para exportar a excel ver app.js mas nfo de pagos -->
+	
 	<excel info="listado"></excel>	
-	<br>
+	<br> -->
 </div>
 <script type="text/javascript">
 	$.datepicker.setDefaults($.datepicker.regional["es"]);

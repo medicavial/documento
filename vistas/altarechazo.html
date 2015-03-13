@@ -1,29 +1,33 @@
 <div ng-init="inicio()" id="contenedor">
 	<div class="titulos">
-		<a href="#/mesacontrol" class="icon-arrow-left"></a>
+		<a href="#/pagosrechazos" class="icon-arrow-left"></a>
 		<h1>{{tituloNR}}</h1>
 	</div>
-	<div class="row">
-		<div class="col-md-3">
-			<label for="">Folio</label>
-			<input type="text" ng-model="datos.folio" class="form-control" folio>
+	<form>
+
+		<div class="row">
+			<div class="col-md-3">
+				<label for="">Folio</label>
+				<input type="text" ng-model="datos.folio" class="form-control" folio required>
+			</div>
 		</div>
-	</div>
-	<br>
-	<div class="row">
-		<div class="col-md-10">
-			<label for="lesionado">Motivo Rechazo</label>
-			<input type="text" id="lesionado" class="form-control" ng-model="datos.motivo" capitalize required>
+		<br>
+		<div class="row">
+			<div class="col-md-10">
+				<label for="lesionado">Motivo Rechazo</label>
+				<input type="text" id="lesionado" class="form-control" ng-model="datos.motivo" capitalize required>
+			</div>
+			<div class="col-md-2">
+				<label for="lesionado">Monto del rechazo</label>
+				<input type="text" id="lesionado" class="form-control" ng-model="datos.monto" required>
+			</div>
 		</div>
-		<div class="col-md-2">
-			<label for="lesionado">Monto del rechazo</label>
-			<input type="text" id="lesionado" class="form-control" ng-model="datos.monto" required>
-		</div>
-	</div>
-	<br>
-	<div ng-show="mensaje" class="alert alert-success animate-show">{{mensaje}}</div>
-	<button type="button" class="btn btn-primary" id="boton" data-loading-text="Guardando.." ng-click="guardar()">Guardar</button>
-	<button type="button" class="btn btn-info" ng-click="inicio()">Nuevo</button>
+		<br>
+		<div ng-show="mensaje" class="alert alert-success animate-show">{{mensaje}}</div>
+		<button type="submit" class="btn btn-primary" id="boton" data-loading-text="Guardando.." ng-click="guardar()" ng-disabled="guardado">Guardar</button>
+		<button type="button" class="btn btn-info" ng-click="inicio()">Nuevo</button>
+		
+	</form>
 </div>
 <script type="text/javascript">
 </script>

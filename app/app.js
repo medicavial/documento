@@ -111,6 +111,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             controller    : 'ticketCtrl'
     });
 
+    $routeProvider.when('/generaticketpago',{
+            templateUrl   : 'vistas/ticketPagos.html',
+            controller    : 'ticketPagoCtrl'
+    });
+
     $routeProvider.when('/historial/:folio/:etapa/:entrega',{
             templateUrl   : 'vistas/timeline.html',
             controller    : 'historialCtrl'        
@@ -157,6 +162,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             controller    : 'rechazosFolioCtrl'       
     });
 
+   $routeProvider.when('/pagosrechazos',{
+            templateUrl   : 'vistas/menuRechazo.html',
+            controller    : 'rechazosFolioCtrl'       
+    });
+
    $routeProvider.when('/nopagar',{
             templateUrl   : 'vistas/listadoentreganpc.html',
             controller    : 'nopagarCtrl'        
@@ -185,6 +195,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
    $routeProvider.when('/ticket',{
             templateUrl   : 'vistas/menuticket.html',
             controller    : 'menuticketCtrl'
+    });
+
+   $routeProvider.when('/ticketpagos',{
+            templateUrl   : 'vistas/menuticketPagos.html',
+            controller    : 'menuticketPagosCtrl'
     });
 
    $routeProvider.when('/traspasos/:area',{
@@ -689,7 +704,6 @@ app.directive('capitalize', function() {
    };
 });
 
-
 app.directive('excel', function(){
     return {
         restrict: 'E',
@@ -885,7 +899,6 @@ app.directive('money', function () {
 
 });
  
-
 app.directive('folio', function() {
     return {
         restrict: 'A',

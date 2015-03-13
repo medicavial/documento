@@ -1,0 +1,223 @@
+<div id="contenedor" ng-init="inicio()">
+  <div class="titulos">
+    <a href="#/ticketpagos" class="icon-arrow-left"></a>
+    <h1>{{tituloT}}</h1>
+  </div>
+
+    <div class="row" ng-show="edicion">
+      <div class="col-md-12">
+      
+        <fieldset>
+          <legend>Datos del Expediente</legend>
+        </fieldset>
+        <div class="row">
+            <div class="col-md-4">
+                Nombre:<span style="margin-left:0.5em;">{{nombre}}</span>
+            </div>
+            <div class="col-md-4">
+              Compañia:<span style="margin-left:0.5em;">{{compania}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                Siniestro:<span style="margin-left:0.5em;">{{siniestro}}</span>
+            </div>
+            <div class="col-md-3">
+                Reporte:<span style="margin-left:0.5em;">{{reporte}}</span>
+            </div>
+            <div class="col-md-3">
+                Póliza:<span style="margin-left:0.5em;">{{poliza}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                Telefono:<span style="margin-left:0.5em;">{{siniestro}}</span>
+            </div>
+            <div class="col-md-3">
+                Mail:<span style="margin-left:0.5em;">{{mail}}</span>
+            </div>
+            <div class="col-md-3">
+                F. Nacimiento:<span style="margin-left:0.5em;">{{fechana | date:'medium'}}</span>
+            </div>
+            <div class="col-md-3">
+                Sexo:<span style="margin-left:0.5em;">{{sexo}}</span>
+            </div>
+        </div>
+
+      </div>
+
+    </div>
+  <form name="formTicket"  novalidate>
+    <div class="row">
+        <!-- <div class="col-md-2">
+            <label for="folio">Folio Interno</label>
+            <input type="text" id="folio" class="form-control" ng-disabled="edicion" ng-model="datos.folioIn"  capitalize >
+        </div> -->
+        <div class="col-md-3">
+            <label for="folio">Folio MV</label>
+            <input type="text" id="folio" class="form-control" ng-disabled="edicion" ng-keydown="presionaFolio" ng-maxlength="10" ng-model="datos.folioweb"  capitalize >
+        </div>
+        <div class="col-md-1">
+            <br>
+            <img ng-show="cargar" class="animate-show" src="images/cargando.gif">
+        </div>
+    </div>
+    <div class="row" ng-hide="edicion">
+        <div class="col-md-3">
+          <label for="cliente">Cliente</label>
+          <select class="form-control"  ng-model="datos.cliente" ng-options="cliente.Clave as cliente.Nombre for cliente in clientes" ng-change="filtra()">
+            <option value="">Cliente</option>
+          </select>
+        </div>
+        <div class="col-md-3">
+          <label for="unidad">Unidad</label>
+          <select class="form-control"  ng-model="datos.unidad" ng-options="unidad.UnidadClave as unidad.Nombre for unidad in unidades" ng-change="filtra()">
+            <option value="">Unidad</option>
+          </select>
+        </div>
+        <div class="col-md-2">
+          <label for="unidad">Etapa</label>
+          <select class="form-control" id="tipodoc" ng-model="datos.etapa">
+            <option value="">Etapa</option>
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+          </select>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-3">
+                <label for="categoria">Categoria</label>
+                <select class="form-control" id="categoria" ng-change="altasubcategorias(datos.categoria)" ng-model="datos.categoria" ng-options="categoria.Clave as categoria.Nombre for categoria in categorias" required>
+                    <option value="">Categoria</option>
+                </select>
+        </div>
+        <div class="col-md-3">
+            <label for="subcategoria">Subcategoria</label>
+            <select id="subcategoria" class="form-control"  ng-model="datos.subcategoria" ng-options="subcategoria.Clave as subcategoria.Nombre for subcategoria in subcategorias" >
+                <option value="">Subcategoria</option>
+            </select>
+        </div> 
+        
+        <div class="col-md-3">
+            <label for="status">Status</label>
+            <select id="status" class="form-control"  ng-model="datos.statusa" ng-options="statu.Clave as statu.Nombre for statu in status" required>
+                <option value="">Status</option>
+            </select>
+        </div> 
+    </div> 
+    <div class="row" ng-show="datos.statusa == 2">
+      <div class="col-md-6">
+          <label for="folio">Asignado A:</label>
+            <input type="text" id="asignado" class="form-control" ng-model="datos.asignado"  capitalize >
+      </div>
+      <div class="col-md-3">
+        <label>Fecha Asignación</label>
+          <div class="input-group">
+            <input type="text" ng-model="datos.fechaasignado" class="form-control" id="fechaasigna"/>
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="row" ng-show="edicion">
+      <div class="col-md-6">
+          <label>Observaciones Iniciales</label>
+          <textarea class="form-control" ng-model="observaciones" rows="3" capitalize disabled></textarea>
+      </div>
+    </div>
+    <div class="row">
+      <div class="col-md-4">
+          <label>Notas</label>
+          <textarea class="form-control" ng-model="datos.notas" rows="3" capitalize></textarea>
+      </div>
+      <div class="col-md-4">
+          <label>Comunicación</label>
+          <textarea class="form-control" ng-model="datos.comunicacion" rows="3" capitalize></textarea>
+      </div>
+      <div class="col-md-3">
+          <label>Fecha Comunicación</label>
+          <div class="input-group">
+            <input type="text" ng-model="datos.fechacomunica" class="form-control" id="fechacomunica"/>
+            <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+          </div>
+        </div>
+    </div>
+    <br>
+    <div ng-show="mensaje2 != '' " ng-class="tipoalerta" class="alert animate-show text-center">{{mensaje2}}</div>
+    <br>
+    <button ng-hide="edicion" type="reset" class="btn btn-success" ng-click="inicio()">Limpiar</button>
+    <a ng-show="edicion" type="reset" class="btn btn-success" href="#/generaticket">Nuevo Ticket</a>
+    <button id="boton" type="button" ng-disabled="ValidaInfo()" ng-click="siguiente()" data-loading-text="Guardando..." class="btn btn-primary">Guardar</button>
+  </form>
+  <br>
+  <br>
+  <div class="row" ng-show="edicion">
+    <div class="col-md-12">
+
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Historial de Comunicación</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Descripcion</th>          
+                  <th>Fecha</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="comunicacion in comunicaciones">
+                  <td>{{comunicacion.Usuario}}</td>
+                  <td>{{comunicacion.Descripcion}}</td>
+                  <td>{{comunicacion.Fecha}}</td>
+                </tr>
+              </tbody>
+            </table>
+            
+        </div>
+      </div>
+
+    </div>
+    <div class="col-md-12">
+      
+      <div class="panel panel-primary">
+        <div class="panel-heading">
+          <h3 class="panel-title">Historial de Notas</h3>
+        </div>
+        <div class="panel-body">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Usuario</th>
+                  <th>Descripcion</th>          
+                  <th>Fecha</th>
+
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="nota in notas">
+                  <td>{{nota.Usuario}}</td>
+                  <td>{{nota.Descripcion}}</td>
+                  <td>{{nota.Fecha}}</td>
+                </tr>
+              </tbody>
+            </table>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+</div>
+<!-- ng-disabled="formFax.$invalid" -->
+<br>
+
+<script>
+  $.datepicker.setDefaults($.datepicker.regional["es"]);
+  $( "#fechacomunica" ).datepicker({showButtonPanel: true});
+  $( "#fechaasigna" ).datepicker({showButtonPanel: true});
+</script>

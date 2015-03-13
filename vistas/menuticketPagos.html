@@ -1,0 +1,133 @@
+<div ng-init="inicio()" id="contenedor">
+	<div class="titulos">
+		<a href="#/pagos" class="icon-arrow-left"></a>
+		<h1>{{tituloTi}}</h1>
+	</div>
+	<ul id="rb-grid-small" class="rb-grid-small clearfix">
+	 
+	    <li class="rb-span-1" id="color3">
+	        <h3>Generar Ticket</h3>
+	        <a href="#/generaticketpago">
+	            <span class="icon-stackoverflow"></span>
+	        </a>
+	    </li>
+
+	</ul>
+	<h2>Tickets Generados</h2>
+	<div class="row">
+		<div class="col-md-4">
+			<fieldset>
+				<form name="1" ng-submit="buscatickets()">
+					<legend>Fecha Captura</legend>
+					<div class="row">
+						<div class="col-md-6">
+							<input type="text" ng-model="datos.fechaini" ng change="datos.fechafin = datos.fechaini" class="form-control" id="datepicker" placeholder="inicial" required/>
+						</div>
+						<div class="col-md-6">
+							
+							<div class="input-group">
+								<input type="text" ng-model="datos.fechafin" class="form-control" id="datepicker2" placeholder="Final" required/>
+								<span class="input-group-btn">
+							        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+							    </span>
+							</div>
+							
+						</div>
+					</div>
+				</form>
+			</fieldset>
+		</div>
+		<div class="col-md-3">
+			<fieldset>
+				<form name="2" ng-submit="buscatickets()">
+					<legend>Folio Interno</legend>
+					<div class="input-group">
+						<input type="text" ng-model="datos.interno" class="form-control" ng-change="filtra()" capitalize />
+						<span class="input-group-btn">
+					        <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+					    </span>
+					</div>
+				</form>
+			</fieldset>
+		</div>
+		<div class="col-md-3">
+			<fieldset>
+				<form name="3" ng-submit="buscatickets()">
+					<legend>Folio MV</legend>
+					<div class="input-group">
+						<input type="text" ng-model="datos.folio" class="form-control"  ng-change="filtra()" folio />
+						<span class="input-group-btn">
+					        <button class="btn btn-default"  type="submit"><i class="glyphicon glyphicon-search"></i></button>
+					    </span>
+					</div>
+				</form>
+			</fieldset>
+		</div>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Filtros</legend>
+				<div class="row">
+					<div class="col-md-2">
+						<select class="form-control"  ng-model="cliente" ng-options="cliente as cliente.Nombre for cliente in clientes" ng-change="filtra()">
+							<option value="">Cliente</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control"  ng-model="unidad" ng-options="unidad as unidad.Nombre for unidad in unidades" ng-change="filtra()">
+							<option value="">Unidad</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control" id="usuarios" ng-model="usuario" ng-change="filtra()" ng-options="usuario as usuario.Nombre for usuario in usuarios" required>
+							<option value="">Usuario</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<select class="form-control" id="statu" ng-model="statu" ng-change="filtra()" ng-options="statu as statu.Nombre for statu in status" required>
+							<option value="">Status</option>
+						</select>
+					</div>
+
+					<div class="col-md-2">
+						<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+	<div class="gridStyle" ng-grid="gridOptions"></div>
+	<br>
+	<!-- directiva para exportar a excel ver app.js mas nfo -->
+	<excel info="exportables"></excel>	
+	<br>
+	
+</div>
+<script type="text/javascript">
+	// $.datepicker.setDefaults($.datepicker.regional["es"]);
+	// $( "#datepicker" ).datepicker({showButtonPanel: true});
+	// $( "#datepicker2" ).datepicker({showButtonPanel: true});
+
+
+	$.datepicker.setDefaults($.datepicker.regional["es"]);
+    $( "#datepicker" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker2" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    
+    $( "#datepicker2" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+</script>
