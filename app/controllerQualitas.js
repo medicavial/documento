@@ -721,8 +721,7 @@ function formatoQualitasEnviadoCtrl($scope, $rootScope,$http, find, loading){
 		loading.cargando('Buscando Factura(s)');
 
 		//armamos los datos a enviar segun tipo de consulta (tipo)
-		console.log($scope.datos);
-
+		// debugger;
 		$http({
 			url:'/documento/api/facturasQualitasenviadas',
 			method:'POST', 
@@ -735,15 +734,17 @@ function formatoQualitasEnviadoCtrl($scope, $rootScope,$http, find, loading){
 			if(data.respuesta){
 
         		loading.mensaje(data.respuesta);
-        		loading.despedida();
+        		
         		$scope.envios = [];
 
         	}else{
 
         		$scope.envios = data;
         		$scope.cantidad = data.length -1;
-        		loading.despedida();
+        		
         	}
+
+        	loading.despedida();
 			
 		}).error( function (xhr,status,data){
 
