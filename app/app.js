@@ -231,6 +231,8 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 //notificaciones que se ejecutan cuando la aplicacion inicia
 app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
 
+    
+
     $rootScope.$on('$routeChangeStart', function(){
         //llamamos a checkStatus, el cual lo hemos definido en la factoria auth
         //la cuál hemos inyectado en la acción run de la aplicación
@@ -239,7 +241,7 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
         $rootScope.areaUsuario = $cookies.areaUsuario;
         $rootScope.user = $cookies.user;
         $rootScope.userWeb = $cookies.userWeb;
-
+        $rootScope.cargando = false;
         auth.checkStatus();
     });
 
@@ -251,7 +253,6 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
     $rootScope.hoverOut = function(){
         $rootScope.hoverEdit = false;
     };
-
 
     ///Esto es para ver notificaciones existentes aun es manual 
 
@@ -611,20 +612,31 @@ app.factory("find", function($http){
 app.factory("loading", function($rootScope){
     return{
         cargando:function(mensaje){
-            $rootScope.cargando=true;
-            $rootScope.loading=true;
-            $rootScope.label= mensaje;
+
+                $rootScope.cargando=true;
+                $rootScope.loading=true;
+                $rootScope.label= mensaje;
+
         },
         mensaje:function(mensaje){
-            $rootScope.loading=false;
-            $rootScope.label= mensaje;
+ 
+                $rootScope.loading=false;
+                $rootScope.label= mensaje;
+
+            
         },
         despedida:function(){
-            $rootScope.cargando=false;
+    
+                $rootScope.cargando=false;
+
+            
         },
         error:function(mensaje){
-            $rootScope.error=true;
-            $rootScope.label= mensaje;
+
+                $rootScope.error=true;
+                $rootScope.label= mensaje;
+
+            
         }
     }
 })
