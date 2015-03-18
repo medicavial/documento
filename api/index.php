@@ -47,6 +47,7 @@ function conectarMySQL(){
     $dbh = new PDO("mysql:host=$dbhost;dbname=$dbname", $dbuser, $dbpass);
     $dbh->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbh;
+
 }
 
 function generaacceso($long=10) {
@@ -2169,7 +2170,6 @@ $app->post('/facturasQualitas', function(){
 	$valores = array();
 	$fechaini = $datos->fechaini;
 	$fechafin = $datos->fechafin;
-	$producto = $datos->producto;
 
 	$fechafin = $fechafin . ' 23:59:58.999';
 
@@ -2185,7 +2185,7 @@ $app->post('/facturasQualitas', function(){
 
 
 
-		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin', @prodcuto = $producto";
+		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin'";
 
 		$rs= odbc_exec($conexion,$sql);
 
@@ -2426,7 +2426,6 @@ $app->post('/facturasQualitasIncompleto', function(){
 	$valores = array();
 	$fechaini = $datos->fechaini;
 	$fechafin = $datos->fechafin;
-	$producto = $datos->producto;
 
 	$fechafin = $fechafin . ' 23:59:58.999';
 
@@ -2442,7 +2441,7 @@ $app->post('/facturasQualitasIncompleto', function(){
 
 
 
-		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin', @prodcuto = $producto";
+		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin'";
 
 		$rs= odbc_exec($conexion,$sql);
 
@@ -6412,7 +6411,6 @@ function nombrecompleto($usuario){
 
 }
 
-
 ///Funcion para obtener el nombre del area completo
 function nombrearea($area){
 
@@ -6431,7 +6429,6 @@ function nombrearea($area){
 	// odbc_close($conexion);
 
 }
-
 
 //'102', 'ORTO003292', '1', '1', '09/07/2014', 5, '', '', '3', '', ''
 //'83', 'PEMV023870', 1, 1, '10/07/2014 14:0...', 1, '', '', '', '', '', '512283'

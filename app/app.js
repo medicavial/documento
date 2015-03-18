@@ -220,16 +220,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 });
 
 
-// app.config(['ngClipProvider', function(ngClipProvider) {
-//     ngClipProvider.setPath("lib/ZeroClipboard.swf");
-// }]);
-
-
 // var notificaciones = new Firebase("https://medicavial.firebaseio.com/notificaciones");
 
 
 //notificaciones que se ejecutan cuando la aplicacion inicia
-app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
+app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location, loading){
 
     
 
@@ -241,8 +236,9 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
         $rootScope.areaUsuario = $cookies.areaUsuario;
         $rootScope.user = $cookies.user;
         $rootScope.userWeb = $cookies.userWeb;
-        $rootScope.cargando = false;
+        loading.despedida();
         auth.checkStatus();
+
     });
 
 
@@ -374,8 +370,7 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
 //$cookieStore para actualizar o eliminar
 //$location para cargar otras rutas
 
-app.factory("auth", function($cookies,$cookieStore,$location, $rootScope, $http)
-{
+app.factory("auth", function($cookies,$cookieStore,$location, $rootScope, $http){
     return{
         login : function(username, password)
         {   

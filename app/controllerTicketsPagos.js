@@ -300,7 +300,14 @@ function menuticketPagosCtrl($scope, $rootScope, $http, find, loading, $location
 	$scope.listatickets = function(){
 		$http.get('/documento/api/ticketpagos').success(function (data){
 			$scope.listado = data;
-		})
+		});
+	}
+
+	$scope.buscatickets = function(){
+		$http.post('/documento/api/ticketpagos',$scope.datos).success(function (data){
+			$scope.listado = data;
+			$scope.limpia();
+		});
 	}
 
 	//busquedas

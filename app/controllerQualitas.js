@@ -1,5 +1,6 @@
 /// Facturas qualitas
 function formatoQualitasCtrl($scope, $rootScope,$http, find, loading){
+	
 	$scope.inicio = function(){
 		$scope.tituloFQ = "Formato de Facturas Qualitas";
 		$scope.fechaini = FechaAct;
@@ -27,7 +28,7 @@ function formatoQualitasCtrl($scope, $rootScope,$http, find, loading){
 
 	$scope.buscafacturas = function(){
 
-		if ($scope.producto) {
+		// if ($scope.producto) {
 
 			loading.cargando('Buscando Factura(s)');
 
@@ -66,10 +67,10 @@ function formatoQualitasCtrl($scope, $rootScope,$http, find, loading){
 
 			});
 
-		}else{
+		// }else{
 
-			alert('debes ingresar un prodcuto');
-		}
+		// 	alert('debes ingresar un prodcuto');
+		// }
 
 	}
 
@@ -718,7 +719,7 @@ function formatoQualitasEnviadoCtrl($scope, $rootScope,$http, find, loading){
 
 	$scope.buscafacturas = function(){
 
-		loading.cargando('Buscando Factura(s)');
+		//loading.cargando('Buscando Factura(s)');
 
 		//armamos los datos a enviar segun tipo de consulta (tipo)
 		// debugger;
@@ -733,7 +734,7 @@ function formatoQualitasEnviadoCtrl($scope, $rootScope,$http, find, loading){
 			console.log(data);
 			if(data.respuesta){
 
-        		loading.mensaje(data.respuesta);
+        		//loading.mensaje(data.respuesta);
         		
         		$scope.envios = [];
 
@@ -744,7 +745,7 @@ function formatoQualitasEnviadoCtrl($scope, $rootScope,$http, find, loading){
         		
         	}
 
-        	loading.despedida();
+        	//loading.despedida();
 			
 		}).error( function (xhr,status,data){
 
@@ -1057,7 +1058,7 @@ function formatoQualitasIncompletosCtrl($scope, $rootScope,$http, find, loading)
 
 	$scope.buscafacturas = function(){
 
-		if ($scope.producto) {
+		// if ($scope.producto) {
 
 			loading.cargando('Buscando Factura(s)');
 
@@ -1092,10 +1093,10 @@ function formatoQualitasIncompletosCtrl($scope, $rootScope,$http, find, loading)
 
 			});
 
-		}else{
+		// }else{
 
-			alert('debes ingresar un prodcuto');
-		}
+		// 	alert('debes ingresar un prodcuto');
+		// }
 
 	}
 
