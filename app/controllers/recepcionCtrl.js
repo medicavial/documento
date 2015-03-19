@@ -1,11 +1,19 @@
 ///Area recepcion de Documentos
-function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loading, barra, checkFolios,carga){
+function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loading, checkFolios,carga){
 	
 	//Con parametros de inicio
 	$scope.inicio = function(){
 
 		$rootScope.area = 1;
 		$scope.tituloR = "Recepcion de Documentos";
+		$scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];	
+		$scope.limpia();
+		$scope.cargaInfo();
+		
+	}
+
+	$scope.limpia = function(){
+		$scope.FaxOriginal = true;
 		$scope.push = false;
 		$scope.rechazados = 0;
 		$scope.datos = {
@@ -16,24 +24,12 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			cliente:'',
 			unidad:''
 		};
-
 		$scope.fechaini = '';
 		$scope.fechafin = '';
 		$scope.folio = '';
 		$scope.lesionado = '';
 		$scope.mensaje = '';
 		$scope.cargar = false;
-		$scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];	
-		$scope.FaxOriginal = true;
-		$scope.cargaInfo();
-		
-		// $scope.empresas();
-		// $scope.Altaunidades();
-		// $scope.productos();
-		// $scope.verareaoperativa();
-		// $scope.cargaEntrada();
-		// $scope.Altarechazados();
-		
 	}
 
 	$scope.cargaInfo = function(){
@@ -95,8 +91,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
         	}else{
         		$scope.rechazados = data.length;
         	}
-
-        	barra.termina();
         	
 
 		 });
@@ -1290,4 +1284,4 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 }
 
-app.controller('recepcionCtrl', ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'barra', 'checkFolios','carga', recepcionCtrl]);
+app.controller('recepcionCtrl', ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga', recepcionCtrl]);

@@ -229,19 +229,23 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
 
 //notificaciones que se ejecutan cuando la aplicacion inicia
-app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location){
+app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location, barra){
 
     $rootScope.$on('$routeChangeStart', function(){
         //llamamos a checkStatus, el cual lo hemos definido en la factoria auth
         //la cuál hemos inyectado en la acción run de la aplicación
+        barra.inicia();
         $rootScope.username = $cookies.username;
         $rootScope.id = $cookies.id;
         $rootScope.areaUsuario = $cookies.areaUsuario;
         $rootScope.user = $cookies.user;
         $rootScope.userWeb = $cookies.userWeb;
-
         auth.checkStatus();
 			
+    });
+
+    $rootScope.$on('$routeChangeSuccess', function(){
+        barra.termina();  
     });
 
 
