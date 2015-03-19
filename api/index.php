@@ -4,7 +4,6 @@ set_time_limit(3600);
 ini_set('memory_limit', '-1');
 date_default_timezone_set('America/Mexico_City'); //Ajustando zona horaria
 
-
 require 'Slim/Slim.php';
 \Slim\Slim::registerAutoloader();
 
@@ -6413,7 +6412,6 @@ function altahistorialfactura($usuario, $folio, $etapa, $entrega, $fecha, $accio
 	}
 
 };
-
 
 
 $app->run();

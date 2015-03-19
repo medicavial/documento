@@ -6,190 +6,210 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     //Configuramos la ruta que queremos el html que le toca y que controlador usara
 	$routeProvider.when('/',{
-			templateUrl: '../documento/vistas/home.html',
-			controller : 'homeCtrl'
-	});
+            templateUrl: 'vistas/home.html',
+            controller : 'homeCtrl'
+    });
+
+    $routeProvider.when('/altarechazo',{
+            templateUrl   : 'vistas/altarechazo.html',
+            controller    : 'altaRechazosCtrl'
+    });
 
     $routeProvider.when('/archivo',{
-            templateUrl   : '../documento/vistas/archivo.html',
+            templateUrl   : 'vistas/archivo.html',
             controller    : 'archivoCtrl'
     });
 
     $routeProvider.when('/bloqueo',{
-            templateUrl: '../documento/vistas/bloqueo.html',
+            templateUrl: 'vistas/bloqueo.html',
             controller : 'bloqueoCtrl'
     });
 
     $routeProvider.when('/captura',{
-            templateUrl    :'../documento/vistas/captura.html',
+            templateUrl    :'vistas/captura.html',
             controller     :'capturaCtrl'
     });
 
     $routeProvider.when('/consulta',{
-            templateUrl   : '../documento/vistas/consulta.html',
-            controller    : 'consultaCtrl'
+            templateUrl   : 'vistas/consulta.html',
+            controller    : 'consultaCtrl'   
     });
 
     $routeProvider.when('/control',{
-            templateUrl   : '../documento/vistas/controldocumentos.html',
-            controller    : 'controlDocumentosCtrl'
+            templateUrl   : 'vistas/controldocumentos.html',
+            controller    : 'controlDocumentosCtrl'   
     });
 
     $routeProvider.when('/consultaflujo',{
-            templateUrl   : '../documento/vistas/consultaflujo.html',
-            controller    : 'consultaFlujoCtrl'
+            templateUrl   : 'vistas/consultaflujo.html',
+            controller    : 'consultaFlujoCtrl'   
     });
 
     $routeProvider.when('/cordinacion',{
-            templateUrl    :'../documento/vistas/cordinacion.html',
+            templateUrl    :'vistas/cordinacion.html',
             controller     :'cordinacionCtrl'
     });
 
     $routeProvider.when('/editaticket/:foliointerno/:folioweb',{
-            templateUrl   : '../documento/vistas/ticket.html',
+            templateUrl   : 'vistas/ticket.html',
             controller    : 'editaTicketCtrl'
     });
 
     $routeProvider.when('/entregas/:area',{
-            templateUrl   : '../documento/vistas/entregas.html',
-            controller    : 'entregasCtrl'
+            templateUrl   : 'vistas/entregas.html',
+            controller    : 'entregasCtrl'   
     });
 
     $routeProvider.when('/facturacion',{
-            templateUrl    :'../documento/vistas/facturacion.html',
+            templateUrl    :'vistas/facturacion.html',
             controller     :'facturacionCtrl'
     });
 
     $routeProvider.when('/flujo',{
-            templateUrl    :'../documento/vistas/flujo.html',
+            templateUrl    :'vistas/flujo.html',
             controller     :'flujoCtrl'
     });
 
     $routeProvider.when('/flujopagos',{
-            templateUrl   : '../documento/vistas/flujopagos.html',
-            controller    : 'flujoPagosCtrl'
+            templateUrl   : 'vistas/flujopagos.html',
+            controller    : 'flujoPagosCtrl'   
     });
 
     $routeProvider.when('/formatoqualitas',{
-            templateUrl   : '../documento/vistas/formatoqualitas.html',
-            controller    : 'formatoQualitasCtrl'
+            templateUrl   : 'vistas/formatoqualitas.html',
+            controller    : 'formatoQualitasCtrl'   
     });
 
     $routeProvider.when('/formatoqualitasconsulta',{
-            templateUrl   : '../documento/vistas/formatoqualitasconsulta.html',
-            controller    : 'formatoQualitasConsultaCtrl'
+            templateUrl   : 'vistas/formatoqualitasconsulta.html',
+            controller    : 'formatoQualitasConsultaCtrl'   
     });
 
     $routeProvider.when('/formatoqualitasarchivos',{
-            templateUrl   : '../documento/vistas/formatoqualitasarchivos.html',
-            controller    : 'formatoQualitasArchivosCtrl'
+            templateUrl   : 'vistas/formatoqualitasarchivos.html',
+            controller    : 'formatoQualitasArchivosCtrl'   
     });
 
     $routeProvider.when('/formatoqualitasenviado',{
-            templateUrl   : '../documento/vistas/formatoqualitasenviado.html',
-            controller    : 'formatoQualitasEnviadoCtrl'
+            templateUrl   : 'vistas/formatoqualitasenviado.html',
+            controller    : 'formatoQualitasEnviadoCtrl'   
     });
 
     $routeProvider.when('/formatoqualitasrechazados',{
-            templateUrl   : '../documento/vistas/formatoqualitasrechazados.html',
-            controller    : 'formatoQualitasRechazadosCtrl'
+            templateUrl   : 'vistas/formatoqualitasrechazados.html',
+            controller    : 'formatoQualitasRechazadosCtrl'   
     });
 
     $routeProvider.when('/formatoqualitasincompletos',{
-            templateUrl   : '../documento/vistas/formatoqualitasincompletos.html',
-            controller    : 'formatoQualitasIncompletosCtrl'
+            templateUrl   : 'vistas/formatoqualitasincompletos.html',
+            controller    : 'formatoQualitasIncompletosCtrl'   
     });
 
 
     $routeProvider.when('/generaticket',{
-            templateUrl   : '../documento/vistas/ticket.html',
+            templateUrl   : 'vistas/ticket.html',
             controller    : 'ticketCtrl'
     });
 
+    $routeProvider.when('/generaticketpago',{
+            templateUrl   : 'vistas/ticketPagos.html',
+            controller    : 'ticketPagoCtrl'
+    });
+
     $routeProvider.when('/historial/:folio/:etapa/:entrega',{
-            templateUrl   : '../documento/vistas/timeline.html',
-            controller    : 'historialCtrl'
+            templateUrl   : 'vistas/timeline.html',
+            controller    : 'historialCtrl'        
     });
 
     $routeProvider.when('/infopase',{
-            templateUrl   : '../documento/vistas/infopase.html',
+            templateUrl   : 'vistas/infopase.html',
             controller    : 'infoPaseCtrl'
     });
 
     $routeProvider.when('/infopase/:folio',{
-            templateUrl   : '../documento/vistas/infopase.html',
+            templateUrl   : 'vistas/infopase.html',
             controller    : 'infoPaseCtrl'
     });
 
     $routeProvider.when('/listadoEntregas/:area',{
-            templateUrl   : '../documento/vistas/listadoentrega.html',
-            controller    : 'listadoEntregasCtrl'
+            templateUrl   : 'vistas/listadoentrega.html',
+            controller    : 'listadoEntregasCtrl'        
     });
 
     $routeProvider.when('/listadoRecepcion/:area',{
-            templateUrl   : '../documento/vistas/listadoRecepcion.html',
-            controller    : 'listadoRecepcionCtrl'
+            templateUrl   : 'vistas/listadoRecepcion.html',
+            controller    : 'listadoRecepcionCtrl'      
     });
 
    $routeProvider.when('/login',{
-            templateUrl   : '../documento/vistas/login.html',
-            controller    : 'loginCtrl'
+            templateUrl   : 'vistas/login.html',
+            controller    : 'loginCtrl'       
     });
 
 
    $routeProvider.when('/logout',{
-            templateUrl   : '../documento/vistas/adios.html',
-            controller    : 'logoutCtrl'
+            templateUrl   : 'vistas/adios.html',
+            controller    : 'logoutCtrl'       
     });
 
    $routeProvider.when('/mapa',{
-            templateUrl   : '../documento/vistas/mapa.html',
-            controller    : 'mapaCtrl'
+            templateUrl   : 'vistas/mapa.html',
+            controller    : 'mapaCtrl'       
     });
 
    $routeProvider.when('/mesacontrol',{
-            templateUrl   : '../documento/vistas/mesacontrol.html',
-            controller    : 'mesaControlCtrl'
+            templateUrl   : 'vistas/menuRechazo.html',
+            controller    : 'rechazosFolioCtrl'       
+    });
+
+   $routeProvider.when('/pagosrechazos',{
+            templateUrl   : 'vistas/menuRechazo.html',
+            controller    : 'rechazosFolioCtrl'       
     });
 
    $routeProvider.when('/nopagar',{
-            templateUrl   : '../documento/vistas/listadoentreganpc.html',
-            controller    : 'nopagarCtrl'
+            templateUrl   : 'vistas/listadoentreganpc.html',
+            controller    : 'nopagarCtrl'        
     });
 
    $routeProvider.when('/pagos',{
-            templateUrl   : '../documento/vistas/pagos.html',
-            controller    : 'pagosCtrl'
+            templateUrl   : 'vistas/pagos.html',
+            controller    : 'pagosCtrl'       
     });
 
    $routeProvider.when('/Rechazos/:area',{
-            templateUrl   : '../documento/vistas/rechazos.html',
-            controller    : 'rechazosCtrl'
+            templateUrl   : 'vistas/rechazos.html',
+            controller    : 'rechazosCtrl'       
     });
 
    $routeProvider.when('/Recepcion',{
-            templateUrl   : '../documento/vistas/recepcion.html',
+            templateUrl   : 'vistas/recepcion.html',
             controller    : 'recepcionCtrl'
     });
 
    $routeProvider.when('/seguimiento',{
-            templateUrl   : '../documento/vistas/seguimiento.html',
+            templateUrl   : 'vistas/seguimiento.html',
             controller    : 'seguimientoCtrl'
     });
 
    $routeProvider.when('/ticket',{
-            templateUrl   : '../documento/vistas/menuticket.html',
+            templateUrl   : 'vistas/menuticket.html',
             controller    : 'menuticketCtrl'
     });
 
+   $routeProvider.when('/ticketpagos',{
+            templateUrl   : 'vistas/menuticketPagos.html',
+            controller    : 'menuticketPagosCtrl'
+    });
+
    $routeProvider.when('/traspasos/:area',{
-            templateUrl   : '../documento/vistas/traspasos.html',
+            templateUrl   : 'vistas/traspasos.html',
             controller    : 'traspasosCtrl'
     });
 
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
 
-	$routeProvider.otherwise({redirectTo:'/login'});
+    $routeProvider.otherwise({redirectTo:'/login'});
 
     //$locationProvider.html5Mode(true);
 
