@@ -17,7 +17,7 @@ $app = new \Slim\Slim();
 
 function conectarActual(){
 
-	$produccion = false;
+	$produccion = true;
 	
 	if ($produccion) {
 
@@ -30,9 +30,6 @@ function conectarActual(){
 		//Trusted_Connection=yes;
 		$db_server = 'SISTEMAS4';
 		$db_name = 'MV2';
-
-		$db_usr = 'acceso';
-		$db_pass = 'ACc3soMv';
 
 	}
 

@@ -1,0 +1,122 @@
+<div ng-init="inicio()" id="contenedor">
+	<div class="titulos">
+		<a href="#/" class="icon-arrow-left"></a>
+		<h1>{{tituloRZ}}</h1>
+	</div>
+	<ul id="rb-grid-small" class="rb-grid-small clearfix">
+	 
+	    <li class="rb-span-1" id="color3">
+	        <h3>Generar Rechazo</h3>
+	        <a href="#/altarechazo">
+	            <span class="glyphicon glyphicon-saved"></span>
+	        </a>
+	    </li>
+	</ul>
+	<h2>Rechazos Generados</h2>
+		<div class="row">
+			<div class="col-md-6">
+				<fieldset>
+				<form name="1" ng-submit="buscar()">
+					<legend>Fecha Registro</legend>
+					<div class="row">
+						<div class="col-md-6">
+							<input type="text" ng-model="info.fechaini" class="form-control" id="datepicker" placeholder="inicial" ng-change="info.fechafin = info.fechaini" required/>
+						</div>
+						<div class="col-md-6">
+							<div class="input-group">
+								<input type="text" ng-model="info.fechafin" class="form-control" id="datepicker2" placeholder="Final" required/>
+								<span class="input-group-btn">
+							        <button class="btn btn-default" type="submit" ng-click="ticketsxfecha()" ng-disabled="mostrando"><i class="glyphicon glyphicon-search"></i></button>
+							    </span>
+							</div>
+						</div>
+					</div>
+				</form>
+				</fieldset>
+			</div>
+			<div class="col-md-3">
+				<fieldset>
+					<form name="2" ng-submit="buscar()">
+					<legend>Folio</legend>
+					<div class="input-group">
+						<input type="text" ng-model="info.folio" class="form-control" ng-change="filtra()" folio required/>
+						<span class="input-group-btn">
+					        <button class="btn btn-default" type="submit" ng-disabled="mostrando"><i class="glyphicon glyphicon-search"></i></button>
+					    </span>
+					</div>
+					</form>
+				</fieldset>
+			</div>
+			<!-- <div class="col-md-6">
+				<fieldset>
+					<legend>Filtros</legend>
+					<div class="row">
+						<div class="col-md-4">
+							<select class="form-control"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes" ng-change="filtra()">
+								<option value="">Cliente</option>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<select class="form-control"  ng-model="unidad" ng-options="unidad as unidad.nombre for unidad in unidades" ng-change="filtra()">
+								<option value="">Unidad</option>
+							</select>
+						</div>
+						<div class="col-md-4">
+							<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
+						</div>
+					</div>
+				</fieldset>
+			</div> -->
+		</div>
+	
+	<br>
+	<div class="table-responsive">
+		<table class="table table-hover table-bordered">
+			<thead>
+				<tr>
+					<th>Folio</th>
+					<th>Motivo</th>
+					<th>Monto</th>
+					<th>Fecha</th>
+				</tr>
+			</thead>
+			<tbody>
+				<tr ng-repeat="dato in datos | filter:datos.folio">
+					<th width="10%"> {{dato.folio}} </th>
+					<th width="60%"> {{dato.motivo}} </th>
+					<th width="15%"> {{dato.monto | currency}} </th>
+					<th width="15%"> {{dato.registro}} </th>
+				</tr>
+			</tbody>
+		</table>
+	</div>
+	<br>
+	<!-- directiva para exportar a excel ver app.js mas nfo -->
+	<excel info="datos"></excel>	
+	<br>
+	
+</div>
+<script type="text/javascript">
+
+	$.datepicker.setDefaults($.datepicker.regional["es"]);
+    $( "#datepicker" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker2" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    
+    $( "#datepicker2" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+    
+</script>

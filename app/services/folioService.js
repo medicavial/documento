@@ -153,49 +153,50 @@ app.directive('folio', function() {
         require: 'ngModel',
         link: function(scope, element, attrs, modelCtrl) {
 
-            var functionToCall = scope.$eval(attrs.folio);
+            //var functionToCall = scope.$eval(attrs.folio);
 
+            //funcion que rellena folios 
             var rellenaFolio = function(folio){
 
                 if (folio != '') {
 
-                  var totalletras = folio.length;
+                    var totalletras = folio.length;
 
-                  var letras = folio.substr(0,4);
-                  var numeros = folio.substr(4,totalletras);
+                    var letras = folio.substr(0,4);
+                    var numeros = folio.substr(4,totalletras);
 
-                  if(letras.length < 4 ){
+                    if(letras.length < 4 ){
 
-                    var faltantes = 4 - letras.length;
+                        var faltantes = 4 - letras.length;
 
-                    for (var i = 0; i < faltantes; i++) {
+                        for (var i = 0; i < faltantes; i++) {
 
-                      var letra = letras.charAt(i);
-                      letras = letras + "0";
+                          var letra = letras.charAt(i);
+                          letras = letras + "0";
+                        }
                     }
-                  }
 
-                  if(numeros.length < 6 ){
+                    if(numeros.length < 6 ){
 
-                    var faltantes = 6 - numeros.length;
+                        var faltantes = 6 - numeros.length;
 
-                    for (var i = 0; i < faltantes; i++) {
-                      
-                      numeros = "0" + numeros;
+                        for (var i = 0; i < faltantes; i++) {
+                          
+                          numeros = "0" + numeros;
+                        }
                     }
-                  }
 
-                  folio = letras + numeros;
+                    folio = letras + numeros;
 
-                  return folio;
+                    return folio;
 
                 }else{
 
-                  return folio
+                    return folio
 
                 }
             }
-          
+
             element.on('blur',function(){
 
                 if (modelCtrl.$modelValue.length > 3) {
@@ -203,74 +204,61 @@ app.directive('folio', function() {
                     modelCtrl.$setViewValue(nuevo);
                     modelCtrl.$render();
                     scope.$apply();
+                    //functionToCall(modelCtrl.$modelValue);
                 };
 
             });
 
             element.on('keydown', function(e){
 
-                var cantidad = modelCtrl.$modelValue.length;
+                if (modelCtrl.$modelValue) {
 
-                //los primero cuatro caracteres NO deben ser numeros
-                if(cantidad <= 3){
+                    var cantidad = modelCtrl.$modelValue.length;
 
-                    if (e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105) {
-                        e.preventDefault();
-                    }else{
-                        modelCtrl.$parsers.push(function (inputValue) {
+                    //los primero cuatro caracteres NO deben ser numeros
+                    if(cantidad < 4){
 
-                           if (inputValue == undefined) return '' 
-                           var transformedInput = inputValue.toUpperCase();
-                           if (transformedInput!=inputValue) {
-                              modelCtrl.$setViewValue(transformedInput);
-                              modelCtrl.$render();
-                           }         
+                        if (e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105) {
+                            e.preventDefault();
+                        }else{
 
-                           return transformedInput; 
+                            modelCtrl.$parsers.push(function (inputValue) {
 
-                        });
-                    }
+                                if (inputValue){
+                                    var transformedInput = inputValue.toUpperCase();
+                                    if (transformedInput!=inputValue) {
+                                        modelCtrl.$setViewValue(transformedInput);
+                                        modelCtrl.$render();
+                                    }         
 
-                }
+                                    return transformedInput; 
+                                }
+                            });
+                        }
+                    //los ultimos 6 NO deben ser letras
 
-                //los ultimos 6 NO deben ser letras
-                if(cantidad >= 4 && cantidad <= 9){
+                    }else if(cantidad > 3 && cantidad < 10){
 
-                    if (e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode >= 106) {
-                        e.preventDefault();
-                    }
+                        if (e.keyCode >= 65 && e.keyCode <= 90) {
 
-                }
+                            e.preventDefault();
 
-                //Si son mas de 10 digitos no escribas mas
-                if(cantidad >= 10){
-                    
-                    if (e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105 || e.keyCode >= 106) {
-                        e.preventDefault();
-                    }else{
-                      //console.log('Presionaste ' + e.keyCode);
-                    } 
-
-                }
-
-                if (e.keyCode == 13 || e.keyCode == 9) {
-
-                    if (cantidad > 4) {
-
-                        var nuevo = rellenaFolio(modelCtrl.$modelValue);
-                        modelCtrl.$setViewValue(nuevo);
-                        modelCtrl.$render();
-                        scope.$apply();
-                        functionToCall(nuevo);
+                        }    
                               
-                    };
-                               
-                }
+                    }else{
 
+                        if ((e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105 ) {
+                             e.preventDefault();
+                        }
 
+                    }
+                    
+                };
             });
 
-        }
+
+
+      }
 
     };
     
