@@ -10,7 +10,6 @@
 	            <span class="icon-pencil"></span>
 	        </a>
 	    </li> -->
-	 
 	    <li class="rb-span-1" id="color3">
 
 	        <h3>Original</h3>
@@ -141,7 +140,7 @@
 </div>
 
 <!-- Muestra Fax-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<!-- <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
@@ -206,10 +205,10 @@
               	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>
 
-        </div><!-- /.modal-content -->
+        </div>
         </form>
-    </div><!-- /.modal-dialog -->
-</div>
+    </div>
+</div> -->
 <!-- /.modal -->
 
 <!-- Muestra Original-->
@@ -220,7 +219,7 @@
               <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
               <h4 class="modal-title">Recepcion de Original</h4>
             </div>
-            <form name="formOriginal"  novalidate>
+            <form name="formOriginal" ng-submit="mandadatos()" novalidate>
             <div class="modal-body" id="cantidad">
                 	<div class="row">
                 		<div class="col-md-5">
@@ -233,7 +232,7 @@
                 		</div>
                 		<div class="col-md-6">
                 			<label for="datepicker4">fecha</label>
-                			<input type="text" ng-change="validafecha('Original')" class="form-control" ng-model="original.fecha" id="datepicker4" >
+                			<input type="text" ng-change="validafecha()" class="form-control" ng-model="original.fecha" id="datepicker4" >
                 		</div>
                 	</div>
                 	<div class="row">
@@ -290,7 +289,7 @@
                 	<div class="row">
                 		<div class="col-md-6">
                 			<label for="remesa">Remesa</label>
-                			<input type="text" id="remesa" class="form-control" ng-model="remesa"  ng-keydown="presionaRemesa"  required>
+                			<input type="text" id="remesa" class="form-control" ng-model="remesa"  ng-keydown="presionaRemesa" ng-blur="verificaRemesa()"  required>
                 		</div>
                 		<div class="col-md-6">	
                 			<br>
@@ -310,7 +309,7 @@
                 	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
             </div>
             <div class="modal-footer">
-            	<button id="boton2" type="submit"  ng-click="mandadatos('Original')" ng-disabled="formOriginal.$invalid" data-loading-text="Guardando..." class="btn btn-primary">Guardar</button>
+            	<button id="boton2" type="submit" ng-disabled="formOriginal.$invalid" data-loading-text="Guardando..." class="btn btn-primary">Guardar</button>
             	<button type="button" class="btn btn-success" ng-click="muestraOriginal()">Limpiar</button>
               	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
             </div>

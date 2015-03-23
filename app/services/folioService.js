@@ -1,5 +1,5 @@
 //servicio de chekeo de folios para las entregas verifica cada condicion 
-app.factory("checkFolios", function($q,$http){
+app.factory("checkFolios", function($q,$http,find){
     return{
         enviaFolios:function(folios,areaRecibe,usuarioRecibe,usuarioEntrega,areaEntrega){
 
@@ -80,13 +80,8 @@ app.factory("checkFolios", function($q,$http){
                     };
 
                     // generamos la peticion al servidor
-                    $http({
-                        url:ruta,
-                        method:'POST', 
-                        contentType: 'application/json', 
-                        dataType: "json", 
-                        data:datos
-                    }).success( function (data){
+                    $http.post(ruta,datos)
+                    .success( function (data){
 
                         resultado.respuesta = data.respuesta;
                         // resolvemos la promesa para que lo pueda mandar y retornar
@@ -107,7 +102,206 @@ app.factory("checkFolios", function($q,$http){
             
             // 
             return promesa.promise;
+        },
+        preparaGuardado:function(datos, esoriginal, esfax, esfe){
 
+            //preparamos promesa
+            var promesa = $q.defer();
+            //en caso de error preparamos el mensaje a mandar
+            var error = {
+                mensaje:'',
+                tipoalerta:''
+            }
+            
+            //verificamos si el folio tiene documento registrado
+            if(datos.documento == 0){
+
+                //Si es primera atencion
+                if(datos.tipoDoc == 1){
+
+                    //Verificamos que el folio no este dado de alta en documentos
+
+                    //como es primera atencion se define como 1 el numero de entrega para la primera etapa (aunque solo debe ser 1 para la primera)
+                    datos.numentrega = 1;
+
+                    //verifica que el folio esta registrado en control de documentos
+                    find.verificafolio(datos.folio, 1).success( function (data){
+
+                        if(data.respuesta){
+
+                            error.mensaje = data.respuesta;
+                            error.tipoalerta = 'alert-danger';
+                            promesa.reject(error);
+
+                        }else{
+                            
+                            //Segunda validacion para verificar que no esta en la tabla pase o capturas
+                            find.verificafoliopase(datos.folio).success( function (data){
+
+                                if(data.respuesta){
+
+                                    error.mensaje = data.respuesta;
+                                    error.tipoalerta = 'alert-danger';
+                                    promesa.reject(error);
+
+                                }else{
+
+                                    promesa.resolve({info:datos,agregaOriginal:1});
+                                    
+                                }
+                                
+                            });
+                        }
+                        
+                    }).error( function (xhr,status,data){
+
+                        alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+
+                    });
+                    
+
+
+                }else{
+
+                    //en caso de que sea segunda atencion o tercera y se haya registrado por primera vez en sql server 
+
+                    error.mensaje = 'No se permite capturar una segunda atencion de un registro nuevo';
+                    error.tipoalerta = 'alert-danger';
+                    promesa.reject(error);
+
+                }
+                
+
+            }else{
+            ///Se actualiza pero se tiene que ver si es original o es una segunda atencion 
+
+                //Tiene fax/fe y no esta capturado como original y se actualiza a original
+                if(esoriginal == 0){
+
+                    //tenemos primera atencion
+                    if(datos.tipoDoc == 1){
+
+                        //Es fax
+                        if(esfax == 1){
+
+                            if(datos.fecha < datos.fechafax){
+                                error.mensaje = 'La fecha de captura del original no puede ser anterior a la fecha de captura del fax.';
+                                error.tipoalerta = 'alert-danger';
+                                promesa.reject(error);
+                            }else{
+                                //actualizamos
+                                promesa.resolve({info:datos,actualizaOriginal:1});
+                                //alert('entro actualiza');
+                            }
+
+                        //es factura express    
+                        }else if(esfe == 1){
+
+                            if(datos.fecha < datos.fechafe){
+                                error.mensaje = 'La fecha de captura del original no puede ser anterior a la fecha de captura de la factura express.';
+                                error.tipoalerta = 'alert-danger';
+                                promesa.reject(error);
+                            }else{
+                                //actualizamos
+                                promesa.resolve({info:datos,actualizaOriginal:1});
+
+                            }
+                        }
+
+                    }else{//segunda/tercera atencion agregamos nuevo documento
+
+                       promesa.resolve({info:datos,agregaOriginal:1});
+                    }
+
+
+                }else{
+                //es segunda o tercera atencion
+
+                    //verificamos que no se haya apretado la primera atencion
+                    if(datos.tipoDoc == 1){
+                        error.mensaje = 'No se puede guardar como primera atencion';
+                        error.tipoalerta = 'alert-danger';
+                        promesa.reject(error);
+
+                    }else{
+
+                        //verifica que numero de segunda o tercera atencion es
+                        find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
+
+                            datos.numentrega = Number(data.total) + 1;
+
+                            //Agregamos un nuevo documento de segunda etapa o tercera
+                            promesa.resolve({info:datos,agregaOriginal:1});
+
+                        });
+
+                    }
+
+                }
+
+            }//se cierra donde verificamos si un nuevo registro
+
+
+
+            return promesa.promise;
+        },
+        verificaInfo:function(cliente, producto, escolaridad, fecha, folio){
+
+            var promesa = $q.defer();
+            var error = {
+                mensaje:'',
+                tipoalerta:''
+            }
+
+            if(cliente == 20 && producto == 2 && (escolaridad == null || escolaridad == -1 || escolaridad == 0) ){
+
+                error.mensaje = 'La escolaridad es requerida para AXA AP.';
+                error.tipoalerta = 'alert-danger';
+                promesa.reject(error);
+
+            }else{
+
+                if (fecha > FechaAct) {
+                    console.log(FechaAct);
+                    error.mensaje = 'La fecha de captura no debe ser mayor al dia de hoy';
+                    error.tipoalerta = 'alert-danger';
+                    promesa.reject(error);
+
+                }else{
+
+                    if(producto == -1 || producto == null){
+
+                        error.mensaje = 'El campo producto es requerido';
+                        error.tipoalerta = 'alert-danger';
+                        promesa.reject(error);
+
+                    }else{
+
+                        find.verificaprefijo(folio.substr(0,4),cliente).success(function (data){
+
+                            if(data.valido == 1){
+
+                                // $scope.revisado = 1; //termina la validacion correctamente
+                                // $scope.guardaOriginal();
+                                promesa.resolve({revisado:1});
+
+                            }else{
+
+                                error.mensaje = 'El prefijo del folio no es valido. Favor de verificar';
+                                error.tipoalerta = 'alert-danger';
+                                promesa.reject(error);
+
+                            }
+
+                        });
+
+                    }
+
+                }
+                
+            }
+
+            return promesa.promise;
         }
     }
 });

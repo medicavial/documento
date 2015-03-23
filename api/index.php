@@ -1210,76 +1210,73 @@ $app->post('/aceptaentrega', function(){
 		$request = \Slim\Slim::getInstance()->request();
 		$datos = json_decode($request->getBody());
 
-		//datos para guardar historico
-		$folio =  $datos->Folio; 
-	    $etapa =  $datos->Etapa;
-		$numentrega = $datos->Cantidad;
 
-		$documento =  $datos->DOC_claveint; 
-	    $areaentrega =  $datos->FLD_AROent; 
-	    $usuarioentrega =  $datos->USU_ent;
+		foreach ($datos as $dato) {
+			//datos para guardar historico
+			$folio =  $dato->Folio; 
+		    $etapa =  $dato->Etapa;
+			$numentrega = $dato->Cantidad;
 
-	    $usuariorecibe =  $datos->USU_recibe; 
-	    $arearecibe =  $datos->ARO_porRecibir;
-	    $clave = $datos->FLD_claveint;
+			$documento =  $dato->DOC_claveint; 
+		    $areaentrega =  $dato->FLD_AROent; 
+		    $usuarioentrega =  $dato->USU_ent;
+
+		    $usuariorecibe =  $dato->USU_recibe; 
+		    $arearecibe =  $dato->ARO_porRecibir;
+		    $clave = $dato->FLD_claveint;
+		    
+		    $fecha = date("d/m/Y");
+		    $hoy = date("H:i:s");
+		    $fecha = $fecha . " " . $hoy;
 
 
-	    
-	    $fecha = date("d/m/Y");
-	    $hoy = date("H:i:s");
-	    $fecha = $fecha . " " . $hoy;
+		    $hoy = date("H:i:s");
+		    $fecha = $fecha . " " . $hoy;
+		    $conexion = conectarActual();
 
+		    if(!$conexion) {
 
-	    $hoy = date("H:i:s");
-	    $fecha = $fecha . " " . $hoy;
-	    $conexion = conectarActual();
+			    die('Error en conexion');
 
-	    if(!$conexion) {
-
-		    die('Something went wrong while connecting to MSSQL');
-
-		}else{
-			
-
-			$sql = "UPDATE FlujoDoc SET FLD_AROrec = $arearecibe, USU_rec = $usuariorecibe,  FLD_porRecibir = 0, FLD_rechazado = 0, USU_recibe = NULL, ARO_porRecibir = NULL, 
-					USU_activo = $usuariorecibe, ARO_activa = $arearecibe , FLD_fechaRec = CONVERT (datetime, GETDATE()) WHERE FLD_claveint = $clave";
-
-						// FLD_AROrec = $arearecibe, USU_rec = $usuariorecibe, FLD_fechaRec = '$fecha' 
-						// USU_activo = $usuariorecibe
-
-			$rs = odbc_exec($conexion,$sql); 
-
-			if ($rs){
-
-				if ($arearecibe == 4) {
-
-					$detalle = " -- juego de facturación --";
-
-				}elseif ($arearecibe == 6) {
-
-					$sqlPagos = "EXEC MV_FLD_InsertaRelacionPago @FLDClave= $clave, @folio= $folio, @etapa= $etapa ,@entrega = $numentrega";
-					$rs = odbc_exec($conexion,$sqlPagos);
-					$detalle = ""; 
-				}
-				else{
-					$detalle = "";
-				}
+			}else{
 				
-				$historico = altahistorial($usuariorecibe, $folio, $etapa, $numentrega, $fecha, 4 ,$detalle,$usuarioentrega,$areaentrega,$arearecibe,$documento);
 
-	            $arr = array('respuesta' => 'Documento(s) aceptados Correctamente' , 'historial' => $historico);
-	              
-	        }else{
+				$sql = "UPDATE FlujoDoc SET FLD_AROrec = $arearecibe, USU_rec = $usuariorecibe,  FLD_porRecibir = 0, FLD_rechazado = 0, USU_recibe = NULL, ARO_porRecibir = NULL, 
+						USU_activo = $usuariorecibe, ARO_activa = $arearecibe , FLD_fechaRec = CONVERT (datetime, GETDATE()) WHERE FLD_claveint = $clave";
 
-	            $arr = array('respuesta' => 'Error durante el proceso : '.odbc_error());
+				$rs = odbc_exec($conexion,$sql); 
 
-	        }   
+				if ($rs){
 
-			echo json_encode($arr); 
+					if ($arearecibe == 4) {
 
-			// 
+						$detalle = " -- juego de facturación --";
 
+					}elseif ($arearecibe == 6) {
+
+						$sqlPagos = "EXEC MV_FLD_InsertaRelacionPago @FLDClave= $clave, @folio= $folio, @etapa= $etapa ,@entrega = $numentrega";
+						$rs = odbc_exec($conexion,$sqlPagos);
+						$detalle = ""; 
+					}
+					else{
+						$detalle = "";
+					}
+					
+					$historico = altahistorial($usuariorecibe, $folio, $etapa, $numentrega, $fecha, 4 ,$detalle,$usuarioentrega,$areaentrega,$arearecibe,$documento);
+
+		            $arr = array('respuesta' => 'Documento(s) aceptados Correctamente' , 'historial' => $historico);
+		              
+		        }else{
+
+		            $arr = array('respuesta' => 'Error durante el proceso : '.odbc_error());
+
+		        }   
+
+			}
 		}
+
+		echo json_encode($arr); 
+
 
 });
 
@@ -1455,7 +1452,7 @@ $app->post('/altafoliofax', function(){
 	}else{
 		
 
-		$sql = "EXEC MV_DOC_CapturaFax @folio='$folio', @lesionado='$lesionado',  @unidad=$unidad, @ambulancia=0,  @faxfecha='$fecha',  
+		$sql = "EXEC MV_DCU_CapturaFax @folio='$folio', @lesionado='$lesionado',  @unidad=$unidad, @ambulancia=0,  @faxfecha='$fecha',  
 				@empresa=$empresa, @usuario=$usuario, @producto=$producto, @escolaridad=$escolaridad, @internet=$internet";
 
 		$rs = odbc_exec($conexion,$sql); 
@@ -1842,7 +1839,7 @@ $app->post('/altafoliooriginal', function(){
 	}else{
 		
 
-		$sql = "EXEC MV_DOC_CapturaOriginal @folio = '$folio', @etapa = $etapa, @lesionado = '$lesionado',  @unidad = $unidad, @empresa = $empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = '$fecha',  
+		$sql = "EXEC MV_DCU_CapturaOriginal @folio = '$folio', @etapa = $etapa, @lesionado = '$lesionado',  @unidad = $unidad, @empresa = $empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = '$fecha',  
 				@usuario = $usuario, @remesa = '$remesa',@numentrega = $numentrega  , @producto = $producto, @folioFac = '$factura', @totalFac = $totalfactura, @escolaridad = $escolaridad, @internet = $internet ";
 
 		$rs = odbc_exec($conexion,$sql); 
