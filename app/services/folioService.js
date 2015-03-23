@@ -146,7 +146,7 @@ app.factory("carga", function($q,$http,find){
 });
 
 
-//funcion para convertir mayusculas
+//funcion para convertir a folios validos
 app.directive('folio', function() {
     return {
         restrict: 'A',
@@ -248,6 +248,132 @@ app.directive('folio', function() {
                     }else{
 
                         if ((e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105 ) {
+                             e.preventDefault();
+                        }
+
+                    }
+                    
+                };
+            });
+
+
+
+      }
+
+    };
+    
+});
+
+//funcion para convertir a folios validos con acciones que se ejecutan dando enter
+app.directive('folioex', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+
+            var functionToCall = scope.$eval(attrs.folioex);
+
+            //funcion que rellena folios 
+            var rellenaFolio = function(folio){
+
+                if (folio != '') {
+
+                    var totalletras = folio.length;
+
+                    var letras = folio.substr(0,4);
+                    var numeros = folio.substr(4,totalletras);
+
+                    if(letras.length < 4 ){
+
+                        var faltantes = 4 - letras.length;
+
+                        for (var i = 0; i < faltantes; i++) {
+
+                          var letra = letras.charAt(i);
+                          letras = letras + "0";
+                        }
+                    }
+
+                    if(numeros.length < 6 ){
+
+                        var faltantes = 6 - numeros.length;
+
+                        for (var i = 0; i < faltantes; i++) {
+                          
+                          numeros = "0" + numeros;
+                        }
+                    }
+
+                    folio = letras + numeros;
+
+                    return folio;
+
+                }else{
+
+                    return folio
+
+                }
+            }
+
+            element.on('keydown', function(e){
+
+                if (modelCtrl.$modelValue) {
+
+                    var cantidad = modelCtrl.$modelValue.length;
+
+                    //los primero cuatro caracteres NO deben ser numeros
+                    if(cantidad < 4){
+
+                        if (e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105) {
+                            e.preventDefault();
+                        }else{
+
+                            modelCtrl.$parsers.push(function (inputValue) {
+
+                                if (inputValue){
+                                    var transformedInput = inputValue.toUpperCase();
+                                    if (transformedInput!=inputValue) {
+                                        modelCtrl.$setViewValue(transformedInput);
+                                        modelCtrl.$render();
+                                    }         
+
+                                    return transformedInput; 
+                                }
+                            });
+                        }
+                    //los ultimos 6 NO deben ser letras
+
+                    }else if(cantidad > 3 && cantidad < 10){
+
+                        if (e.keyCode == 9 || e.keyCode == 13) {
+
+                            if (modelCtrl.$modelValue.length > 3) {
+                                var nuevo = rellenaFolio(modelCtrl.$modelValue);
+                                modelCtrl.$setViewValue(nuevo);
+                                modelCtrl.$render();
+                                scope.$apply();
+                                functionToCall(modelCtrl.$modelValue);
+                            };
+
+                        }else if (e.keyCode >= 65 && e.keyCode <= 90) {
+
+                            e.preventDefault();
+
+                        }    
+                              
+                    }else{
+
+                        if (e.keyCode == 13) {
+
+                            if (modelCtrl.$modelValue.length > 3) {
+                                var nuevo = rellenaFolio(modelCtrl.$modelValue);
+                                modelCtrl.$setViewValue(nuevo);
+                                modelCtrl.$render();
+                                scope.$apply();
+                                functionToCall(modelCtrl.$modelValue);
+                            };
+
+                        }else if ((e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105 ) {
                              e.preventDefault();
                         }
 

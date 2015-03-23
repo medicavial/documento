@@ -68,8 +68,8 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
         	}
 
         	loading.despedida();
-        	$scope.mensaje = '';
         	$scope.quitaselectos();
+        	$scope.mensaje = '';
 			
 		}).error( function (xhr,status,data){
 
@@ -92,7 +92,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
         		$scope.rechazados = data.length;
         	}
         	
-
 		 });
 
 	}
@@ -143,7 +142,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		$scope.fax.producto = '';
 		$scope.fax.escolaridad = '';
 		//$scope.mensaje = '';
-
 	}
 
 	//Guarda los datos de fax
@@ -266,6 +264,179 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 	}
 
+
+	//Verificamos si el fiolio esta dado de alta o se tiene que buscar en 
+	$scope.validaOriginal = function(folio){
+
+		$scope.limpiaVariables();
+		$scope.cargar = true;
+		$scope.mensaje = '';
+		//verificamos si tiene primera atencion
+			find.verificafolio(folio, 1).success( function (data){
+						
+				if(data.respuesta){
+
+					//verificamos si es una segunda atencion o tercera pero la tercera es manual
+					if (data.original == 1) {
+
+						
+						//segunda atencion
+						$scope.original.tipoDoc = 2;
+						$scope.bloqueo = true;
+						$scope.bloqueoUni = false;
+						$scope.esoriginal = 1;
+						
+					}else{
+
+						$scope.original.documento = data.clave;
+						//primera atencion
+						$scope.original.tipoDoc = 1;
+
+						//verificamos que sea fax 
+						if(data.fax == 1){
+							$scope.label2 = 'FAX RECIBIDO: ' + data.fechafax;
+							$scope.original.fechafax = data.fechafax;
+							$scope.esfax = 1;
+						}
+						//verificamos que sea factura express
+						if(data.fe == 1){
+							$scope.label2 = 'FAC. EXPRESS: ' + data.fefecha;
+							$scope.original.fechafe = data.fechafe;
+							$scope.esfe = 1;
+						}
+
+						//asignamos bloqueos de campos
+						$scope.bloqueo = true;
+						$scope.bloqueoUni = true;
+						$scope.esoriginal = 0;
+
+					}
+
+					$scope.original.cliente = data.empresa;
+					$scope.original.lesionado = data.lesionado;
+					$scope.unidadref = data.unidad;
+					$scope.original.unidad = data.unidad;
+					$scope.original.escolaridad = data.escuela;
+					$scope.original.producto = data.producto;
+					$scope.original.documento = data.clave;
+					$scope.cargar = false;
+
+					$scope.productoOriginal($scope.original.cliente);
+					$scope.referencia($scope.original.unidad);
+
+				}else{
+
+					//Como no ninguna atencion registrada en sql server buscamos en web 
+					$scope.folioWebOriginal(folio);
+					$scope.original.tipoDoc = 1;
+					$scope.esoriginal = 0;
+
+				}
+
+
+			}).error( function (xhr,status,data){
+
+				$scope.cargar = false;
+				alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+
+			});
+
+	}
+
+	//Busca folio en la base del portal web 
+	$scope.folioWebOriginal = function(folio){
+
+		find.folioweb(folio).success( function (data){
+
+			//console.log(data);
+			if (data.length > 0) {
+				$scope.original.cliente = data[0].CIAClaveMV;
+				$scope.original.lesionado = data[0].Nombre + " " + data[0].Paterno + " " + data[0].Materno;
+				$scope.productoOriginal($scope.original.cliente);
+				$scope.unidadref = data[0].UNIClaveMV;
+				$scope.original.unidad = data[0].UNIClaveMV;
+				$scope.original.producto = data[0].PROClave;
+				$scope.original.escolaridad = data[0].ESCClaveMV;
+				$scope.original.internet = 1;
+				$scope.label2 = 'NO SE RECIBIO FAX';
+				$scope.label3 = 'NO ES FAC. EXPRESS';
+				$scope.referencia($scope.original.unidad);
+			}else{
+				alert('El folio solicitado no es valido favor de verificarlo');
+			}
+
+			$scope.cargar = false;
+			
+		}).error( function (xhr,status,data){
+
+			//Manda un error por que no se logro conectar a la base web
+			$scope.original.internet = 0;
+			$scope.tipoalerta = 'alert-danger';
+			$scope.mensaje ='No es posible conectar con el folio Web. Para reiniciar la conexión favor de notificar al área de sistemas.';
+			$scope.cargar = false;
+
+		});
+
+	}
+
+	//en caso de remesa solo se ocupan 5 numeros no mas
+	$scope.presionaRemesa = function(evento){
+
+		//contamos la cadena completa
+		var cantidad = $scope.remesa.length;
+		
+		// NO deben ser letras
+		if(cantidad < 5){
+			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
+		      	evento.preventDefault();
+		    }
+		}
+
+		//Si son mas de 6 digitos no escribas mas
+		if(cantidad > 5){
+
+			if (evento.keyCode != 8  && evento.keyCode != 46 ) {
+
+		      	evento.preventDefault();
+		    }      	
+		}
+
+		//Si se da enter o salto de linea ejecuta el autollenado de ceros
+		if (evento.keyCode == 13 || evento.keyCode == 9) {
+
+	      	if(cantidad < 5 ){
+
+				var faltantes = 6 - cantidad;
+
+				for (var i = 0; i < faltantes; i++) {
+					
+					$scope.remesa = "0" + $scope.remesa;
+				}
+
+			}
+
+	    }
+
+	}
+
+	//rellena la remesa de 0 cuando son menos de 6 digitos
+	// $scope.verificaRemesa = function(){
+
+	// 	//contamos la cadena completa
+	// 	var cantidad = $scope.remesa.length;
+
+	//       	if(cantidad < 5 ){
+
+	// 			var faltantes = 6 - cantidad;
+
+	// 			for (var i = 0; i < faltantes; i++) {
+					
+	// 				$scope.remesa = "0" + $scope.remesa;
+	// 			}
+
+	// 		}
+	// }
+
 	
 	///limpia variables del modal del original
 	$scope.limpiaVariables = function(){
@@ -295,8 +466,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 	}
 
-	
-
 	/////////Inicia proceso de guardado 
 
 	///Proceso de guardado ya sea de fax u original
@@ -310,8 +479,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		}
 
 	}
-
-	
 
 	//Guarda los datos de Original
 	$scope.guardaOriginal = function(){
@@ -535,82 +702,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		
 	}
 
-	//Verificamos si el fiolio esta dado de alta o se tiene que buscar en 
-	$scope.validaOriginal = function(folio){
-
-		$scope.limpiaVariables();
-		$scope.cargar = true;
-		$scope.mensaje = '';
-		//verificamos si tiene primera atencion
-			find.verificafolio(folio, 1).success( function (data){
-						
-				if(data.respuesta){
-
-					//verificamos si es una segunda atencion o tercera pero la tercera es manual
-					if (data.original == 1) {
-
-						
-						//segunda atencion
-						$scope.original.tipoDoc = 2;
-						$scope.bloqueo = true;
-						$scope.bloqueoUni = false;
-						$scope.esoriginal = 1;
-						
-					}else{
-
-						$scope.original.documento = data.clave;
-						//primera atencion
-						$scope.original.tipoDoc = 1;
-
-						//verificamos que sea fax 
-						if(data.fax == 1){
-							$scope.label2 = 'FAX RECIBIDO: ' + data.fechafax;
-							$scope.original.fechafax = data.fechafax;
-							$scope.esfax = 1;
-						}
-						//verificamos que sea factura express
-						if(data.fe == 1){
-							$scope.label2 = 'FAC. EXPRESS: ' + data.fefecha;
-							$scope.original.fechafe = data.fechafe;
-							$scope.esfe = 1;
-						}
-
-						//asignamos bloqueos de campos
-						$scope.bloqueo = true;
-						$scope.bloqueoUni = true;
-						$scope.esoriginal = 0;
-
-					}
-
-					$scope.original.cliente = data.empresa;
-					$scope.original.lesionado = data.lesionado;
-					$scope.unidadref = data.unidad;
-					$scope.original.unidad = data.unidad;
-					$scope.productoOriginal($scope.original.cliente);
-					$scope.original.escolaridad = data.escuela;
-					$scope.referencia($scope.original.unidad);
-					$scope.original.producto = data.producto;
-					$scope.original.documento = data.clave;
-					$scope.cargar = false;
-
-				}else{
-
-					//Como no ninguna atencion registrada en sql server buscamos en web 
-					$scope.folioWebOriginal(folio);
-					$scope.original.tipoDoc = 1;
-					$scope.esoriginal = 0;
-
-				}
-
-
-			}).error( function (xhr,status,data){
-
-				$scope.cargar = false;
-				alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-			});
-
-	}
+	
 
 	//verificamos que tipo de atencion es y si ya tien fax capturado al momento de cambiar el tipo de documento 
 	$scope.verificaatencion = function(){
@@ -682,24 +774,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 		}	
 
-	}
-
-	//rellena la remesa de 0 cuando son menos de 6 digitos
-	$scope.verificaRemesa = function(){
-
-		//contamos la cadena completa
-		var cantidad = $scope.remesa.length;
-
-	      	if(cantidad < 5 ){
-
-				var faltantes = 6 - cantidad;
-
-				for (var i = 0; i < faltantes; i++) {
-					
-					$scope.remesa = "0" + $scope.remesa;
-				}
-
-			}
 	}
 
 	//Verificamos la informacion al guardar
@@ -791,79 +865,9 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 	}
 
-	//en caso de remesa solo se ocupan 5 numeros no mas
-	$scope.presionaRemesa = function(evento){
-
-		//contamos la cadena completa
-		var cantidad = $scope.remesa.length;
-
-
-		// NO deben ser letras
-		if(cantidad < 5){
-			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//Si son mas de 6 digitos no escribas mas
-		if(cantidad > 5){
-
-			if (evento.keyCode != 8  && evento.keyCode != 46 ) {
-
-		      	evento.preventDefault();
-		    }      	
-		}
-
-		//Si se da enter o salto de linea ejecuta el autollenado de ceros
-		if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-	      	if(cantidad < 5 ){
-
-				var faltantes = 6 - cantidad;
-
-				for (var i = 0; i < faltantes; i++) {
-					
-					$scope.remesa = "0" + $scope.remesa;
-				}
-
-			}
-
-	    }
-
-	}
-
 	//aqui termina 
 
-	//Busca folio en la base del portal web 
-	$scope.folioWebOriginal = function(folio){
-
-		find.folioweb(folio).success( function (data){
-
-			//console.log(data);
-			$scope.original.cliente = data[0].CIAClaveMV;
-			$scope.original.lesionado = data[0].Nombre + " " + data[0].Paterno + " " + data[0].Materno;
-			$scope.productoOriginal($scope.original.cliente);
-			$scope.unidadref = data[0].UNIClaveMV;
-			$scope.original.unidad = data[0].UNIClaveMV;
-			$scope.original.producto = data[0].PROClave;
-			$scope.original.escolaridad = data[0].ESCClaveMV;
-			$scope.original.internet = 1;
-			$scope.label2 = 'NO SE RECIBIO FAX';
-			$scope.label3 = 'NO ES FAC. EXPRESS';
-			$scope.referencia($scope.original.unidad);
-			$scope.cargar = false;
-			
-		}).error( function (xhr,status,data){
-
-			//Manda un error por que no se logro conectar a la base web
-			$scope.original.internet = 0;
-			$scope.tipoalerta = 'alert-danger';
-			$scope.mensaje ='No es posible conectar con el folio Web. Para reiniciar la conexión favor de notificar al área de sistemas.';
-			$scope.cargar = false;
-
-		});
-
-	}
+	
 
 	//Busca folio en la base del portal web 
 	$scope.folioWebFax = function(folio){

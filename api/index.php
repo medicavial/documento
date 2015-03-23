@@ -4206,7 +4206,7 @@ $app->get('/listageneral/:usuario', function($usuario){
 
 	}else{
 		
-		$sql = "EXEC MV_FLD_ListaGralXUsu  @usuario=$usuario";
+		$sql = "EXEC MV_FLU_ListaGralXUsu  @usuario=$usuario";
 
 		$rs= odbc_exec($conexion,$sql); 
 		$i = 0;
