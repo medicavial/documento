@@ -3907,7 +3907,7 @@ $app->get('/folioweb/:folio', function($folio){
 		$sql = "SELECT EXP_nombre as Nombre,
 				             EXP_paterno as Paterno,
 				             EXP_materno as Materno,
-				             IFNULL(PRO_clave,-1) as PROClave,
+				             IFNULL(PRO_claveMV,-1) as PROClave,
 				             IFNULL(CIA_claveMV,-1) as CIAClaveMV,
 				             IFNULL(UNI_claveMV,-1) as UNIClaveMV,
 				             IFNULL(ESC_claveMV,-1) as ESCClaveMV,
@@ -3915,6 +3915,7 @@ $app->get('/folioweb/:folio', function($folio){
 				             Expediente.Uni_clave
 				FROM Expediente INNER JOIN Compania    ON Compania.CIA_clave=Expediente.CIA_clave
 				                INNER JOIN Unidad        ON Unidad.UNI_clave=Expediente.UNI_clave
+				                INNER JOIN Producto		ON Producto.Pro_clave = Expediente.PRO_clave
 				                LEFT    JOIN Escolaridad ON Escolaridad.ESC_clave = Expediente.ESC_clave 
 				WHERE EXP_folio = '$folio'";
 

@@ -316,14 +316,15 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 					$scope.original.lesionado = data.lesionado;
 					$scope.unidadref = data.unidad;
 					$scope.original.unidad = data.unidad;
-					$scope.original.escolaridad = data.escuela;
-					$scope.original.producto = data.producto;
 					$scope.original.documento = data.clave;
 					$scope.cargar = false;
 
 					$scope.productoOriginal($scope.original.cliente);
 					$scope.referencia($scope.original.unidad);
 
+					$scope.original.escolaridad = data.escuela;
+					$scope.original.producto = data.producto;
+					
 				}else{
 
 					//Como no ninguna atencion registrada en sql server buscamos en web 
@@ -376,6 +377,17 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			$scope.cargar = false;
 
 		});
+
+	}
+
+	//busca el producto
+	$scope.productoOriginal = function(empresa){
+
+		find.producto(empresa).success( function (data) {
+
+			$scope.productos = data;
+
+		 });
 
 	}
 
@@ -901,17 +913,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 	//busca el producto
 	$scope.productoFax = function(empresa){
-
-		find.producto(empresa).success( function (data) {
-
-			$scope.productos = data;
-
-		 });
-
-	}
-
-	//busca el producto
-	$scope.productoOriginal = function(empresa){
 
 		find.producto(empresa).success( function (data) {
 
