@@ -10,17 +10,19 @@ app.controller('mesaControlCtrl',function ($scope, $rootScope, find , loading, $
 		$scope.rechazados = 0;
 		$scope.recibidos = 0;
 
-		$scope.empresas();
-		$scope.Altaunidades();
-		$scope.productos();
+		// $scope.empresas();
+		// $scope.Altaunidades();
+		// $scope.productos();
 		$scope.mensaje = '';
 		$scope.fechaini = '';
 		$scope.fechafin = '';
 		$scope.folio = '';
 		$scope.lesionado = '';
 		$scope.cargar = false;
-		$scope.verareaoperativa();
 
+
+		
+		$scope.verareaoperativa();
 		$scope.cargaEntrada();
 		$scope.Altarechazados();
 		$scope.pendientesRecibir();

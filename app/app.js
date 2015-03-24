@@ -158,8 +158,8 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
     });
 
    $routeProvider.when('/mesacontrol',{
-            templateUrl   : 'vistas/menuRechazo.html',
-            controller    : 'rechazosFolioCtrl'       
+            templateUrl   : 'vistas/mesacontrol.html',
+            controller    : 'mesaControlCtrl'       
     });
 
    $routeProvider.when('/pagosrechazos',{

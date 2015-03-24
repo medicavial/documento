@@ -1598,7 +1598,7 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 });
 
 //muestra los folios por recibir
-app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParams, find, loading , $http){
+app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParams, find, loading , $http, carga){
 	//Carga Configuracion Inicial
 	$scope.inicio = function(){
 
@@ -1656,57 +1656,28 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 
 			$scope.unidades = data;
 
-		 });
+		});
 	}
 
 	$scope.aceptaEntregas = function(){
 
-
 		$scope.mensaje = '';
 		$('#boton').button('loading');
 
-		var valor = 0;
+		if ($scope.selectos.length > 0) {
 
-
-		for (var i = 0; i < $scope.selectos.length; i++) {
+			$http.post('api/aceptaentrega',$scope.selectos)
+			.success(function (data){
+				$('#boton').button('reset');
+				$scope.mensaje = 'Aceptación con exito';
+				$scope.tipoalerta = 'alert-success';
+				$scope.cargaRecepcion();
+				$scope.gridOptions.$gridScope.toggleSelectAll(false);
+			})
+			.error(function (data){
+				alert('Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas');
+			});
 			
-			try{
-
-				var documento = $scope.selectos[i];
-				
-				//console.log(documento);
-
-				$http({
-					url:'api/aceptaentrega',
-					method:'POST', 
-					contentType: 'application/json', 
-					dataType: "json", 
-					data:documento
-				}).success( function (data){	
-
-					if (valor == $scope.selectos.length-1 ) {
-
-						$('#boton').button('reset');
-						$scope.mensaje = 'Aceptación con exito';
-						$scope.tipoalerta = 'alert-success';
-						$scope.cargaRecepcion();
-
-						$scope.gridOptions.$gridScope.toggleSelectAll(false);
-					
-					};
-
-					valor++;
-
-				}).error( function (data){
-
-					throw 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-					
-				});
-
-			}catch(err){
-				alert(err);
-			}
-
 		};
 		
 	}
@@ -1727,7 +1698,6 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 				documento.USU_rec = $rootScope.id;
 				//console.log(documento);
 
-
 				documento.motivo =  prompt("Escribe motivo de rechazo para el folio " + documento.Folio,"Falto ");
 				//console.log(documento);
 
@@ -1739,12 +1709,6 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 					data:documento
 				}).success( function (data){
 					
-					//console.log(data);
-					// $scope.mensaje = data.respuesta;
-					//$scope.tipoalerta = 'alert-success';
-
-					
-
 					if (valor == $scope.selectos.length-1 ) {
 
 						$('#boton2').button('reset');
@@ -1758,7 +1722,6 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 
 					valor++;	
 								
-
 				}).error( function (data){
 
 					throw 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
@@ -1775,8 +1738,6 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 	}
 
 	
-	
-
 	$scope.selectos = [];
 
 	$scope.filterOptions = {
