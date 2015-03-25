@@ -333,6 +333,7 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 			$scope.clientes = data;
 
 		 });
+
 	}
 
 
@@ -352,6 +353,7 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 		find.categorias().success(function (data){
 			$scope.categorias = data;
 		});
+		
 	}
 
 	$scope.altasubcategorias = function(id){
