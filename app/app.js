@@ -450,10 +450,13 @@ app.factory("auth", function($cookies,$cookieStore,$location, $rootScope, $http)
             $cookieStore.remove("id");
             $cookieStore.remove("user");
             $cookieStore.remove("userWeb");
+
+            $rootScope.username = '';
             $rootScope.id = '';
             $rootScope.areaUsuario = '';
             $rootScope.user = '';
-            $rootScope.username = '';
+            $rootScope.userWeb = '';
+            
             //mandamos al login
             $location.path("/login");
         },

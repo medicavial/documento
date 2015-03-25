@@ -9319,16 +9319,17 @@ function ticketCtrl($scope,$rootScope, $http, find){
 
         		$scope.datos.cliente = data[0].Cia_clave;
         		$scope.datos.unidad = data[0].Uni_clave;
+        		$scope.datos.etapa = 1;
 
-        		find.listaticketsfolio($scope.datos.folioweb).success(function (data){
+        		// find.listaticketsfolio($scope.datos.folioweb).success(function (data){
 
-        			if (data.length > 0 ) {
+        		// 	if (data.length > 0 ) {
 
-        				$scope.datos.etapa = 2;
-        			}else{
-        				$scope.datos.etapa = 1;
-        			}
-        		});
+        		// 		$scope.datos.etapa = 2;
+        		// 	}else{
+        		// 		$scope.datos.etapa = 1;
+        		// 	}
+        		// });
 
         	}
 

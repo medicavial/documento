@@ -71,13 +71,13 @@
     <div class="row" ng-hide="edicion">
         <div class="col-md-3">
           <label for="cliente">Cliente</label>
-          <select class="form-control"  ng-model="datos.cliente" ng-options="cliente.Clave as cliente.Nombre for cliente in clientes" ng-change="filtra()">
+          <select class="form-control"  ng-model="datos.cliente" ng-options="cliente.Clave as cliente.Nombre for cliente in clientes" ng-change="filtra()" required>
             <option value="">Cliente</option>
           </select>
         </div>
         <div class="col-md-3">
           <label for="unidad">Unidad</label>
-          <select class="form-control"  ng-model="datos.unidad" ng-options="unidad.UnidadClave as unidad.Nombre for unidad in unidades" ng-change="filtra()">
+          <select class="form-control"  ng-model="datos.unidad" ng-options="unidad.UnidadClave as unidad.Nombre for unidad in unidades" ng-change="filtra()" required>
             <option value="">Unidad</option>
           </select>
         </div>
