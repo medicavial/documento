@@ -4247,9 +4247,7 @@ $app->get('/listageneral/:usuario', function($usuario){
 	            $valor15 = odbc_result($rs,"ARO_Activa");
 	            $valor16 = odbc_result($rs,"DOC_claveint");
 	            $valor17 = odbc_result($rs,"FLD_observaciones");
-
-
-
+	            
 				$traspasosResultado['Folio'] = $valor1;
 	            $traspasosResultado['Etapa'] = $valor2;
 	            $traspasosResultado['Cantidad'] = $valor4;
