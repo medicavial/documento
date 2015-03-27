@@ -21,8 +21,8 @@ function conectarActual(){
 
 	//Declaramos variables de conexion a SQL Server
 	
-	$db_server = 'GEN';
-	$db_name = 'MV';
+	$db_server = 'SISTEMAS4';
+	$db_name = 'MV2';
 
 	$db_usr = 'acceso';
 	$db_pass = 'ACc3soMv';
@@ -1057,7 +1057,7 @@ $app->get('/', function(){
 
 });
 
-
+//captura de etapas 2 o 3
 $app->post('/actualizaoriginal', function(){
 
 	$request = \Slim\Slim::getInstance()->request();
@@ -1089,7 +1089,7 @@ $app->post('/actualizaoriginal', function(){
 	}else{
 
 
-		$sql2 = "EXEC MV_DCU_ActualizaDocumento @claveint = $claveint, @lesionado = '$lesionado', @ambulancia = 0, @fechapago = '',  @originalfecha = '$fecha',
+		$sql2 = "EXEC MV_DOC_ActualizaDocumento @claveint = $claveint, @lesionado = '$lesionado', @ambulancia = 0, @fechapago = '',  @originalfecha = '$fecha',
 				@usuario = $usuario, @remesa = '$remesa', @folioFac = '$factura', @totalFac = $totalfactura";
 
 		$rs = odbc_exec($conexion,$sql2);
@@ -1110,6 +1110,72 @@ $app->post('/actualizaoriginal', function(){
 
 });
 
+//alta de folio nuevo en original
+$app->post('/altafoliooriginal', function(){
+
+
+	$request = \Slim\Slim::getInstance()->request();
+	$datos = json_decode($request->getBody());
+
+    $usuario =  $datos->usuario;
+    $folio =  $datos->folio;
+    $etapa =  $datos->tipoDoc;
+    $lesionado =  $datos->lesionado;
+    $unidad =  $datos->unidad;
+    $fecha =  $datos->fecha;
+    $empresa =  $datos->cliente;
+    $producto =  $datos->producto;
+    $remesa =  $datos->remesa;
+    $escolaridad =  $datos->escolaridad;
+    $internet =  $datos->internet;
+    $numentrega = $datos->numentrega;
+    $totalfactura = $datos->totalfactura;
+    $factura = $datos->factura;
+
+    if ($totalfactura == '') {
+    	$totalfactura = 0;
+    }
+
+    //fechapago , folioFac, totalfac
+
+    $hoy = date("H:i:s");
+    $fecha = $fecha . " " . $hoy;
+    $conexion = conectarActual();
+
+    if(!$conexion) {
+
+	    die('Something went wrong while connecting to MSSQL');
+
+	}else{
+
+
+		$sql = "EXEC MV_DOC_CapturaOriginal @folio = '$folio', @etapa = $etapa, @lesionado = '$lesionado',  @unidad = $unidad, @empresa = $empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = '$fecha',
+				@usuario = $usuario, @remesa = '$remesa',@numentrega = $numentrega  , @producto = $producto, @folioFac = '$factura', @totalFac = $totalfactura, @escolaridad = $escolaridad, @internet = $internet ";
+
+		$rs = odbc_exec($conexion,$sql);
+
+		if ($rs){
+
+
+				$sql2 = "SELECT * FROM Documento where DOC_folio = '$folio'";
+				$rs2 = odbc_exec($conexion,$sql2);
+				$documento = odbc_result($rs2,"DOC_claveint");
+
+				$historico = altahistorial($usuario, $folio, $etapa, $numentrega, $datos->fecha, 2 ,'','','','',$documento);
+				$arr = array('respuesta' => 'Folio Guardado Correctamente', 'Historial' => $historico);
+
+        }else {
+              $arr = array('respuesta' => 'Error durante el Guardado: '.odbc_error());
+        }
+
+		echo json_encode($arr);
+
+
+		//
+
+	}
+
+});
 
 //alta de un ticket
 $app->post('/actualizaticket', function(){
@@ -1805,73 +1871,6 @@ $app->post('/eliminanpc', function(){
         }
 
 		echo json_encode($arr);
-
-		//
-
-	}
-
-});
-
-//alta de folio nuevo en original
-$app->post('/altafoliooriginal', function(){
-
-
-	$request = \Slim\Slim::getInstance()->request();
-	$datos = json_decode($request->getBody());
-
-    $usuario =  $datos->usuario;
-    $folio =  $datos->folio;
-    $etapa =  $datos->tipoDoc;
-    $lesionado =  $datos->lesionado;
-    $unidad =  $datos->unidad;
-    $fecha =  $datos->fecha;
-    $empresa =  $datos->cliente;
-    $producto =  $datos->producto;
-    $remesa =  $datos->remesa;
-    $escolaridad =  $datos->escolaridad;
-    $internet =  $datos->internet;
-    $numentrega = $datos->numentrega;
-    $totalfactura = $datos->totalfactura;
-    $factura = $datos->factura;
-
-    if ($totalfactura == '') {
-    	$totalfactura = 0;
-    }
-
-    //fechapago , folioFac, totalfac
-
-    $hoy = date("H:i:s");
-    $fecha = $fecha . " " . $hoy;
-    $conexion = conectarActual();
-
-    if(!$conexion) {
-
-	    die('Something went wrong while connecting to MSSQL');
-
-	}else{
-
-
-		$sql = "EXEC MV_DCU_CapturaOriginal @folio = '$folio', @etapa = $etapa, @lesionado = '$lesionado',  @unidad = $unidad, @empresa = $empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = '$fecha',
-				@usuario = $usuario, @remesa = '$remesa',@numentrega = $numentrega  , @producto = $producto, @folioFac = '$factura', @totalFac = $totalfactura, @escolaridad = $escolaridad, @internet = $internet ";
-
-		$rs = odbc_exec($conexion,$sql);
-
-		if ($rs){
-
-
-				$sql2 = "SELECT * FROM Documento where DOC_folio = '$folio'";
-				$rs2 = odbc_exec($conexion,$sql2);
-				$documento = odbc_result($rs2,"DOC_claveint");
-
-				$historico = altahistorial($usuario, $folio, $etapa, $numentrega, $datos->fecha, 2 ,'','','','',$documento);
-				$arr = array('respuesta' => 'Folio Guardado Correctamente', 'Historial' => $historico);
-
-        }else {
-              $arr = array('respuesta' => 'Error durante el Guardado: '.odbc_error());
-        }
-
-		echo json_encode($arr);
-
 
 		//
 

@@ -4,12 +4,12 @@
 		<h1>{{tituloR}}</h1>
 	</div>
 	<ul id="rb-grid-small" class="rb-grid-small clearfix">
-	    <li class="rb-span-1" id="color1">
+	    <!-- <li class="rb-span-1" id="color1">
 	        <h3>Fax</h3>
 	        <a data-target="#myModal" ng-click="muestraFax()" href="">
 	            <span class="icon-pencil"></span>
 	        </a>
-	    </li>
+	    </li> -->
 	 
 	    <li class="rb-span-1" id="color3">
 
@@ -19,7 +19,7 @@
 	        </a>
 	    </li>
 		
-		<li class="rb-span-1" id="color3">
+		<!-- <li class="rb-span-1" id="color3">
 
 	        <h3>Traspasos</h3>
 	        <a href="#/traspasos/Recepcion">
@@ -40,9 +40,9 @@
 	        <a href="#/listadoEntregas/Recepcion">
 	            <span class=" icon-list"></span>
 	        </a>
-	    </li>
+	    </li> -->
 	</ul>
-	<h2>Tus Folios Activos</h2>
+	<!-- <h2>Tus Folios Activos</h2>
 	<div class="row">
 		<div class="col-md-3">
 			<fieldset>
@@ -100,14 +100,14 @@
 		</div>
 	</div>
 	<div class="gridStyle" ng-grid="gridOptions"></div>
-	<br>	
+	<br> -->	
 	<!-- directiva para exportar a excel ver app.js mas nfo -->
-	<excel info="exportables"></excel>
+	<!-- <excel info="exportables"></excel>
 	<br>
 	<fieldset>
 		<legend>Datos de Entrega</legend>
-	</fieldset>
-	<div class="row">
+	</fieldset> -->
+	<!-- <div class="row">
 		<form name="formEntrega"  novalidate>
 
 			<div class="col-md-3">
@@ -124,9 +124,9 @@
 			<div class="col-md-2">
 				<button type="button" id="boton" ng-disabled="formEntrega.$invalid" ng-click="entrega()" class="btn btn-primary btn-block icon-drawer2" data-loading-text="Entregando..."> Preparar Entrega</button>
 			</div>
-			<div class="col-md-2" id="estatus">
+			<div class="col-md-2" id="estatus"> -->
 				<!-- <input type="text" x-webkit-speech=""> -->
-				<button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
+	<!-- 			<button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
 			</div>
 
 			<div class="col-md-2">
@@ -137,7 +137,7 @@
 	<br>
 	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert alert-success animate-show">{{mensaje}}</div>
 	<br>
-	<br>
+	<br> -->
 </div>
 
 <!-- Muestra Fax-->
@@ -327,7 +327,6 @@
           </form>
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
-
 
 <script type="text/javascript">
 	$.datepicker.setDefaults($.datepicker.regional["es"]);

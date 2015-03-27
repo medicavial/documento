@@ -6851,7 +6851,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	$scope.inicio = function(){
 		// ngProgress.color('#4376F2');
 		// ngProgress.start();
-		barra.inicia();
+		//barra.inicia();
 		$rootScope.area = 1;
 		$scope.tituloR = "Recepcion de Documentos";
 		$scope.push = false;
@@ -6869,8 +6869,8 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		$scope.cargar = false;
 		$scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];	
 		$scope.FaxOriginal = true;
-		$scope.cargaEntrada();
-		$scope.Altarechazados();
+		//$scope.cargaEntrada();
+		//$scope.Altarechazados();
 		
 	}
 
@@ -6945,9 +6945,9 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 
 		//detectamos cuando la ventana se cierra para buscar mas folios
-		$('#myModal2').on('hidden.bs.modal', function (e) {
-		 	$scope.cargaEntrada();
-		});
+		// $('#myModal2').on('hidden.bs.modal', function (e) {
+		//  	$scope.cargaEntrada();
+		// });
 
 		$('#folioO').focus();
 	}
