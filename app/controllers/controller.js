@@ -244,7 +244,6 @@ app.controller('loginCtrl', function ( $rootScope , $scope , auth){
 
 
 /// Home de la app
-
 app.controller('homeCtrl',function ($scope, $rootScope, auth){
 	$scope.tituloH = "Sistema MV";
 	$scope.area = $rootScope.areaUsuario;
@@ -935,7 +934,6 @@ app.controller('traspasosCtrl', function ($scope, $rootScope, $routeParams,$http
 
 });
 
-
 //// Generacion de entregas
 app.controller('entregasCtrl', function($scope, $rootScope, $routeParams, find, loading, $http){
 	//Carga Configuracion Inicial
@@ -1310,7 +1308,6 @@ app.controller('entregasCtrl', function($scope, $rootScope, $routeParams, find, 
 
 });
 
-
 //mustra los documentos entregados pendientes de recibir
 app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams, find, $http, loading){
 	//Carga Configuracion Inicial
@@ -1340,8 +1337,6 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
         	}else{
         		$scope.listadoEntregas = data;
         	}
-
-        	console.log(data);
 
         	loading.despedida();
 			
@@ -1383,9 +1378,8 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 			var datos = dato.entity;
 			var ruta = '';
 
-			//console.log(datos);
 			if($rootScope.area == 4 && datos.FaxOrigianl == 'JF'){
-				
+			
 				ruta = '/documento/api/eliminaentrega/facturacion/'+ $rootScope.id;
 
 			}else{
@@ -1395,6 +1389,7 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 				}else{
 					ruta = '/documento/api/eliminaentrega/otro/'+ $rootScope.id;
 				}
+
 			}
 
 			$http({
@@ -1406,6 +1401,7 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 			}).success( function (data){
 				
 				//console.log(data);
+				$scope.gridOptions.$gridScope.toggleSelectAll(false);
 				$scope.mensaje = data.respuesta;
 				$scope.tipoalerta = 'alert-success';
 				$scope.cargaEntregas();			
@@ -1482,8 +1478,6 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 					$('#boton').button('reset');
 				
 				};
-
-
 
 			}
 			catch(err)
@@ -1848,17 +1842,14 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 
 
 //bloqueo de sesion
-app.controller('bloqueoCtrl', function ($scope, $cookies, $cookieStore, $rootScope, auth){
+app.controller('bloqueoCtrl', function ($scope, webStorage, $rootScope, auth){
 
 	$scope.inicio = function(){
 
-		$scope.usuario = $cookies.user;
-        $scope.nombre = $cookies.username;
+		$scope.usuario = webStorage.session.get('user');
+        $scope.nombre = webStorage.session.get('username');;
 
-        $cookieStore.remove("username"),
-        $cookieStore.remove("area");
-        $cookieStore.remove("id");
-
+         webStorage.session.clear();
 
 		$rootScope.username = '';
 		$rootScope.mensaje = '';

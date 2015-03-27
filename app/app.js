@@ -1,5 +1,13 @@
 //creamos la aplicacion
-var app = angular.module('app', ['ngRoute','angularFileUpload','ngCookies','ngAnimate','ngGrid','ngIdle','ngProgress']);
+var app = angular.module('app', [
+    'ngRoute',
+    'angularFileUpload',
+    'ngAnimate',
+    'ngGrid',
+    'ngIdle',
+    'ngProgress',
+    'webStorageModule'
+]);
 
 //configuramos las rutas y asignamos html y controlador segun la ruta
 app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
@@ -220,26 +228,24 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 });
 
 
-// app.config(['ngClipProvider', function(ngClipProvider) {
-//     ngClipProvider.setPath("lib/ZeroClipboard.swf");
-// }]);
-
-
 // var notificaciones = new Firebase("https://medicavial.firebaseio.com/notificaciones");
 
 
 //notificaciones que se ejecutan cuando la aplicacion inicia
-app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location, barra){
+app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
+
+    //generamos al rootscope las variables que tenemos en las cookies para no perder la sesion
+    $rootScope.username = webStorage.session.get('username');
+    $rootScope.id = webStorage.session.get('id');
+    $rootScope.areaUsuario = webStorage.session.get('areaUsuario');
+    $rootScope.user = webStorage.session.get('user');
+    $rootScope.userWeb = webStorage.session.get('userWeb');
+
 
     $rootScope.$on('$routeChangeStart', function(){
         //llamamos a checkStatus, el cual lo hemos definido en la factoria auth
         //la cuál hemos inyectado en la acción run de la aplicación
         barra.inicia();
-        $rootScope.username = $cookies.username;
-        $rootScope.id = $cookies.id;
-        $rootScope.areaUsuario = $cookies.areaUsuario;
-        $rootScope.user = $cookies.user;
-        $rootScope.userWeb = $cookies.userWeb;
         auth.checkStatus();
 			
     });
@@ -260,22 +266,10 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location, b
 
     ///Esto es para ver notificaciones existentes aun es manual
 
-
-    // notificaciones.on('child_added',function(dataSnapshot){
-
-    //     var valor = dataSnapshot.val();
-    //     console.log(valor);
-
-    // });
-
-
-        // $rootScope.notifica = true;
-        // $rootScope.noexiste = false;
-
-        $rootScope.existen = true;
-        $rootScope.mensaje = 'No hay ninguna notificación';
-        $rootScope.notificaciones = []; //[{link:'#/Rechazos/Recepcion',titulo:'Folio(s) en Espera de Aceptaciòn',detalle:'Tienes 50 Folios(s) en espera de aceptación'},{link:'#/mensajes',titulo:'Vacaciones Semana Santa',detalle:'Se Informa que los dias 17 y 18 de abril no tendremos labores.'},{link:'#/Correos',titulo:'Nuevo Correo de Alguien',detalle:'Contenido del correo'}];
-        $rootScope.push = $rootScope.notificaciones.length;
+    $rootScope.existen = true;
+    $rootScope.mensaje = 'No hay ninguna notificación';
+    $rootScope.notificaciones = []; //[{link:'#/Rechazos/Recepcion',titulo:'Folio(s) en Espera de Aceptaciòn',detalle:'Tienes 50 Folios(s) en espera de aceptación'},{link:'#/mensajes',titulo:'Vacaciones Semana Santa',detalle:'Se Informa que los dias 17 y 18 de abril no tendremos labores.'},{link:'#/Correos',titulo:'Nuevo Correo de Alguien',detalle:'Contenido del correo'}];
+    $rootScope.push = $rootScope.notificaciones.length;
 
 
     ///mostramos los tooltip para mostrar los titulos abajo de cada elemento
@@ -308,13 +302,6 @@ app.run(function ($rootScope , auth ,$cookies, $cookieStore, $idle, $location, b
     // $rootScope.cargando=false;
     // $rootScope.loading=false;
     // $rootScope.label='Buscando Folios';
-
-    //generamos al rootscope las variables que tenemos en las cookies para no perder la sesion
-    $rootScope.username = $cookies.username;
-    $rootScope.id = $cookies.id;
-    $rootScope.areaUsuario = $cookies.areaUsuario;
-    $rootScope.user = $cookies.user;
-    $rootScope.userWeb = $cookies.userWeb;
 
     //verificamos el estatus del usuario en la aplicacion
     $idle.watch();

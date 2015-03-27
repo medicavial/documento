@@ -407,8 +407,8 @@ function archivos($folio, $fecha){
 	return $encontrados;
 
 }
-//modulo para subir info de sql server a mysql 
 
+//modulo para subir info de sql server a mysql 
 $app->get('/altainfoweb', function(){
 
     $conexion = conectarActual();
