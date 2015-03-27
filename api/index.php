@@ -2153,7 +2153,6 @@ $app->post('/facturasQualitas', function(){
 	$valores = array();
 	$fechaini = $datos->fechaini;
 	$fechafin = $datos->fechafin;
-	$producto = $datos->producto;
 
 	$fechafin = $fechafin . ' 23:59:58.999';
 
@@ -2169,7 +2168,7 @@ $app->post('/facturasQualitas', function(){
 
 
 
-		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin', @prodcuto = $producto";
+		$sql = "EXEC MVQualitasWS @fechaini = '$fechaini', @fechafin = '$fechafin'";
 
 		$rs= odbc_exec($conexion,$sql);
 
@@ -3596,7 +3595,6 @@ $app->post('/facturasQualitasInserta', function(){
 	}
 
 });
-
 
 //verifica que existan los archivos de cada folio
 $app->post('/facturasQualitasInsertaFaltaArchivos', function(){

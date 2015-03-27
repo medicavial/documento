@@ -6,7 +6,7 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
 		$scope.fechaini = FechaAct;
 		$scope.fechafin = FechaAct;
 		$scope.listado = [];
-		// $scope.buscafacturas();
+		$scope.buscafacturas();
 		$scope.productos();
 		$('#modalEx').on('hidden.bs.modal', function (e) {
 
@@ -28,49 +28,42 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
 
 	$scope.buscafacturas = function(){
 
-		if ($scope.producto) {
+		loading.cargando('Buscando Factura(s)');
 
-			loading.cargando('Buscando Factura(s)');
+		//armamos los datos a enviar segun tipo de consulta (tipo)
+		$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
+		console.log($scope.datos);
 
-			//armamos los datos a enviar segun tipo de consulta (tipo)
-			$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
-			console.log($scope.datos);
+		$http({
+			url:'/documento/api/facturasQualitas',
+			method:'POST', 
+			contentType: 'application/json', 
+			dataType: "json", 
+			data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin,producto:$scope.producto}
+		}).success( function (data){
+			 
+			console.log(data)
+			if(data.respuesta){
 
-			$http({
-				url:'/documento/api/facturasQualitas',
-				method:'POST', 
-				contentType: 'application/json', 
-				dataType: "json", 
-				data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin,producto:$scope.producto}
-			}).success( function (data){
-				 
-				console.log(data)
-				if(data.respuesta){
+        	
+        		loading.mensaje(data.respuesta);
+        		loading.despedida();
+        		$scope.listado = [];
 
-	        	
-	        		loading.mensaje(data.respuesta);
-	        		loading.despedida();
-	        		$scope.listado = [];
+        	}else{
 
-	        	}else{
+  
+        		$scope.listado = data;
+        		$scope.cantidad = data.length -1;
+        		loading.despedida();
+        	}
+			
+		}).error( function (xhr,status,data){
 
-	  
-	        		$scope.listado = data;
-	        		$scope.cantidad = data.length -1;
-	        		loading.despedida();
-	        	}
-				
-			}).error( function (xhr,status,data){
+			loading.despedida();
+			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
-				loading.despedida();
-				alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-			});
-
-		}else{
-
-			alert('debes ingresar un prodcuto');
-		}
+		});
 
 	}
 
@@ -1054,45 +1047,41 @@ app.controller('formatoQualitasIncompletosCtrl', function ($scope, $rootScope,$h
 
 	$scope.buscafacturas = function(){
 
-		if ($scope.producto) {
 
-			loading.cargando('Buscando Factura(s)');
+		loading.cargando('Buscando Factura(s)');
 
-			//armamos los datos a enviar segun tipo de consulta (tipo)
+		//armamos los datos a enviar segun tipo de consulta (tipo)
 
-			$http({
-				url:'/documento/api/facturasQualitas',
-				method:'POST', 
-				contentType: 'application/json', 
-				dataType: "json", 
-				data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin,producto:$scope.producto}
-			}).success( function (data){
-				 
-				console.log(data)
-				if(data.respuesta){
-	        	
-	        		loading.mensaje(data.respuesta);
-	        		loading.despedida();
-	        		$scope.listado = [];
+		$http({
+			url:'/documento/api/facturasQualitas',
+			method:'POST', 
+			contentType: 'application/json', 
+			dataType: "json", 
+			data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin,producto:$scope.producto}
+		}).success( function (data){
+			 
+			console.log(data)
+			if(data.respuesta){
+        	
+        		loading.mensaje(data.respuesta);
+        		loading.despedida();
+        		$scope.listado = [];
 
-	        	}else{
-	  
-	        		$scope.listado = data;
-	        		$scope.cantidad = data.length -1;
-	        		loading.despedida();
-	        	}
-				
-			}).error( function (xhr,status,data){
+        	}else{
+  
+        		$scope.listado = data;
+        		$scope.cantidad = data.length -1;
+        		loading.despedida();
+        	}
+			
+		}).error( function (xhr,status,data){
 
-				loading.despedida();
-				alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+			loading.despedida();
+			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
-			});
+		});
 
-		}else{
-
-			alert('debes ingresar un prodcuto');
-		}
+		
 
 	}
 
