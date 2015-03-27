@@ -1096,8 +1096,8 @@ $app->post('/actualizaoriginal', function(){
 
 		if ($rs){
 
-		      $historico = altahistorial($usuario, $folio, 1, 1, $datos->fecha,2,'','','','',$claveint);
-              $arr = array('respuesta' => 'Folio Actualizado Correctamente' , 'Historial' => $historico);
+		      // $historico = altahistorial($usuario, $folio, 1, 1, $datos->fecha,2,'','','','',$claveint);
+              $arr = array('respuesta' => 'Folio Actualizado Correctamente');
         }else {
               $arr = array('respuesta' => 'Error al Actualizar: '.odbc_error());
         }
@@ -1157,12 +1157,12 @@ $app->post('/altafoliooriginal', function(){
 		if ($rs){
 
 
-				$sql2 = "SELECT * FROM Documento where DOC_folio = '$folio'";
-				$rs2 = odbc_exec($conexion,$sql2);
-				$documento = odbc_result($rs2,"DOC_claveint");
+				// $sql2 = "SELECT * FROM Documento where DOC_folio = '$folio'";
+				// $rs2 = odbc_exec($conexion,$sql2);
+				// $documento = odbc_result($rs2,"DOC_claveint");
 
-				$historico = altahistorial($usuario, $folio, $etapa, $numentrega, $datos->fecha, 2 ,'','','','',$documento);
-				$arr = array('respuesta' => 'Folio Guardado Correctamente', 'Historial' => $historico);
+				// $historico = altahistorial($usuario, $folio, $etapa, $numentrega, $datos->fecha, 2 ,'','','','',$documento);
+				$arr = array('respuesta' => 'Folio Guardado Correctamente');
 
         }else {
               $arr = array('respuesta' => 'Error durante el Guardado: '.odbc_error());

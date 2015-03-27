@@ -2612,7 +2612,7 @@ function cordinacionCtrl($scope, $rootScope, find , loading, $http){
 }
 
 //busqueda del control de documentos
-function controlDocumentosCtrl($scope, $http, loading, find){
+function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 
 	$scope.inicio = function(){
 
@@ -2625,6 +2625,648 @@ function controlDocumentosCtrl($scope, $http, loading, find){
 		$scope.Altaunidades();
 		$scope.productos();
 		$scope.foliosxfecha();
+		$scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];	
+	}
+
+	//muestra Ventan de alta de Original
+	$scope.muestraOriginal = function(){
+
+		$('#myModal2').modal();
+		$scope.original = {folio:'',documento:0, tipoDoc:'',remesa:'', fecha:FechaAct, cliente:'',lesionado:'',unidad:'', producto:'',escolaridad:'', usuario: $rootScope.id, fechafax: '', fechafe: '' ,internet:1 , original:0, numentrega:1, incompleto:'',factura:'',totalfactura:''};
+		$scope.escolaridad();
+		$scope.empresas();
+		$scope.Altaunidades();
+		$scope.mensaje = '';
+		$scope.remesa = '';
+		$scope.label1 = '';
+		$scope.label2 = '';
+		$scope.label3 = '';
+		$scope.unidadref = '';//referencia para la unidad
+		$scope.esfax = 0;
+		$scope.esfe = 0;
+		$scope.esoriginal = 0;
+		$scope.revisado = 0;
+		$scope.bloqueo = false;
+		$scope.bloqueoUni = false;
+		$scope.cargar = false;
+
+
+		//detectamos cuando la ventana se cierra para buscar mas folios
+		$('#myModal2').on('hidden.bs.modal', function (e) {
+		 	$scope.foliosxfecha();
+		});
+
+		$('#folioO').focus();
+
+	}
+
+	//Verifica que la fecha no sea mayor a la fecha que se esta capturando
+	$scope.validafecha = function(tipo){
+
+		if(tipo == 'Fax'){
+
+			if($scope.fax.fecha > FechaAct){
+				$scope.fax.fecha = FechaAct;
+			}
+
+		}else{
+
+			if($scope.original.fecha > FechaAct){
+				$scope.original.fecha = FechaAct;
+			}
+		}
+		
+	}
+
+	//verificamos que tipo de atencion es y si ya tien fax capturado al momento de cambiar el tipo de documento 
+	$scope.verificaatencion = function(){
+
+		if(($scope.original.tipoDoc == 2 || $scope.original.tipoDoc == 3) && $scope.bloqueoUni == true){
+
+			$scope.original.unidad = $scope.unidadref;//asignamos el valor de referencia por si queremos regresar al estado anterior
+			$scope.bloqueoUni = false;
+			
+
+		}else if($scope.bloqueo == true && $scope.original.tipoDoc == 1){
+
+			$scope.unidadref = $scope.original.unidad;
+			$scope.bloqueoUni = true;
+			$scope.referencia($scope.unidadref);
+
+		}
+
+	}
+
+	//rellena la remesa de 0 cuando son menos de 6 digitos
+	$scope.verificaRemesa = function(){
+
+		//contamos la cadena completa
+		var cantidad = $scope.remesa.length;
+
+	      	if(cantidad < 5 ){
+
+				var faltantes = 6 - cantidad;
+
+				for (var i = 0; i < faltantes; i++) {
+					
+					$scope.remesa = "0" + $scope.remesa;
+				}
+
+			}
+	}
+
+	$scope.presionaFolioOriginal = function(evento){
+
+		//contamos la cadena completa
+		var cantidad = $scope.original.folio.length;
+
+		//los primero cuatro caracteres NO deben ser numeros
+		if(cantidad < 4){
+			if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
+		      	evento.preventDefault();
+		    }
+		}
+
+		//los ultimos 6 NO deben ser letras
+		if(cantidad > 3 && cantidad < 9){
+			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
+		      	evento.preventDefault();
+		    }
+		}
+
+		//Si son mas de 10 digitos no escribas mas
+		if(cantidad > 9){
+			if (evento.keyCode != 8  && evento.keyCode != 46 && evento.keyCode != 9) {
+
+		      	evento.preventDefault();
+		    }      	
+		}
+
+		//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
+		if (evento.keyCode == 13 || evento.keyCode == 9) {
+
+			$scope.mensaje = '';
+	      	$scope.verificaFolioO('Original',  $scope.original.folio);
+
+	    }
+
+	}
+
+	//funcion para autocompletar el folio 
+	$scope.verificaFolioO = function(tipo , folio){
+
+		if (folio != '') {
+
+			var totalletras = folio.length
+
+			var letras = folio.substr(0,4);
+			var numeros = folio.substr(4,totalletras);
+
+			if(letras.length < 4 ){
+
+				var faltantes = 4 - letras.length;
+
+				for (var i = 0; i < faltantes; i++) {
+
+					var letra = letras.charAt(i);
+					letras = letras + "0";
+				}
+			}
+
+			if(numeros.length < 6 ){
+
+				var faltantes = 6 - numeros.length;
+
+				for (var i = 0; i < faltantes; i++) {
+					
+					numeros = "0" + numeros;
+				}
+			}
+
+			$scope.cargar = true;
+
+			if(tipo == 'Fax'){
+
+				$scope.fax.folio = letras + numeros;
+				$scope.folioWeb('Fax', $scope.fax.folio);
+
+			}else if(tipo == 'Original'){
+
+				$scope.original.folio = letras + numeros;
+				$scope.validaOriginal($scope.original.folio);			
+
+			}
+
+		}	
+
+	}
+
+	//Verificamos si el fiolio esta dado de alta o se tiene que buscar en 
+	$scope.validaOriginal = function(folio){
+
+		$scope.limpiaVariables();
+		$scope.mensaje = '';
+		//verificamos si tiene primera atencion
+			find.verificafolio(folio, 1).success( function (data){
+						
+						if(data.respuesta){
+
+							//verificamos si es una segunda atencion o tercera pero la tercera es manual
+							if (data.original == 1) {
+
+								
+								//segunda atencion
+								$scope.original.tipoDoc = 2;
+								$scope.bloqueo = true;
+								$scope.bloqueoUni = false;
+								$scope.esoriginal = 1;
+								
+							}else{
+
+								$scope.original.documento = data.clave;
+								//primera atencion
+								$scope.original.tipoDoc = 1;
+
+								//verificamos que sea fax 
+								if(data.fax == 1){
+									$scope.label2 = 'FAX RECIBIDO: ' + data.fechafax;
+									$scope.original.fechafax = data.fechafax;
+									$scope.esfax = 1;
+								}
+								//verificamos que sea factura express
+								if(data.fe == 1){
+									$scope.label2 = 'FAC. EXPRESS: ' + data.fefecha;
+									$scope.original.fechafe = data.fechafe;
+									$scope.esfe = 1;
+								}
+
+								//asignamos bloqueos de campos
+								$scope.bloqueo = true;
+								$scope.bloqueoUni = true;
+								$scope.esoriginal = 0;
+
+							}
+
+							$scope.original.cliente = data.empresa;
+							$scope.original.lesionado = data.lesionado;
+							$scope.unidadref = data.unidad;
+							$scope.original.unidad = data.unidad;
+							$scope.productoOriginal($scope.original.cliente);
+							$scope.original.escolaridad = data.escuela;
+							$scope.referencia($scope.original.unidad);
+							$scope.original.producto = data.producto;
+							$scope.original.documento = data.clave;
+							$scope.cargar = false;
+
+						}else{
+
+							//Como no ninguna atencion registrada en sql server buscamos en web 
+							$scope.folioWeb('Original',folio);
+							$scope.original.tipoDoc = 1;
+							$scope.esoriginal = 0;
+
+						}
+
+
+			}).error( function (xhr,status,data){
+
+				$scope.cargar = false;
+				alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+
+			});
+
+	}
+
+	//Busca folio en la base del portal web 
+	$scope.folioWeb = function(tipo,folio){
+
+		if(tipo == 'Fax'){
+
+			$scope.limpiaVariablesF();
+
+			find.folioweb(folio).success( function (data){
+				
+				$scope.fax.cliente = data[0].CIAClaveMV;
+				$scope.fax.lesionado = data[0].Nombre + " " + data[0].Paterno + " " + data[0].Materno;
+				$scope.fax.unidad = data[0].UNIClaveMV;
+				$scope.productoFax($scope.fax.cliente);
+				$scope.fax.producto = data[0].PROClave;
+				$scope.fax.escolaridad = data[0].ESCClaveMV;
+				$scope.fax.internet = 1;
+				$scope.cargar = false;
+				
+			}).error( function (xhr,status,data){
+
+				//Manda un error por que no se logro conectar a la base web
+				$scope.cargar = false;
+				$scope.fax.internet = 0;
+				$scope.mensaje = 'No es posible conectar con el folio Web. Para reiniciar la conexión favor de notificar al área de sistemas.';
+				$scope.tipoalerta = 'alert-danger';
+
+			});
+
+		}else if(tipo == 'Original'){
+
+			find.folioweb(folio).success( function (data){
+
+				//console.log(data);
+				$scope.original.cliente = data[0].CIAClaveMV;
+				$scope.original.lesionado = data[0].Nombre + " " + data[0].Paterno + " " + data[0].Materno;
+				$scope.productoOriginal($scope.original.cliente);
+				$scope.unidadref = data[0].UNIClaveMV;
+				$scope.original.unidad = data[0].UNIClaveMV;
+				$scope.original.producto = data[0].PROClave;
+				$scope.original.escolaridad = data[0].ESCClaveMV;
+				$scope.original.internet = 1;
+				$scope.label2 = 'NO SE RECIBIO FAX';
+				$scope.label3 = 'NO ES FAC. EXPRESS';
+				$scope.referencia($scope.original.unidad);
+				$scope.cargar = false;
+				
+			}).error( function (xhr,status,data){
+
+				//Manda un error por que no se logro conectar a la base web
+				$scope.original.internet = 0;
+				$scope.tipoalerta = 'alert-danger';
+				$scope.mensaje ='No es posible conectar con el folio Web. Para reiniciar la conexión favor de notificar al área de sistemas.';
+				$scope.cargar = false;
+
+			});
+		}
+		
+	}
+
+
+	///limpia variables 
+	$scope.limpiaVariables = function(){
+
+		//$scope.original.folio = '';
+		$scope.original.documento = '';
+		$scope.original.internet =  1;
+		$scope.original.tipoDoc ='';
+		$scope.original.remesa ='';
+		$scope.remesa = '';
+		$scope.original.fecha =FechaAct;
+		$scope.original.cliente ='';
+		$scope.original.lesionado ='';
+		$scope.original.unidad ='';
+		$scope.original.producto ='';
+		$scope.original.escolaridad ='';
+		$scope.original.fechafax = '';
+		$scope.original.fechafe = '';
+		$scope.original.factura = '';
+		$scope.original.totalfactura = '';
+		$scope.esoriginal = 0;
+		$scope.unidadref = '';
+		$scope.esfax = 0;
+		$scope.esfe = 0;
+		$scope.bloqueo = false;
+		$scope.bloqueoUni = false;
+
+	}
+
+	///Proceso de guardado ya sea de fax u original
+	$scope.mandadatos = function(tipo){
+
+		if(tipo == 'Fax'){
+			$('#otro').button('loading');
+			$scope.verificaInfo($scope.fax.cliente, $scope.fax.producto, $scope.fax.escolaridad, $scope.fax.fecha, $scope.fax.folio, tipo);
+		}else{
+			$scope.verificaInfo($scope.original.cliente, $scope.original.producto, $scope.original.escolaridad, $scope.original.fecha, $scope.original.folio, tipo);	
+		}
+
+	}
+
+	//Verificamos la informacion al guardar
+	$scope.verificaInfo = function(cliente, producto, escolaridad, fecha, folio, tipo){
+
+
+		if(cliente == 20 && producto == 2 && (escolaridad == null || escolaridad == -1 || escolaridad == 0) ){
+
+			$scope.mensaje = 'La escolaridad es requerida para AXA AP.';
+			$scope.tipoalerta = 'alert-danger';
+
+		}else{
+
+			if (fecha > FechaAct) {
+
+				$scope.mensaje = 'La fecha de captura no debe ser mayor al dia de hoy';
+				$scope.tipoalerta = 'alert-danger';
+
+			}else{
+
+				if(producto == -1 || producto == null){
+
+					$scope.mensaje = 'El campo producto es requerido';
+					$scope.tipoalerta = 'alert-danger';
+
+				}else{
+
+					find.verificaprefijo(folio.substr(0,4),cliente).success(function (data){
+
+						if(data.valido == 1){
+
+							$scope.revisado = 1; //termina la validacion correctamente
+							if(tipo == 'Fax'){
+								$scope.guardaFax();
+							}else{
+								$scope.guardaOriginal();
+							}
+
+						}else{
+
+							$scope.mensaje = 'El prefijo del folio no es valido. Favor de verificar';
+							$scope.tipoalerta = 'alert-danger';
+
+						}
+
+					});
+
+				}
+
+			}
+			
+		}
+		
+	}
+
+	//Guarda los datos de Original
+	$scope.guardaOriginal = function(){
+
+
+		$scope.original.remesa = $scope.remesa + "-" + $scope.label1;
+		$scope.original.unidad = $scope.unidadref;//iguala al valor del select por si hubo cualquier cambio 
+
+		//Verificamos si se asigno escolaridad en caso de ser AXA el cliente
+
+		if($scope.revisado == 1){
+
+			$('#boton2').button('loading');
+			$scope.mensaje = '';
+
+			//verificamos si el folio tiene documento registrado
+			if($scope.original.documento == 0){
+
+				//Si es primera atencion
+				if($scope.original.tipoDoc == 1){
+
+					//console.log($scope.fax);
+					//Verificamos que el folio no este dado de alta en documentos
+
+					//como es primera atencion se define como 1 el numero de entrega para la primera etapa (aunque solo debe ser 1 para la primera)
+					$scope.original.numentrega = 1;
+
+					find.verificafolio($scope.original.folio, 1).success( function (data){
+
+						if(data.respuesta){
+
+							$('#boton2').button('reset');
+							$scope.mensaje = data.respuesta;
+							$scope.tipoalerta = 'alert-danger';
+
+						}else{
+							
+							//Segunda validacion para verificar que no esta en la tabla pase
+							find.verificafoliopase($scope.original.folio).success( function (data){
+
+								if(data.respuesta){
+
+									$('#boton2').button('reset');
+									$scope.mensaje = data.respuesta;
+									$scope.tipoalerta = 'alert-danger';
+
+								}else{
+
+									$scope.agregaOriginal();
+									
+								}
+								
+							});
+						}
+					}).error( function (xhr,status,data){
+
+						$('#boton2').button('reset');
+						alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+
+					});
+					
+
+
+				}else{
+
+					//en caso de que sea segunda atencion o tercera y se haya registrado por primera vez en sql server 
+					$('#boton2').button('reset');
+					$scope.mensaje = 'No se permite capturar una segunda atencion de un registro nuevo';
+					$scope.tipoalerta = 'alert-danger';
+
+				}
+				
+
+			}else{
+			///Se actualiza pero se tiene que ver si es original o es una segunda atencion 
+
+				//Tiene fax/fe y no esta capturado como original y se actualiza a original
+				if($scope.esoriginal == 0){
+
+					//tenemos primera atencion
+					if($scope.original.tipoDoc == 1){
+
+						//Es fax
+						if($scope.esfax == 1){
+
+							if($scope.original.fecha < $scope.fechafax){
+								$scope.mensaje = 'La fecha de captura del original no puede ser anterior a la fecha de captura del fax.';
+								$scope.tipoalerta = 'alert-danger';
+							}else{
+								//actualizamos
+								$scope.actualizaOriginal();
+								//alert('entro actualiza');
+							}
+
+						//es factura express	
+						}else if($scope.esfe == 1){
+
+							if($scope.original.fecha < $scope.fechafe){
+								$scope.mensaje = 'La fecha de captura del original no puede ser anterior a la fecha de captura de la factura express.';
+								$scope.tipoalerta = 'alert-danger';
+							}else{
+								//actualizamos
+								$scope.actualizaOriginal();
+								//alert('entro actualiza');
+							}
+						}
+
+					}else{//segunda/tercera atencion agregamos nuevo documento
+
+						$scope.agregaOriginal();
+					}
+
+
+				}else{
+				//es segunda o tercera atencion
+
+					//verificamos que no se haya apretado la primera atencion
+					if($scope.original.tipoDoc == 1){
+
+						alert('No se puede guardar como primera atencion');
+						$('#boton2').button('reset');
+
+					}else{
+
+						//verifica que numero de segunda o tercera atencion es
+						find.verificaetapaentrega($scope.original.folio,$scope.original.tipoDoc).success(function (data){
+
+							$scope.original.numentrega = Number(data.total) + 1;
+
+							//Agregamos un nuevo documento de segunda etapa o tercera
+							$scope.agregaOriginal();
+
+						});
+
+					}
+
+				}
+
+			}//se cierra donde verificamos si un nuevo registro
+
+		}//se cierra primer if donde ve si es AXA
+
+	}
+
+	//actualiza folio (solo original)
+	$scope.actualizaOriginal = function(){
+
+		$http({
+			url:'/documento/api/actualizaoriginal',
+			method:'POST', 
+			contentType: 'application/json', 
+			dataType: "json", 
+			data:$scope.original
+		}).success( function (data){
+			
+			//console.log(data);	
+			$('#boton2').button('reset');
+			$scope.mensaje = data.respuesta;
+		    $scope.tipoalerta = 'alert-success';
+		    $scope.limpiaVariables();
+		    $scope.original.folio = '';
+		    $('#folioO').focus();
+										
+		//console.log(data);
+		}).error( function (xhr,status,data){
+
+			$('#boton2').button('reset');
+			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+		});
+
+	}
+
+	//en caso de remesa solo se ocupan 5 numeros no mas
+	$scope.presionaRemesa = function(evento){
+
+		//contamos la cadena completa
+		var cantidad = $scope.remesa.length;
+
+
+		// NO deben ser letras
+		if(cantidad < 5){
+			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
+		      	evento.preventDefault();
+		    }
+		}
+
+		//Si son mas de 6 digitos no escribas mas
+		if(cantidad > 5){
+
+			if (evento.keyCode != 8  && evento.keyCode != 46 ) {
+
+		      	evento.preventDefault();
+		    }      	
+		}
+
+		//Si se da enter o salto de linea ejecuta el autollenado de ceros
+		if (evento.keyCode == 13 || evento.keyCode == 9) {
+
+	      	if(cantidad < 5 ){
+
+				var faltantes = 6 - cantidad;
+
+				for (var i = 0; i < faltantes; i++) {
+					
+					$scope.remesa = "0" + $scope.remesa;
+				}
+
+			}
+
+	    }
+
+	}
+
+	//agrega folio (solo original)
+	$scope.agregaOriginal = function(){
+
+		$http({
+			url:'/documento/api/altafoliooriginal',
+			method:'POST', 
+			contentType: 'application/json', 
+			dataType: "json", 
+			data:$scope.original
+		}).success( function (data){
+			
+			//console.log(data);			        	
+			$('#boton2').button('reset');
+			$scope.mensaje = data.respuesta;
+		    $scope.tipoalerta = 'alert-success';
+		    $scope.limpiaVariables();
+		    $scope.original.folio = '';
+		    $('#folioO').focus();
+										
+		//console.log(data);
+		}).error( function (xhr,status,data){
+
+			$('#boton2').button('reset');
+			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+		});
 	}
 
 	//busquedas
@@ -2657,6 +3299,36 @@ function controlDocumentosCtrl($scope, $http, loading, find){
 		 });
 	}
 
+	//busca escolaridad
+	$scope.escolaridad = function(){
+
+		find.escolaridad().success( function (data) {
+
+			$scope.escolaridades = data;
+
+		 });
+	}
+
+	//busca el producto
+	$scope.productoOriginal = function(empresa){
+
+		find.producto(empresa).success( function (data) {
+
+			$scope.productos = data;
+
+		 });
+
+	}
+
+	//busqueda de referencias por unidad
+	$scope.referencia = function(unidad){
+
+		find.referenciaxunidad(unidad).success(function (data){
+			$scope.label1 = data.referencia;
+		});
+
+	}
+
 
 	//busca unidades
 	$scope.Altaunidades = function(){
@@ -2671,9 +3343,6 @@ function controlDocumentosCtrl($scope, $http, loading, find){
 
 		 });
 	}
-
-
-
 
 	//busqueda de folios por fecha
 	$scope.foliosxfecha = function(){
@@ -2830,8 +3499,6 @@ function controlDocumentosCtrl($scope, $http, loading, find){
 			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		});
-
-
 
 	}
 
@@ -7752,6 +8419,15 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 	}
 
+	//busqueda de referencias por unidad
+	$scope.referencia = function(unidad){
+
+		find.referenciaxunidad(unidad).success(function (data){
+			$scope.label1 = data.referencia;
+		});
+
+	}
+
 	//busca escolaridad
 	$scope.escolaridad = function(){
 
@@ -7883,14 +8559,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 	}	
 
-	//busqueda de referencias por unidad
-	$scope.referencia = function(unidad){
-
-		find.referenciaxunidad(unidad).success(function (data){
-			$scope.label1 = data.referencia;
-		});
-
-	}
+	
 
 
 
