@@ -1132,6 +1132,10 @@ $app->post('/altafoliooriginal', function(){
     $totalfactura = $datos->totalfactura;
     $factura = $datos->factura;
 
+    if ($escolaridad == '') {
+    	$escolaridad = 0;
+    }
+
     if ($totalfactura == '') {
     	$totalfactura = 0;
     }
@@ -1170,8 +1174,7 @@ $app->post('/altafoliooriginal', function(){
 
 		echo json_encode($arr);
 
-
-		//
+		// echo $sql;
 
 	}
 
