@@ -3465,7 +3465,7 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 			}
 
 			$scope.folio = letras + numeros;
-
+			$scope.folio.toUpperCase();
 			$scope.foliosxfolio();
 		}	
 
@@ -3507,7 +3507,8 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 
 		loading.cargando('Buscando Folio(s)');
 
-		find.recepcionxlesionado($scope.lesionado).success( function (data){
+		$http.post('/documento/api/recepcionfoliosxlesionado',{lesionado:$scope.lesionado})
+		.success( function (data){
         	
         	if(data.respuesta){
 
