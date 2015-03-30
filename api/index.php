@@ -5377,7 +5377,7 @@ $app->post('/recepcionfoliosfecha', function(){
 
 	}else{
 
-		$sql = "EXEC MV_DCU_ListadoDocumentosXFecha  @fechaIni='$fechaini', @fechaFin='$fechafin'";
+		$sql = "EXEC MV_DOC_ListadoDocumentosXFecha  @fechaIni='$fechaini', @fechaFin='$fechafin'";
 
 		$rs= odbc_exec($conexion,$sql);
 		$i = 0;
@@ -5469,7 +5469,7 @@ $app->get('/recepcionfolios/:folio', function($folio){
 
 	}else{
 
-		$sql = "EXEC MV_DCU_ListadoDocumentosXFolio  @folio='$folio'";
+		$sql = "EXEC MV_DOC_ListadoDocumentosXFolio  @folio='$folio'";
 
 		$rs= odbc_exec($conexion,$sql);
 		$i = 0;
@@ -5581,8 +5581,13 @@ $app->get('/recepcionfolios/:folio', function($folio){
 });
 
 
-$app->get('/recepcionfoliosxlesionado/:lesionado', function($lesionado){
+$app->post('/recepcionfoliosxlesionado', function(){
 
+
+	$request = \Slim\Slim::getInstance()->request();
+	$entrada = json_decode($request->getBody());
+
+	$lesionado = $entrada->lesionado;
 
     $conexion = conectarActual();
     $conexionMysql = conectarMySQL();
@@ -5593,7 +5598,7 @@ $app->get('/recepcionfoliosxlesionado/:lesionado', function($lesionado){
 
 	}else{
 
-		$sql = "EXEC MV_DCU_ListadoDocumentosXLesionado  @lesionado='% $lesionado %'";
+		$sql = "EXEC MV_DOC_ListadoDocumentosXLesionado  @lesionado = '%$lesionado%'";
 
 		$rs= odbc_exec($conexion,$sql);
 		$i = 0;
