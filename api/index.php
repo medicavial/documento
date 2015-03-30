@@ -1824,6 +1824,10 @@ $app->post('/altafoliooriginal', function(){
     	$totalfactura = 0;
     }
 
+    if ($escolaridad == '') {
+    	$escolaridad = 0;
+    }
+
     //fechapago , folioFac, totalfac
 
     $hoy = date("H:i:s");
