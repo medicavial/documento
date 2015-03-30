@@ -18,6 +18,9 @@ blockquote{
     margin: 0 0 2px;
 }
 
+.form-control{
+  text-transform: uppercase;
+}
 /*input[type=checkbox] {
   visibility: hidden;
 }*/
