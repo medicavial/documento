@@ -245,6 +245,51 @@ app.factory("checkFolios", function($q,$http,find){
 
             return promesa.promise;
         },
+        enviaRechazos:function(folios, area, usuario){
+
+            // creamos las variables 
+            // la primera es preparar una promesa 
+            var promesa = $q.defer(),
+                foliosIn = [],
+                foliosVal = [];
+
+            //verificamos los folios enviados para ver si hay algun error 
+            angular.forEach(folios,function (folio){
+                
+                if(area == 4 && folio.FaxOrigianl == 'JF'){
+                    foliosVal.push(folio);
+                }else{
+                    if (folio.FaxOrigianl == 'JF') {
+                        foliosin.push(folio);
+                    }else{
+                        foliosVal.push(folio);
+                    }
+                }
+
+            });
+            
+            //verifica que ya haya terminado para mandarlos el $q detecta cuando no se hayan efectuado cambios en los arreglos 
+            $q.all([foliosVal,foliosIn]).then(function (respuesta){
+
+                var folios_validos = respuesta[0];
+                // al generar una respuesta generamos un objecto para mandar respuesta 
+                var resultado = {
+                    respuesta:'',
+                    rechazos:respuesta[1]
+                }
+
+                $http.post('/documento/api/eliminaentrega/'+ usuario,folios_validos).success(function (data){
+                    resultado.respuesta = data.respuesta;
+                    promesa.resolve(resultado);
+                }).error(function (data){
+                    promesa.reject('Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas');
+                });
+
+            });
+            
+            // 
+            return promesa.promise;
+        },
         verificaInfo:function(cliente, producto, escolaridad, fecha, folio){
 
             var promesa = $q.defer();

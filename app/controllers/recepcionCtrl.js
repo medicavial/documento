@@ -547,123 +547,34 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	//guardamos pero antes verificamos que tengamos documentos seleccionados
 	$scope.entrega = function(){
 
-		
+		$scope.mensaje = '';
+		$('#boton').button('loading');
+
 		if ($scope.selectos.length > 0) {
-			$scope.validainfo();
+			
+			var promesa = checkFolios.enviaFolios($scope.selectos,$scope.areaOp,$scope.user,$rootScope.id,$rootScope.area);
+
+			promesa.then(
+				function (data){
+					$scope.mensaje = data.respuesta;
+					$scope.tipoalerta = 'alert-success';
+					$scope.cargaEntrada();
+					$('#boton').button('reset');
+					if (data.rechazos.length > 0) {
+						$scope.rechazos = data.rechazos;
+						console.log($scope.rechazos);
+						$('#myModal3').modal();
+					};
+				},function (error){
+					$scope.mensaje = error;
+					$scope.tipoalerta = 'alert-warning';
+				}
+			);
+			
 
 		}else{
 			alert('No se ha seleccionado ningun documento');
 		}
-	}
-
-	//manda los folios seleccionados al area que mencionan
-	$scope.validainfo = function(){
-
-		$scope.mensaje = '';
-		$('#boton').button('loading');
-
-		var promesa = checkFolios.enviaFolios($scope.selectos,$scope.areaOp,$scope.user,$rootScope.id,$rootScope.area);
-
-		promesa.then(function (data){
-
-			
-			$scope.mensaje = data.respuesta;
-			$scope.tipoalerta = 'alert-success';
-			$scope.cargaEntrada();
-			$('#boton').button('reset');
-			if (data.rechazos.length > 0) {
-				$scope.rechazos = data.rechazos;
-				console.log($scope.rechazos);
-				$('#myModal3').modal();
-			};
-
-		},function (error){
-
-			$scope.mensaje = error;
-			$scope.tipoalerta = 'alert-warning';
-
-		});
-	}
-
-	$scope.guardaFlujo = function(indice){
-
-		var documentoEnv = $scope.selectos[indice];
-		console.log(documentoEnv);
-
-		var datos = {
-			folio:documentoEnv.Folio,
-			etapa:documentoEnv.Etapa,
-			cantidad:documentoEnv.Cantidad,
-			documento:Number(documentoEnv.documento),
-			usuarioentrega:$rootScope.id,
-			areaentrega:Number(documentoEnv.area),
-			usuariorecibe:Number($scope.user),
-			arearecibe:Number($scope.areaOp),
-			clave:Number(documentoEnv.FLD_claveint),
-			observaciones:documentoEnv.Observaciones
-		};
-
-		//console.log(datos);
-
-	    $http({
-			url:'/documento/api/altaentrega',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data:datos
-		}).success( function (data){
-			
-			console.log(data);
-			$scope.mensaje = data.respuesta;
-			$scope.tipoalerta = 'alert-success';
-			$scope.cargaEntrada();			
-
-		}).error( function (data){
-
-			$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-			$scope.tipoalerta = 'alert-warning';
-
-		});
-	}
-
-	$scope.actualizaFlujo = function(folios){
-
-		//seleccionamos el folio a mandar 
-		// var documentoEnv = $scope.selectos[indice];
-		
-		//console.log(documentoEnv);
-		//generamos el JSON necesario incluyendo los datos del area y usuario para enviarlo mediante post 
-		var datos = {
-			folio:documentoEnv.Folio,
-			etapa:documentoEnv.Etapa,
-			cantidad:documentoEnv.Cantidad,
-			documento:Number(documentoEnv.documento),
-			usuarioentrega:$rootScope.id,
-			areaentrega:Number(documentoEnv.area),
-			usuariorecibe:Number($scope.user),
-			arearecibe:Number($scope.areaOp),
-			clave:Number(documentoEnv.FLD_claveint),
-			observaciones:documentoEnv.Observaciones
-		};
-
-	    $http({
-			url:'/documento/api/actualizaentrega',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data:datos
-		}).success( function (data){
-			        	
-			$scope.mensaje = data.respuesta;
-			$scope.tipoalerta = 'alert-success';
-			// $scope.cargaEntrada();			
-
-		}).error( function (data){
-
-			$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-			$scope.tipoalerta = 'alert-warning';
-
-		});
 	}
 
 	//////LLena el grid y toma filtros

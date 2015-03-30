@@ -332,8 +332,10 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
 
             if ($location.path() != "/bloqueo") {
 
-                $('#myModal2').modal('hide');
                 $('#myModal').modal('hide');
+                $('#myModal2').modal('hide');
+                $('#myModal3').modal('hide');
+                $('#myModal4').modal('hide');
                 $rootScope.ruta = $location.path(); //Guardamos
                 $location.path('/bloqueo');
             };

@@ -25,9 +25,7 @@ function conectarActual(){
 		$db_name = 'MV'; 
 
 	}else{
-
 		//Declaramos variables de conexion a SQL Server
-		//Trusted_Connection=yes;
 		$db_server = 'SISTEMAS4';
 		$db_name = 'MV2';
 
@@ -2050,18 +2048,13 @@ $app->get('/empresasweb', function(){
 
 });
 
+
 //Elimina la entrega cuando dependiendo el tipo se actualiza o se elimina
-$app->post('/eliminaentrega/:tipo/:usuario', function($tipo,$usuario){
+$app->post('/eliminaentrega/:usuario', function($usuario){
 
 	$request = \Slim\Slim::getInstance()->request();
 	$datos = json_decode($request->getBody());
-
-	$clave = $datos->FLD_claveint;
-	$folio = $datos->Folio;
-	$etapa = $datos->Etapa;
-	$cantidad = $datos->Cantidad;
-	$area = $datos->ARO_porRecibir;
-	$documento = $datos->DOC_claveint;
+		
 	$fecha = date("d/m/Y");
 
     $conexion = conectarActual();
@@ -2071,29 +2064,30 @@ $app->post('/eliminaentrega/:tipo/:usuario', function($tipo,$usuario){
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
-		
-		//verificamos la operacion a efectuar y asignamos la operacion al historial con $tipo
-		if ($tipo == "facturacion") {
-			$sql = "DELETE FROM FlujoDoc WHERE FLD_claveint = $clave";
+
+		foreach ($datos as $dato) {
+
+			$clave = $dato->FLD_claveint;
+			$folio = $dato->Folio;
+			$etapa = $dato->Etapa;
+			$cantidad = $dato->Cantidad;
+			$area = $dato->ARO_porRecibir;
+			$documento = $dato->DOC_claveint;
+
+			if($dato->FaxOrigianl == 'JF'){
+				$sql = "DELETE FROM FlujoDoc WHERE FLD_claveint = $clave";
+			}else{
+				$sql = "UPDATE FlujoDoc SET USU_ent = NULL, FLD_fechaEnt = NULL, FLD_porRecibir = 0, USU_recibe = NULL, ARO_porRecibir = NULL  WHERE FLD_claveint = $clave";
+			}
+
 			$tipo = 5;
-		}else{
-			$sql = "UPDATE FlujoDoc SET USU_ent = NULL, FLD_fechaEnt = NULL, FLD_porRecibir = 0, USU_recibe = NULL, ARO_porRecibir = NULL  WHERE FLD_claveint = $clave";
-			$tipo = 5;
+			$rs= odbc_exec($conexion,$sql); 
+			
+			$historico = altahistorial($usuario, $folio, $etapa, $cantidad, $fecha, $tipo,'','',$area,'',$documento);
+			$arr = array('respuesta' => 'Folio(s) Removido Correctamente');
+			
 		}
-
-		$rs= odbc_exec($conexion,$sql); 
-		
-		if ($rs){
-
-		      $historico = altahistorial($usuario, $folio, $etapa, $cantidad, $fecha, $tipo,'','',$area,'',$documento);
-
-              $arr = array('respuesta' => 'Folio(s) Removido Correctamente');
-
-        }else {
-              $arr = array('respuesta' => 'Error al Actualizar: '.odbc_error());
-        }   
-		
-
+		//verificamos la operacion a efectuar y asignamos la operacion al historial con $tipo
 		echo json_encode($arr);
 
 	}
@@ -2135,10 +2129,7 @@ $app->get('/escolaridad', function(){
 
 		}
 
-		echo json_encode($valores);
-
-
-		
+		echo json_encode($valores);	
 
 	}
 

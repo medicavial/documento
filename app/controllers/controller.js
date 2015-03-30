@@ -947,7 +947,6 @@ app.controller('entregasCtrl', function($scope, $rootScope, $routeParams, find, 
 		$scope.verareaoperativa();
 		$scope.mensaje = '';
 
-
 	}
 
 	//Carga la lista de archivos a enviar 
@@ -1309,17 +1308,17 @@ app.controller('entregasCtrl', function($scope, $rootScope, $routeParams, find, 
 });
 
 //mustra los documentos entregados pendientes de recibir
-app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams, find, $http, loading){
+app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams, find, $http, loading, checkFolios){
 	//Carga Configuracion Inicial
 	$scope.inicio = function(){
 
 		$scope.tituloLE = 'Listado de Entregas efectuadas'; //+ $routeParams.area;
 		$scope.area = $routeParams.area;
-		$scope.empresas();
 		$scope.folio = '';
+		$scope.mensaje = '';
+		$scope.empresas();
 		$scope.altaunidades();
 		$scope.cargaEntregas();
-		$scope.mensaje = '';
 
 	}
 
@@ -1370,122 +1369,53 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 
 	//elimina la seleccion o al que le apretaron
 	$scope.elimina = function(dato){
+		
+		$scope.mensaje = '';
+		var datos = [dato.entity];
 
-		try{
-
-			$scope.mensaje = '';
-
-			var datos = dato.entity;
-			var ruta = '';
-
-			if($rootScope.area == 4 && datos.FaxOrigianl == 'JF'){
-			
-				ruta = '/documento/api/eliminaentrega/facturacion/'+ $rootScope.id;
-
-			}else{
-
-				if (datos.FaxOrigianl == 'JF') {
-					throw "No tienes permisos para eliminar este item";
-				}else{
-					ruta = '/documento/api/eliminaentrega/otro/'+ $rootScope.id;
-				}
-
-			}
-
-			$http({
-				url:ruta,
-				method:'POST', 
-				contentType: 'application/json', 
-				dataType: "json", 
-				data:datos
-			}).success( function (data){
-				
-				//console.log(data);
+		checkFolios.enviaRechazos(datos,$rootScope.area,$rootScope.id).then(
+			function (data){
 				$scope.gridOptions.$gridScope.toggleSelectAll(false);
 				$scope.mensaje = data.respuesta;
 				$scope.tipoalerta = 'alert-success';
-				$scope.cargaEntregas();			
-
-			}).error( function (data){
-
-				$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+				$scope.cargaEntregas();		
+			},
+			function (error){
+				$scope.mensaje = error;
 				$scope.tipoalerta = 'alert-warning';
+			}
+		);
 
-			});
-
-			//$scope.cargaEntregas();
-
-		}
-		catch(err)
-		{
-			alert(err);
-		}
+		$('#boton').button('reset');
 
 	}
 
 
 	$scope.eliminaMultiple = function(){
 
-		$('#boton').button('loading');
 
-		for (var i = 0; i < $scope.selectos.length; i++) {
+		$scope.mensaje = '';
+		var datos = $scope.selectos;
 
-			try{
+		checkFolios.enviaRechazos(datos,$rootScope.area,$rootScope.id).then(
+			function (data){
+				$scope.gridOptions.$gridScope.toggleSelectAll(false);
+				$scope.mensaje = data.respuesta;
+				$scope.tipoalerta = 'alert-success';
+				$scope.cargaEntregas();	
 
-				$scope.mensaje = '';
-				
-				var datos = $scope.selectos[i];
-				var ruta = '';
-
-				//console.log(datos);
-				if($rootScope.area == 4 && datos.FaxOrigianl == 'JF'){
-					
-					ruta = '/documento/api/eliminaentrega/facturacion/'+ $rootScope.id;
-
-				}else{
-
-					if (datos.FaxOrigianl == 'JF') {
-						throw "No tienes permisos para eliminar este folio: " + datos.Folio;
-					}else{
-						ruta = '/documento/api/eliminaentrega/otro/'+ $rootScope.id;
-					}
-				}
-
-				$http({
-					url:ruta,
-					method:'POST', 
-					contentType: 'application/json', 
-					dataType: "json", 
-					data:datos
-				}).success(function (data){
-					
-					//console.log(data);
-					$scope.mensaje = data.respuesta;
-					$scope.tipoalerta = 'alert-success';
-								
-
-				}).error( function (data){
-
-					$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-					$scope.tipoalerta = 'alert-warning';
-
-				});
-
-				if (i == Number($scope.selectos.length) -2) {
-
-					$scope.cargaEntregas();
-					$scope.gridOptions.$gridScope.toggleSelectAll(false);
-					$('#boton').button('reset');
-				
-				};
-
+				if (data.rechazos.length > 0) {
+					$scope.rechazos = data.rechazos;
+					$('#myModal4').modal();
+				};	
+			},
+			function (error){
+				$scope.mensaje = error;
+				$scope.tipoalerta = 'alert-warning';
 			}
-			catch(err)
-			{
-				alert(err);
-			}
+		);
 
-		}
+		$('#boton').button('reset');
 
 	}
 
