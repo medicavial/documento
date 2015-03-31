@@ -5,7 +5,7 @@
 	</div>
 	<ul id="rb-grid-small" class="rb-grid-small clearfix">
 	 
-	    <li class="rb-span-1" id="color3">
+	    <li ng-class="{'inactivo': area != 1}" class="rb-span-1" id="color3">
 
 	        <h3>Original</h3>
 	        <a data-target="#myModal2" ng-click="muestraOriginal()" href="">
@@ -13,7 +13,6 @@
 	        </a>
 
 	    </li>
-		
 	</ul>
 	<div class="row">
 		<div class="col-md-4">
@@ -81,16 +80,15 @@
 						</select>
 					</div>
 					<div class="col-md-2">
-						<select class="form-control" id="producto" ng-model="producto" ng-change="filtra()" ng-options="producto as producto.nombre for producto in productosini" required>
+						<select class="form-control" id="producto" ng-model="producto" ng-change="filtra()" ng-options="producto.nombre as producto.nombre for producto in productosini" required>
 							<option value="">Producto</option>
 						</select>
 					</div>
 					<div class="col-md-2">
-						<select class="form-control" id="tipodoc" ng-change="filtra()" ng-model="etapa">
-							<option value="">Etapa</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
+						<select class="form-control" id="situacion" ng-change="filtra()" ng-model="situacion">
+							<option value="">Situación</option>
+							<option value="CAPTURADO">Capturado</option>
+							<option value="SIN CAPTURAR">Sin capturar</option>
 						</select>
 					</div>
 					<div class="col-md-2">
@@ -100,8 +98,8 @@
 			</fieldset>
 		</div>
 	</div>
-	<div id="copiar" class="gridStyle" ng-grid="gridOptions"></div>
 	<br>	
+	<div id="copiar" class="gridStyle" ng-grid="gridOptions"></div>
 	<br>
 	<!-- directiva para exportar a excel ver app.js mas nfo -->
 	<excel info="exportables"></excel>

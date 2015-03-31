@@ -18,6 +18,11 @@ blockquote{
     margin: 0 0 2px;
 }
 
+#datatable{
+  width: 100%;
+  overflow: auto;
+}
+
 .form-control{
   text-transform: uppercase;
 }

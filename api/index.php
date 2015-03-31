@@ -5408,8 +5408,6 @@ $app->post('/recepcionfoliosfecha', function(){
 	            $valor19 = utf8_encode(odbc_result($rs,"etapaEntrega"));
 	            $valor20 = utf8_encode(odbc_result($rs,"EMP_nombrecorto"));
 
-
-
 	            //echo $valor1;
 	            //echo $valor2;
 				$traspasosResultado['Folio'] = $valor1;

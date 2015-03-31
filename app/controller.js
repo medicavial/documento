@@ -389,8 +389,7 @@ function flujoCtrl($scope, $rootScope, find , loading, $http){
 			$scope.cargaEntrada();
 
 		};
-		
-
+	
 	}
 
 
@@ -488,7 +487,6 @@ function flujoCtrl($scope, $rootScope, find , loading, $http){
         	console.log($scope.recibidos);
 
 		});
-
 	}
 
 	///Busquedas 
@@ -2625,6 +2623,7 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 		$scope.Altaunidades();
 		$scope.productos();
 		$scope.foliosxfecha();
+		$scope.sinfiltro = true;
 		$scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];	
 	}
 
@@ -2749,7 +2748,6 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 	      	$scope.verificaFolioO('Original',  $scope.original.folio);
 
 	    }
-
 	}
 
 	//funcion para autocompletar el folio 
@@ -2884,8 +2882,7 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 
 			$scope.limpiaVariablesF();
 
-			find.folioweb(folio).success( function (data){
-				
+			find.folioweb(folio).success( function (data){		
 				$scope.fax.cliente = data[0].CIAClaveMV;
 				$scope.fax.lesionado = data[0].Nombre + " " + data[0].Paterno + " " + data[0].Materno;
 				$scope.fax.unidad = data[0].UNIClaveMV;
@@ -2894,15 +2891,12 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 				$scope.fax.escolaridad = data[0].ESCClaveMV;
 				$scope.fax.internet = 1;
 				$scope.cargar = false;
-				
 			}).error( function (xhr,status,data){
-
 				//Manda un error por que no se logro conectar a la base web
 				$scope.cargar = false;
 				$scope.fax.internet = 0;
 				$scope.mensaje = 'No es posible conectar con el folio Web. Para reiniciar la conexión favor de notificar al área de sistemas.';
 				$scope.tipoalerta = 'alert-danger';
-
 			});
 
 		}else if(tipo == 'Original'){
@@ -3589,17 +3583,19 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
     ///guardamos los archivos que se van filtrando
     $scope.$on('ngGridEventRows', function (newFilterText){
 
-    	console.log(newFilterText);
-    	
+    	//console.log(newFilterText);
     	var filas = newFilterText.targetScope.renderedRows;
 
-    	$scope.exportables = [];
+    	if ($scope.sinfiltro) {
+    		$scope.exportables = $scope.listado;
+    	}else{
+	    	$scope.exportables = [];
 
-    	angular.forEach(filas , function(item){
-    		$scope.exportables.push(item.entity);
-    	});
-
-    	console.log($scope.exportables);
+	    	angular.forEach(filas , function(item){
+	    		$scope.exportables.push(item.entity);
+	    	});
+    	}
+    	// console.log($scope.exportables);
 
     });
 
@@ -3620,6 +3616,7 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
     	}else{
     		var objeto2 = "Empresa:" + $scope.cliente.nombre + "; ";
     	}
+
     	if($scope.tipo == 'Fax'){
     		var objeto3 = "Fax:x; ";
     	}else if($scope.tipo == 'Original'){
@@ -3640,37 +3637,46 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
     		var objeto5 = "Lesionado:" + $scope.lesionado + "; ";	
     	}
 
-    	if($scope.producto == undefined || $scope.producto == 0){
+    	if($scope.situacion == undefined || $scope.situacion == 0){
     		var objeto6 = "";
     	}else{
-    		var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
-    		
+    		var objeto6 = "Situacion:" + $scope.situacion + "; ";
     	}
 
     	if($scope.etapa == undefined || $scope.etapa == 0){
     		var objeto7 = "";
     	}else{
     		var objeto7 = "Etapa:" + $scope.etapa + "; ";
-    		
     	}
 
+    	if($scope.producto){
+    		var objeto8 = "Producto:" + $scope.producto + "; ";
+    	}else{
+    		var objeto8 = "";
+    	}
 
-    	var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7;
+    	var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7 + objeto8;
+
+    	if(filtro){
+    		$scope.sinfiltro = false;
+    	}else{
+    		$scope.sinfiltro = true;
+    	}
 
     	$scope.filterOptions.filterText = filtro;
-
-    	console.log(filtro);
+    	// console.log(filtro);
 
     }
 
     $scope.quitafiltro = function(){
-
     	$scope.filterOptions.filterText = ''; 
     	$scope.unidad = 0; 
     	$scope.cliente = 0;
     	$scope.folio = '';
     	$scope.lesionado = '';
-    
+    	$scope.producto = '';
+    	$scope.situacion = '';
+    	$scope.sinfiltro = true;
     }
  	  
 }
