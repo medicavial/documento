@@ -440,10 +440,9 @@ app.directive('folio', function() {
 
                 if (modelCtrl.$modelValue.length > 3) {
                     var nuevo = rellenaFolio(modelCtrl.$modelValue);
-                    modelCtrl.$setViewValue(nuevo);
+                    modelCtrl.$setViewValue(nuevo.toUpperCase());
                     modelCtrl.$render();
                     scope.$apply();
-                    //functionToCall(modelCtrl.$modelValue);
                 };
 
             });
@@ -461,33 +460,29 @@ app.directive('folio', function() {
                             e.preventDefault();
                         }else{
 
-                            modelCtrl.$parsers.push(function (inputValue) {
+                            element.css("text-transform","uppercase");
 
-                                if (inputValue){
-                                    var transformedInput = inputValue.toUpperCase();
-                                    if (transformedInput!=inputValue) {
-                                        modelCtrl.$setViewValue(transformedInput);
-                                        modelCtrl.$render();
-                                    }         
-
-                                    return transformedInput; 
-                                }
-                            });
                         }
                     //los ultimos 6 NO deben ser letras
 
                     }else if(cantidad > 3 && cantidad < 10){
 
                         if (e.keyCode >= 65 && e.keyCode <= 90) {
-
                             e.preventDefault();
+                        }else if (e.keyCode == 13) {
+                            // var nextinput = element.next('input');
+                            // nextinput.focus();
+                            var nuevo = rellenaFolio(modelCtrl.$modelValue);
+                            modelCtrl.$setViewValue(nuevo.toUpperCase());
+                            modelCtrl.$render();
+                            scope.$apply();
 
                         }    
                               
                     }else{
 
                         if ((e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105 ) {
-                             e.preventDefault();
+                            e.preventDefault();
                         }
 
                     }

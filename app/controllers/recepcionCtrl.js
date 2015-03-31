@@ -1,5 +1,5 @@
 ///Area recepcion de Documentos
-function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loading, checkFolios,carga){
+function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga){
 	
 	//Con parametros de inicio
 	$scope.inicio = function(){
@@ -264,63 +264,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			$scope.productos = data;
 
 		 });
-	}
-
-	//en caso de remesa solo se ocupan 5 numeros no mas
-	$scope.presionaRemesa = function(evento){
-
-		//contamos la cadena completa
-
-		var cantidad = $scope.remesa.length;
-		
-		// NO deben ser letras
-		if(cantidad < 5){
-			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//Si son mas de 6 digitos no escribas mas
-		if(cantidad > 5){
-			if (evento.keyCode != 8  && evento.keyCode != 46 ) {
-
-		      	evento.preventDefault();
-		    }      	
-		}
-
-		//Si se da enter o salto de linea ejecuta el autollenado de ceros
-		if (evento.keyCode == 13 || evento.keyCode == 9) {
-	      	if(cantidad < 5 ){
-
-				var faltantes = 6 - cantidad;
-
-				for (var i = 0; i < faltantes; i++) {
-					
-					$scope.remesa = "0" + $scope.remesa;
-				}
-
-			}
-	    }
-	}
-
-	//rellena la remesa de 0 cuando son menos de 6 digitos
-	$scope.verificaRemesa = function(){
-
-		//contamos la cadena completa
-		if ($scope.remesa) {
-			var cantidad = $scope.remesa.length;
-
-	      	if(cantidad < 5 ){
-
-				var faltantes = 6 - cantidad;
-
-				for (var i = 0; i < faltantes; i++) {
-					
-					$scope.remesa = "0" + $scope.remesa;
-				}
-
-			}
-		};
 	}
 
 
@@ -691,7 +634,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
     	$scope.filterOptions.filterText = filtro;
 
-    	console.log(filtro);
+    	// console.log(filtro);
     }
 
     $scope.quitaselectos = function(){

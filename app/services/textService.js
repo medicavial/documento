@@ -70,31 +70,24 @@ app.directive('capitalize', function() {
     return {
         require: 'ngModel',
         link: function(scope, element, attrs, modelCtrl) {
-            var capitalize = function(inputValue) {
-                
-                if (inputValue) {
-                    
-                    var capitalized = inputValue.toUpperCase();
-                    if(capitalized !== inputValue) {
-                        modelCtrl.$setViewValue(capitalized);
-                        modelCtrl.$render();
-                    }         
-                    return capitalized;
-                };
 
-            }
+            element.bind('blur', function () {
+              var inputValue = modelCtrl.$modelValue;
+              if (inputValue) {
+                var capitalized = inputValue.toUpperCase();
+                if(capitalized !== inputValue) {
+                    modelCtrl.$setViewValue(capitalized);
+                    modelCtrl.$render();
+                }
+              }
+            });
 
-            modelCtrl.$parsers.push(capitalize);
+            element.css("text-transform","uppercase");
 
-            if (modelCtrl.$modelValue.length > 0) {
-                
-                capitalize(scope[attrs.ngModel]);  
-            }
         }
    };
    
 });
-
 
 app.directive('excel', function(){
     return {
@@ -288,3 +281,66 @@ app.directive('money', function () {
     link: link
   };
 });
+
+
+//funcion para convertir a remesa valida con acciones que se ejecutan dando enter
+//en caso de remesa solo se ocupan 5 numeros no mas
+app.directive('remesa', function() {
+    return {
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+
+            element.on('keydown', function(evento){
+
+                if (modelCtrl.$modelValue) {
+
+                    var cantidad = modelCtrl.$modelValue.length;
+    
+                    // NO deben ser letras
+                    if(cantidad < 5){
+                      if (evento.keyCode >= 65 && evento.keyCode <= 90) {
+                            evento.preventDefault();
+                        }
+                    }
+
+                    //Si son mas de 6 digitos no escribas mas
+                    if(cantidad > 5){
+                      if (evento.keyCode != 8  && evento.keyCode != 46 ) {
+
+                            evento.preventDefault();
+                        }       
+                    }
+
+                    //Si se da enter o salto de linea ejecuta el autollenado de ceros
+                    if (evento.keyCode == 13 || evento.keyCode == 9) {
+
+                      if(cantidad < 5 ){
+
+                        var faltantes = 6 - cantidad;
+
+                        var nuevo = modelCtrl.$modelValue;
+
+                        for (var i = 0; i < faltantes; i++) {
+                          nuevo = "0" + nuevo;
+                        }
+
+                        modelCtrl.$setViewValue(nuevo);
+                        modelCtrl.$render();
+                        scope.$apply();
+       
+
+                      }
+
+                    }
+                    
+                };
+            });
+
+
+
+      }
+
+    };
+    
+});
+

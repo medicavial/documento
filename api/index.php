@@ -6150,8 +6150,6 @@ function nombrearea($area){
 }
 
 
-//'102', 'ORTO003292', '1', '1', '09/07/2014', 5, '', '', '3', '', ''
-//'83', 'PEMV023870', 1, 1, '10/07/2014 14:0...', 1, '', '', '', '', '', '512283'
 ///////funcion para agregar el historial de cada folio
 function altahistorial($usuario, $folio, $etapa, $entrega, $fecha, $accion, $detalle, $usuario2, $area , $area2, $documento){
  	

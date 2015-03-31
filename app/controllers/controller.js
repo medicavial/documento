@@ -2463,7 +2463,7 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find){
     ///guardamos los archivos que se van filtrando
     $scope.$on('ngGridEventRows', function (newFilterText){
 
-    	console.log(newFilterText);
+    	// console.log(newFilterText);
     	
     	var filas = newFilterText.targetScope.renderedRows;
 
@@ -2473,7 +2473,7 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find){
     		$scope.exportables.push(item.entity);
     	});
 
-    	console.log($scope.exportables);
+    	// console.log($scope.exportables);
 
     });
 
@@ -2533,7 +2533,7 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find){
 
     	$scope.filterOptions.filterText = filtro;
 
-    	console.log(filtro);
+    	// console.log(filtro);
 
     }
 
