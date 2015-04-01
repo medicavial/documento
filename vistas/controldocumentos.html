@@ -5,13 +5,12 @@
 	</div>
 	<ul id="rb-grid-small" class="rb-grid-small clearfix">
 	 
-	    <li ng-class="{'inactivo': area != 1}" class="rb-span-1" id="color3">
+	    <li ng-show="areaUsuario == 1" class="rb-span-1" id="color3">
 
 	        <h3>Original</h3>
 	        <a data-target="#myModal2" ng-click="muestraOriginal()" href="">
 	            <span class="icon-book"></span>
 	        </a>
-
 	    </li>
 	</ul>
 	<div class="row">
@@ -85,6 +84,14 @@
 						</select>
 					</div>
 					<div class="col-md-2">
+						<select class="form-control" id="tipodoc" ng-change="filtra()" ng-model="etapa">
+							<option value="">Etapa</option>
+							<option value="1">1</option>
+							<option value="2">2</option>
+							<option value="3">3</option>
+						</select>
+					</div>
+					<div class="col-md-2">
 						<select class="form-control" id="situacion" ng-change="filtra()" ng-model="situacion">
 							<option value="">Situación</option>
 							<option value="CAPTURADO">Capturado</option>
@@ -98,8 +105,36 @@
 			</fieldset>
 		</div>
 	</div>
-	<br>	
+	<br>
+	
 	<div id="copiar" class="gridStyle" ng-grid="gridOptions"></div>
+	
+	<!-- <table datatable="" dt-options="dtOptions" class="row-border hover">
+	    <thead>
+	    <tr>
+	        <th>ID</th>
+	        <th>First name</th>
+	        <th>Last name</th>
+	    </tr>
+	    </thead>
+	    <tbody>
+	    <tr>
+	        <td>1</td>
+	        <td>Foo</td>
+	        <td>Bar</td>
+	    </tr>
+	    <tr>
+	        <td>123</td>
+	        <td>Someone</td>
+	        <td>Youknow</td>
+	    </tr>
+	    <tr>
+	        <td>987</td>
+	        <td>Iamout</td>
+	        <td>Ofinspiration</td>
+	    </tr>
+	    </tbody>
+	</table> -->
 	<br>
 	<!-- directiva para exportar a excel ver app.js mas nfo -->
 	<excel info="exportables"></excel>
@@ -173,7 +208,7 @@
 									<option value="">Producto</option>
 								</select>
                 		</div>
-                		<div class="col-md-6" ng-show="original.cliente == 20; original.producto == 2">
+                		<div class="col-md-6" ng-show="original.cliente == 20 && original.producto == 2">
                 			<label for="escolaridad">Escolaridad</label>
                 			<select  id="escolaridad" class="form-control" ng-disabled="bloqueo"  ng-model="original.escolaridad" ng-options="escolaridad.id as escolaridad.nombre for escolaridad in escolaridades">
 								<option value="">Escolaridad</option>

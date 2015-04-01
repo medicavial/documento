@@ -1079,7 +1079,7 @@ $app->post('/actualizaoriginal', function(){
     //fechapago , folioFac, totalfac
 
     $hoy = date("H:i:s");
-    $fecha = $fecha . " " . $hoy;
+    // $fecha = $fecha . " " . $hoy;
     $conexion = conectarActual();
 
     if(!$conexion) {
@@ -1143,7 +1143,7 @@ $app->post('/altafoliooriginal', function(){
     //fechapago , folioFac, totalfac
 
     $hoy = date("H:i:s");
-    $fecha = $fecha . " " . $hoy;
+    // $fecha = $fecha . " " . $hoy;
     $conexion = conectarActual();
 
     if(!$conexion) {
@@ -6171,7 +6171,7 @@ $app->get('/verificaprefijo/:prefijo/:empresa', function($prefijo, $empresa){
 
 	}else{
 
-		$sql = "EXEC MV_DCU_ValidaPrefijoFolio  @prefijo='$prefijo', @empresa='$empresa'";
+		$sql = "EXEC MV_DOC_ValidaPrefijoFolio  @prefijo='$prefijo', @empresa='$empresa'";
 
 		$rs= odbc_exec($conexion,$sql);
 		$i = 0;

@@ -1,5 +1,15 @@
 //creamos la aplicacion
-app = angular.module('app', ['ngRoute','angularFileUpload','ngCookies','ngAnimate','ngGrid','ngIdle','mgcrea.ngStrap','ngProgress']);
+app = angular.module('app', [
+    'ngRoute',
+    'angularFileUpload',
+    'ngCookies',
+    'ngAnimate',
+    'ngGrid',
+    'ngIdle',
+    'mgcrea.ngStrap',
+    'ngProgress',
+    'datatables'
+]);
 
 //configuramos las rutas y asignamos html y controlador segun la ruta
 app.config(function($routeProvider, $idleProvider, $keepaliveProvider){

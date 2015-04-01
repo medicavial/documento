@@ -2610,7 +2610,7 @@ function cordinacionCtrl($scope, $rootScope, find , loading, $http){
 }
 
 //busqueda del control de documentos
-function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
+function controlDocumentosCtrl($scope, $rootScope, $http, loading, find,$window,$compile,$filter,DTOptionsBuilder, DTColumnBuilder){
 
 	$scope.inicio = function(){
 
@@ -2927,7 +2927,6 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 
 			});
 		}
-		
 	}
 
 
@@ -2956,7 +2955,6 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 		$scope.esfe = 0;
 		$scope.bloqueo = false;
 		$scope.bloqueoUni = false;
-
 	}
 
 	///Proceso de guardado ya sea de fax u original
@@ -3372,7 +3370,6 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		});
-
 	}	
 
 	// presiona Folio
@@ -3409,7 +3406,6 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 	      	$scope.verificaFolio();
 
 	    }
-
 	}
 
 	// presiona Lesionado
@@ -3424,7 +3420,6 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 	      	$scope.foliosxlesionado();
 
 	    }
-
 	}
 
 	$scope.verificaFolio = function(){
@@ -3462,7 +3457,6 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 			$scope.folio.toUpperCase();
 			$scope.foliosxfolio();
 		}	
-
 	}
 
 	//busqueda de folio especiico
@@ -3493,7 +3487,6 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		});
-
 	}
 
 	//busqueda de folios x lesionado
@@ -3524,8 +3517,38 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		});
-
 	}
+
+	$scope.dtOptions = DTOptionsBuilder.newOptions()
+        .withOption('lengthMenu', [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Todo"] ])
+        .withPaginationType('full_numbers')
+        .withOption('language', {
+            paginate: {
+                first: "«",
+                last: "»",
+                next: "→",
+                previous: "←"
+            },
+            search: "Buscar:",
+            loadingRecords: "Cargando Información....",
+            lengthMenu: "    Mostrar _MENU_ entradas",
+            processing: "Procesando Información",
+            infoEmpty: "No se encontro información",
+            emptyTable: "Sin Información disponible",
+            info: "Mostrando pagina _PAGE_ de _PAGES_ , Registros encontrados _TOTAL_ ",
+            infoFiltered: " - encontrados _MAX_ coincidencias"
+        });
+        // .withTableToolsButtons([
+        //     {
+        //         "sExtends":     "copy",
+        //          "sButtonText": "Copiar"
+        //     },
+        //     {
+        //         'sExtends': 'collection',
+        //         'sButtonText': 'Exportar',
+        //         'aButtons': ['xls', 'pdf']
+        //     }
+        // ]);
 
 	//////LLena el grid y toma filtros
 
@@ -3596,7 +3619,6 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find){
 	    	});
     	}
     	// console.log($scope.exportables);
-
     });
 
     $scope.filtra = function(){
