@@ -3537,18 +3537,20 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find,$window,
             emptyTable: "Sin Información disponible",
             info: "Mostrando pagina _PAGE_ de _PAGES_ , Registros encontrados _TOTAL_ ",
             infoFiltered: " - encontrados _MAX_ coincidencias"
-        });
-        // .withTableToolsButtons([
-        //     {
-        //         "sExtends":     "copy",
-        //          "sButtonText": "Copiar"
-        //     },
-        //     {
-        //         'sExtends': 'collection',
-        //         'sButtonText': 'Exportar',
-        //         'aButtons': ['xls', 'pdf']
-        //     }
-        // ]);
+        })
+        .withBootstrap()
+        .withTableTools('js/plugins/swf/copy_csv_xls_pdf.swf')
+        .withTableToolsButtons([
+            {
+                "sExtends":     "copy",
+                 "sButtonText": "Copiar"
+            },
+            {
+                'sExtends': 'collection',
+                'sButtonText': 'Exportar',
+                'aButtons': ['xls', 'pdf']
+            }
+        ]);
 
 	//////LLena el grid y toma filtros
 

@@ -8,7 +8,9 @@ app = angular.module('app', [
     'ngIdle',
     'mgcrea.ngStrap',
     'ngProgress',
-    'datatables'
+    'datatables',
+    'datatables.tabletools',
+    'datatables.bootstrap'
 ]);
 
 //configuramos las rutas y asignamos html y controlador segun la ruta

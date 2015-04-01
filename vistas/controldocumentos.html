@@ -107,34 +107,60 @@
 	</div>
 	<br>
 	
-	<div id="copiar" class="gridStyle" ng-grid="gridOptions"></div>
-	
-	<!-- <table datatable="" dt-options="dtOptions" class="row-border hover">
-	    <thead>
-	    <tr>
-	        <th>ID</th>
-	        <th>First name</th>
-	        <th>Last name</th>
-	    </tr>
-	    </thead>
-	    <tbody>
-	    <tr>
-	        <td>1</td>
-	        <td>Foo</td>
-	        <td>Bar</td>
-	    </tr>
-	    <tr>
-	        <td>123</td>
-	        <td>Someone</td>
-	        <td>Youknow</td>
-	    </tr>
-	    <tr>
-	        <td>987</td>
-	        <td>Iamout</td>
-	        <td>Ofinspiration</td>
-	    </tr>
-	    </tbody>
-	</table> -->
+	<!-- <div id="copiar" class="gridStyle" ng-grid="gridOptions"></div> -->
+	<div id="tablacontenedora">
+		<table datatable="ng" dt-options="dtOptions" class="table table-striped table-bordered">
+		    <thead>
+		    <tr>
+				<th>Folio</th>
+	            <th>Lesionado</th>
+	            <th>Empresa</th>
+	            <th>Unidad</th>
+	            <th>Producto</th>
+	            <th>Etapa</th>
+	            <th>Numero</th>
+	            <th>Fax</th>
+	            <th>FechaFax</th>
+	            <th>Original</th>
+	            <th>FechaOriginal</th>
+	            <th>F.E.</th>
+	            <th>FechaF.E.</th>
+	            <th>Situacion</th>
+	            <th>FechaPago</th>
+	            <th>FechaCaptura</th>
+	            <th>Factura</th>
+	            <th>Remesa</th>
+	            <th>Escolaridad</th>
+	            <th>Cancelado</th>
+		    </tr>
+		    </thead>
+		    <tbody>
+		    <tr ng-repeat="dato in listado">
+				<td>{{dato.Folio}}</td>
+	            <td>{{dato.Lesionado}}</td>
+	            <td>{{dato.Empresa}}</td>
+	            <td>{{dato.Unidad}}</td>
+	            <td>{{dato.Producto}}</td>
+	            <td>{{dato.Etapa}}</td>
+	            <td>{{dato.Numero}}</td>
+	            <td>{{dato.Fax}}</td>
+	            <td>{{dato.FechaFax}}</td>
+	            <td>{{dato.Original}}</td>
+	            <td>{{dato.FechaOriginal}}</td>
+	            <td>{{dato.F.E.}}</td>
+	            <td>{{dato.FechaF.E.}}</td>
+	            <td>{{dato.Situacion}}</td>
+	            <td>{{dato.FechaPago}}</td>
+	            <td>{{dato.FechaCaptura}}</td>
+	            <td>{{dato.Factura}}</td>
+	            <td>{{dato.Remesa}}</td>
+	            <td>{{dato.Escolaridad}}</td>
+	            <td>{{dato.Cancelado}}</td>
+		    </tr>
+		    </tbody>
+		</table>
+		
+	</div>
 	<br>
 	<!-- directiva para exportar a excel ver app.js mas nfo -->
 	<excel info="exportables"></excel>
