@@ -19,7 +19,6 @@
 						        <button class="btn btn-default" type="button" ng-click="foliosxfecha()"><i class="glyphicon glyphicon-search"></i></button>
 						    </span>
 						</div>
-						
 					</div>
 				</div>
 			</fieldset>
@@ -90,7 +89,55 @@
 			</fieldset>
 		</div>
 	</div>
-	<div id="copiar" class="gridStyle" ng-grid="gridOptions"></div>
+	<!-- <div id="copiar" class="gridStyle" ng-grid="gridOptions"></div> -->
+	<div id="contenido">
+		<table datatable="ng" class="table table-bordered">
+		    <thead>
+		    <tr>
+		        <th>Folio</th>
+		        <th>Lesionado</th>
+		        <th>Empresa</th>
+		        <th>Unidad</th>
+		        <th>Producto</th>
+		        <th>Etapa</th>
+		        <th>Numero</th>
+		        <th>Fax</th>
+		        <th>FechaFax</th>
+		        <th>Original</th>
+		        <th>FechaOriginal</th>
+		        <th>Situacion</th>
+		        <th>FechaPago</th>
+		        <th>FechaCaptura</th>
+		        <th>Factura</th>
+		        <th>Remesa</th>
+		        <th>Escolaridad</th>
+		        <th>Cancelado</th>
+		    </tr>
+		    </thead>
+		    <tbody>
+		    <tr ng-repeat="dato in listado">
+		        <td>{{dato.Folio}}</td>
+		        <td>{{dato.Lesionado}}</td>
+		        <td>{{dato.Empresa}}</td>
+		        <td>{{dato.Unidad}}</td>
+		        <td>{{dato.Producto}}</td>
+		        <td>{{dato.Etapa}}</td>
+		        <td>{{dato.Numero}}</td>
+		        <td>{{dato.Fax}}</td>
+		        <td>{{dato.FechaFax}}</td>
+		        <td>{{dato.Original}}</td>
+		        <td>{{dato.FechaOriginal}}</td>
+		        <td>{{dato.Situacion}}</td>
+		        <td>{{dato.FechaPago}}</td>
+		        <td>{{dato.FechaCaptura}}</td>
+		        <td>{{dato.Factura}}</td>
+		        <td>{{dato.Remesa}}</td>
+		        <td>{{dato.Escolaridad}}</td>
+		        <td>{{dato.Cancelado}}</td>
+		    </tr>
+		    </tbody>
+		</table>
+	</div>
 	<br>	
 	<br>
 	<!-- directiva para exportar a excel ver app.js mas nfo -->

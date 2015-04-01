@@ -17,7 +17,7 @@ $app = new \Slim\Slim();
 
 function conectarActual(){
 
-	$produccion = false;
+	$produccion = true;
 	
 	if ($produccion) {
 

@@ -6,7 +6,8 @@ var app = angular.module('app', [
     'ngGrid',
     'ngIdle',
     'ngProgress',
-    'webStorageModule'
+    'webStorageModule',
+    'datatables'
 ]);
 
 //configuramos las rutas y asignamos html y controlador segun la ruta

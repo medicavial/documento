@@ -2154,10 +2154,9 @@ app.controller('consultaFlujoCtrl',function ($scope,$rootScope, find){
 
 
 //busqueda del control de documentos
-app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find){
+app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, DTOptionsBuilder, DTColumnBuilder){
 
 	$scope.inicio = function(){
-
 		$scope.tituloCD = "Control de Documentos";
 		$scope.fechaini = FechaAct;
 		$scope.fechafin = FechaAct;
@@ -2213,9 +2212,6 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find){
 
 		 });
 	}
-
-
-
 
 	//busqueda de folios por fecha
 	$scope.foliosxfecha = function(){
@@ -2406,6 +2402,19 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find){
 		});
 
 	}
+
+
+	$scope.dtOptions = DTOptionsBuilder
+    // Add Table tools compatibility
+    .withTableTools('swf/copy_csv_xls_pdf.swf');
+    // .withTableToolsButtons([
+    //     'copy',
+    //     'print', {
+    //         'sExtends': 'collection',
+    //         'sButtonText': 'Save',
+    //         'aButtons': ['csv', 'xls', 'pdf']
+    //     }
+    // ]);
 
 	//////LLena el grid y toma filtros
 
