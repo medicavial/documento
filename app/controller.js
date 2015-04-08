@@ -2610,7 +2610,7 @@ function cordinacionCtrl($scope, $rootScope, find , loading, $http){
 }
 
 //busqueda del control de documentos
-function controlDocumentosCtrl($scope, $rootScope, $http, loading, find,$window,$compile,$filter,DTOptionsBuilder, DTColumnBuilder){
+function controlDocumentosCtrl($scope, $rootScope, $http, loading, find,$window,$compile,$filter){
 
 	$scope.inicio = function(){
 
@@ -3519,39 +3519,7 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find,$window,
 		});
 	}
 
-	$scope.dtOptions = DTOptionsBuilder.newOptions()
-        .withOption('lengthMenu', [ [10, 25, 50, 100, -1], [10, 25, 50, 100, "Todo"] ])
-        .withPaginationType('full_numbers')
-        .withOption('language', {
-            paginate: {
-                first: "«",
-                last: "»",
-                next: "→",
-                previous: "←"
-            },
-            search: "Buscar:",
-            loadingRecords: "Cargando Información....",
-            lengthMenu: "    Mostrar _MENU_ entradas",
-            processing: "Procesando Información",
-            infoEmpty: "No se encontro información",
-            emptyTable: "Sin Información disponible",
-            info: "Mostrando pagina _PAGE_ de _PAGES_ , Registros encontrados _TOTAL_ ",
-            infoFiltered: " - encontrados _MAX_ coincidencias"
-        })
-        .withBootstrap()
-        .withTableTools('js/plugins/swf/copy_csv_xls_pdf.swf')
-        .withTableToolsButtons([
-            {
-                "sExtends":     "copy",
-                 "sButtonText": "Copiar"
-            },
-            {
-                'sExtends': 'collection',
-                'sButtonText': 'Exportar',
-                'aButtons': ['xls', 'pdf']
-            }
-        ]);
-
+	
 	//////LLena el grid y toma filtros
 
 	///filtros
