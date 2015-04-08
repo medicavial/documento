@@ -17,7 +17,7 @@ $app = new \Slim\Slim();
 
 function conectarActual(){
 
-	$produccion = true;
+	$produccion = false;
 	
 	if ($produccion) {
 
@@ -31,12 +31,25 @@ function conectarActual(){
 
 	}
 
-	$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";
+	//$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes";
 
-	$con = odbc_connect($dsn,'','');
+	//$con = odbc_connect($dsn,'','');
+
+
+	try {
+
+	    $conn = new PDO("sqlsrv:Server=$db_server;Database=$db_name", "", "");
+	    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	     return $conn;
+
+	} catch (PDOException $e) {
+
+		echo "Failed to get DB handle: " . $e->getMessage() . "\n";
+		exit;
+	}
 
 	//regresa la conexion
-	return $con;
+	// return $con;
 
 }
 
@@ -1040,12 +1053,47 @@ $app->get('/', function(){
 	
     //echo "Hola Mundo";
     //Trusted_Connection=yes;
-    $db_usr = 'sa'; 
-	$db_pass = 'ACc3soMv'; 
-	$db_server = 'SISTEMAS4'; 
-	$db_name = 'MV2';
-	$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";
-	$con = odbc_connect($dsn,$db_usr,$db_pass);
+    try {
+
+	    $hostname = "SISTEMAS4";
+	    $dbname = "MV2";
+
+	    $conn = new PDO("sqlsrv:Server=$hostname;Database=$dbname", "", "");
+	    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+	    $usuario =  'admin';
+    	$contrasena =  md5('xagg2'); 
+
+	    $sql = "SELECT * FROM Usuario
+	            left join UsuarioArea on Usuario.USU_claveint = UsuarioArea.USU_claveint
+	            where USU_login = :usuario and USU_password = :psw ";
+
+
+	    $stmt = $conn->prepare($sql);
+	    $stmt->bindParam("usuario", $usuario, PDO::PARAM_STR);
+	    $stmt->bindParam("psw", $contrasena, PDO::PARAM_STR);
+
+		$stmt->execute();
+
+	    $numero = $stmt->rowCount();
+	    
+	    if ($numero){
+
+	        $datos = $stmt->fetchAll(PDO::FETCH_OBJ);
+	        
+	    }else{
+
+	        $datos = array('respuesta' => 'El Usuario o contraseña son inorrectos');
+	    }
+	    
+	    echo json_encode($datos);
+
+	} catch (PDOException $e) {
+
+		echo "Failed to get DB handle: " . $e->getMessage() . "\n";
+		exit;
+	}
+
 
 });
 
@@ -1808,7 +1856,7 @@ $app->post('/altafoliooriginal', function(){
     $usuario =  $datos->usuario; 
     $folio =  $datos->folio; 
     $etapa =  $datos->tipoDoc;
-    $lesionado =  $datos->lesionado; 
+    $lesionado = $datos->lesionado; 
     $unidad =  $datos->unidad; 
     $fecha =  $datos->fecha; 
     $empresa =  $datos->cliente; 
@@ -1841,22 +1889,32 @@ $app->post('/altafoliooriginal', function(){
 	}else{
 		
 
-		$sql = "EXEC MV_DCU_CapturaOriginal @folio = '$folio', @etapa = $etapa, @lesionado = '$lesionado',  @unidad = $unidad, @empresa = $empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = '$fecha',  
-				@usuario = $usuario, @remesa = '$remesa',@numentrega = $numentrega  , @producto = $producto, @folioFac = '$factura', @totalFac = $totalfactura, @escolaridad = $escolaridad, @internet = $internet ";
+		// $sql = "EXEC MV_DCU_CapturaOriginal @folio = '$folio', @etapa = $etapa, @lesionado = '$lesionado',  @unidad = $unidad, @empresa = $empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = '$fecha',  
+		// 		@usuario = $usuario, @remesa = '$remesa',@numentrega = $numentrega  , @producto = $producto, @folioFac = '$factura', @totalFac = $totalfactura, @escolaridad = $escolaridad, @internet = $internet ";
 
-		$rs = odbc_exec($conexion,$sql); 
+		// $rs = odbc_exec($conexion,$sql); 
 
-		if ($rs){
-				$sql2 = "SELECT DOC_claveint FROM Documento where DOC_folio = '$folio'";
-				$rs2 = odbc_exec($conexion,$sql2); 
-				$documento = odbc_result($rs2,"DOC_claveint");
-				
-				$historico = altahistorial($usuario, $folio, $etapa, $numentrega, $datos->fecha, 2 ,'','','','',$documento);
-				
-				$arr = array('respuesta' => 'Folio Guardado Correctamente', 'Historial' => $historico);
-        }else {
-              $arr = array('respuesta' => 'Error durante el Guardado: '.odbc_error());
-        }   
+		$query = "EXEC MV_DCU_CapturaOriginal @folio = :folio, @etapa = :etapa, @lesionado = :lesionado,  @unidad = :unidad, @empresa = :empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = :originalfecha,  
+				@usuario = :usuario, @remesa = :remesa, @numentrega = :entrega  , @producto = :producto, @folioFac = :factura, @totalFac = :totalfactura, @escolaridad = :escolaridad, @internet = 1 "; 
+		$stmt = $conexion->prepare( $query ); 
+
+		$stmt->bindParam('folio',$folio);
+		$stmt->bindParam('etapa',$etapa);
+		$stmt->bindParam('lesionado',$lesionado);
+		$stmt->bindParam('unidad',$unidad);
+		$stmt->bindParam('empresa',$empresa);
+		$stmt->bindParam('usuario',$usuario);
+		$stmt->bindParam('remesa',$remesa);
+		$stmt->bindParam('entrega',$numentrega);
+		$stmt->bindParam('producto',$producto);
+		$stmt->bindParam('factura',$factura);
+		$stmt->bindParam('totalfactura',$totalfactura);
+		$stmt->bindParam('escolaridad',$escolaridad);
+		$stmt->bindParam('originalfecha',$fecha);
+
+		$stmt->execute();
+
+		$arr = array('respuesta' => 'Folio Guardado Correctamente');
 
 		echo json_encode($arr); 
 
@@ -4867,49 +4925,65 @@ $app->post('/login', function(){
 
 	}else{
 	
-		$rs= odbc_exec($conexion,"select * from Usuario left join UsuarioArea on Usuario.USU_claveint = UsuarioArea.USU_claveint where USU_login = '$usuario' and USU_password = '$contrasena' "); 
+		//$rs= odbc_exec($conexion,"select * from Usuario left join UsuarioArea on Usuario.USU_claveint = UsuarioArea.USU_claveint where USU_login = '$usuario' and USU_password = '$contrasena' "); 
 
+		$sql = "SELECT Usuario.USU_claveint as clave, USU_Nombre as nombre, ARO_claveint as area, USU_login as usuario, USU_usuarioWeb as usuarioweb FROM Usuario
+	            left join UsuarioArea on Usuario.USU_claveint = UsuarioArea.USU_claveint
+	            where USU_login = '$usuario' and USU_password = '$contrasena' ";
+	    $result = $conexion->query($sql);
+	    $numero = $result->rowCount();
+	    
+	    if ($numero){
 
-		$i = 0;
+	        $datos = $result->fetchAll(PDO::FETCH_OBJ);
+	        
+	    }else{
 
-		if( odbc_num_rows($rs) > 0 ) { 
+	        $datos = array('respuesta' => 'El Usuario o contraseña son inorrectos');
+	    }
+	    
+	    echo json_encode($datos);
 
-			while (odbc_fetch_row($rs)){ 
+		// $i = 0;
 
-				$valor1 = odbc_result($rs,"USU_claveint");
-	            $valor2 = utf8_encode(odbc_result($rs,"USU_Nombre"));
-	            $valor3 = odbc_result($rs,"USU_factivo");
-	            $valor4 = odbc_result($rs,"ARO_claveint");
-	            $valor5 = odbc_result($rs,"USU_login");
-	            $valor6 = odbc_result($rs,"USU_usuarioWeb");
+		// if( odbc_num_rows($rs) > 0 ) { 
 
-	            if ($valor3 = 1){
+		// 	while (odbc_fetch_row($rs)){ 
 
-	            	$traspasosResultado['clave'] = $valor1;
-		            $traspasosResultado['nombre'] = $valor2;
-					$traspasosResultado['area'] = $valor4;
-					$traspasosResultado['usuario'] = $valor5;
-					$traspasosResultado['usuarioweb'] = $valor6;
+		// 		$valor1 = odbc_result($rs,"USU_claveint");
+	 //            $valor2 = utf8_encode(odbc_result($rs,"USU_Nombre"));
+	 //            $valor3 = odbc_result($rs,"USU_factivo");
+	 //            $valor4 = odbc_result($rs,"ARO_claveint");
+	 //            $valor5 = odbc_result($rs,"USU_login");
+	 //            $valor6 = odbc_result($rs,"USU_usuarioWeb");
 
-					$valores[$i] = $traspasosResultado;
-		            $i++;
+	 //            if ($valor3 = 1){
 
-	            }else{
-	            	$arr = array('respuesta' => 'El Usuario no esta Activo');
-					echo json_encode($arr);
-	            }
+	 //            	$traspasosResultado['clave'] = $valor1;
+		//             $traspasosResultado['nombre'] = $valor2;
+		// 			$traspasosResultado['area'] = $valor4;
+		// 			$traspasosResultado['usuario'] = $valor5;
+		// 			$traspasosResultado['usuarioweb'] = $valor6;
+
+		// 			$valores[$i] = $traspasosResultado;
+		//             $i++;
+
+	 //            }else{
+	 //            	$arr = array('respuesta' => 'El Usuario no esta Activo');
+		// 			echo json_encode($arr);
+	 //            }
 				
 
-			}
+		// 	}
 
-			echo json_encode($valores);
+		// 	echo json_encode($valores);
 
-		}else{
+		// }else{
 
-			$arr = array('respuesta' => 'El nombre de Usuario o Contraseña son Incorrectos');
-			echo json_encode($arr);
+		// 	$arr = array('respuesta' => 'El nombre de Usuario o Contraseña son Incorrectos');
+		// 	echo json_encode($arr);
 
-		}
+		// }
 
 		
 

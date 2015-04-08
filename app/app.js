@@ -373,6 +373,3 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
 //$cookieStore para actualizar o eliminar
 //$location para cargar otras rutas
 
-
-
-

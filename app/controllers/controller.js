@@ -2403,19 +2403,6 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
 
 	}
 
-
-	$scope.dtOptions = DTOptionsBuilder
-    // Add Table tools compatibility
-    .withTableTools('swf/copy_csv_xls_pdf.swf');
-    // .withTableToolsButtons([
-    //     'copy',
-    //     'print', {
-    //         'sExtends': 'collection',
-    //         'sButtonText': 'Save',
-    //         'aButtons': ['csv', 'xls', 'pdf']
-    //     }
-    // ]);
-
 	//////LLena el grid y toma filtros
 
 	///filtros
