@@ -19,7 +19,7 @@ $app = new \Slim\Slim();
 function conectarActual(){
 	//Declaramos variables de conexion a SQL Server
 
-	$produccion = false;
+	$produccion = true;
 	
 	if ($produccion) {
 
@@ -49,7 +49,7 @@ function conectarNuevo(){
 
 	//Declaramos variables de conexion a SQL Server
 
-	$produccion = false;
+	$produccion = true;
 	
 	if ($produccion) {
 
