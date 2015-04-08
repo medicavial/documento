@@ -16,24 +16,66 @@ $resultado = array();
 //declaro una nueva aplicacion segun la ruta
 $app = new \Slim\Slim();
 
-
 function conectarActual(){
-
 	//Declaramos variables de conexion a SQL Server
+
+	$produccion = false;
 	
-	$db_server = 'GEN';
-	$db_name = 'MV';
+	if ($produccion) {
+
+		$db_server = 'GEN'; 
+		$db_name = 'MV'; 
+
+	}else{
+
+		//Declaramos variables de conexion a SQL Server
+		$db_server = 'SISTEMAS4';
+		$db_name = 'MV2';
+
+	}
 
 	$db_usr = 'acceso';
 	$db_pass = 'ACc3soMv';
-
 	$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes;charset=UTF-8";
-
 	$con = odbc_connect($dsn,'','');
 	//Se realiza la conexón  con los datos correspondientes
-
 	//regresa la conexion
 	return $con;
+	
+}
+
+
+function conectarNuevo(){
+
+	//Declaramos variables de conexion a SQL Server
+
+	$produccion = false;
+	
+	if ($produccion) {
+
+		$db_server = 'GEN'; 
+		$db_name = 'MV'; 
+
+	}else{
+
+		//Declaramos variables de conexion a SQL Server
+		$db_server = 'SISTEMAS4';
+		$db_name = 'MV2';
+
+	}
+
+	try {
+
+	    $conn = new PDO("sqlsrv:Server=$db_server;Database=$db_name", "", "");
+	    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+	    
+	    return $conn;
+
+	} catch (PDOException $e) {
+
+		echo "Fallo la conexion: " . $e->getMessage() . "\n";
+		exit;
+	}
 
 }
 
@@ -1080,7 +1122,7 @@ $app->post('/actualizaoriginal', function(){
 
     $hoy = date("H:i:s");
     // $fecha = $fecha . " " . $hoy;
-    $conexion = conectarActual();
+    $conexion = conectarNuevo();
 
     if(!$conexion) {
 
@@ -1089,22 +1131,21 @@ $app->post('/actualizaoriginal', function(){
 	}else{
 
 
-		$sql2 = "EXEC MV_DOC_ActualizaDocumento @claveint = $claveint, @lesionado = '$lesionado', @ambulancia = 0, @fechapago = '',  @originalfecha = '$fecha',
-				@usuario = $usuario, @remesa = '$remesa', @folioFac = '$factura', @totalFac = $totalfactura";
 
-		$rs = odbc_exec($conexion,$sql2);
+		$query = "EXEC MV_DOC_ActualizaDocumento @claveint = :claveint, @lesionado = :lesionado, @ambulancia = 0, @fechapago = '',  @originalfecha = :fecha,
+				@usuario = :usuario, @remesa = :remesa, @folioFac = :factura, @totalFac = :totalfactura"; 
+		$stmt = $conexion->prepare( $query ); 
+		$stmt->bindParam('claveint',$claveint);
+		$stmt->bindParam('lesionado',$lesionado);
+		$stmt->bindParam('originalfecha',$fecha);
+		$stmt->bindParam('usuario',$usuario);
+		$stmt->bindParam('remesa',$remesa);
+		$stmt->bindParam('factura',$factura);
+		$stmt->bindParam('totalfactura',$totalfactura);
+		$stmt->execute();
 
-		if ($rs){
-
-		      // $historico = altahistorial($usuario, $folio, 1, 1, $datos->fecha,2,'','','','',$claveint);
-              $arr = array('respuesta' => 'Folio Actualizado Correctamente');
-        }else {
-              $arr = array('respuesta' => 'Error al Actualizar: '.odbc_error());
-        }
-
+		$arr = array('respuesta' => 'Folio Guardado Correctamente');
 		echo json_encode($arr);
-
-		//
 
 	}
 
@@ -1112,7 +1153,6 @@ $app->post('/actualizaoriginal', function(){
 
 //alta de folio nuevo en original
 $app->post('/altafoliooriginal', function(){
-
 
 	$request = \Slim\Slim::getInstance()->request();
 	$datos = json_decode($request->getBody());
@@ -1144,7 +1184,7 @@ $app->post('/altafoliooriginal', function(){
 
     $hoy = date("H:i:s");
     // $fecha = $fecha . " " . $hoy;
-    $conexion = conectarActual();
+    $conexion = conectarNuevo();
 
     if(!$conexion) {
 
@@ -1153,25 +1193,25 @@ $app->post('/altafoliooriginal', function(){
 	}else{
 
 
-		$sql = "EXEC MV_DOC_CapturaOriginal @folio = '$folio', @etapa = $etapa, @lesionado = '$lesionado',  @unidad = $unidad, @empresa = $empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = '$fecha',
-				@usuario = $usuario, @remesa = '$remesa',@numentrega = $numentrega  , @producto = $producto, @folioFac = '$factura', @totalFac = $totalfactura, @escolaridad = $escolaridad, @internet = $internet ";
+		$query = "EXEC MV_DOC_CapturaOriginal @folio = :folio, @etapa = :etapa, @lesionado = :lesionado,  @unidad = :unidad, @empresa = :empresa, @ambulancia = 0, @fechapago = NULL,  @originalfecha = :originalfecha,  
+				@usuario = :usuario, @remesa = :remesa, @numentrega = :entrega  , @producto = :producto, @folioFac = :factura, @totalFac = :totalfactura, @escolaridad = :escolaridad, @internet = 1 "; 
+		$stmt = $conexion->prepare( $query ); 
+		$stmt->bindParam('folio',$folio);
+		$stmt->bindParam('etapa',$etapa);
+		$stmt->bindParam('lesionado',$lesionado);
+		$stmt->bindParam('unidad',$unidad);
+		$stmt->bindParam('empresa',$empresa);
+		$stmt->bindParam('usuario',$usuario);
+		$stmt->bindParam('remesa',$remesa);
+		$stmt->bindParam('entrega',$numentrega);
+		$stmt->bindParam('producto',$producto);
+		$stmt->bindParam('factura',$factura);
+		$stmt->bindParam('totalfactura',$totalfactura);
+		$stmt->bindParam('escolaridad',$escolaridad);
+		$stmt->bindParam('originalfecha',$fecha);
+		$stmt->execute();
 
-		$rs = odbc_exec($conexion,$sql);
-
-		if ($rs){
-
-
-				// $sql2 = "SELECT * FROM Documento where DOC_folio = '$folio'";
-				// $rs2 = odbc_exec($conexion,$sql2);
-				// $documento = odbc_result($rs2,"DOC_claveint");
-
-				// $historico = altahistorial($usuario, $folio, $etapa, $numentrega, $datos->fecha, 2 ,'','','','',$documento);
-				$arr = array('respuesta' => 'Folio Guardado Correctamente');
-
-        }else {
-              $arr = array('respuesta' => 'Error durante el Guardado: '.odbc_error());
-        }
-
+		$arr = array('respuesta' => 'Folio Guardado Correctamente');
 		echo json_encode($arr);
 
 		// echo $sql;
@@ -4877,7 +4917,6 @@ $app->get('/listaticketsfolio/:web', function($web){
 //Obtenemos usuario
 $app->post('/login', function(){
 
-
 	$request = \Slim\Slim::getInstance()->request();
 	$entrada = json_decode($request->getBody());
 
@@ -4893,50 +4932,33 @@ $app->post('/login', function(){
 	}else{
 
 		$rs= odbc_exec($conexion,"select * from Usuario left join UsuarioArea on Usuario.USU_claveint = UsuarioArea.USU_claveint where USU_login = '$usuario' and USU_password = '$contrasena' ");
-
-
 		$i = 0;
-
 		if( odbc_num_rows($rs) > 0 ) {
-
 			while (odbc_fetch_row($rs)){
-
 				$valor1 = odbc_result($rs,"USU_claveint");
 	            $valor2 = utf8_encode(odbc_result($rs,"USU_Nombre"));
 	            $valor3 = odbc_result($rs,"USU_factivo");
 	            $valor4 = odbc_result($rs,"ARO_claveint");
 	            $valor5 = odbc_result($rs,"USU_login");
 	            $valor6 = odbc_result($rs,"USU_usuarioWeb");
-
 	            if ($valor3 = 1){
-
 	            	$traspasosResultado['clave'] = $valor1;
 		            $traspasosResultado['nombre'] = $valor2;
 					$traspasosResultado['area'] = $valor4;
 					$traspasosResultado['usuario'] = $valor5;
 					$traspasosResultado['usuarioweb'] = $valor6;
-
 					$valores[$i] = $traspasosResultado;
 		            $i++;
-
 	            }else{
 	            	$arr = array('respuesta' => 'El Usuario no esta Activo');
 					echo json_encode($arr);
 	            }
-
-
 			}
-
 			echo json_encode($valores);
-
 		}else{
-
 			$arr = array('respuesta' => 'El nombre de Usuario o Contraseña son Incorrectos');
 			echo json_encode($arr);
-
 		}
-
-
 
 	}
 
