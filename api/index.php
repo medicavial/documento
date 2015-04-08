@@ -31,25 +31,18 @@ function conectarActual(){
 
 	}
 
-	//$dsn = "Driver={SQL Server Native Client 11.0};Server=$db_server;Database=$db_name;Trusted_Connection=yes";
-
-	//$con = odbc_connect($dsn,'','');
-
-
 	try {
 
 	    $conn = new PDO("sqlsrv:Server=$db_server;Database=$db_name", "", "");
 	    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-	     return $conn;
+	    
+	    return $conn;
 
 	} catch (PDOException $e) {
 
 		echo "Failed to get DB handle: " . $e->getMessage() . "\n";
 		exit;
 	}
-
-	//regresa la conexion
-	// return $con;
 
 }
 
