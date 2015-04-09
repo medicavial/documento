@@ -766,7 +766,7 @@ app.directive('excel', function(){
                     var row = "";
                     //2nd loop will extract each column and convert it in string comma-seprated
                     for (var index in arrData[i]) {
-                        row += '"' + encode_utf8(arrData[i][index]) + '",';
+                        row += '"' + arrData[i][index] + '",';
                     }
                     row.slice(0, row.length - 1);
                     //add a line break after each row
@@ -786,7 +786,7 @@ app.directive('excel', function(){
                 document.body.appendChild(link);
 
                 var csv = CSV;  
-                blob = new Blob([csv], { type: 'text/csv' }); 
+                blob = new Blob([csv],{"type": "text/csv;charset=utf8;"}); 
                 var csvUrl = window.webkitURL.createObjectURL(blob);
                 var filename = 'Listado.csv';
                 $("#lnkDwnldLnk")
