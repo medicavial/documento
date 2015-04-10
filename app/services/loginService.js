@@ -1,70 +1,64 @@
-app.factory("auth", function($location, $rootScope, $http, webStorage){
+app.factory("auth", function($location, $rootScope, $http, webStorage, api){
     return{
         login : function(username, password)
         {
             $('#boton').button('loading');
-            $http({
-                url:'/documento/api/login',
-                method:'POST',
-                contentType: 'application/json',
-                dataType: "json",
-                data:{user:username,psw:password}
-            }).success( function (data){
+            $http.post( api + 'login',{user:username,psw:password})
+            .success( function (data){
 
                 $('#boton').button('reset');
-                if(data.respuesta){
-                    $rootScope.mensaje = data.respuesta;
+                //creamos la cookie con el nombre que nos han pasado
+                webStorage.session.add('username', data[0].nombre);
+                webStorage.session.add('id', data[0].clave);
+                webStorage.session.add('areaUsuario', data[0].area);
+                webStorage.session.add('user', data[0].usuario);
+                webStorage.session.add('userWeb', data[0].usuarioweb);
+
+                $rootScope.username = data[0].nombre;
+                $rootScope.id = data[0].clave;
+                $rootScope.areaUsuario = data[0].area;
+                $rootScope.user = data[0].usuario;
+                $rootScope.userWeb = data[0].usuarioweb;
+
+                //mandamos a la home o a la ventana que estaba antes de entrar a bloqueo
+                $('html').removeClass('lockscreen');
+                if ($rootScope.ruta != undefined){
+
+                    $location.path($rootScope.ruta);
+                    $rootScope.ruta = '';
+
                 }else{
 
-                    //creamos la cookie con el nombre que nos han pasado
-                    webStorage.session.add('username', data[0].nombre);
-                    webStorage.session.add('id', data[0].clave);
-                    webStorage.session.add('areaUsuario', data[0].area);
-                    webStorage.session.add('user', data[0].usuario);
-                    webStorage.session.add('userWeb', data[0].usuarioweb);
+                    $location.path("/");
 
-                    $rootScope.username = data[0].nombre;
-                    $rootScope.id = data[0].clave;
-                    $rootScope.areaUsuario = data[0].area;
-                    $rootScope.user = data[0].usuario;
-                    $rootScope.userWeb = data[0].usuarioweb;
-
-                    //mandamos a la home o a la ventana que estaba antes de entrar a bloqueo
-                    $('html').removeClass('lockscreen');
-                    if ($rootScope.ruta != undefined){
-
-                        $location.path($rootScope.ruta);
-                        $rootScope.ruta = '';
-
-                    }else{
-
-                        $location.path("/");
-
-                        if($rootScope.push > 0){
-                            $('#myModal5').modal('show');
-                        }
-
+                    if($rootScope.push > 0){
+                        $('#myModal5').modal('show');
                     }
-
-
-                    if (navigator.geolocation) {
-
-                        navigator.geolocation.getCurrentPosition(function (posicion){
-
-                            $rootScope.localidad = posicion;
-                            console.log($rootScope.localidad);
-
-                        });
-
-                    };
 
                 }
 
-                //console.log(data);
-            }).error( function (xhr,status,data){
+                if (navigator.geolocation) {
+
+                    navigator.geolocation.getCurrentPosition(function (posicion){
+
+                        $rootScope.localidad = posicion;
+                        console.log($rootScope.localidad);
+
+                    });
+
+                };
+
+          
+            }).error( function (error){
 
                 $('#boton').button('reset');
-                alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+                console.log(error);
+                if(error.respuesta){
+                    $rootScope.mensaje = error.respuesta;
+                }else{
+                    alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+                }
+                
 
             });
 

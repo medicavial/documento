@@ -10,6 +10,8 @@ var app = angular.module('app', [
     'datatables'
 ]);
 
+app.constant('api','http://localhost/apimv/public/api/')
+
 //configuramos las rutas y asignamos html y controlador segun la ruta
 app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 

@@ -1,5 +1,5 @@
 //servicio de chekeo de folios para las entregas verifica cada condicion 
-app.factory("checkFolios", function($q,$http,find){
+app.factory("checkFolios", function($q,$http,find, api){
     return{
         enviaFolios:function(folios,areaRecibe,usuarioRecibe,usuarioEntrega,areaEntrega){
 
@@ -127,9 +127,9 @@ app.factory("checkFolios", function($q,$http,find){
                     //verifica que el folio esta registrado en control de documentos
                     find.verificafolio(datos.folio, 1).success( function (data){
 
-                        if(data.respuesta){
+                        if(data){
 
-                            error.mensaje = data.respuesta;
+                            error.mensaje = 'El folio ya se encuentra registrado en Control de Documentos';
                             error.tipoalerta = 'alert-danger';
                             promesa.reject(error);
 
@@ -307,7 +307,7 @@ app.factory("checkFolios", function($q,$http,find){
             }else{
 
                 if (fecha > FechaAct) {
-                    console.log(FechaAct);
+
                     error.mensaje = 'La fecha de captura no debe ser mayor al dia de hoy';
                     error.tipoalerta = 'alert-danger';
                     promesa.reject(error);
@@ -324,12 +324,8 @@ app.factory("checkFolios", function($q,$http,find){
 
                         find.verificaprefijo(folio.substr(0,4),cliente).success(function (data){
 
-                            if(data.valido == 1){
-
-                                // $scope.revisado = 1; //termina la validacion correctamente
-                                // $scope.guardaOriginal();
+                            if(data[0].valido == 1){
                                 promesa.resolve({revisado:1});
-
                             }else{
 
                                 error.mensaje = 'El prefijo del folio no es valido. Favor de verificar';
@@ -347,31 +343,146 @@ app.factory("checkFolios", function($q,$http,find){
             }
 
             return promesa.promise;
+        },
+        validaFolio:function(folio,etapa){
+
+            var datos = {
+                folio:'',
+                documento:0,
+                tipoDoc:'',
+                cliente:'',
+                lesionado:'',
+                unidad:'',
+                producto:'',
+                escolaridad:'',
+                fechafax: '',
+                fechafe: '' ,
+                internet:1 ,
+                original:0,
+                numentrega:1,
+                incompleto:'',
+                factura:'',
+                totalfactura:'',
+                mensaje: '',
+                remesa: '',
+                label1: '',
+                label2: '',
+                label3: '',
+                unidadref: '',//referencia para la unidad
+                esfax: 0,
+                esfe: 0,
+                esoriginal: 0,
+                revisado: 0,
+                bloqueo: false,
+                bloqueoUni: false
+            };
+
+            var promesa        = $q.defer(),
+                verifcacion    = find.verificafolio(folio,etapa),
+                folioweb       = find.folioweb(folio);
+
+            $q.all([verifcacion,folioweb]).then(function(data) { 
+                
+                var interno = data[0].data[0],
+                    web     = data[1].data[0];
+
+                console.log(data);
+
+                if(interno){
+                    //verificamos si es una segunda atencion o tercera pero la tercera es manual
+                    if (interno.original == 1) {
+                        
+                        //segunda atencion
+                        datos.tipoDoc = 2;
+                        datos.bloqueo = true;
+                        datos.bloqueoUni = false;
+                        datos.esoriginal = 1;
+                        
+                    }else{
+
+                        datos.documento = interno.clave;
+                        //primera atencion
+                        datos.tipoDoc = 1;
+
+                        //verificamos que sea fax 
+                        if(interno.fax == 1){
+                            datos.label2 = 'FAX RECIBIDO: ' + interno.fechafax;
+                            datos.fechafax = interno.fechafax;
+                            datos.esfax = 1;
+                        }
+                        //verificamos que sea factura express
+                        if(interno.fe == 1){
+                            datos.label2 = 'FAC. EXPRESS: ' + interno.fefecha;
+                            datos.fechafe = interno.fechafe;
+                            datos.esfe = 1;
+                        }
+
+                        //asignamos bloqueos de campos
+                        datos.bloqueo = true;
+                        datos.bloqueoUni = true;
+                        datos.esoriginal = 0;
+
+                    }
+
+                    datos.cliente = interno.empresa;
+                    datos.lesionado = interno.lesionado;
+                    datos.unidadref = interno.unidad;
+                    datos.unidad = interno.unidad;
+                    datos.documento = interno.clave;
+
+                    datos.escolaridad = interno.escuela;
+                    datos.producto = interno.producto;
+
+                }else{
+
+                    //Como no ninguna atencion registrada en sql server buscamos en web 
+
+                    datos.cliente = String(web.Cia_claveMV);
+                    datos.lesionado = web.Exp_completo;
+                    datos.unidadref = String(web.UNI_claveMV);
+                    datos.unidad = String(web.UNI_claveMV);
+                    datos.producto = String(web.Pro_claveMV);
+                    datos.escolaridad = String(web.Esc_claveMV);
+
+                    datos.label2 = 'NO SE RECIBIO FAX';
+                    datos.label3 = 'NO ES FAC. EXPRESS';
+
+                    datos.tipoDoc = 1;
+                    datos.esoriginal = 0;
+
+                }
+
+                promesa.resolve(datos);
+
+            });
+
+            return promesa.promise;
         }
     }
 });
 
 
-//servicio de chekeo de folios para las entregas verifica cada condicion 
-app.factory("carga", function($q,$http,find){
+//servicio de chekeo de folios para las cargar busquedas por bloque y carga informacion del flujo
+//por usuario
+app.factory("carga", function($q,$http,find,api){
     return{
-        informacion:function(area){
+        informacion:function(){
 
             var promesa        = $q.defer(),
-                cliente        = find.empresas(),
-                unidades       = find.unidades(),
-                productos      = find.productos(),
-                areaOperativa  = find.areaoperativa(),
-                escolaridad    = find.escolaridad();
+                cliente        = $http.get(api+'consulta/empresas'),
+                unidades       = $http.get(api+'consulta/unidades'),
+                productos      = $http.get(api+'consulta/productos'),
+                escolaridad    = $http.get(api+'consulta/escolaridad'),
+                areaOperativa  = $http.get(api+'consulta/areas');
 
-            $q.all([cliente,unidades,productos,areaOperativa,escolaridad]).then(function(data) { 
+            $q.all([cliente,unidades,productos,escolaridad,areaOperativa]).then(function(data) { 
                 
                 var datos = {
                     clientes:data[0].data,
                     unidades:data[1].data,
                     productos:data[2].data,
-                    areaOperativa:data[3].data,
-                    escolaridad:data[4].data
+                    escolaridad:data[3].data,
+                    areaOperativa:data[4].data
                 }
 
                 promesa.resolve(datos);
@@ -380,6 +491,23 @@ app.factory("carga", function($q,$http,find){
 
             return promesa.promise;
 
+        },
+        flujo:function(usuario){
+
+            var promesa        = $q.defer(),
+                activos        = $http.get(api+'flujo/activos/'+usuario),
+                rechazos       = $http.get(api+'flujo/rechazos/'+usuario);
+
+            $q.all([activos,rechazos]).then(function(data) {
+                var datos = {
+                    activos:data[0].data,
+                    rechazos:data[1].data
+                }
+                promesa.resolve(datos);
+
+            }); 
+
+            return promesa.promise;
         }
     }
 });

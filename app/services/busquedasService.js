@@ -1,5 +1,5 @@
 //Todas las consultas generadas al api por un servicio llamada find
-app.factory("find", function($http){
+app.factory("find", function($http,api){
     return{
         areaoperativa:function(){
             return $http.get('/documento/api/areas');
@@ -23,7 +23,7 @@ app.factory("find", function($http){
             return $http.get('/documento/api/escolaridad');
         },
         folioweb:function(folio){
-            return $http.get('/documento/api/folioweb/'+folio);
+            return $http.get(api+'consulta/folioweb/'+folio);
         },
         foliosxArea:function(area){
             return $http.get('/documento/api/folioactivoarea/'+area);
@@ -62,7 +62,7 @@ app.factory("find", function($http){
             return $http.get('/documento/api/muestrahistorico/'+folio +"/"+etapa+"/"+entrega);
         },
         producto:function(empresa){
-            return $http.get('/documento/api/producto/'+empresa);
+            return $http.get(api +'consulta/productos/'+ empresa);
         },
         productos:function(){
             return $http.get('/documento/api/productos');
@@ -74,7 +74,7 @@ app.factory("find", function($http){
             return $http.get('/documento/api/recepcionfoliosxlesionado/'+lesionado);
         },
         referenciaxunidad:function(unidad){
-            return $http.get('/documento/api/referenciaunidad/'+unidad);
+            return $http.get(api + 'consulta/referencia/'+ unidad);
         },
         statusweb:function(){
             return $http.get('/documento/api/statusweb');
@@ -101,13 +101,13 @@ app.factory("find", function($http){
             return $http.get('/documento/api/verificaetapaentrega/'+folio +"/"+etapa);
         },
         verificafolio:function(folio,etapa){
-            return $http.get('/documento/api/verificafolio/'+folio +"/"+etapa);
+            return $http.get(api+'consulta/verificafolio/'+ folio + '/'+ etapa);
         },
         verificafoliopase:function(folio){
             return $http.get('/documento/api/verificafoliopase/'+folio);
         },
         verificaprefijo:function(prefijo,empresa){
-            return $http.get('/documento/api/verificaprefijo/'+prefijo +"/"+empresa);
+            return $http.get(api + 'consulta/verificaprefijo/'+prefijo +"/"+empresa);
         }
     }
 })

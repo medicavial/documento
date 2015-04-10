@@ -1958,8 +1958,6 @@ $app->get('/areas', function(){
 
 		}
 
-		// 
-
 	}
 
 });
@@ -3946,14 +3944,14 @@ $app->get('/folioweb/:folio', function($folio){
 	}else{
 		
 		$sql = "SELECT EXP_nombre as Nombre,
-				             EXP_paterno as Paterno,
-				             EXP_materno as Materno,
-				             IFNULL(PRO_claveMV,-1) as PROClave,
-				             IFNULL(CIA_claveMV,-1) as CIAClaveMV,
-				             IFNULL(UNI_claveMV,-1) as UNIClaveMV,
-				             IFNULL(ESC_claveMV,-1) as ESCClaveMV,
-				             Expediente.Cia_clave,
-				             Expediente.Uni_clave
+			             EXP_paterno as Paterno,
+			             EXP_materno as Materno,
+			             IFNULL(PRO_claveMV,-1) as PROClave,
+			             IFNULL(CIA_claveMV,-1) as CIAClaveMV,
+			             IFNULL(UNI_claveMV,-1) as UNIClaveMV,
+			             IFNULL(ESC_claveMV,-1) as ESCClaveMV,
+			             Expediente.Cia_clave,
+			             Expediente.Uni_clave
 				FROM Expediente INNER JOIN Compania    ON Compania.CIA_clave=Expediente.CIA_clave
 				                INNER JOIN Unidad        ON Unidad.UNI_clave=Expediente.UNI_clave
 				                INNER JOIN Producto		ON Producto.Pro_clave = Expediente.PRO_clave
