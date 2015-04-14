@@ -1,4 +1,4 @@
-function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga){
+function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api){
 	
 	//Con parametros de inicio
 	$scope.inicio = function(){
@@ -56,7 +56,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		$scope.mensaje = '';
 
 		carga.flujo($rootScope.id).then(function (data){
-			console.log(data);
+			// console.log(data);
 			if(data.activos){
         		$scope.listado = data.activos;
         	}else{
@@ -72,49 +72,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			loading.despedida();
 		})
 	}
-
-
-	// $scope.cargaEntrada = function(){
-
-		
-
-	// 	find.listadogeneral($rootScope.id).success( function (data){
-       
- //        	if(data.respuesta){
- //        		loading.mensaje(data.respuesta);
- //        		$scope.listado = [];
- //        	}else{
- //        		$scope.listado = data;
- //        	}
-
-
-
- //        	loading.despedida();
- //        	$scope.quitaselectos();
- //        	$scope.mensaje = '';
-			
-	// 	}).error( function (xhr,status,data){
-
-	// 		loading.despedida();
-	// 		$scope.quitaselectos();
-	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-	// 	});
-	// }
-
-	// //busca rechazos
-	// $scope.Altarechazados = function(){
-
-	// 	find.listadorechazos($rootScope.id).success( function (data) {
-			
-	// 		if(data.respuesta){
- //        		$scope.rechazados = 0;
- //        	}else{
- //        		$scope.rechazados = data.length;
- //        	}
-        	
-	// 	 });
-	// }
 
 	// parte donde se captura el original
 
@@ -142,7 +99,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			numentrega:1,
 			incompleto:'',
 			factura:'',
-			totalfactura:''
+			totalfactura:0
 		};
 
 		$scope.mensaje = '';
@@ -162,7 +119,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 		//detectamos cuando la ventana se cierra para buscar mas folios
 		$('#myModal2').on('hidden.bs.modal', function (e) {
-		 	$scope.cargaEntrada();
+		 	$scope.cargaFlujo();
 		});
 
 		$('#folioO').focus();
@@ -177,7 +134,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		//verificamos si tiene primera atencion
 		checkFolios.validaFolio(folio, 1).then( function (data){
 			
-			console.log(data);	
 			$scope.original.tipoDoc = data.tipoDoc;
 			$scope.original.documento = data.documento;
 			$scope.original.fechafax = data.fechafax;
@@ -185,19 +141,19 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			$scope.original.cliente = data.cliente;
 			$scope.original.lesionado = data.lesionado;
 			$scope.original.unidad = data.unidad;
-			$scope.original.documento = data.clave;
+			$scope.original.documento = data.documento;
 
 			$scope.productoOriginal($scope.original.cliente);
 			$scope.referencia($scope.original.unidad);
 
-			$scope.original.escolaridad = data.escuela;
+			$scope.original.escolaridad = data.escolaridad;
 			$scope.original.producto = data.producto;
-
 
 			$scope.label2 = data.label2;
 			$scope.label3 = data.label3;
 			$scope.esfax = data.esfax;
 			$scope.esfe = data.esfe;
+			$scope.escolaridad = data.esoriginal;
 			$scope.bloqueo = data.bloqueo;
 			$scope.bloqueoUni = data.bloqueoUni;
 			$scope.esoriginal = data.esoriginal;
@@ -264,8 +220,38 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			//Verificamos la informacion antes de guardar
 			checkFolios.verificaInfo($scope.original.cliente, $scope.original.producto, $scope.original.escolaridad, $scope.original.fecha, $scope.original.folio)
 			.then(function (data) {
-				$scope.revisado = data.revisado;
-				$scope.guardaOriginal();
+
+				checkFolios.preparaGuardado($scope.original, $scope.esoriginal, $scope.esfax, $scope.esfe)
+				.then(function (data){
+					console.log(data);
+					//actualiza folio (solo original)
+					if (data.agregaOriginal) {
+						var alta = $http.post(api+'altaoriginal',data.info);
+						//agrega folio (solo original)
+					}else if (data.actualizaOriginal) {
+						var alta = $http.post(api+'actualizaoriginal',data.info);
+					};
+
+					alta.success(function (data){
+						$('#boton2').button('reset');
+						$scope.mensaje = data.respuesta;
+					    $scope.tipoalerta = 'alert-success';
+					    $scope.limpiaVariables();
+					    $scope.original.folio = '';
+					    $('#folioO').focus();
+					})
+					.error(function (data){
+						$('#boton2').button('reset');
+						alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+					});
+
+				},
+				function (error){
+					$scope.mensaje = error.mensaje;
+					$scope.tipoalerta = error.tipoalerta;
+					$('#boton2').button('reset');
+				});
+
 			}, function (error) {
 				$scope.mensaje = error.mensaje;
 				$scope.tipoalerta = error.tipoalerta;
@@ -286,26 +272,26 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		.then(function (data){
 			console.log(data);
 			//actualiza folio (solo original)
-			if (data.agregaOriginal) {
-				var alta = $http.post('/documento/api/altafoliooriginal',data.info)
+			// if (data.agregaOriginal) {
+			// 	var alta = $http.post('/documento/api/altafoliooriginal',data.info)
 
-			//agrega folio (solo original)
-			}else if (data.actualizaOriginal) {
-				var alta = $http.post('/documento/api/actualizaoriginal',data.info)
-			};
+			// //agrega folio (solo original)
+			// }else if (data.actualizaOriginal) {
+			// 	var alta = $http.post('/documento/api/actualizaoriginal',data.info)
+			// };
 
-			alta.success(function (data){
-				$('#boton2').button('reset');
-				$scope.mensaje = data.respuesta;
-			    $scope.tipoalerta = 'alert-success';
-			    $scope.limpiaVariables();
-			    $scope.original.folio = '';
-			    $('#folioO').focus();
-			})
-			.error(function (data){
-				$('#boton2').button('reset');
-				alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-			});
+			// alta.success(function (data){
+			// 	$('#boton2').button('reset');
+			// 	$scope.mensaje = data.respuesta;
+			//     $scope.tipoalerta = 'alert-success';
+			//     $scope.limpiaVariables();
+			//     $scope.original.folio = '';
+			//     $('#folioO').focus();
+			// })
+			// .error(function (data){
+			// 	$('#boton2').button('reset');
+			// 	alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+			// });
 
 		},
 		function (error){
@@ -607,4 +593,4 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 }
 
-app.controller('recepcionCtrl', ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga', recepcionCtrl]);
+app.controller('recepcionCtrl', ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api', recepcionCtrl]);

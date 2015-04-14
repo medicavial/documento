@@ -2,7 +2,7 @@
 app.factory("find", function($http,api){
     return{
         areaoperativa:function(){
-            return $http.get('/documento/api/areas');
+            return $http.get(api+'consulta/areas');
         },
         categorias:function(){
             return $http.get('/documento/api/categorias');
@@ -14,13 +14,13 @@ app.factory("find", function($http,api){
             return $http.get('/documento/api/ticketinfo/' + folioint + '/' + folioweb);
         },
         empresas:function(){
-            return $http.get('/documento/api/empresas');
+            return $http.get(api+'consulta/empresas');
         },
         empresasweb:function(){
             return $http.get('/documento/api/empresasweb');
         },
         escolaridad:function(){
-            return $http.get('/documento/api/escolaridad');
+            return $http.get(api+'consulta/escolaridad');
         },
         folioweb:function(folio){
             return $http.get(api+'consulta/folioweb/'+folio);
@@ -65,7 +65,7 @@ app.factory("find", function($http,api){
             return $http.get(api +'consulta/productos/'+ empresa);
         },
         productos:function(){
-            return $http.get('/documento/api/productos');
+            return $http.get(api+'consulta/productos');
         },
         recepcionxfolio:function(folio){
             return $http.get('/documento/api/recepcionfolios/'+folio);
@@ -86,7 +86,7 @@ app.factory("find", function($http,api){
             return $http.get('/documento/api/ticket');
         },
         unidades:function(){
-            return $http.get('/documento/api/unidades');
+            return $http.get(api+'consulta/unidades');
         },
         unidadesweb:function(){
             return $http.get('/documento/api/unidadesweb');
@@ -98,13 +98,13 @@ app.factory("find", function($http,api){
             return $http.get('/documento/api/usuariosweb');
         },
         verificaetapaentrega:function(folio,etapa){
-            return $http.get('/documento/api/verificaetapaentrega/'+folio +"/"+etapa);
+            return $http.get(api+'consulta/verificaetapaentrega/'+folio +"/"+etapa);
         },
         verificafolio:function(folio,etapa){
             return $http.get(api+'consulta/verificafolio/'+ folio + '/'+ etapa);
         },
         verificafoliopase:function(folio){
-            return $http.get('/documento/api/verificafoliopase/'+folio);
+            return $http.get(api+'consulta/verificafoliopase/'+folio);
         },
         verificaprefijo:function(prefijo,empresa){
             return $http.get(api + 'consulta/verificaprefijo/'+prefijo +"/"+empresa);

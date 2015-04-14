@@ -112,6 +112,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 mensaje:'',
                 tipoalerta:''
             }
+            console.log(datos);
             
             //verificamos si el folio tiene documento registrado
             if(datos.documento == 0){
@@ -127,7 +128,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     //verifica que el folio esta registrado en control de documentos
                     find.verificafolio(datos.folio, 1).success( function (data){
 
-                        if(data){
+                        if(data.length > 0){
 
                             error.mensaje = 'El folio ya se encuentra registrado en Control de Documentos';
                             error.tipoalerta = 'alert-danger';
@@ -138,7 +139,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                             //Segunda validacion para verificar que no esta en la tabla pase o capturas
                             find.verificafoliopase(datos.folio).success( function (data){
 
-                                if(data.respuesta){
+                                if(data > 0){
 
                                     error.mensaje = data.respuesta;
                                     error.tipoalerta = 'alert-danger';
@@ -153,18 +154,13 @@ app.factory("checkFolios", function($q,$http,find, api){
                             });
                         }
                         
-                    }).error( function (xhr,status,data){
-
-                        alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-                    });
+                    })
                     
 
 
                 }else{
 
                     //en caso de que sea segunda atencion o tercera y se haya registrado por primera vez en sql server 
-
                     error.mensaje = 'No se permite capturar una segunda atencion de un registro nuevo';
                     error.tipoalerta = 'alert-danger';
                     promesa.reject(error);
@@ -228,8 +224,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                         //verifica que numero de segunda o tercera atencion es
                         find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
 
-                            datos.numentrega = Number(data.total) + 1;
-
+                            datos.numentrega = Number(data) + 1;
                             //Agregamos un nuevo documento de segunda etapa o tercera
                             promesa.resolve({info:datos,agregaOriginal:1});
 
@@ -354,7 +349,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 lesionado:'',
                 unidad:'',
                 producto:'',
-                escolaridad:'',
+                escolaridad:0,
                 fechafax: '',
                 fechafe: '' ,
                 internet:1 ,
@@ -362,7 +357,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 numentrega:1,
                 incompleto:'',
                 factura:'',
-                totalfactura:'',
+                totalfactura:0,
                 mensaje: '',
                 remesa: '',
                 label1: '',
@@ -469,11 +464,11 @@ app.factory("carga", function($q,$http,find,api){
         informacion:function(){
 
             var promesa        = $q.defer(),
-                cliente        = $http.get(api+'consulta/empresas'),
-                unidades       = $http.get(api+'consulta/unidades'),
-                productos      = $http.get(api+'consulta/productos'),
-                escolaridad    = $http.get(api+'consulta/escolaridad'),
-                areaOperativa  = $http.get(api+'consulta/areas');
+                cliente        = find.empresas(),
+                unidades       = find.unidades(),
+                productos      = find.productos(),
+                escolaridad    = find.escolaridad(),
+                areaOperativa  = find.areaoperativa();
 
             $q.all([cliente,unidades,productos,escolaridad,areaOperativa]).then(function(data) { 
                 
