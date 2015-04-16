@@ -276,21 +276,15 @@ app.controller('rechazosCtrl',function ( $scope, $rootScope, $routeParams, $loca
 
 		find.listadorechazos($rootScope.id).success( function (data){
        
-        	if(data.respuesta){
-        		loading.mensaje(data.respuesta);
-        		$scope.listadoRechazos = [];
-
-        	}else{
+        	if(data){
         		$scope.listadoRechazos = data;
+        	}else{
+        		$scope.listadoRechazos = [];
         	}
 
         	loading.despedida();
         	$scope.gridOptions.$gridScope.toggleSelectAll(false);
 			
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 		});
 
 	}
@@ -315,6 +309,9 @@ app.controller('rechazosCtrl',function ( $scope, $rootScope, $routeParams, $loca
 			alert('No puedes emitir entregas a tu misma area');
 			$scope.areaOp = '';
 
+		}else if ($rootScope.area != 4 && area == 5) {
+			alert('No puedes emitir entregas a facturacion tu usuario no tiene permisos');
+			$scope.areaOp = '';
 		}else{
 
 			$scope.area = area;
@@ -360,89 +357,17 @@ app.controller('rechazosCtrl',function ( $scope, $rootScope, $routeParams, $loca
 
 	}
 
-	// $scope.validainfo = function(){
-
-	// 	$scope.mensaje = '';
-	// 	$('#boton').button('loading');
-
-	// 	//console.log($scope.selectos);
-	// 	for (var i = 0; i < $scope.selectos.length; i++) {
-
-	// 		try{
-	// 			var documento = $scope.selectos[i];
-
-	// 			//Si es Etapa 2 o 3 y Etapa 1 no esta capturada
-	// 			if(documento.Etapa > 1 && documento.CapEt2 == 0){
-	// 				throw 'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede entregar debido a que la etapa 1 no esta capturada';
-	// 			}
-
-	// 			//Si se envia a Facturación y no es original ó ya fue enviado anteriormente manda mensaje de error
-	// 			//se agrego indexof(busca el contenido que se ponga aqui) por que javascript no soporta muchos && y || en un mismo if 
-	// 			if( (documento.Tipo.indexOf('O') == -1  && $scope.areaOp == 5) || ($scope.areaOp == 5 && documento.FLD_AROent == 5 && documento.USU_ent != 'null')||($scope.areaOp == 5 && documento.EnvFac == 'SI' && documento.Etapa == 1) ){
-	// 				throw 'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede enviar a Facturación debido a que no es etapa 1 o ya fue mandado';
-	// 			}
-
-	// 			//Si se envia a Facturación y no es etapa 1
-	// 			if($scope.areaOp == 5 && documento.Etapa > 1) {
-	// 				throw 'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede enviar a Facturación debido a que no es etapa 1';
-	// 			}
-
-	// 			//Si se envia a pagos y no es original 
-	// 			if($scope.areaOp == 6 && documento.EnvFac != 'SI' && documento.Etapa == 1) {
-
-	// 				if(confirm('El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se a enviado a Facturación. ¿Desea proseguir?')){							
-	// 					//si es facturacion agrega un juego mas al flujo
-
-	// 					$scope.actualizaFlujo(i);
-
-	// 					throw 1;
-	// 				}
-	// 			}
-
-
-	// 			//Si se envia a Facturación y es mesa de control
-	// 			if($scope.areaOp == 5 && $rootScope.area == 4) {
-
-	// 				$scope.guardaFlujo(i);
-	// 				throw 1;
-	// 			}else if($scope.areaOp == 5 && $rootScope.area != 4){
-	// 				throw 'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede enviar a Facturación tu usuario no tiene permisos';
-	// 			}
-
-
-	// 			$scope.actualizaFlujo(i);
-
-	// 			if (i == $scope.selectos.length - 1) {
-
-	// 				$('#boton').button('reset');
-	// 				$scope.mensaje = 'Termino el Envio';
-	// 				$scope.cargaRechazos();
-
-	// 			};
-
-	// 		}catch(err){
-
-	// 			if(err != 1){
-	// 				alert(err);
-	// 			}
-				
-	// 		}
-	// 	} //Termina for
-
-	// }
-
 	$scope.validainfo = function(){
 
 		$scope.mensaje = '';
 		$('#boton').button('loading');
 
 		var promesa = checkFolios.enviaFolios($scope.selectos,$scope.areaOp,$scope.user,$rootScope.id,$scope.areaEntrega);
-
 		promesa.then(function (data){
 
 			$scope.mensaje = data.respuesta;
 			$scope.tipoalerta = 'alert-success';
-			$scope.cargaEntrada();
+			$scope.cargaRechazos();
 			$('#boton').button('reset');
 			if (data.rechazos.length > 0) {
 				$scope.rechazos = data.rechazos;
@@ -458,87 +383,6 @@ app.controller('rechazosCtrl',function ( $scope, $rootScope, $routeParams, $loca
 		});
 
 	}
-
-	// $scope.guardaFlujo = function(indice){
-
-	// 	var documentoEnv = $scope.selectos[indice];
-
-	// 	var datos = {
-	// 		folio:documentoEnv.Folio,
-	// 		etapa:documentoEnv.Etapa,
-	// 		cantidad:documentoEnv.Cantidad,
-	// 		documento:Number(documentoEnv.documento),
-	// 		usuarioentrega:$rootScope.id,
-	// 		areaentrega:Number(documentoEnv.area),
-	// 		usuariorecibe:Number($scope.user),
-	// 		arearecibe:Number($scope.areaOp),
-	// 		clave:Number(documentoEnv.FLD_claveint),
-	// 		observaciones:documentoEnv.Observaciones
-	// 	};
-
-	// 	//console.log(datos);
-
-	//     $http({
-	// 		url:'/documento/api/altaentrega',
-	// 		method:'POST', 
-	// 		contentType: 'application/json', 
-	// 		dataType: "json", 
-	// 		data:datos
-	// 	}).success( function (data){
-			
-	// 		console.log(data);
-	// 		$scope.mensaje = data.respuesta;
-	// 		$scope.tipoalerta = 'alert-success';			
-
-	// 	}).error( function (data){
-
-	// 		$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-	// 		$scope.tipoalerta = 'alert-warning';
-
-	// 	});
-	// }
-
-	// $scope.actualizaFlujo = function(indice){
-
-	// 	//seleccionamos el folio a mandar 
-	// 	var documentoEnv = $scope.selectos[indice];
-		
-	// 	//generamos el JSON necesario incluyendo los datos del area y usuario para enviarlo mediante post 
-	// 	var datos = {
-	// 		folio:documentoEnv.Folio,
-	// 		etapa:documentoEnv.Etapa,
-	// 		cantidad:documentoEnv.Cantidad,
-	// 		documento:Number(documentoEnv.documento),
-	// 		usuarioentrega:$rootScope.id,
-	// 		areaentrega:Number(documentoEnv.area),
-	// 		usuariorecibe:Number($scope.user),
-	// 		arearecibe:Number($scope.areaOp),
-	// 		clave:Number(documentoEnv.FLD_claveint),
-	// 		observaciones:documentoEnv.Observaciones
-	// 	};
-
-	// 	console.log(datos);
-
-	//     $http({
-	// 		url:'/documento/api/actualizaentrega',
-	// 		method:'POST', 
-	// 		contentType: 'application/json', 
-	// 		dataType: "json", 
-	// 		data:datos
-	// 	}).success( function (data){
-			        	
-	// 		$scope.mensaje = data.respuesta;
-	// 		$scope.tipoalerta = 'alert-success';			
-
-	// 	}).error( function (data){
-
-	// 		$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-	// 		$scope.tipoalerta = 'alert-warning';
-
-	// 	});
-
-	// }
-
 
 
 	//////Todo lo necesario para el grid
@@ -568,24 +412,24 @@ app.controller('rechazosCtrl',function ( $scope, $rootScope, $routeParams, $loca
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
-		            { field:'Folio', width: 120 },
-		            { field:'UsuarioRechazo', width: 200 },
-		            { field:'MotivoRechazo', width: 220 },
-		            { field:'Etapa', width: 120 },
-		            { field:'Cantidad', width: 100 },
-		            { field:'Empresa', width: 120 },
-		            { field:'Unidad', width: 200 },
-		            { field:'Tipo', width: 120 },
-		            { field:'FechaRecepcion', width: 130 },
-		            { field:'DocRevision', width: 100 },
-		            { field:'FLD_claveint', width: 100, visible:false },
-		            { field:'documento', width: 100, visible:false },
-		            { field:'CapEt2', width: 100, visible:false },
-		            { field:'EnvFac', width: 100, visible:true },
-		            { field:'FLD_AROent', width: 100, visible:false },
-		            { field:'area', width: 100, visible:false },
-		            { field:'USU_ent', width: 100, visible:false },
-		            { field:'Observaciones', width: 320, enableCellEdit: true}
+		            { field:'PAS_folio', displayName:'Folio', width: 120 },
+		            { field:'USURechazo', displayName:'UsuarioRechazo', width: 200 },
+		            { field:'FLD_motivoRechazo', displayName:'MotivoRechazo', width: 220 },
+		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
+		            { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
+		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
+		            { field:'UNI_nombrecorto', displayName:'Unidad', width: 200 },
+		            { field:'FLD_formaRecep', displayName:'Tipo', width: 120 },
+		            { field:'FLD_fechaRecep', displayName:'FechaRecepcion', width: 130 },
+		            { field:'', displayName:'DocRevision', width: 100 },
+		            { field:'FLD_claveint', displayName:'FLD_claveint', width: 100, visible:false },
+		            { field:'DOC_claveint', displayName:'documento', width: 100, visible:false },
+		            { field:'CapEt2', displayName:'CapEt2', width: 100, visible:false },
+		            { field:'EnvFac', displayName:'EnvFac', width: 100, visible:true },
+		            { field:'FLD_AROent', displayName:'FLD_AROent', width: 100, visible:false },
+		            { field:'ARO_porRecibir', displayName:'area', width: 100, visible:false },
+		            { field:'USU_ent', displayName:'USU_ent', width: 100, visible:false },
+		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true}
         ],
         showFooter: true,
         showFilter:false
@@ -1328,13 +1172,14 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 		loading.cargando('Buscando Folios');
 
 		find.listadoentrega($rootScope.id).success( function (data){
-       
-        	if(data.respuesta){
-        		loading.mensaje(data.respuesta);
-        		$scope.listadoEntregas = [];
+       		
+            $scope.mensaje = '';
 
-        	}else{
+       		//console.log(data);
+        	if(data){
         		$scope.listadoEntregas = data;
+        	}else{
+        		$scope.listadoEntregas = [];
         	}
 
         	loading.despedida();
@@ -1372,21 +1217,24 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 		
 		$scope.mensaje = '';
 		var datos = [dato.entity];
+        $('#boton').button('loading');
 
 		checkFolios.enviaRechazos(datos,$rootScope.area,$rootScope.id).then(
 			function (data){
 				$scope.gridOptions.$gridScope.toggleSelectAll(false);
 				$scope.mensaje = data.respuesta;
 				$scope.tipoalerta = 'alert-success';
-				$scope.cargaEntregas();		
+				$scope.cargaEntregas();	
+                $('#boton').button('reset');	
 			},
 			function (error){
 				$scope.mensaje = error;
 				$scope.tipoalerta = 'alert-warning';
+                $('#boton').button('reset');
 			}
 		);
 
-		$('#boton').button('reset');
+		
 
 	}
 
@@ -1396,6 +1244,7 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 
 		$scope.mensaje = '';
 		var datos = $scope.selectos;
+        $('#boton').button('loading');
 
 		checkFolios.enviaRechazos(datos,$rootScope.area,$rootScope.id).then(
 			function (data){
@@ -1445,21 +1294,21 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
-    				{ field:'PorEntregarA', width: 120 },
-                    { field:'Folio', width: 120 },
-		            { field:'Etapa', width: 120 },
-		            { field:'Cantidad', width: 100 },
-		            { field:'Empresa', width: 120 },
-		            { field:'Unidad', width: 200 },
-		            { field:'FaxOrigianl', width: 120 },
-		            { field:'FechaRecepcion', width: 130 },
-		            { field:'ROC', width: 100, visible:false },
+    				{ field:'PorEntregarA', displayName:'PorEntregarA', width: 120 },
+                    { field:'PAS_folio', displayName:'Folio', width: 120 },
+		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
+		            { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
+		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
+		            { field:'UNI_nombrecorto', displayName:'Unidad', width: 200 },
+		            { field:'FLD_formaRecep', displayName:'FaxOrigianl', width: 120 },
+		            { field:'FLD_fechaRecep', displayName:'FechaRecepcion', width: 130 },
+		            { field:'ROC', displayName:'ROC', width: 100, visible:false },
 		            { field:'DOC_claveint', width: 100, visible:false },
 		            { field:'FLD_claveint', width: 100, visible:false },
 		            { field:'FLD_AROent', width: 100, visible:false },
 		            { field:'ARO_porRecibir', width: 100, visible:false },
 		            { displayName:'Accion' ,cellTemplate:'  <a href="" ng-click="elimina(row)">Quitar</a>'}
-        ]
+		]
         
     };
 
@@ -1522,7 +1371,7 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 });
 
 //muestra los folios por recibir
-app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParams, find, loading , $http, carga){
+app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios){
 	//Carga Configuracion Inicial
 	$scope.inicio = function(){
 
@@ -1544,23 +1393,15 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 
 		find.listadorecepcion($rootScope.id).success( function (data){
        
-        	if(data.respuesta){
-        		loading.mensaje(data.respuesta);
-        		$scope.listadoRecepcion = [];
-
-        	}else{
+        	if(data.length>0){
         		$scope.listadoRecepcion = data;
+            }else{
+                $scope.listadoRecepcion = [];
         	}
 
         	loading.despedida();
 			
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
 		});
-
 	}
 
 	//enlista los clientes
@@ -1590,16 +1431,13 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 
 		if ($scope.selectos.length > 0) {
 
-			$http.post('api/aceptaentrega',$scope.selectos)
+			checkFolios.aceptaEntrega($scope.selectos)
 			.success(function (data){
+                $scope.mensaje = data.respuesta;
+                $scope.tipoalerta = 'alert-success';
+                $scope.cargaRecepcion();
+                $scope.gridOptions.$gridScope.toggleSelectAll(false);
 				$('#boton').button('reset');
-				$scope.mensaje = 'Aceptación con exito';
-				$scope.tipoalerta = 'alert-success';
-				$scope.cargaRecepcion();
-				$scope.gridOptions.$gridScope.toggleSelectAll(false);
-			})
-			.error(function (data){
-				alert('Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas');
 			});
 			
 		};
@@ -1612,52 +1450,18 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 		$scope.mensaje = '';
 		$('#boton2').button('loading');
 
-		var valor = 0;
+		if ($scope.selectos.length > 0) {
 
-		for (var i = 0; i < $scope.selectos.length; i++) {
-			
-			try{
-
-				var documento = $scope.selectos[i];
-				documento.USU_rec = $rootScope.id;
-				//console.log(documento);
-
-				documento.motivo =  prompt("Escribe motivo de rechazo para el folio " + documento.Folio,"Falto ");
-				//console.log(documento);
-
-				$http({
-					url:'api/rechazoentrega',
-					method:'POST', 
-					contentType: 'application/json', 
-					dataType: "json", 
-					data:documento
-				}).success( function (data){
-					
-					if (valor == $scope.selectos.length-1 ) {
-
-						$('#boton2').button('reset');
-						$scope.mensaje = 'Rechazos con exito';
-						$scope.tipoalerta = 'alert-success';
-						$scope.cargaRecepcion();
-
-						$scope.gridOptions.$gridScope.toggleSelectAll(false);
-					
-					};
-
-					valor++;	
-								
-				}).error( function (data){
-
-					throw 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-					
-
-				});
-
-			}catch(err){
-				alert(err);
-			}
-
-		};
+            checkFolios.rechazaEntrega($scope.selectos,$rootScope.id)
+            .then(function (data){
+                $('#boton').button('reset');
+                $scope.mensaje = data.respuesta;
+                $scope.tipoalerta = 'alert-success';
+                $scope.cargaRecepcion();
+                $scope.gridOptions.$gridScope.toggleSelectAll(false);
+            });
+            
+        };
 
 	}
 
@@ -1735,21 +1539,21 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions, 
     	columnDefs: [
-    				{ field:'EntregadoPor', width: 120, pinned:true},
-                    { field:'Folio', width: 120 },
-		            { field:'Etapa', width: 120 },
-		            { field:'Cantidad', width: 100 },
-		            { field:'Empresa', width: 120 },
-		            { field:'Unidad', width: 200 },
-		            { field:'FaxOrigianl', width: 120 },
-		            { field:'FechaRecepcion', width: 130 },
-		            { field:'DocRevision', width: 100 },
+    				{ field:'EntregadoPor', displayName:'EntregadoPor', width: 120, pinned:true},
+                    { field:'PAS_folio', displayName:'Folio', width: 120 },
+		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
+		            { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
+		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
+		            { field:'UNI_nombrecorto', displayName:'Unidad', width: 200 },
+		            { field:'FLD_formaRecep', displayName:'FaxOrigianl', width: 120 },
+		            { field:'FLD_fechaRecep', displayName:'FechaRecepcion', width: 130 },
+		            { field:'', displayName:'DocRevision', width: 100 },
 		            { field:'DOC_claveint', width: 100, visible:false },
 		            { field:'FLD_claveint', width: 100, visible:false },
 		            { field:'FLD_AROrec', width: 100, visible:false },
 		            { field:'USU_rec', width: 100, visible:false },
 		            { field:'USU_recibe', width: 100, visible:false },
-		            { field:'motivo', width: 20, visible:false },
+		            { field:'', displayName:'motivo', width: 20, visible:false },
 		            { field:'ARO_porRecibir', width: 100, visible:false },
 		            { field:'FLD_AROent', width: 100, visible:false },
 		            { field:'USU_ent', width: 100, visible:false }
@@ -2154,7 +1958,7 @@ app.controller('consultaFlujoCtrl',function ($scope,$rootScope, find){
 
 
 //busqueda del control de documentos
-app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, DTOptionsBuilder, DTColumnBuilder){
+app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, DTOptionsBuilder, DTColumnBuilder, api, $filter){
 
 	$scope.inicio = function(){
 		$scope.tituloCD = "Control de Documentos";
@@ -2166,6 +1970,16 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
 		$scope.Altaunidades();
 		$scope.productos();
 		$scope.foliosxfecha();
+
+        $scope.filtrado = {
+            EMP_nombrecorto:'',
+            Unidad:'',
+            Fax:'',
+            original:'',
+            Etapa:'',
+            PRO_nombre:'',
+            Situacion:''
+        };
 	}
 
 	//busquedas
@@ -2177,10 +1991,6 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
 
 			$scope.clientes = data;
 
-		 }).error( function (xhr,status,data){
-
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
 		 });
 	}
 
@@ -2190,10 +2000,6 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
 		find.productos().success( function (data) {
 
 			$scope.productosini = data;
-
-		 }).error( function (xhr,status,data){
-
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		 });
 	}
@@ -2206,10 +2012,6 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
 
 			$scope.unidades = data;
 
-		 }).error( function (xhr,status,data){
-
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
 		 });
 	}
 
@@ -2217,159 +2019,36 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
 	$scope.foliosxfecha = function(){
 
 		loading.cargando('Buscando Folio(s)');
+        var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
+        $http.post(api+'controldocumentos/fechas',datos)
+        .success( function (data){
 
-		$http({
-			url:'/documento/api/recepcionfoliosfecha',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data:{fechaini:$scope.fechaini,fechafin:$scope.fechafin}
-		}).success( function (data){
-			        	
-			if(data.respuesta){
-
- 
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
+			if(data){
+                $scope.listado = data;
+            }else{
         		$scope.listado = [];
-
-        	}else{
-
-
-        		$scope.listado = data;
-        		loading.despedida();
-        	}	
-
-		}).error( function (data){
-
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+            }   
+        	loading.despedida();
 
 		});
 
 	}	
-
-	// presiona Folio
-	$scope.presionaFolio = function(evento){
-
-		//contamos la cadena completa
-		var cantidad = $scope.folio.length;
-
-		//los primero cuatro caracteres NO deben ser numeros
-		if(cantidad < 3){
-			if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//los ultimos 6 NO deben ser letras
-		if(cantidad > 3 && cantidad < 9){
-			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//Si son mas de 10 digitos no escribas mas
-		if(cantidad > 9){
-			if (evento.keyCode != 8  && evento.keyCode != 46 ) {
-
-		      	evento.preventDefault();
-		    }      	
-		}
-
-		//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
-		if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-	      	$scope.verificaFolio();
-
-	    }
-
-	}
-
-	// presiona Lesionado
-	$scope.presionaLesionado = function(evento){
-
-		//contamos la cadena completa
-		var cantidad = $scope.lesionado.length;
-
-		//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
-		if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-	      	$scope.foliosxlesionado();
-
-	    }
-
-	}
-
-	$scope.verificaFolio = function(){
-
-
-		if ($scope.folio != '') {
-
-			var totalletras = $scope.folio.length
-
-			var letras = $scope.folio.substr(0,4);
-			var numeros = $scope.folio.substr(4,totalletras);
-
-			if(letras.length < 4 ){
-
-				var faltantes = 4 - letras.length;
-
-				for (var i = 0; i < faltantes; i++) {
-
-					var letra = letras.charAt(i);
-					letras = letras + "0";
-				}
-			}
-
-			if(numeros.length < 6 ){
-
-				var faltantes = 6 - numeros.length;
-
-				for (var i = 0; i < faltantes; i++) {
-					
-					numeros = "0" + numeros;
-				}
-			}
-
-			$scope.folio = letras + numeros;
-
-			$scope.foliosxfolio();
-		}	
-
-	}
 
 	//busqueda de folio especiico
 	$scope.foliosxfolio = function(){
 
 		loading.cargando('Buscando Folio');
 
-		find.recepcionxfolio($scope.folio).success( function (data){
-        	
-        
-        	if(data.respuesta){
-
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
-
-        	}else{
-
-        		$scope.listado = data;
-        		loading.despedida();
-        		$scope.quitafiltro();
-
-        	}
-			//console.log(data);
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		});
-
-
+		var datos = {folio:$scope.folio};
+        $http.post(api+'controldocumentos/folio',datos)
+        .success( function (data){     
+            if(data){
+                $scope.listado = data;
+            }else{
+                $scope.listado = [];
+            }   
+            loading.despedida();
+        });
 
 	}
 
@@ -2378,28 +2057,16 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
 
 		loading.cargando('Buscando Folio(s)');
 
-		find.recepcionxlesionado($scope.lesionado).success( function (data){
-        	
-        	if(data.respuesta){
-
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
-
-        	}else{
-
-        		$scope.listado = data;
-        		loading.despedida();
-
-        	}
-			
-
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		});
+		var datos = {lesionado:$scope.lesionado};
+        $http.post(api+'controldocumentos/lesionado',datos)
+        .success( function (data){     
+            if(data){
+                $scope.listado = data;
+            }else{
+                $scope.listado = [];
+            }   
+            loading.despedida();
+        });
 
 	}
 
@@ -2431,47 +2098,31 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
     	filterOptions: $scope.filterOptions,
     	enableCellEdit: true,
     	columnDefs: [
-                    { field:'Folio', width: 120, pinned: true},
-                    { field:'Lesionado', width: 320 },
-                    { field:'Empresa', width: 90 },
-                    { field:'Unidad', width: 220 },
-                    { field:'Producto', width: 120 },
-		            { field:'Etapa', width: 120 },
-		            { field:'Numero', width: 80 },
-		            { field:'Fax', width: 80 },
-		            { field:'FechaFax', width: 120},
-		            { field:'Original', width: 80 },
-		            { field:'FechaOriginal', width: 120 },
-		            { field:'F.E.', width: 80 },
-		            { field:'FechaF.E.', width: 120 },
-		            { field:'Situacion', width: 120 },
-		            { field:'FechaPago', width: 120 },
-		            { field:'FechaCaptura', width: 120 },
-		            { field:'Factura', width: 120 },
-		            { field:'Remesa', width: 120 },
-		            { field:'Escolaridad', width: 120 },
-		            { field:'Cancelado', width: 120 }
+                    { field:'Folio', displayName:'Folio', width: 120, pinned: true},
+                    { field:'DOC_lesionado', displayName:'Lesionado', width: 320 },
+                    { field:'EMP_nombrecorto', displayName:'Empresa', width: 90 },
+                    { field:'Unidad', displayName:'Unidad', width: 220 },
+                    { field:'PRO_nombre', displayName:'Producto', width: 120 },
+		            { field:'Etapa', displayName:'Etapa', width: 120 },
+		            { field:'etapaEntrega', displayName:'Numero', width: 80 },
+		            { field:'Fax', displayName:'Fax', width: 80 },
+		            { field:'FechaFax', displayName:'FechaFax', width: 120},
+		            { field:'Original', displayName:'Original', width: 80 },
+		            { field:'FechaOriginal', displayName:'FechaOriginal', width: 120 },
+		            { field:'FacExp', displayName:'F.E.', width: 80 },
+		            { field:'FechaFacExp', displayName:'FechaF.E.', width: 120 },
+		            { field:'Situacion', displayName:'Situacion', width: 120 },
+		            { field:'FechaPago', displayName:'FechaPago', width: 120 },
+		            { field:'FechaCaptura', displayName:'FechaCaptura', width: 120 },
+		            { field:'DOC_factura', displayName:'Factura', width: 120 },
+		            { field:'DOC_remesa', displayName:'Remesa', width: 120 },
+		            { field:'ESC_nombre', displayName:'Escolaridad', width: 120 },
+		            { field:'Cancelado', displayName:'Cancelado', width: 120 }
         ],
         showFooter: true,
         showFilter:false
     };
     
-    ///guardamos los archivos que se van filtrando
-    $scope.$on('ngGridEventRows', function (newFilterText){
-
-    	// console.log(newFilterText);
-    	
-    	var filas = newFilterText.targetScope.renderedRows;
-
-    	$scope.exportables = [];
-
-    	angular.forEach(filas , function(item){
-    		$scope.exportables.push(item.entity);
-    	});
-
-    	// console.log($scope.exportables);
-
-    });
 
     $scope.filtra = function(){
 
@@ -2481,21 +2132,29 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
 
     	if($scope.unidad == undefined || $scope.unidad == 0){
     		var objeto1 = "";
+            $scope.filtrado.Unidad = '';
     	}else{
     		var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
+            $scope.filtrado.Unidad = $scope.unidad.nombre;
     		
     	}
     	if($scope.cliente == undefined || $scope.cliente == 0){
     		var objeto2 = "";
+            $scope.filtrado.EMP_nombrecorto = '';
     	}else{
     		var objeto2 = "Empresa:" + $scope.cliente.nombre + "; ";
+            $scope.filtrado.EMP_nombrecorto = $scope.cliente.nombre;
     	}
     	if($scope.tipo == 'Fax'){
     		var objeto3 = "Fax:x; ";
+            $scope.filtrado.Fax = 'x';
     	}else if($scope.tipo == 'Original'){
     		var objeto3 = "Original:x; ";
+            $scope.filtrado.Original = 'x';
     	}else{
     		var objeto3 = "";
+            $scope.filtrado.Original = '';
+            $scope.filtrado.Fax = '';
     	}
 
     	if($scope.folio.length == 0){
@@ -2512,8 +2171,10 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
 
     	if($scope.producto == undefined || $scope.producto == 0){
     		var objeto6 = "";
+            $scope.filtrado.PRO_nombre = '';
     	}else{
     		var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
+            $scope.filtrado.PRO_nombre = $scope.producto.nombre;
     		
     	}
 
@@ -2521,8 +2182,15 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
     		var objeto7 = "";
     	}else{
     		var objeto7 = "Etapa:" + $scope.etapa + "; ";
-    		
+            $scope.filtrado.Etapa = $scope.etapa;
     	}
+
+        if($scope.situacion == undefined || $scope.situacion == 0){
+            var objeto7 = "";
+        }else{
+            var objeto7 = "Situacion:" + $scope.situacion + "; ";
+            $scope.filtrado.Situacion = $scope.situacion;
+        }
 
 
     	var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7;
@@ -2540,7 +2208,24 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
     	$scope.cliente = 0;
     	$scope.folio = '';
     	$scope.lesionado = '';
+        $scope.filtrado = {
+            EMP_nombrecorto:'',
+            Unidad:'',
+            Fax:'',
+            original:'',
+            Etapa:'',
+            PRO_nombre:'',
+            Situacion:''
+        };
     
+    }
+
+
+    $scope.exporta = function(){
+
+        $scope.selectos = $filter('filter')($scope.listado, $scope.filtrado);
+        console.log($scope.selectos);
+        $http.post(api+'reportes/controldocumentos',$scope.selectos);
     }
 
 });

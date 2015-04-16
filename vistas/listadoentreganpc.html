@@ -7,7 +7,7 @@
 		<legend>Filtro</legend>
 		<div class="row">
 			<div class="col-md-3">
-				<input type="text" ng-model="folio" class="form-control" ng-keydown="presionaFolio" ng-change="filtra()" placeholder="Folio" capitalize>
+				<input type="text" ng-model="folio" class="form-control" ng-change="filtra()" folio>
 			</div>
 			<div class="col-md-3">
 				<select class="form-control"  ng-change="filtra()"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes">
@@ -33,7 +33,7 @@
 	<div class="gridStyle" ng-grid="gridOptions"></div>
 
 	<br>
-	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
+	<div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
 	<div class="row">
 		<div class="col-md-3">
 			<button type="button" id="boton" data-loading-text="Procesando..." ng-show="selectos.length > 0" ng-click="eliminaNPC()" class="btn btn-warning icon-close"> Quitar Folios Seleccionados</button>

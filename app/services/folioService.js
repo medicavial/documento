@@ -13,35 +13,35 @@ app.factory("checkFolios", function($q,$http,find, api){
             angular.forEach(folios,function (folio){
 
                 var documento = folio;
-
                 //Si es Etapa 2 o 3 y Etapa 1 no esta capturada
-                if(documento.Etapa > 1 && documento.CapEt2 == 0){
-                    foliosIn.push({msg:'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede entregar debido a que la etapa 1 no esta capturada'});
+                if(documento.FLD_etapa > 1 && documento.CapEt2 == 0){
+                    foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede entregar debido a que la etapa 1 no esta capturada'});
                 }
                 //Si se envia a Facturación y no es original ó ya fue enviado anteriormente manda mensaje de error
                 //se agrego indexof(busca el contenido que se ponga aqui) por que javascript no soporta muchos && y || en un mismo if 
-                else if( (documento.FaxOrigianl.indexOf('O') == -1  && areaRecibe == 5) || (areaRecibe == 5 && documento.FLD_AROent == 5 && documento.USU_ent != 'null')||(areaRecibe == 5 && documento.EnvFac == 'SI' && documento.Etapa == 1) ){
-                    foliosIn.push({msg:'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede enviar a Facturación debido a que no es etapa 1 o ya fue mandado'});
+                else if( (documento.FLD_formaRecep.indexOf('O') == -1  && areaRecibe == 5) || (areaRecibe == 5 && documento.FLD_AROent == 5 && documento.USU_ent != 'null')||(areaRecibe == 5 && documento.EnvFac == 'SI' && documento.FLD_etapa == 1) ){
+                    foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede enviar a Facturación debido a que no es etapa 1 o ya fue mandado'});
                 }
 
                 //Si se envia a Facturación y no es etapa 1
-                else if(areaRecibe == 5 && documento.Etapa > 1) {
-                    foliosIn.push({msg:'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede enviar a Facturación debido a que no es etapa 1'});
+                else if(areaRecibe == 5 && documento.FLD_etapa > 1) {
+                    foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede enviar a Facturación debido a que no es etapa 1'});
                 }
 
                 //Si se envia a Facturación y no es mesa de control
                 else if(areaRecibe == 5 && areaEntrega != 4) {
-                    foliosIn.push({msg:'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede enviar a Facturación tu usuario no tiene permisos'});
+                    foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede enviar a Facturación tu usuario no tiene permisos'});
                 }
 
                 //Si se envia a pagos y no es original 
-                else if(areaRecibe == 6 && documento.EnvFac != 'SI' && documento.Etapa == 1) {
 
-                    if(!confirm('El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se a enviado a Facturación. ¿Desea proseguir?')){                         
+                else if(areaRecibe == 6 && documento.EnvFac.indexOf('SI') == -1 && documento.FLD_etapa == 1) {
+
+                    if(confirm('El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se a enviado a Facturación. ¿Desea proseguir?')){                         
                         //si es facturacion agrega un juego mas al flujo
-                        foliosIn.push({msg:'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puedo enviar a Facturación por que no es original'});
-                    }else{
                         foliosVal.push(documento);
+                    }else{
+                        foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puedo enviar a Facturación por que no es original'});
                     }
 
                 }else{
@@ -65,9 +65,9 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                     //Si se envia a Facturación y es mesa de control
                     if(areaRecibe == 5 && areaEntrega == 4) {
-                        var ruta = '/documento/api/altaentrega';
+                        var ruta = api+'flujo/alta';
                     }else{
-                        var ruta = '/documento/api/actualizaentrega';                    
+                        var ruta = api+'flujo/actualiza';                    
                     }
 
                     //armamos la estructura de nuestros datos a enviar
@@ -94,8 +94,10 @@ app.factory("checkFolios", function($q,$http,find, api){
                     });
                     
                 }else{
+
                     resultado.respuesta = 'No se generó ninguna entrega';
                     promesa.resolve(resultado);
+
                 }
 
             });
@@ -273,7 +275,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     rechazos:respuesta[1]
                 }
 
-                $http.post('/documento/api/eliminaentrega/'+ usuario,folios_validos).success(function (data){
+                $http.post(api+'flujo/elimina',folios_validos).success(function (data){
                     resultado.respuesta = data.respuesta;
                     promesa.resolve(resultado);
                 }).error(function (data){
@@ -432,12 +434,12 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                     //Como no ninguna atencion registrada en sql server buscamos en web 
 
-                    datos.cliente = String(web.Cia_claveMV);
+                    datos.cliente = web.Cia_claveMV ? String(web.Cia_claveMV) : web.Cia_claveMV;
                     datos.lesionado = web.Exp_completo;
-                    datos.unidadref = String(web.UNI_claveMV);
-                    datos.unidad = String(web.UNI_claveMV);
-                    datos.producto = String(web.Pro_claveMV);
-                    datos.escolaridad = String(web.Esc_claveMV);
+                    datos.unidadref = web.UNI_claveMV ? String(web.UNI_claveMV) : web.UNI_claveMV;
+                    datos.unidad = web.UNI_claveMV ? String(web.UNI_claveMV) : web.UNI_claveMV;
+                    datos.producto = web.Pro_claveMV ? String(web.Pro_claveMV) : web.Pro_claveMV;
+                    datos.escolaridad = web.Esc_claveMV ? String(web.Esc_claveMV) : web.Esc_claveMV;
 
                     datos.label2 = 'NO SE RECIBIO FAX';
                     datos.label3 = 'NO ES FAC. EXPRESS';
@@ -451,6 +453,32 @@ app.factory("checkFolios", function($q,$http,find, api){
 
             });
 
+            return promesa.promise;
+        },
+        aceptaEntrega:function(folios){
+            return $http.post(api+'entregas/acepta',folios);
+        },
+        rechazaEntrega:function(folios, usuario){
+            var promesa = $q.defer(),
+                foliosIn = [];
+
+            //verificamos los folios enviados para ver si hay algun error 
+            angular.forEach(folios,function (folio){ 
+                folio.USU_rec = usuario;
+                folio.FLD_motivo = prompt("Escribe motivo de rechazo para el folio " + folio.PAS_folio,"Falto ");
+                foliosIn.push(folio);
+            });
+            
+            //verifica que ya haya terminado para mandarlos el $q detecta cuando no se hayan efectuado cambios en los arreglos 
+            $q.all(foliosIn).then(function (foliosgenerados){
+
+                $http.post(api+'entregas/rechaza',foliosgenerados)
+                .success(function (data){
+                    promesa.resolve(data);
+                });
+
+            });
+            
             return promesa.promise;
         }
     }
@@ -491,12 +519,14 @@ app.factory("carga", function($q,$http,find,api){
 
             var promesa        = $q.defer(),
                 activos        = $http.get(api+'flujo/activos/'+usuario),
+                recepcion      = $http.get(api+'flujo/recepcion/'+usuario),
                 rechazos       = $http.get(api+'flujo/rechazos/'+usuario);
 
-            $q.all([activos,rechazos]).then(function(data) {
+            $q.all([activos,rechazos,recepcion]).then(function(data) {
                 var datos = {
                     activos:data[0].data,
-                    rechazos:data[1].data
+                    rechazos:data[1].data,
+                    recepcion:data[2].data
                 }
                 promesa.resolve(datos);
 

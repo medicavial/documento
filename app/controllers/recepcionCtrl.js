@@ -9,7 +9,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		$scope.limpia();
 		$scope.cargaInfo();
 	}
-
+	
 	$scope.limpia = function(){
 		$scope.FaxOriginal = true;
 		$scope.push = false;
@@ -52,10 +52,9 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	//carga todos los folios del area activos y rechazados por usuario
 	$scope.cargaFlujo = function(){
 
-
-		$scope.mensaje = '';
-
 		carga.flujo($rootScope.id).then(function (data){
+
+			$scope.mensaje = '';
 			// console.log(data);
 			if(data.activos){
         		$scope.listado = data.activos;
@@ -211,7 +210,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	/////////Inicia proceso de guardado 
 
 	///Proceso de guardado ya sea de fax u original
-	$scope.mandadatos = function(){
+	$scope.guardaDatos = function(){
 
 		if ($scope.formOriginal.$valid) {
 
@@ -233,6 +232,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 					};
 
 					alta.success(function (data){
+
 						$('#boton2').button('reset');
 						$scope.mensaje = data.respuesta;
 					    $scope.tipoalerta = 'alert-success';
@@ -262,44 +262,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	}
 
 	//Guarda los datos de Original
-	$scope.guardaOriginal = function(){
-
-		$scope.original.remesa = $scope.remesa + "-" + $scope.label1;
-		$scope.original.unidad = $scope.unidadref;//iguala al valor del select por si hubo cualquier cambio 
-
-		//Verificamos si se asigno escolaridad en caso de ser AXA el cliente
-		checkFolios.preparaGuardado($scope.original, $scope.esoriginal, $scope.esfax, $scope.esfe)
-		.then(function (data){
-			console.log(data);
-			//actualiza folio (solo original)
-			// if (data.agregaOriginal) {
-			// 	var alta = $http.post('/documento/api/altafoliooriginal',data.info)
-
-			// //agrega folio (solo original)
-			// }else if (data.actualizaOriginal) {
-			// 	var alta = $http.post('/documento/api/actualizaoriginal',data.info)
-			// };
-
-			// alta.success(function (data){
-			// 	$('#boton2').button('reset');
-			// 	$scope.mensaje = data.respuesta;
-			//     $scope.tipoalerta = 'alert-success';
-			//     $scope.limpiaVariables();
-			//     $scope.original.folio = '';
-			//     $('#folioO').focus();
-			// })
-			// .error(function (data){
-			// 	$('#boton2').button('reset');
-			// 	alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-			// });
-
-		},
-		function (error){
-			$scope.mensaje = error.mensaje;
-			$scope.tipoalerta = error.tipoalerta;
-			$('#boton2').button('reset');
-		});
-	}
 
 	/////////Termina proceso de guardado 
 
@@ -330,76 +292,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 		}
 	}
-	//aqui termina 
-
-	
-	//Busqueda de folios x area
-	$scope.foliosxarea = function(){
-
-		$('#busca2').button('loading');
-		loading.cargando('Buscando Folio');
-
-		find.foliosxArea($rootScope.area).success( function (data){
-        	
-        	if(data.respuesta){
-
-        		$('#busca2').button('reset');
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
-
-        	}else{
-
-        		$('#busca2').button('reset');
-        		$scope.listado = data;
-        		loading.despedida();
-        	}
-			
-			//console.log(data);
-		}).error( function (xhr,status,data){
-
-			$('#busca2').button('reset');
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		});
-	}
-
-	//busqueda de folios por fecha
-	$scope.foliosxfecha = function(){
-
-		loading.cargando('Buscando Folio');
-
-		$http({
-			url:'/documento/api/folioactivoareafecha',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data:{area:$rootScope.area,fechaini:$scope.fechaini,fechafin:$scope.fechafin}
-		}).success( function (data){
-			        	
-			if(data.respuesta){
-
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
-
-        	}else{
-
-
-        		$scope.listado = data;
-        		loading.despedida();
-        	}	
-
-		}).error( function (data){
-
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		});
-	}	
-
-	
 
 	//enlista los usuarios de cada area 
 	$scope.altausuariosarea = function(area){
@@ -409,7 +301,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			alert('No puedes emitir entregas a tu misma area');
 			$scope.areaOp = '';
 			
-		}else if($rootScope.area == 5){
+		}else if(area == 5){
 
 			alert('No puedes emitir entregas a facturacion tu usuario no tiene permisos');
 			$scope.areaOp = '';
@@ -425,6 +317,10 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		}
 	}
 
+	//aqui termina 
+
+	
+
 	//guardamos pero antes verificamos que tengamos documentos seleccionados
 	$scope.entrega = function(){
 
@@ -437,16 +333,24 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 			promesa.then(
 				function (data){
+
+					
+					
 					$scope.mensaje = data.respuesta;
 					$scope.tipoalerta = 'alert-success';
-					$scope.cargaEntrada();
+					$scope.cargaFlujo();
 					$('#boton').button('reset');
 					if (data.rechazos.length > 0) {
-						$scope.rechazos = data.rechazos;
+						$rootScope.rechazos = data.rechazos;
 						console.log($scope.rechazos);
 						$('#myModal3').modal();
 					};
+
+					$scope.gridOptions.$gridScope.toggleSelectAll(false);
+
 				},function (error){
+
+					$('#boton').button('reset');
 					$scope.mensaje = error;
 					$scope.tipoalerta = 'alert-warning';
 				}

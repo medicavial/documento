@@ -32,7 +32,7 @@ app.factory("find", function($http,api){
             return $http.get('/documento/api/folioactivoareafecha/'+area+"/"+fechaini+"/"+fechafin);
         },
         listadoentrega:function(usuario){
-            return $http.get('/documento/api/listaentrega/'+usuario);
+            return $http.get(api+'flujo/entregas/'+usuario);
         },
         listadofolio:function(folio){
             return $http.get('/documento/api/listaflujo/'+folio);
@@ -41,16 +41,16 @@ app.factory("find", function($http,api){
             return $http.get('/documento/api/listageneral/'+usuario);
         },
         listadogeneralnpc:function(usuario){
-            return $http.get('/documento/api/listageneralnpc/'+usuario);
+            return $http.get(api+'flujo/npc/'+usuario);
         },
         listadopagos:function(){
             return $http.get('/documento/api/listapagos');
         },
         listadorecepcion:function(usuario){
-            return $http.get('/documento/api/listarecepcion/'+usuario);
+            return $http.get(api+'flujo/recepcion/'+usuario);
         },
         listadorechazos:function(usuario){
-            return $http.get('/documento/api/listarechazos/'+usuario);
+            return $http.get(api+'flujo/rechazos/'+usuario);
         },
         listatickets:function(interno){
             return $http.get('/documento/api/listatickets/'+interno);
@@ -92,7 +92,7 @@ app.factory("find", function($http,api){
             return $http.get('/documento/api/unidadesweb');
         },
         usuariosarea:function(area){
-            return $http.get('/documento/api/usuariosarea/'+area);
+            return $http.get(api+'consulta/usuarios/'+area);
         },
         usuariosweb:function(area){
             return $http.get('/documento/api/usuariosweb');

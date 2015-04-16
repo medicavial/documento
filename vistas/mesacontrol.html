@@ -10,16 +10,17 @@
 	        <a href="#/listadoRecepcion/mesacontrol">
 	            <span class="icon-box-add"></span>
 	        </a>
+	        
 	    </li>
 		
-		<li class="rb-span-1" id="color3">
+		<!-- <li class="rb-span-1" id="color3">
 
 	        <h3>Traspasos</h3>
 	        <a href="#/traspasos/mesacontrol">
 	            <span class="icon-enter"></span>
 	        </a>
-	    </li>
-
+	    </li> -->
+		
 	    <li class="rb-span-1" id="color3">
 
 	        <h3>Rechazos<span ng-show=" rechazados > 0 " class="push">{{rechazados}}</span></h3>
@@ -27,6 +28,7 @@
 	            <span class=" icon-cancel-circle"></span>
 	        </a>
 	    </li>
+
 	    <li class="rb-span-1" id="color3">
 
 	        <h3>Entregas Efectuada</h3>
@@ -48,7 +50,7 @@
 		<div class="col-md-3">
 			<fieldset>
 				<legend>Folio</legend>
-				<input type="text" ng-model="folio" class="form-control" ng-keydown="presionaFolio" ng-change="filtra()" capitalize>
+				<input type="text" ng-model="folio" class="form-control" ng-change="filtra()" folio>
 			</fieldset>
 		</div>
 		<div class="col-md-5">
@@ -140,7 +142,7 @@
 		</form>
 	</div>
 	<br>
-	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert alert-success animate-show">{{mensaje}}</div>
+	<div ng-show="mensaje" ng-class="tipoalerta" class="alert alert-success animate-show">{{mensaje}}</div>
 	<br>
 	<br>
 </div>
