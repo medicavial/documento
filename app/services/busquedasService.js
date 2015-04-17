@@ -44,7 +44,7 @@ app.factory("find", function($http,api){
             return $http.get(api+'flujo/npc/'+usuario);
         },
         listadopagos:function(){
-            return $http.get('/documento/api/listapagos');
+            return $http.get(api+'/flujopagos/general');
         },
         listadorecepcion:function(usuario){
             return $http.get(api+'flujo/recepcion/'+usuario);

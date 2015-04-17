@@ -1,5 +1,5 @@
 /// Facturas qualitas
-app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, loading){
+app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, loading,api){
 
 	$scope.inicio = function(){
 		$scope.tituloFQ = "Formato de Facturas Qualitas";
@@ -34,35 +34,18 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
 		$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 		console.log($scope.datos);
 
-		$http({
-			url:'/documento/api/facturasQualitas',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin,producto:$scope.producto}
-		}).success( function (data){
+		$http.post(api+'qualitas/sinprocesar', $scope.datos).success( function (data){
 			 
-			console.log(data)
-			if(data.respuesta){
-
-        	
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
-
-        	}else{
-
-  
+			console.log(data);
+			if(data){
         		$scope.listado = data;
         		$scope.cantidad = data.length -1;
-        		loading.despedida();
+        	}else{
+        		$scope.listado = [];
         	}
+    		
+    		loading.despedida();
 			
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
 		});
 
 	}

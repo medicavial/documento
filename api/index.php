@@ -2722,12 +2722,10 @@ $app->post('/facturasQualitasVerifica', function(){
 	$incorrectos = array();
 	$archivos = array();
 	$correctos = array();
-
-
+	
 	$Dia = date('d');
 	$Mes = date('m');
 	$Anyo = date('Y');
-
 
     $conexion = conectarActual();
 
@@ -2743,12 +2741,6 @@ $app->post('/facturasQualitasVerifica', function(){
 		$fechacarpeta =  $Dia . "-" . $Mes . "-" . $Anyo;
 		$filename = "./facturas/archivo-". $fechacarpeta . "-". $clave . ".zip";
 		$carpetaexporta = "api/facturas/archivo-". $fechacarpeta . "-". $clave . ".zip";
-
-		// if (file_exists($filename)) {
-
-		// 	if(unlink($filename)){
-		// 	};
-		// }
 
 		$zip = new ZipArchive();
 		$zip->open($filename, ZipArchive::CREATE);

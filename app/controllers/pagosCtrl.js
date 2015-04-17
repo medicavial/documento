@@ -1,5 +1,5 @@
 //flujo de pagos general
-app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http){
+app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http, api){
 
 
 	$scope.inicio = function(){
@@ -7,9 +7,6 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
 		$rootScope.area = 6;
 		$scope.tituloFP = "Flujo de Pagos";
 
-		$scope.empresas();
-		$scope.Altaunidades();
-		$scope.productos();
 		$scope.fechainiPag = primerdiames;
     	$scope.fechafinPag = FechaAct;
     	$scope.fechainiRec = FechaAct;
@@ -20,6 +17,9 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
 		$scope.cargar = false;
 		$scope.buscarXfecha = 0;
 
+		$scope.empresas();
+		$scope.Altaunidades();
+		$scope.productos();
 		$scope.foliosXfecha('Pagos');
 
 	}
@@ -63,37 +63,21 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
 	$scope.foliosXfecha = function(tipo){
 
 		loading.cargando('Buscando Folio');
-
-		// var fechaini = '';
-		// var fechafin = '';
-
 		//valida el campo de fecha en caso de que alguno este lleno y el otro no
 
 		if (tipo == 'Pagos') {
 
-			// if ($scope.fechainiPag == '' && $scope.fechafinPag != '') {
-			// 	$scope.fechainiPag = $scope.fechafinPag;
-			// }else if ($scope.fechafinPag == '' && $scope.fechafinPag != '') {
-			// 	$scope.fechafinPag = $scope.fechainiPag;
-			// };
-
 			fechaini = $scope.fechainiPag;
 			fechafin = $scope.fechafinPag;
 
-			var url="/documento/api/listapagosfechas"
+			var url = api + "flujopagos/fecharecepcion";
 
 		}else{
-
-			// if ($scope.fechainiRec == '' && $scope.fechafinRec != '') {
-			// 	$scope.fechainiRec = $scope.fechafinRec;
-			// }else if ($scope.fechafinRec == '' && $scope.fechafinRec != '') {
-			// 	$scope.fechafinRec = $scope.fechainiRec;
-			// };
 
 			fechaini = $scope.fechainiRec;
 			fechafin = $scope.fechafinRec;
 
-			var url="/documento/api/listapagosfechasrecepcion"
+			var url = api + "flujopagos/fechapagos";
 
 		};
 
@@ -101,35 +85,18 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
 		$scope.datos = {fechaini:fechaini,fechafin:fechafin};
 		console.log($scope.datos);
 
-		$http({
-			url:url,
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data:$scope.datos
-		}).success( function (data){
+		$http.post(url,$scope.datos).success( function (data){
 			  
-			if(data.respuesta){
-
-        	
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
-
-        	}else{
-
-  
+			if(data){
         		$scope.listado = data;
         		$scope.cantidad = data.length -1;
-        		loading.despedida();
         		$scope.buscarXfecha = 1;
+        	}else{ 
+        		$scope.listado = [];
         	}
+    		
+    		loading.despedida();
 			
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
 		});
 
 	}
@@ -149,6 +116,7 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
 			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		 });
+
 	}
 
 	//busca productos
@@ -163,6 +131,7 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
 			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		 });
+
 	}
 
 
@@ -178,6 +147,7 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
 			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		 });
+
 	}
 
 	//////LLena el grid y toma filtros
@@ -234,18 +204,6 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
         showFooter: true,
         showFilter:false
     };
-
-    $scope.$on('ngGridEventRows', function (newFilterText){
-
-    	var filas = newFilterText.targetScope.renderedRows;
-
-    	$scope.exportables = [];
-
-    	angular.forEach(filas , function(item){
-    		$scope.exportables.push(item.entity);
-    	});
-
-    });
 
     $scope.filtra = function(){
 
@@ -360,7 +318,7 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
 });
 
 //Area de pagos
-app.controller('pagosCtrl',function ($scope, $rootScope, find , loading, $http, barra){
+app.controller('pagosCtrl',function ($scope, $rootScope, find , loading, $http, barra, api){
 
 	$scope.inicio = function(){
 		barra.inicia();
@@ -370,9 +328,6 @@ app.controller('pagosCtrl',function ($scope, $rootScope, find , loading, $http, 
 		$scope.rechazados = 0;
 		$scope.recibidos = 0;
 
-		$scope.empresas();
-		$scope.Altaunidades();
-		$scope.productos();
 		$scope.fechainiPag = primerdiames;
     	$scope.fechafinPag = FechaAct;
     	$scope.fechainiRec = FechaAct;
@@ -382,6 +337,10 @@ app.controller('pagosCtrl',function ($scope, $rootScope, find , loading, $http, 
 		$scope.relacion = '';
 		$scope.cargar = false;
 		$scope.buscarXfecha = 0;
+
+		$scope.empresas();
+		$scope.Altaunidades();
+		$scope.productos();
 
 		$scope.foliosXfecha('Pagos');
 		$scope.Altarechazados();
@@ -445,37 +404,21 @@ app.controller('pagosCtrl',function ($scope, $rootScope, find , loading, $http, 
 	$scope.foliosXfecha = function(tipo){
 
 		loading.cargando('Buscando Folio');
-
-		// var fechaini = '';
-		// var fechafin = '';
-
 		//valida el campo de fecha en caso de que alguno este lleno y el otro no
 
 		if (tipo == 'Pagos') {
 
-			// if ($scope.fechainiPag == '' && $scope.fechafinPag != '') {
-			// 	$scope.fechainiPag = $scope.fechafinPag;
-			// }else if ($scope.fechafinPag == '' && $scope.fechafinPag != '') {
-			// 	$scope.fechafinPag = $scope.fechainiPag;
-			// };
-
 			fechaini = $scope.fechainiPag;
 			fechafin = $scope.fechafinPag;
 
-			var url="/documento/api/listapagosfechas"
+			var url = api + "flujopagos/fecharecepcion";
 
 		}else{
-
-			// if ($scope.fechainiRec == '' && $scope.fechafinRec != '') {
-			// 	$scope.fechainiRec = $scope.fechafinRec;
-			// }else if ($scope.fechafinRec == '' && $scope.fechafinRec != '') {
-			// 	$scope.fechafinRec = $scope.fechainiRec;
-			// };
 
 			fechaini = $scope.fechainiRec;
 			fechafin = $scope.fechafinRec;
 
-			var url="/documento/api/listapagosfechasrecepcion"
+			var url = api + "flujopagos/fechapagos";
 
 		};
 
@@ -483,35 +426,18 @@ app.controller('pagosCtrl',function ($scope, $rootScope, find , loading, $http, 
 		$scope.datos = {fechaini:fechaini,fechafin:fechafin};
 		console.log($scope.datos);
 
-		$http({
-			url:url,
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data:$scope.datos
-		}).success( function (data){
+		$http.post(url,$scope.datos).success( function (data){
 			  
-			if(data.respuesta){
-
-        	
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
-
-        	}else{
-
-  
+			if(data){
         		$scope.listado = data;
         		$scope.cantidad = data.length -1;
-        		loading.despedida();
         		$scope.buscarXfecha = 1;
+        	}else{ 
+        		$scope.listado = [];
         	}
+    		
+    		loading.despedida();
 			
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
 		});
 
 	}
@@ -567,16 +493,11 @@ app.controller('pagosCtrl',function ($scope, $rootScope, find , loading, $http, 
 
 		find.listadorechazos($rootScope.id).success( function (data) {
 			
-			console.log(data);
-			if(data.respuesta){
-        		$scope.rechazados = 0;
-        	}else{
+			if(data){
         		$scope.rechazados = data.length;
+        	}else{
+        		$scope.rechazados = 0;
         	}
-
-		 }).error( function (xhr,status,data){
-
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		 });
 	}

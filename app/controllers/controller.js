@@ -20,22 +20,6 @@ function decimal(e, field) {
 
 }
 
-var tableToExcel = (function() {
-  var uri = 'data:application/vnd.ms-excel;base64,'
-    , template = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-microsoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:ExcelWorksheet><x:Name>{worksheet}</x:Name><x:WorksheetOptions><x:DisplayGridlines/></x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></xml><![endif]--></head><body><table>{table}</table></body></html>'
-    , base64 = function(s) { return window.btoa(unescape(encodeURIComponent(s))) }
-    , format = function(s, c) { return s.replace(/{(\w+)}/g, function(m, p) { return c[p]; }) }
-  return function(table, name) {
-
-    if (!table.nodeType) table = document.getElementById(table)
-
-    	// console.log(table.innerHTML);
-
-    var ctx = {worksheet: name || 'Worksheet', table: table.innerHTML}
-    window.location.href = uri + base64(format(template, ctx))
-  }
-})()
-
 
 function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
@@ -1958,7 +1942,7 @@ app.controller('consultaFlujoCtrl',function ($scope,$rootScope, find){
 
 
 //busqueda del control de documentos
-app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, DTOptionsBuilder, DTColumnBuilder, api, $filter){
+app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, api, $filter, reportes){
 
 	$scope.inicio = function(){
 		$scope.tituloCD = "Control de Documentos";
@@ -2027,7 +2011,9 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
                 $scope.listado = data;
             }else{
         		$scope.listado = [];
-            }   
+            } 
+
+            $scope.quitafiltro();  
         	loading.despedida();
 
 		});
@@ -2046,7 +2032,8 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
                 $scope.listado = data;
             }else{
                 $scope.listado = [];
-            }   
+            }  
+            $scope.quitafiltro(); 
             loading.despedida();
         });
 
@@ -2059,12 +2046,14 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
 
 		var datos = {lesionado:$scope.lesionado};
         $http.post(api+'controldocumentos/lesionado',datos)
-        .success( function (data){     
+        .success( function (data){   
+
             if(data){
                 $scope.listado = data;
             }else{
                 $scope.listado = [];
             }   
+            $scope.quitafiltro();
             loading.despedida();
         });
 
@@ -2186,14 +2175,14 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
     	}
 
         if($scope.situacion == undefined || $scope.situacion == 0){
-            var objeto7 = "";
+            var objeto8 = "";
         }else{
-            var objeto7 = "Situacion:" + $scope.situacion + "; ";
+            var objeto8 = "Situacion:" + $scope.situacion + "; ";
             $scope.filtrado.Situacion = $scope.situacion;
         }
 
 
-    	var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7;
+    	var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7 + objeto8;
 
     	$scope.filterOptions.filterText = filtro;
 
@@ -2223,9 +2212,10 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, D
 
     $scope.exporta = function(){
 
+        $('#boton').button('loading');
         $scope.selectos = $filter('filter')($scope.listado, $scope.filtrado);
-        console.log($scope.selectos);
-        $http.post(api+'reportes/controldocumentos',$scope.selectos);
+        reportes.descargar($scope.selectos);
+        
     }
 
 });
