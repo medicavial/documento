@@ -237,10 +237,8 @@ app.factory("checkFolios", function($q,$http,find, api){
                 }
 
             }//se cierra donde verificamos si un nuevo registro
-
-
-
             return promesa.promise;
+
         },
         enviaRechazos:function(folios, area, usuario){
 
@@ -538,241 +536,90 @@ app.factory("carga", function($q,$http,find,api){
 });
 
 
-//funcion para convertir a folios validos
-app.directive('folio', function() {
-    return {
-        restrict: 'A',
-        require: 'ngModel',
-        link: function(scope, element, attrs, modelCtrl) {
 
-            //var functionToCall = scope.$eval(attrs.folio);
+//servicio de chekeo de folios para las cargar busquedas por bloque y carga informacion del flujo
+//por usuario
+app.factory("qualitas", function($q,$http,find,api){
+    return{
+        actualiza:function(envio,datos){
+            console.log(datos);
+            return $http.post(api+'qualitas/actualiza/'+ envio, datos);
+        },
+        envios:function(datos){
+            return $http.post(api+'qualitas/envios', datos);
+        },
+        enviaRechazos:function(datos){
+            return $http.post(api+'qualitas/rechazos', datos);
+        },
+        detalleEnvio:function(dato){
+            var promesa = $q.defer(),
+                folios  = [];
 
-            //funcion que rellena folios 
-            var rellenaFolio = function(folio){
+            $http.get(api + 'qualitas/envios/' + dato.ENQ_claveint).success(function (data){
 
-                if (folio != '') {
+                //console.log(dato.ENQ_procesado);
 
-                    var totalletras = folio.length;
+                // promesa.resolve(data);
+                if(dato.ENQ_procesado == 1){
 
-                    var letras = folio.substr(0,4);
-                    var numeros = folio.substr(4,totalletras);
+                    angular.forEach(data,function (folio){
+                        if (folio.procesado == 1) {
+                            folios.push(folio);
+                        };
+                    });
 
-                    if(letras.length < 4 ){
-
-                        var faltantes = 4 - letras.length;
-
-                        for (var i = 0; i < faltantes; i++) {
-
-                          var letra = letras.charAt(i);
-                          letras = letras + "0";
-                        }
-                    }
-
-                    if(numeros.length < 6 ){
-
-                        var faltantes = 6 - numeros.length;
-
-                        for (var i = 0; i < faltantes; i++) {
-                          
-                          numeros = "0" + numeros;
-                        }
-                    }
-
-                    folio = letras + numeros;
-
-                    return folio;
+                    $q.when(folios).then(function (data){
+                        promesa.resolve(data);
+                    });
 
                 }else{
 
-                    return folio
-
+                    promesa.resolve(data);
                 }
-            }
 
-            element.on('blur',function(){
-
-                if (modelCtrl.$modelValue.length > 3) {
-                    var nuevo = rellenaFolio(modelCtrl.$modelValue);
-                    modelCtrl.$setViewValue(nuevo.toUpperCase());
-                    modelCtrl.$render();
-                    scope.$apply();
-                };
 
             });
 
-            element.on('keydown', function(e){
+            return promesa.promise;
 
-                if (modelCtrl.$modelValue) {
+        },
+        incompletos:function(datos){
+            return $http.post(api+'qualitas/incompletos', datos);
+        },
+        invalidos:function(datos){
+            return $http.post(api+'qualitas/invalidos', datos);
+        },
+        sinArchivo:function(datos){
+            return $http.post(api+'qualitas/sinarchivo', datos);
+        },
+        sinProcesar:function(datos){
+            return $http.post(api+'qualitas/sinprocesar', datos);
+        },
+        generaEnvio:function(datos){
+            return $http.post(api + 'qualitas/genera', datos);
+        },
+        procesaEnvio:function(datos){
+            return $http.post(api + 'qualitas/procesa', datos);
+        },
+        descargaEnvio:function(archivo){
 
-                    var cantidad = modelCtrl.$modelValue.length;
-
-                    //los primero cuatro caracteres NO deben ser numeros
-                    if(cantidad < 4){
-
-                        if (e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105) {
-                            e.preventDefault();
-                        }else{
-
-                            element.css("text-transform","uppercase");
-
-                        }
-                    //los ultimos 6 NO deben ser letras
-
-                    }else if(cantidad > 3 && cantidad < 10){
-
-                        if (e.keyCode >= 65 && e.keyCode <= 90) {
-                            e.preventDefault();
-                        }else if (e.keyCode == 13) {
-                            // var nextinput = element.next('input');
-                            // nextinput.focus();
-                            var nuevo = rellenaFolio(modelCtrl.$modelValue);
-                            modelCtrl.$setViewValue(nuevo.toUpperCase());
-                            modelCtrl.$render();
-                            scope.$apply();
-
-                        }    
-                              
-                    }else{
-
-                        if ((e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105 ) {
-                            e.preventDefault();
-                        }
-
-                    }
-                    
-                };
-            });
-
-
-
-      }
-
-    };
-    
+            console.log(archivo);
+            var ruta = api + 'reportes/descargar/' + archivo;
+            //this trick will generate a temp <a /> tag
+            var link = document.createElement("a");    
+            link.href = ruta;
+            
+            //set the visibility hidden so it will not effect on your web-layout
+            link.style = "visibility:hidden";
+            link.download = ruta;
+            
+            //this part will append the anchor tag and remove it after automatic click
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+            $('#boton').button('reset');
+        }
+    }
 });
 
-//funcion para convertir a folios validos con acciones que se ejecutan dando enter
-app.directive('folioex', function() {
-    return {
-        restrict: 'A',
-        require: 'ngModel',
-        link: function(scope, element, attrs, modelCtrl) {
 
-            var functionToCall = scope.$eval(attrs.folioex);
-
-            //funcion que rellena folios 
-            var rellenaFolio = function(folio){
-
-                if (folio != '') {
-
-                    var totalletras = folio.length;
-
-                    var letras = folio.substr(0,4);
-                    var numeros = folio.substr(4,totalletras);
-
-                    if(letras.length < 4 ){
-
-                        var faltantes = 4 - letras.length;
-
-                        for (var i = 0; i < faltantes; i++) {
-
-                          var letra = letras.charAt(i);
-                          letras = letras + "0";
-                        }
-                    }
-
-                    if(numeros.length < 6 ){
-
-                        var faltantes = 6 - numeros.length;
-
-                        for (var i = 0; i < faltantes; i++) {
-                          
-                          numeros = "0" + numeros;
-                        }
-                    }
-
-                    folio = letras + numeros;
-
-                    return folio;
-
-                }else{
-
-                    return folio
-
-                }
-            }
-
-            element.on('keydown', function(e){
-
-                if (modelCtrl.$modelValue) {
-
-                    var cantidad = modelCtrl.$modelValue.length;
-
-                    //los primero cuatro caracteres NO deben ser numeros
-                    if(cantidad < 4){
-
-                        if (e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105) {
-                            e.preventDefault();
-                        }else{
-
-                            modelCtrl.$parsers.push(function (inputValue) {
-
-                                if (inputValue){
-                                    var transformedInput = inputValue.toUpperCase();
-                                    if (transformedInput!=inputValue) {
-                                        modelCtrl.$setViewValue(transformedInput);
-                                        modelCtrl.$render();
-                                    }         
-
-                                    return transformedInput; 
-                                }
-                            });
-                        }
-                    //los ultimos 6 NO deben ser letras
-
-                    }else if(cantidad > 3 && cantidad < 10){
-
-                        if (e.keyCode == 9 || e.keyCode == 13) {
-
-                            if (modelCtrl.$modelValue.length > 3) {
-                                var nuevo = rellenaFolio(modelCtrl.$modelValue);
-                                modelCtrl.$setViewValue(nuevo);
-                                modelCtrl.$render();
-                                scope.$apply();
-                                functionToCall(modelCtrl.$modelValue);
-                            };
-
-                        }else if (e.keyCode >= 65 && e.keyCode <= 90) {
-
-                            e.preventDefault();
-
-                        }    
-                              
-                    }else{
-
-                        if (e.keyCode == 13) {
-
-                            if (modelCtrl.$modelValue.length > 3) {
-                                var nuevo = rellenaFolio(modelCtrl.$modelValue);
-                                modelCtrl.$setViewValue(nuevo);
-                                modelCtrl.$render();
-                                scope.$apply();
-                                functionToCall(modelCtrl.$modelValue);
-                            };
-
-                        }else if ((e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105 ) {
-                             e.preventDefault();
-                        }
-
-                    }
-                    
-                };
-            });
-
-
-
-      }
-
-    };
-    
-});

@@ -3247,23 +3247,16 @@ $app->get('/facturasQualitasProcesadas/:envio', function($envio){
 
     $conexion = conectarActual();
 
-    //$conexion = conectarActual();
-
     if(!$conexion) {
 
 	    die('Something went wrong while connecting to MSSQL');
 
 	}else{
 		
-		
-
+	
 		$sql = "EXEC MVQualitasWSenviado @idenvio = $envio";
 
 		$rs= odbc_exec($conexion,$sql);
-
-		// $resultado = odbc_prepare($conexión, $sql);
-		// odbc_setoption($resultado, 2, 0, 350);
-		// $rs = odbc_execute($resultado); 
 
 		$i = 0;
 

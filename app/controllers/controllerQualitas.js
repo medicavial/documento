@@ -1,5 +1,5 @@
 /// Facturas qualitas
-app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, loading,api){
+app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, loading,api , qualitas){
 
 	$scope.inicio = function(){
 		$scope.tituloFQ = "Formato de Facturas Qualitas";
@@ -9,10 +9,8 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
 		$scope.buscafacturas();
 		$scope.productos();
 		$('#modalEx').on('hidden.bs.modal', function (e) {
-
 			$scope.gridOptions.$gridScope.toggleSelectAll(false);
 		 	$scope.buscafacturas();
-
 		});
 	}
 
@@ -26,17 +24,16 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
 		 });
 	}
 
+	//muestra facturas sin procesar
 	$scope.buscafacturas = function(){
 
 		loading.cargando('Buscando Factura(s)');
 
 		//armamos los datos a enviar segun tipo de consulta (tipo)
 		$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
-		console.log($scope.datos);
 
-		$http.post(api+'qualitas/sinprocesar', $scope.datos).success( function (data){
+		qualitas.sinProcesar($scope.datos).success( function (data){
 			 
-			console.log(data);
 			if(data){
         		$scope.listado = data;
         		$scope.cantidad = data.length -1;
@@ -49,6 +46,59 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
 		});
 
 	}
+
+
+	$scope.generarListado = function(){
+
+    	JSONToXLSConvertor($scope.listado, "Facturas", true);
+
+    }
+
+    //genera el archivo una vez verificados
+    $scope.generaarchivos = function(){
+
+    	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
+
+		qualitas.procesaEnvio(datos).success(function (data){
+			console.log(data);
+			JSONToXLSConvertor($scope.listos, "Reporte", true);
+			qualitas.descargaEnvio($scope.ruta);
+		});
+
+    }
+
+    //prepara los folios y busca las imagenes para el envio
+    $scope.generarSelectos = function(){
+
+    	$('#boton').button('loading');
+    	qualitas.generaEnvio($scope.selectos).success( function (data){
+			 
+			if (data.correctos.length == 0) {
+
+				loading.error('No se encontraron archivos de nungun folio');
+
+			}else{
+
+				$scope.total = $scope.selectos.length;
+				$scope.numerocorrectos = data.correctos.length;
+				$scope.compresos = data.comprimidos.length;
+				$scope.incorrectos = data.incorrectos;
+				$scope.correctos = data.correctos;
+				$scope.listos = data.comprimidos;
+				$scope.ruta = data.archivo;
+				$('#modalEx').modal({
+					backdrop:'static',
+					keyboard:false
+				});
+			}
+
+			$('#boton').button('reset');
+			
+		}).error( function (xhr,status,data){
+			$('#boton').button('reset');
+		});
+
+    }
 
 	//////LLena el grid y toma filtros
 
@@ -126,88 +176,6 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
 	$scope.quitaselectos = function(){
 
     	$scope.gridOptions.$gridScope.toggleSelectAll(false);
-    }
-
-
-    $scope.generarListado = function(){
-
-    	JSONToXLSConvertor($scope.listado, "Facturas", true);
-
-    }
-
-    $scope.generaarchivos = function(){
-
-    	$http({
-			url:'/documento/api/facturasQualitasInserta',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: {correctos:$scope.listos,incorrectos:$scope.incorrectos}
-		}).success( function (data){
-			 
-			JSONToXLSConvertor($scope.listos, "Reporte", true);
-    		document.location = $scope.ruta;
-
-    		//$scope.buscafacturas();
-			
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		});
-
-    }
-
-    $scope.generarSelectos = function(){
-
-    	$('#boton').button('loading');
-    	$http({
-			url:'/documento/api/facturasQualitasVerifica',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: $scope.selectos
-		}).success( function (data){
-			 
-			 console.log(data);
-
-			// if (data.incorrectos.length > 0) {
-
-			if (data.correctos.length == 0) {
-
-				loading.error('No se encontraron archivos de nungun folio');
-
-			}else{
-
-				$('#modalEx').modal({
-					backdrop:'static',
-					keyboard:false
-				});
-				$scope.total = $scope.selectos.length;
-				$scope.numerocorrectos = data.correctos.length;
-				$scope.compresos = data.comprimidos.length;
-				$scope.incorrectos = data.incorrectos;
-				$scope.correctos = data.correctos;
-				$scope.listos = data.comprimidos;
-				$scope.ruta = data.archivo;
-			}
-
-			// }else{
-
-			// 	$scope.generaarchivos();
-			// }
-
-			$('#boton').button('reset');
-			
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			$('#boton').button('reset');
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		});
-
     }
 
     $scope.filtra = function(){
@@ -311,7 +279,7 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
 });
 
 // Facturas Qualitas que no tuvieron imagenes disponibles
-app.controller('formatoQualitasArchivosCtrl',function ($scope, $rootScope,$http, find, loading){
+app.controller('formatoQualitasArchivosCtrl',function ($scope, $rootScope, find, loading, qualitas){
 
 	$scope.inicio = function(){
 
@@ -336,35 +304,22 @@ app.controller('formatoQualitasArchivosCtrl',function ($scope, $rootScope,$http,
 		loading.cargando('Buscando Factura(s)');
 
 		//armamos los datos a enviar segun tipo de consulta (tipo)
-		console.log($scope.datos);
 
-		$http({
-			url:'/documento/api/facturasQualitasArchivos',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin}
-		}).success( function (data){
-			 
-			console.log(data);
-			if(data.respuesta){
+		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
-
-        	}else{
-
+		qualitas.sinArchivo(datos).success( function (data){
+			
+			if(data){
         		$scope.listado = data;
         		$scope.cantidad = data.length -1;
-        		loading.despedida();
+        	}else{
+        		$scope.listado = [];
         	}
+    		
+    		loading.despedida();
 			
 		}).error( function (xhr,status,data){
-
 			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
 		});
 
 	}
@@ -395,73 +350,37 @@ app.controller('formatoQualitasArchivosCtrl',function ($scope, $rootScope,$http,
 	};
 
 
-	$scope.quitaselectos = function(){
-
-    	$scope.gridOptions.$gridScope.toggleSelectAll(false);
-    }
-
-
-    $scope.generarListado = function(){
+	$scope.generarListado = function(){
 
     	JSONToXLSConvertor($scope.listado, "Facturas", true);
 
     }
 
-    $scope.generarListadoIn = function(){
-
-    	JSONToXLSConvertor($scope.incorrectos, "Facturas", true);
-
-    }
-
+    //genera el archivo una vez verificados
     $scope.generaarchivos = function(){
 
-    	$http({
-			url:'/documento/api/facturasQualitasInserta',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: {correctos:$scope.listos,incorrectos:$scope.incorrectos}
-		}).success( function (data){
-			 
+    	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
+
+		qualitas.procesaEnvio(datos).success(function (data){
+			console.log(data);
 			JSONToXLSConvertor($scope.listos, "Reporte", true);
-    		document.location = $scope.ruta;
-
-    		//$scope.buscafacturas();
-			
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
+			qualitas.descargaEnvio($scope.ruta);
 		});
 
     }
 
+    //prepara los folios y busca las imagenes para el envio
     $scope.generarSelectos = function(){
 
     	$('#boton').button('loading');
-    	$http({
-			url:'/documento/api/facturasQualitasVerifica',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: $scope.selectos
-		}).success( function (data){
+    	qualitas.generaEnvio($scope.selectos).success( function (data){
 			 
-			 console.log(data);
-
-			// if (data.incorrectos.length > 0) {
-
 			if (data.correctos.length == 0) {
 
 				loading.error('No se encontraron archivos de nungun folio');
 
 			}else{
 
-				$('#modalEx').modal({
-					backdrop:'static',
-					keyboard:false
-				});
 				$scope.total = $scope.selectos.length;
 				$scope.numerocorrectos = data.correctos.length;
 				$scope.compresos = data.comprimidos.length;
@@ -469,21 +388,16 @@ app.controller('formatoQualitasArchivosCtrl',function ($scope, $rootScope,$http,
 				$scope.correctos = data.correctos;
 				$scope.listos = data.comprimidos;
 				$scope.ruta = data.archivo;
+				$('#modalEx').modal({
+					backdrop:'static',
+					keyboard:false
+				});
 			}
-
-			// }else{
-
-			// 	$scope.generaarchivos();
-			// }
 
 			$('#boton').button('reset');
 			
 		}).error( function (xhr,status,data){
-
-			loading.despedida();
 			$('#boton').button('reset');
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
 		});
 
     }
@@ -669,7 +583,7 @@ app.controller('formatoQualitasConsultaCtrl',function ($scope,$rootScope, find){
 
 });
 
-app.controller('formatoQualitasEnviadoCtrl',function ($scope, $rootScope,$http, find, loading){
+app.controller('formatoQualitasEnviadoCtrl',function ($scope, $rootScope, find, loading, qualitas){
 
 	$scope.inicio = function(){
 
@@ -695,111 +609,63 @@ app.controller('formatoQualitasEnviadoCtrl',function ($scope, $rootScope,$http, 
 		loading.cargando('Buscando Factura(s)');
 
 		//armamos los datos a enviar segun tipo de consulta (tipo)
-		console.log($scope.datos);
+		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-		$http({
-			url:'/documento/api/facturasQualitasenviadas',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin}
-		}).success( function (data){
-			 
-			console.log(data);
-			if(data.respuesta){
-
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.envios = [];
-
-        	}else{
-
+		qualitas.envios(datos).success(function (data){
+			
+			if(data){
         		$scope.envios = data;
         		$scope.cantidad = data.length -1;
-        		loading.despedida();
+        	}else{
+        		$scope.envios = [];
         	}
-			
-		}).error( function (xhr,status,data){
 
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+    		loading.despedida();
 
 		});
 
 	}
 
-	$scope.detalle = function(id,procesado){
+	$scope.detalle = function(index){
+
+		var dato = $scope.envios[index];
 
 		$scope.muestra = true;
 		$scope.cargadetalle = true;
 		$scope.mensajeA = '';
 
-		$scope.claveenvio = id;
-		var ruta;
+		$scope.claveenvio = dato.ENQ_claveint;
 
-		if (procesado == 1) {
-			ruta = '/documento/api/facturasQualitasProcesadas/'+id;
-		}else{
-			ruta = '/documento/api/facturasQualitasenviadas/'+id;
-		}
-
-		$http.get(ruta)
-		.success( function (data){
-			 
-			console.log(data);
-
-			if(data.respuesta){
-
-        		loading.mensaje(data.respuesta);
-
-        	}else{
-
-        		if (procesado == 1) {
-
-        			$scope.procesado = true;
-        			$scope.validos = data.length;
-
-        		}else{
-        			$scope.procesado = false;
-        		}
-        		
-        		$scope.listado = data;
-        		$scope.cargadetalle = false;
-        		//$scope.seleccionaTodo();
-
-        	}
+		qualitas.detalleEnvio(dato).then(function (data){
 			
-		}).error( function (xhr,status,data){
-
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-			$scope.muestra = false;
+			if (dato.ENQ_procesado == 1) {
+    			$scope.procesado = true;
+    			$scope.validos = data.length;
+    		}else{
+    			$scope.procesado = false;
+    		}
+    		
+    		$scope.listado = data;
+    		$scope.cargadetalle = false;
 
 		});
+
 	}
 
 	$scope.quitalistado = function(item){
-		console.log(item);
+		
 	}
 
 	$scope.guarda = function(){
 
-		// console.log($scope.selectos);
-		// console.log($scope.claveenvio);
-
 		$('#boton').button('loading');
 
-		$http({
-			url:'/documento/api/facturasQualitasActualiza/' + $scope.claveenvio,
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: $scope.selectos
-		}).success( function (data){
-			 
+		qualitas.actualiza($scope.claveenvio,$scope.selectos).success(function (data){
+
 			console.log(data);
         	$scope.mensajeA = data.respuesta;
-        	$('#boton').button('reset');
         	$scope.listado2 = data.faltantes;
+        	$('#boton').button('reset');
 
         	if (data.faltantes.length > 0) {
 
@@ -814,12 +680,6 @@ app.controller('formatoQualitasEnviadoCtrl',function ($scope, $rootScope,$http, 
         	}
         	
         	$scope.cargadetalle = false;
-        	//console.log($scope.listado2);
-			
-		}).error( function (xhr,status,data){
-
-			$('#boton').button('reset');
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		});
 
@@ -835,25 +695,24 @@ app.controller('formatoQualitasEnviadoCtrl',function ($scope, $rootScope,$http, 
 
 		$('#boton2').button('loading');
 
-		$http({
-			url:'/documento/api/facturasQualitasVerifica',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: $scope.selectos
-		}).success( function (data){
+
+		qualitas.generaEnvio($scope.selectos).success( function (data){
 			 
+			if (data.correctos.length == 0) {
 
-        	$('#boton2').button('reset');
+				loading.error('No se encontraron archivos de nungun folio');
 
-        	JSONToXLSConvertor(data.comprimidos, "Reporte", true);
-    		document.location = data.archivo;
-			
-		}).error( function (xhr,status,data){
+			}else{
+
+				JSONToXLSConvertor(data.comprimidos, "Reporte", true);
+				qualitas.descargaEnvio(data.archivo);
+
+			}
 
 			$('#boton2').button('reset');
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
+			
+		}).error( function (xhr,status,data){
+			$('#boton2').button('reset');
 		});
 
 	}
@@ -897,13 +756,7 @@ app.controller('formatoQualitasEnviadoCtrl',function ($scope, $rootScope,$http, 
 
 		$('#boton3').button('loading');
 
-		$http({
-			url:'/documento/api/facturasQualitasRechazos',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: $scope.listado2
-		}).success( function (data){
+		qualitas.enviaRechazos($scope.listado2).success( function (data){
 			
 			$('#boton3').button('reset');
 			$('#modalEx').modal('hide');
@@ -912,7 +765,6 @@ app.controller('formatoQualitasEnviadoCtrl',function ($scope, $rootScope,$http, 
 		}).error( function (xhr,status,data){
 
 			$('#boton3').button('reset');
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
 		});
 	}
@@ -996,7 +848,7 @@ app.controller('formatoQualitasEnviadoCtrl',function ($scope, $rootScope,$http, 
     	filterOptions: $scope.filterOptions,
     	enableCellEdit: false,
     	columnDefs: [
-                    { field:'folioSistema',displayName:'FOLIO SISTEMA', width: 120 },
+                    { field:'PAS_folio',displayName:'FOLIO SISTEMA', width: 120 },
                     { field:'Motivo',displayName:'MOTIVO RECHAZO', enableCellEdit:false, width: 420 }
         ],
         showFooter: true,
@@ -1237,7 +1089,7 @@ app.controller('formatoQualitasIncompletosCtrl', function ($scope, $rootScope,$h
 });
 
 //rechazados por qualitas
-app.controller('formatoQualitasRechazadosCtrl',function ($scope, $rootScope,$http, find, loading){
+app.controller('formatoQualitasRechazadosCtrl',function ($scope, $rootScope, find, loading, qualitas){
 
 	$scope.inicio = function(){
 
@@ -1262,35 +1114,21 @@ app.controller('formatoQualitasRechazadosCtrl',function ($scope, $rootScope,$htt
 		//armamos los datos a enviar segun tipo de consulta (tipo)
 		//console.log($scope.datos);
 
-		$http({
-			url:'/documento/api/facturasQualitasRechazosQ',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data: {fechaini:$scope.fechaini,fechafin:$scope.fechafin}
-		}).success( function (data){
-			 
-			console.log(data);
-			if(data.respuesta){
+		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
-
-
-        	}else{
-
+		qualitas.invalidos(datos).success(function (data){
+			if(data){
         		$scope.listado = data;
         		$scope.cantidad = data.length -1;
-        		loading.despedida();
+        	}else{
+        		$scope.listado = [];
         	}
-			
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
+    		loading.despedida();
 		});
+
+
+			 
+
 
 	}
 

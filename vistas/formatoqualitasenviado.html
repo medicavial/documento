@@ -31,10 +31,10 @@
               </thead>
               <tbody>
                 <tr ng-repeat="dato in envios">
-                    <td ng-click="detalle(dato.id,dato.procesado)">{{dato.id}}</td>
-                    <td ng-click="detalle(dato.id,dato.procesado)">{{dato.fecha}}</td>
-                    <td ng-click="detalle(dato.id,dato.procesado)">{{dato.folios}}</td>
-                    <td><i ng-show="dato.procesado == 1 " class="glyphicon glyphicon-thumbs-up"></i></td>
+                    <td ng-click="detalle($index)">{{dato.ENQ_claveint}}</td>
+                    <td ng-click="detalle($index)">{{dato.ENQ_fechaenvio}}</td>
+                    <td ng-click="detalle($index)">{{dato.Cuenta}}</td>
+                    <td><i ng-show="dato.ENQ_procesado == 1 " class="glyphicon glyphicon-thumbs-up"></i></td>
                 </tr>
               </tbody>
             </table>
@@ -107,8 +107,6 @@
     </div>
   </div>
 </div>
-
-
 
 <!-- ng-show="muestra" -->
 <script>
