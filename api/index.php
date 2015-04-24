@@ -3968,7 +3968,8 @@ $app->get('/folioweb/:folio', function($folio){
 				             IFNULL(UNI_claveMV,-1) as UNIClaveMV,
 				             IFNULL(ESC_claveMV,-1) as ESCClaveMV,
 				             Expediente.Cia_clave,
-				             Expediente.Uni_clave
+				             Expediente.Uni_clave,
+				             Exp_cancelado
 				FROM Expediente 
 								INNER JOIN Compania    ON Compania.CIA_clave=Expediente.CIA_clave
 				                INNER JOIN Unidad        ON Unidad.UNI_clave=Expediente.UNI_clave

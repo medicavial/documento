@@ -2903,24 +2903,29 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find,$window,
 
 			find.folioweb(folio).success( function (data){
 
-				//console.log(data);
-				$scope.original.cliente = data[0].CIAClaveMV;
-				$scope.original.lesionado = data[0].Nombre + " " + data[0].Paterno + " " + data[0].Materno;
-				$scope.productoOriginal($scope.original.cliente);
-				$scope.unidadref = data[0].UNIClaveMV;
-				$scope.original.unidad = data[0].UNIClaveMV;
-				$scope.original.producto = data[0].PROClave;
-				$scope.original.escolaridad = data[0].ESCClaveMV;
-				$scope.original.internet = 1;
-				$scope.label2 = 'NO SE RECIBIO FAX';
-				$scope.label3 = 'NO ES FAC. EXPRESS';
-				$scope.referencia($scope.original.unidad);
+				console.log(data[0].Exp_cancelado);
+				if (data[0].Exp_cancelado == 1) {
+					alert('El folio se encuentra cancelado en registro web favor de verificarlo');
+				}else{
+					$scope.original.cliente = data[0].CIAClaveMV;
+					$scope.original.lesionado = data[0].Nombre + " " + data[0].Paterno + " " + data[0].Materno;
+					$scope.productoOriginal($scope.original.cliente);
+					$scope.unidadref = data[0].UNIClaveMV;
+					$scope.original.unidad = data[0].UNIClaveMV;
+					$scope.original.producto = data[0].PROClave;
+					$scope.original.escolaridad = data[0].ESCClaveMV;
+					$scope.original.internet = 1;
+					$scope.label2 = 'NO SE RECIBIO FAX';
+					$scope.label3 = 'NO ES FAC. EXPRESS';
+					$scope.referencia($scope.original.unidad);
+				}
+				
 				$scope.cargar = false;
 				
 			}).error( function (xhr,status,data){
 
 				//Manda un error por que no se logro conectar a la base web
-				$scope.original.internet = 0;
+				$scope.original.internet = 1;
 				$scope.tipoalerta = 'alert-danger';
 				$scope.mensaje ='No es posible conectar con el folio Web. Para reiniciar la conexión favor de notificar al área de sistemas.';
 				$scope.cargar = false;
