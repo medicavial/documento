@@ -1112,8 +1112,6 @@ app.controller('formatoQualitasRechazadosCtrl',function ($scope, $rootScope, fin
 		loading.cargando('Buscando Factura(s)');
 
 		//armamos los datos a enviar segun tipo de consulta (tipo)
-		//console.log($scope.datos);
-
 		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
 		qualitas.invalidos(datos).success(function (data){
@@ -1125,10 +1123,6 @@ app.controller('formatoQualitasRechazadosCtrl',function ($scope, $rootScope, fin
         	}
     		loading.despedida();
 		});
-
-
-			 
-
 
 	}
 
@@ -1184,8 +1178,6 @@ app.controller('formatoQualitasRechazadosCtrl',function ($scope, $rootScope, fin
 			 
 			 console.log(data);
 
-			// if (data.incorrectos.length > 0) {
-
 			if (data.correctos.length == 0) {
 
 				loading.error('No se encontraron archivos de nungun folio');
@@ -1206,10 +1198,6 @@ app.controller('formatoQualitasRechazadosCtrl',function ($scope, $rootScope, fin
 				$scope.ruta = data.archivo;
 			}
 
-			// }else{
-
-			// 	$scope.generaarchivos();
-			// }
 
 			$('#boton').button('reset');
 			
