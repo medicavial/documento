@@ -8,7 +8,7 @@ app.factory("find", function($http,api){
             return $http.get('/documento/api/categorias');
         },
         consultaFacturaQualitas:function(folio){
-            return $http.get('/documento/api/facturasQualitasConsulta/' + folio);
+            return $http.get(api+'qualitas/consulta/' + folio);
         },
         detalleticket:function(folioint,folioweb){
             return $http.get('/documento/api/ticketinfo/' + folioint + '/' + folioweb);

@@ -231,6 +231,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 });
 
 
+
 // var notificaciones = new Firebase("https://medicavial.firebaseio.com/notificaciones");
 
 

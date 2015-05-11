@@ -47,7 +47,7 @@
             <button id="boton" type="button" ng-disabled="selectos.length == 0" data-loading-text="Verificando Información..." class="btn btn-success btn-block" ng-click="generarSelectos()">Generar Archivos Seleccionados</button>
         </div>
         <div class="col-sm-3 col-md-3">
-            <!-- <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->
+            <button type="button" class="btn btn-success btn-block" ng-disabled="listado.length == 0" ng-click="exporta()">Ver Lista detalle</button>
         </div>
         <div class="col-sm-3 col-md-3">
            <!--  <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->
@@ -58,61 +58,6 @@
 </div>
 
 <div>
-    <br>
-
-    <h4>Archivos</h4>
-    <div class="table-responsive">
-      <table class="table gridStyle2">
-        <thead>
-            <tr>
-              <th>Folio</th>
-              <th>QS_07</th>
-              <th>ME_021</th>
-              <th>ME_022</th>
-              <th>ME_023</th>
-              <th>ME_024</th>
-              <th>GN_19</th>
-              <th>QS07</th>
-              <th>ME021</th>
-              <th>ME022</th>
-              <th>ME023</th>
-              <th>ME024</th>
-              <th>GN19</th>
-              <th>ME02</th>
-              <th>Nombre Actual</th>
-              <th>Nombre Requerido</th>
-              <th>Fecha Captura</th>
-            </tr>
-        </thead>
-
-        <tbody>
-            <tr ng-repeat="folio in listado">
-              <td>{{folio.folioSistema}}</td>
-              <td> 
-                <!-- <i ng-show="folio.imagenes.QS_07 == 1" class="glyphicon glyphicon-glyphicon-ok"></i> -->
-                <i class="glyphicon glyphicon-glyphicon-remove"></i>
-                {{folio.imagenes.QS_07}}</td>
-              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME_021 == 1, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME_021 == 0}"></i>{{folio.imagenes.ME_021}}</td>
-              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME_022 == 1, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME_022 == 0}"></i>{{folio.imagenes.ME_022}}</td>
-              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME_023 == 1, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME_023 == 0}"></i>{{folio.imagenes.ME_023}}</td>
-              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME_024, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME_024}"></i>{{folio.imagenes.ME_024}}</td>
-              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.GN_19, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.GN_19}"></i>{{folio.imagenes.GN_19}}</td>
-              <td><i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.QS07, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.QS07}"></i>{{folio.imagenes.QS07}}</td>
-              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME021, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME021}"></i>{{folio.imagenes.ME021}}</td>
-              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME022, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME022}"></i>{{folio.imagenes.ME022}}</td>
-              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME_023, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME_023}"></i>{{folio.imagenes.ME_023}}</td>
-              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME024, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME024}"></i>{{folio.imagenes.ME024}}</td>
-              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.GN19, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.GN19}"></i>{{folio.imagenes.GN19}}</td>
-              <td> <i ng-class="{'glyphicon glyphicon-glyphicon-ok': folio.imagenes.ME02, 'glyphicon glyphicon-glyphicon-remove': !folio.imagenes.ME02}"></i>{{folio.imagenes.ME02}}</td>
-              <td>{{folio.imagenes.nombre}}</td>
-              <td>{{folio.nombreArchivo}}</td>
-              <td>{{folio.FechaCaptura}}</td>
-            </tr> 
-        </tbody>
-        </table>
-    </div>
-  </div>
-
 
 
 <!--Ventana para mostrar los folios que se no se generaron-->

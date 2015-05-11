@@ -131,7 +131,8 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		$scope.cargar = true;
 		$scope.mensaje = '';
 		//verificamos si tiene primera atencion
-		checkFolios.validaFolio(folio, 1).then( function (data){
+		checkFolios.validaFolio(folio, 1)
+		.then( function (data){
 			
 			$scope.original.tipoDoc = data.tipoDoc;
 			$scope.original.documento = data.documento;
@@ -159,6 +160,10 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			$scope.unidadref = data.unidadref;
 			$scope.cargar = false;
 
+		})
+		.catch(function (err){
+			alert(err);
+			$scope.cargar = false;
 		});
 	}
 

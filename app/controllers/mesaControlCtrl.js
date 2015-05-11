@@ -138,10 +138,13 @@ app.controller('mesaControlCtrl',function ($scope, $rootScope, find , loading, $
 		if ($scope.selectos.length > 0) {
 
 			$http.post(api+'insertanpc',$scope.selectos).success(function (data){
+				
 				$scope.mensaje = data.respuesta;
 				$scope.tipoalerta = 'alert-success';
 				$scope.cargaFlujo();
 				$('#boton2').button('reset');
+				$scope.gridOptions.$gridScope.toggleSelectAll(false);
+
 			}).error( function (data){
 				
 				$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
