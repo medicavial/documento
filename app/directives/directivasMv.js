@@ -329,6 +329,42 @@ app.directive('capitalize', function() {
 });
 
 
+//funcion para convertir mayusculas pero con acciones al presionar enter
+app.directive('capitalizeex', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+
+            var functionToCall = scope.$eval(attrs.capitalizeex);
+
+
+            element.bind('blur', function () {
+                var inputValue = modelCtrl.$modelValue;
+                if (inputValue) {
+                    var capitalized = inputValue.toUpperCase();
+                    if(capitalized !== inputValue) {
+                        modelCtrl.$setViewValue(capitalized);
+                        modelCtrl.$render();
+                    }
+                }
+            });
+
+            element.css("text-transform","uppercase");
+
+            element.on('keydown', function(e){
+
+                if (e.keyCode == 13) {
+                    functionToCall(modelCtrl.$modelValue);
+                }
+            });
+
+        }
+   };
+   
+});
+
+
 app.directive('excel', function(){
     return {
         restrict: 'E',

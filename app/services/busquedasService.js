@@ -68,10 +68,10 @@ app.factory("find", function($http,api){
             return $http.get(api+'consulta/productos');
         },
         recepcionxfolio:function(folio){
-            return $http.get('/documento/api/recepcionfolios/'+folio);
+            return $http.get(api + 'consulta/folio/'+folio);
         },
         recepcionxlesionado:function(lesionado){
-            return $http.get('/documento/api/recepcionfoliosxlesionado/'+lesionado);
+            return $http.get(api+'consulta/lesionado/'+lesionado);
         },
         referenciaxunidad:function(unidad){
             return $http.get(api + 'consulta/referencia/'+ unidad);

@@ -4,41 +4,36 @@
 		<h1>{{tituloCon}}</h1>
 	</div>
 	<form role="form" ng-submit="verificaFolio()">
-	<div class="row">
-		<div class="col-md-6">
-			<!-- <div class="btn-group" data-toggle="buttons">
-			  <label class="btn btn-primary">
-			    <input type="radio" ng-model="tipo" value="folio"> Busqueda X Folio
-			  </label>
-			  <label class="btn btn-primary">
-			    <input type="radio" ng-model="tipo" value="lesionado"> Busqueda X Lesionado
-			  </label>
-			</div> -->
-			<div class="radio-inline">
-			  <label>
-			    <input type="radio" name="optionsRadios" id="optionsRadios1" ng-model="tipo" value="folio" checked>
-			    Busqueda X Folio
-			  </label>
-			</div>
-			<div class="radio-inline">
-			  <label>
-			    <input type="radio" name="optionsRadios" id="optionsRadios2"  ng-model="tipo" value="lesionado">
-			    Busqueda X Lesionado
-			  </label>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="radio-inline">
+				  <label>
+				    <input type="radio" name="optionsRadios" id="optionsRadios1" ng-model="tipo" value="folio" checked>
+				    Busqueda X Folio
+				  </label>
+				</div>
+				<div class="radio-inline">
+				  <label>
+				    <input type="radio" name="optionsRadios" id="optionsRadios2"  ng-model="tipo" value="lesionado">
+				    Busqueda X Lesionado
+				  </label>
+				</div>
 			</div>
 		</div>
-	</div>
-	<div class="row">
-		<div class="col-md-5">
-			<input type="text" ng-model="criterio" class="form-control" placeholder="Busqueda" ng-keydown="presionaFolio" capitalize>
+		<div class="row">
+			<div class="col-md-5" ng-show="tipo == 'folio'">
+				<input type="text" ng-model="folio" class="form-control" placeholder="Busqueda" folioex="foliosxfolio">
+			</div>
+			<div class="col-md-5" ng-hide="tipo == 'folio'">
+				<input type="text" ng-model="lesionado" class="form-control" placeholder="Busqueda" capitalizeex="foliosxlesionado">
+			</div>
+			<div class="col-md-2">
+				<button type="submit" id="boton" ng-click="verificaFolio()" class="btn btn-primary"  data-loading-text="Consultando...">Consultar</button>
+			</div>
+			<div class="col-md-2">
+	            <img ng-show="cargar" class="animate-show" src="images/cargando.gif">
+	        </div>
 		</div>
-		<div class="col-md-2">
-			<button type="submit" id="boton" ng-click="verificaFolio()" class="btn btn-primary"  data-loading-text="Consultando...">Consultar</button>
-		</div>
-		<div class="col-md-2">
-            <img ng-show="cargar" class="animate-show" src="images/cargando.gif">
-        </div>
-	</div>
 	</form>
 	<br>
 
@@ -81,7 +76,7 @@
 							</ul>
 	        			</div>
 
-	        			<div class="col-md-4">
+	        			<!-- <div class="col-md-4">
 	        				
 	        				<ul class="list-unstyled" ng-repeat="ticket in expediente.ticket">
 	        					<li>Ticket Asociado</li>
@@ -90,7 +85,7 @@
 							  	<li>Categoria: {{ticket.Categoria}}</li>
 							  	<li>Subcategoria: {{ticket.Subcategoria}}</li>
 							</ul>
-	        			</div>
+	        			</div> -->
 
 	        		</div>
 	        	</div>
