@@ -6,8 +6,7 @@ var app = angular.module('app', [
     'ngGrid',
     'ngIdle',
     'ngProgress',
-    'webStorageModule',
-    'datatables'
+    'webStorageModule'
 ]);
 
 app.constant('api','http://localhost/apimv/public/api/')
