@@ -429,22 +429,27 @@ app.factory("checkFolios", function($q,$http,find, api){
                 }else{
 
                     //Como no ninguna atencion registrada en sql server buscamos en web 
+                    if (web) {
 
-                    if (web.Exp_cancelado) {
-                        promesa.reject('El folio se encuentra cancelado en registro web favor de verificarlo');
+                        if (web.Exp_cancelado) {
+                            promesa.reject('El folio se encuentra cancelado en registro web favor de verificarlo');
+                        }else{
+                            datos.cliente = web.Cia_claveMV ? String(web.Cia_claveMV) : web.Cia_claveMV;
+                            datos.lesionado = web.Exp_completo;
+                            datos.unidadref = web.UNI_claveMV ? String(web.UNI_claveMV) : web.UNI_claveMV;
+                            datos.unidad = web.UNI_claveMV ? String(web.UNI_claveMV) : web.UNI_claveMV;
+                            datos.producto = web.Pro_claveMV ? String(web.Pro_claveMV) : web.Pro_claveMV;
+                            datos.escolaridad = web.Esc_claveMV ? String(web.Esc_claveMV) : web.Esc_claveMV;
+
+                            datos.label2 = 'NO SE RECIBIO FAX';
+                            datos.label3 = 'NO ES FAC. EXPRESS';
+
+                            datos.tipoDoc = 1;
+                            datos.esoriginal = 0;
+                        }
+                        
                     }else{
-                        datos.cliente = web.Cia_claveMV ? String(web.Cia_claveMV) : web.Cia_claveMV;
-                        datos.lesionado = web.Exp_completo;
-                        datos.unidadref = web.UNI_claveMV ? String(web.UNI_claveMV) : web.UNI_claveMV;
-                        datos.unidad = web.UNI_claveMV ? String(web.UNI_claveMV) : web.UNI_claveMV;
-                        datos.producto = web.Pro_claveMV ? String(web.Pro_claveMV) : web.Pro_claveMV;
-                        datos.escolaridad = web.Esc_claveMV ? String(web.Esc_claveMV) : web.Esc_claveMV;
-
-                        datos.label2 = 'NO SE RECIBIO FAX';
-                        datos.label3 = 'NO ES FAC. EXPRESS';
-
-                        datos.tipoDoc = 1;
-                        datos.esoriginal = 0;
+                        promesa.reject('El folio no se encuentra debido a que no tiene datos correctos de registro');
                     }
 
                 }

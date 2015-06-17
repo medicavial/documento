@@ -101,6 +101,7 @@ app.directive('folio', function() {
                     }
                     
                 };
+                
             });
 
 

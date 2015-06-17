@@ -337,10 +337,9 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			var promesa = checkFolios.enviaFolios($scope.selectos,$scope.areaOp,$scope.user,$rootScope.id,$rootScope.area);
 
 			promesa.then(
+				
 				function (data){
 
-					
-					
 					$scope.mensaje = data.respuesta;
 					$scope.tipoalerta = 'alert-success';
 					$scope.cargaFlujo();
@@ -358,9 +357,9 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 					$('#boton').button('reset');
 					$scope.mensaje = error;
 					$scope.tipoalerta = 'alert-warning';
+
 				}
-			);
-			
+			);	
 
 		}else{
 			alert('No se ha seleccionado ningun documento');
