@@ -1349,6 +1349,7 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 //muestra los folios por recibir
 app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios,datos){
 	
+    $scope.listadoRecepcion = datos.data;
     loading.despedida();
 
     //Carga Configuracion Inicial
@@ -1361,8 +1362,7 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 		$scope.selectosAc = [];
 		$scope.empresas();
 		$scope.altaunidades();
-		$scope.listadoRecepcion = datos.data;
-
+		
 	}
 
 	//Carga la lista de archivos a Recibir de otras areas 

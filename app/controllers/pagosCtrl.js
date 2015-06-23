@@ -1,6 +1,10 @@
 //flujo de pagos general
-app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http, api){
+app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http, api,datos){
 
+    console.log(datos);
+    $scope.listado = datos.data;
+    $scope.cantidad = datos.data.length -1;
+    loading.despedida();
 
 	$scope.inicio = function(){
 
@@ -20,135 +24,134 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
 		$scope.empresas();
 		$scope.Altaunidades();
 		$scope.productos();
-		$scope.foliosXfecha('Pagos');
 
 	}
 
 	//Busqueda de folios x area
-	$scope.foliosxarea = function(){
+	// $scope.foliosxarea = function(){
 
-		$('#busca2').button('loading');
-		loading.cargando('Buscando Folio');
+	// 	$('#busca2').button('loading');
+	// 	// loading.cargando('Buscando Folio');
 
-		find.listadopagos().success( function (data){
+	// 	find.listadopagos().success( function (data){
         	
-        	if(data.respuesta){
+ //        	if(data.respuesta){
 
-        		$('#busca2').button('reset');
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
+ //        		$('#busca2').button('reset');
+ //        		loading.mensaje(data.respuesta);
+ //        		loading.despedida();
+ //        		$scope.listado = [];
 
-        	}else{
+ //        	}else{
 
-        		$('#busca2').button('reset');
-        		$scope.listado = data;
-        		$scope.cantidad = data.length -1;
-        		loading.despedida();
+ //        		$('#busca2').button('reset');
+ //        		$scope.listado = data;
+ //        		$scope.cantidad = data.length -1;
+        		
         	
-        	}
+ //        	}
 			
-			//console.log(data);
-		}).error( function (xhr,status,data){
+	// 		//console.log(data);
+	// 	}).error( function (xhr,status,data){
 
-			loading.despedida();
-			$('#busca2').button('reset');
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+	// 		loading.despedida();
+	// 		$('#busca2').button('reset');
+	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
-		});
+	// 	});
 
-	}
+	// }
 
 
-	$scope.foliosXfecha = function(tipo){
+	// $scope.foliosXfecha = function(tipo){
 
-		loading.cargando('Buscando Folio');
-		//valida el campo de fecha en caso de que alguno este lleno y el otro no
+	// 	loading.cargando('Buscando Folio');
+	// 	//valida el campo de fecha en caso de que alguno este lleno y el otro no
 
-		if (tipo == 'Pagos') {
+	// 	if (tipo == 'Pagos') {
 
-			fechaini = $scope.fechainiPag;
-			fechafin = $scope.fechafinPag;
+	// 		fechaini = $scope.fechainiPag;
+	// 		fechafin = $scope.fechafinPag;
 
-			var url = api + "flujopagos/fecharecepcion";
+	// 		var url = api + "flujopagos/fecharecepcion";
 
-		}else{
+	// 	}else{
 
-			fechaini = $scope.fechainiRec;
-			fechafin = $scope.fechafinRec;
+	// 		fechaini = $scope.fechainiRec;
+	// 		fechafin = $scope.fechafinRec;
 
-			var url = api + "flujopagos/fechapagos";
+	// 		var url = api + "flujopagos/fechapagos";
 
-		};
+	// 	};
 
-		//armamos los datos a enviar segun tipo de consulta (tipo)
-		$scope.datos = {fechaini:fechaini,fechafin:fechafin};
-		console.log($scope.datos);
+	// 	//armamos los datos a enviar segun tipo de consulta (tipo)
+	// 	$scope.datos = {fechaini:fechaini,fechafin:fechafin};
+	// 	console.log($scope.datos);
 
-		$http.post(url,$scope.datos).success( function (data){
+	// 	$http.post(url,$scope.datos).success( function (data){
 			  
-			if(data){
-        		$scope.listado = data;
-        		$scope.cantidad = data.length -1;
-        		$scope.buscarXfecha = 1;
-        	}else{ 
-        		$scope.listado = [];
-        	}
+	// 		if(data){
+ //        		$scope.listado = data;
+ //        		$scope.cantidad = data.length -1;
+ //        		$scope.buscarXfecha = 1;
+ //        	}else{ 
+ //        		$scope.listado = [];
+ //        	}
     		
-    		loading.despedida();
+ //    		loading.despedida();
 			
-		});
+	// 	});
 
-	}
+	// }
 
 
 	///Busquedas 
 
 	//busca clientes
-	$scope.empresas = function(){
+	// $scope.empresas = function(){
 
-		find.empresas().success( function (data) {
+	// 	find.empresas().success( function (data) {
 
-			$scope.clientes = data;
+	// 		$scope.clientes = data;
 
-		 }).error( function (xhr,status,data){
+	// 	 }).error( function (xhr,status,data){
 
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
-		 });
+	// 	 });
 
-	}
+	// }
 
-	//busca productos
-	$scope.productos = function(){
+	// //busca productos
+	// $scope.productos = function(){
 
-		find.productos().success( function (data) {
+	// 	find.productos().success( function (data) {
 
-			$scope.productosini = data;
+	// 		$scope.productosini = data;
 
-		 }).error( function (xhr,status,data){
+	// 	 }).error( function (xhr,status,data){
 
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
-		 });
+	// 	 });
 
-	}
+	// }
 
 
-	//busca unidades
-	$scope.Altaunidades = function(){
+	// //busca unidades
+	// $scope.Altaunidades = function(){
 
-		find.unidades().success( function (data) {
+	// 	find.unidades().success( function (data) {
 
-			$scope.unidades = data;
+	// 		$scope.unidades = data;
 
-		 }).error( function (xhr,status,data){
+	// 	 }).error( function (xhr,status,data){
 
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
-		 });
+	// 	 });
 
-	}
+	// }
 
 	//////LLena el grid y toma filtros
 
@@ -318,20 +321,30 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
 });
 
 //Area de pagos
-app.controller('pagosCtrl',function ($scope, $rootScope, find , loading, $http, barra, api){
+app.controller('pagosCtrl',function ($scope, $rootScope, find , loading,datos){
+
+    console.log(datos[1]);
+    $scope.listado = datos[0].data;
+    $scope.cantidad = datos[0].data.length -1;
+    $scope.recibidos = datos[1].recepcion.length;
+    loading.despedida();
 
 	$scope.inicio = function(){
-		barra.inicia();
+
 		$rootScope.area = 6;
 		$scope.tituloR = "Pagos";
 		$scope.push = false;
-		$scope.rechazados = 0;
-		$scope.recibidos = 0;
 
-		$scope.fechainiPag = primerdiames;
-    	$scope.fechafinPag = FechaAct;
-    	$scope.fechainiRec = FechaAct;
-    	$scope.fechafinRec = FechaAct;
+        $scope.datosPagos = {
+            fechainiPag : primerdiames,
+            fechafinPag : FechaAct
+        }
+
+        $scope.datosRecepcion = {
+        	fechainiRec : FechaAct,
+        	fechafinRec : FechaAct
+        }
+
 		$scope.folio = '';
 		$scope.lesionado = '';
 		$scope.relacion = '';
@@ -342,167 +355,177 @@ app.controller('pagosCtrl',function ($scope, $rootScope, find , loading, $http, 
 		$scope.Altaunidades();
 		$scope.productos();
 
-		$scope.foliosXfecha('Pagos');
-		$scope.Altarechazados();
-		$scope.pendientesRecibir();
-
 	}
 
-	$scope.pendientesRecibir = function(){
+    ///Busquedas 
 
-		find.listadorecepcion($rootScope.id).success( function (data){
-       
-        	if(data.respuesta){
-        		$scope.recibidos = 0;
-        	}else{
-        		$scope.recibidos = data.length;
-        	}
+    //busca clientes
+    $scope.empresas = function(){
 
-        	//console.log($scope.recibidos);
-        	barra.termina();
+        find.empresas().success( function (data) {
 
-		});
+            $scope.clientes = data;
 
-	}
+         }).error( function (xhr,status,data){
+
+            alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+
+         });
+    }
+
+    //busca productos
+    $scope.productos = function(){
+
+        find.productos().success( function (data) {
+
+            $scope.productosini = data;
+
+         }).error( function (xhr,status,data){
+
+            alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+
+         });
+    }
+
+    //busca unidades
+    $scope.Altaunidades = function(){
+
+        find.unidades().success( function (data) {
+
+            $scope.unidades = data;
+
+         }).error( function (xhr,status,data){
+
+            alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+
+         });
+    }
+
+
+    $scope.recepcionPagos = function(){
+
+        loading.cargando('Buscando Folio');
+        find.listaPagos($scope.datosPagos).success(function (data){
+
+            if(data){
+
+                $scope.listado = data;
+                $scope.cantidad = data.length -1;
+
+
+            }else{
+
+                loading.despedida();
+                $scope.listado = [];
+                
+            }
+
+            loading.despedida();
+
+        });
+
+    }
+
+
+    $scope.recepcionRec = function(){
+
+        loading.cargando('Buscando Folio');
+        find.listaPagosRecepcion($scope.datosRecepcion).success(function (data){
+
+            if(data){
+
+                $scope.listado = data;
+                $scope.cantidad = data.length -1;
+
+
+            }else{
+
+                loading.despedida();
+                $scope.listado = [];
+                
+            }
+
+            loading.despedida();
+
+        });
+
+    }
 
 	//Busqueda de folios x area
-	$scope.foliosxarea = function(){
+	// $scope.foliosxarea = function(){
 
-		$('#busca2').button('loading');
-		loading.cargando('Buscando Folio');
+	// 	$('#busca2').button('loading');
+	// 	loading.cargando('Buscando Folio');
 
-		find.listadopagos().success( function (data){
+	// 	find.listadopagos().success( function (data){
         	
-        	if(data.respuesta){
+ //        	if(data.respuesta){
 
-        		$('#busca2').button('reset');
-        		loading.mensaje(data.respuesta);
-        		loading.despedida();
-        		$scope.listado = [];
+ //        		$('#busca2').button('reset');
+ //        		loading.mensaje(data.respuesta);
+ //        		loading.despedida();
+ //        		$scope.listado = [];
 
-        	}else{
+ //        	}else{
 
-        		$('#busca2').button('reset');
-        		$scope.listado = data;
-        		$scope.cantidad = data.length -1;
-        		loading.despedida();
+ //        		$('#busca2').button('reset');
+ //        		$scope.listado = data;
+ //        		$scope.cantidad = data.length -1;
+ //        		loading.despedida();
         	
-        	}
+ //        	}
 			
-			//console.log(data);
-		}).error( function (xhr,status,data){
+	// 		//console.log(data);
+	// 	}).error( function (xhr,status,data){
 
-			loading.despedida();
-			$('#busca2').button('reset');
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+	// 		loading.despedida();
+	// 		$('#busca2').button('reset');
+	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
-		});
+	// 	});
+	// }
 
-	}
 
+	// $scope.foliosXfecha = function(tipo){
 
-	$scope.foliosXfecha = function(tipo){
+	// 	loading.cargando('Buscando Folio');
+	// 	//valida el campo de fecha en caso de que alguno este lleno y el otro no
 
-		loading.cargando('Buscando Folio');
-		//valida el campo de fecha en caso de que alguno este lleno y el otro no
+	// 	if (tipo == 'Pagos') {
 
-		if (tipo == 'Pagos') {
+	// 		fechaini = $scope.fechainiPag;
+	// 		fechafin = $scope.fechafinPag;
 
-			fechaini = $scope.fechainiPag;
-			fechafin = $scope.fechafinPag;
+	// 		var url = api + "flujopagos/fecharecepcion";
 
-			var url = api + "flujopagos/fecharecepcion";
+	// 	}else{
 
-		}else{
+	// 		fechaini = $scope.fechainiRec;
+	// 		fechafin = $scope.fechafinRec;
 
-			fechaini = $scope.fechainiRec;
-			fechafin = $scope.fechafinRec;
+	// 		var url = api + "flujopagos/fechapagos";
 
-			var url = api + "flujopagos/fechapagos";
+	// 	};
 
-		};
+	// 	//armamos los datos a enviar segun tipo de consulta (tipo)
+	// 	$scope.datos = {fechaini:fechaini,fechafin:fechafin};
+	// 	console.log($scope.datos);
 
-		//armamos los datos a enviar segun tipo de consulta (tipo)
-		$scope.datos = {fechaini:fechaini,fechafin:fechafin};
-		console.log($scope.datos);
-
-		$http.post(url,$scope.datos).success( function (data){
+	// 	$http.post(url,$scope.datos).success( function (data){
 			  
-			if(data){
-        		$scope.listado = data;
-        		$scope.cantidad = data.length -1;
-        		$scope.buscarXfecha = 1;
-        	}else{ 
-        		$scope.listado = [];
-        	}
+	// 		if(data){
+ //        		$scope.listado = data;
+ //        		$scope.cantidad = data.length -1;
+ //        		$scope.buscarXfecha = 1;
+ //        	}else{ 
+ //        		$scope.listado = [];
+ //        	}
     		
-    		loading.despedida();
+ //    		loading.despedida();
 			
-		});
+	// 	});
 
-	}
-
-
-	///Busquedas 
-
-	//busca clientes
-	$scope.empresas = function(){
-
-		find.empresas().success( function (data) {
-
-			$scope.clientes = data;
-
-		 }).error( function (xhr,status,data){
-
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		 });
-	}
-
-	//busca productos
-	$scope.productos = function(){
-
-		find.productos().success( function (data) {
-
-			$scope.productosini = data;
-
-		 }).error( function (xhr,status,data){
-
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		 });
-	}
-
-
-	//busca unidades
-	$scope.Altaunidades = function(){
-
-		find.unidades().success( function (data) {
-
-			$scope.unidades = data;
-
-		 }).error( function (xhr,status,data){
-
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		 });
-	}
-
-	//busca rechazos
-	$scope.Altarechazados = function(){
-
-		find.listadorechazos($rootScope.id).success( function (data) {
-			
-			if(data){
-        		$scope.rechazados = data.length;
-        	}else{
-        		$scope.rechazados = 0;
-        	}
-
-		 });
-	}
-
-
+	// }
 
 
 	//////LLena el grid y toma filtros

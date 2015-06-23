@@ -12,7 +12,7 @@
 	        </a>
 	    </li>
 		
-		<li class="rb-span-1" id="color3">
+		<!-- <li class="rb-span-1" id="color3">
 
 	        <h3>Generar Entrega</h3>
 	        <a href="#/entregas/pagos">
@@ -43,7 +43,7 @@
 	        </a>
 
 	    </li>
-
+ -->
 	</ul>
 	<h2>Folios activos en el area</h2>
 	<div class="row">
@@ -54,13 +54,13 @@
 				<label>Fecha Recepción</label>
 				<div class="row">
 					<div class="col-md-6">
-						<input type="text" ng-model="fechainiRec" class="form-control" id="fechaRecIni" placeholder="inicial">
+						<input type="text" ng-model="datosRecepcion.fechainiRec" class="form-control" id="fechaRecIni" placeholder="inicial">
 					</div>
 					<div class="col-md-6">
 						<div class="input-group">
-							<input type="text" ng-model="fechafinRec" class="form-control" id="fechaRecFin" placeholder="Final">
+							<input type="text" ng-model="datosRecepcion.fechafinRec" class="form-control" id="fechaRecFin" placeholder="Final">
 							<span class="input-group-btn">
-					        	<button class="btn btn-default" ng-disabled="fechainiRec == ''|| fechafinRec == '' " ng-click="foliosXfecha('Recepcion')" type="button"><i class="icon-search"></i></button>
+					        	<button class="btn btn-default" ng-disabled="datosRecepcion.fechainiRec == ''|| datosRecepcion.fechafinRec == '' " ng-click="recepcionRec()" type="button"><i class="icon-search"></i></button>
 					      	</span>
 					    </div>
 					</div>
@@ -73,13 +73,13 @@
 				<label>Fecha Recepción Pagos</label>
 				<div class="row">
 					<div class="col-md-6">
-						<input type="text" ng-model="fechainiPag" class="form-control" id="fechaPagIni" placeholder="inicial">
+						<input type="text" ng-model="datosPagos.fechainiPag" class="form-control" id="fechaPagIni" placeholder="inicial">
 					</div>
 					<div class="col-md-6">
 						<div class="input-group">
-							<input type="text" ng-model="fechafinPag" class="form-control" id="fechaPagFin" placeholder="Final">
+							<input type="text" ng-model="datosPagos.fechafinPag" class="form-control" id="fechaPagFin" placeholder="Final">
 							<span class="input-group-btn">
-					        	<button class="btn btn-default" ng-disabled="fechainiPag == ''|| fechafinPag == '' " type="button" ng-click="foliosXfecha('Pagos')"><i class="icon-search"></i></button>
+					        	<button class="btn btn-default" ng-disabled="datosPagos.fechainiPag == ''|| datosPagos.fechafinPag == '' " type="button" ng-click="recepcionPagos()"><i class="icon-search"></i></button>
 					      	</span>
 					    </div>
 					</div>

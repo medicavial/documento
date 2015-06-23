@@ -113,7 +113,7 @@ app.factory("find", function($http,api){
             return $http.post(api + 'flujopagos/fecharecepcion',datos);
         },
         listaPagos:function(datos){
-            return $http.post(api + 'flujopagos/fecharecepcion',datos);
+            return $http.post(api + 'flujopagos/fechapagos',datos);
         }
     }
 })

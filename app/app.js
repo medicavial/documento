@@ -216,13 +216,22 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             templateUrl   : 'vistas/pagos.html',
             controller    : 'pagosCtrl',
             resolve       :{
-                datos:function(loading,find,$rootScope){
+                datos:function(loading,find,carga,$rootScope,$q){
+
                     loading.cargando('Cargando información');
-                    var datos = {
+                    var info = {
                         fechainiPag:primerdiames,
                         fechafinPag:FechaAct
-                    }
-                    return find.listaPagos(datos);
+                    },
+                    promesa = $q.defer(),
+                    pagos = find.listaPagos(info),
+                    flujo = carga.flujo($rootScope.id);
+
+                    $q.all([pagos,flujo]).then(function (data){
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
                 }
             }        
     });

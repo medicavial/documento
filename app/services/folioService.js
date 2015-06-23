@@ -13,6 +13,8 @@ app.factory("checkFolios", function($q,$http,find, api){
             angular.forEach(folios,function (folio){
 
                 var documento = folio;
+
+                console.log(documento);
                 //Si es Etapa 2 o 3 y Etapa 1 no esta capturada
                 if(documento.FLD_etapa > 1 && documento.CapEt2 == 0){
                     foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede entregar debido a que la etapa 1 no esta capturada'});
@@ -28,24 +30,40 @@ app.factory("checkFolios", function($q,$http,find, api){
                     foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede enviar a Facturación debido a que no es etapa 1'});
                 }
 
-                //Si se envia a Facturación y no es mesa de control
-                else if(areaRecibe == 5 && areaEntrega != 4) {
-                    foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede enviar a Facturación tu usuario no tiene permisos'});
+                //Si se envia a Facturación o pagos y no es mesa de control
+                else if(  (areaRecibe == 5 || areaRecibe == 6)  && areaEntrega != 4) {
+                    foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede generar envio tu usuario no tiene permisos'});
+                }
+
+                // si se envia a facturacion y ya fue enviado
+                else if(areaRecibe == 5 && documento.EnvFac.indexOf('SI') == 0){
+
+                    foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puedo enviar a Facturación por que ya fue enviado'});
+                
+                }
+
+                // si se envia a pagos o facturacion pero no esta capturado
+                else if( (areaRecibe == 5 || areaRecibe == 6) && documento.DOC_situacionoriginal == 0){
+
+                    foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puedo generar envio por que no esta capturado'});
+                
                 }
 
                 //Si se envia a pagos y no es original 
-
                 else if(areaRecibe == 6 && documento.EnvFac.indexOf('SI') == -1 && documento.FLD_etapa == 1) {
 
                     if(confirm('El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se a enviado a Facturación. ¿Desea proseguir?')){                         
                         //si es facturacion agrega un juego mas al flujo
                         foliosVal.push(documento);
                     }else{
-                        foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puedo enviar a Facturación por que no es original'});
+                        foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puedo enviar a Pagos por que no se ha enviado a facturación'});
                     }
 
+                
                 }else{
+
                     foliosVal.push(documento);
+
                 }
 
             });
