@@ -235,20 +235,22 @@ app.controller('homeCtrl',function ($scope, $rootScope, auth){
 
 
 ///Folios rechazados
-app.controller('rechazosCtrl',function ( $scope, $rootScope, $routeParams, $location, $http, find, loading, checkFolios){
+app.controller('rechazosCtrl',function ( $scope, $rootScope, $routeParams, $location, find, loading, checkFolios,datos){
+
+    loading.despedida();
 
 	//Con parametros de inicio
 	$scope.inicio = function(){
 
 		$scope.tituloRC = "Documentos Rechazados";
-		$scope.empresas();
-		$scope.unidades();
-		$scope.verareaoperativa();
-		$scope.cargaRechazos();
-		$scope.folio = '';
-		$scope.mensaje = '';
-		$scope.area = $routeParams.area;
-		$scope.areaEntrega = $rootScope.areaUsuario;
+		$scope.listadoRechazos = datos.data;
+        $scope.folio = '';
+        $scope.mensaje = '';
+        $scope.empresas();
+        $scope.unidades();
+        $scope.verareaoperativa();
+        $scope.area = $routeParams.area;
+        $scope.areaEntrega = $rootScope.areaUsuario;
 
 	}
 
@@ -256,7 +258,7 @@ app.controller('rechazosCtrl',function ( $scope, $rootScope, $routeParams, $loca
 	//Carga la lista de archivos a enviar 
 	$scope.cargaRechazos = function(){
 
-		loading.cargando('Buscando Folios');
+		
 
 		find.listadorechazos($rootScope.id).success( function (data){
        
@@ -265,8 +267,7 @@ app.controller('rechazosCtrl',function ( $scope, $rootScope, $routeParams, $loca
         	}else{
         		$scope.listadoRechazos = [];
         	}
-
-        	loading.despedida();
+        	
         	$scope.gridOptions.$gridScope.toggleSelectAll(false);
 			
 		});
@@ -1136,44 +1137,36 @@ app.controller('entregasCtrl', function($scope, $rootScope, $routeParams, find, 
 });
 
 //mustra los documentos entregados pendientes de recibir
-app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams, find, $http, loading, checkFolios){
-	//Carga Configuracion Inicial
-	$scope.inicio = function(){
+app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams, find, loading, checkFolios,datos){
+	
 
-		$scope.tituloLE = 'Listado de Entregas efectuadas'; //+ $routeParams.area;
-		$scope.area = $routeParams.area;
-		$scope.folio = '';
-		$scope.mensaje = '';
-		$scope.empresas();
-		$scope.altaunidades();
-		$scope.cargaEntregas();
+    loading.despedida();
+    //Carga Configuracion Inicial
+    $scope.inicio = function(){
 
-	}
+        $scope.tituloLE = 'Listado de Entregas efectuadas'; //+ $routeParams.area;
+        $scope.area = $routeParams.area;
+        $scope.folio = '';
+        $scope.mensaje = '';
+        $scope.empresas();
+        $scope.altaunidades();
+        $scope.listadoEntregas = datos.data;
 
-	//Carga la lista de archivos a Recibir de otras areas 
-	$scope.cargaEntregas = function(){
+    }
 
-		loading.cargando('Buscando Folios');
+    //Carga la lista de archivos a Recibir de otras areas 
+    $scope.cargaEntregas = function(){
 
-		find.listadoentrega($rootScope.id).success( function (data){
-       		
-            $scope.mensaje = '';
+        find.listadoentrega($rootScope.id).success( function (data){
+            //console.log(data);
+            if(data){
+                $scope.listadoEntregas = data;
+            }else{
+                $scope.listadoEntregas = [];
+            }
+            
+        });
 
-       		//console.log(data);
-        	if(data){
-        		$scope.listadoEntregas = data;
-        	}else{
-        		$scope.listadoEntregas = [];
-        	}
-
-        	loading.despedida();
-			
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		});
 	}
 
 	//enlista los clientes
@@ -1183,7 +1176,7 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 
 			$scope.clientes = data;
 
-		 });
+		});
 	}
 
 	//Enlista las unidades
@@ -1193,7 +1186,7 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 
 			$scope.unidades = data;
 
-		 });
+		});
 	}
 
 	//elimina la seleccion o al que le apretaron
@@ -1217,18 +1210,15 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
                 $('#boton').button('reset');
 			}
 		);
-
-		
-
+        
 	}
 
 
 	$scope.eliminaMultiple = function(){
 
-
-		$scope.mensaje = '';
-		var datos = $scope.selectos;
         $('#boton').button('loading');
+        $scope.mensaje = '';
+        var datos = $scope.selectos;
 
 		checkFolios.enviaRechazos(datos,$rootScope.area,$rootScope.id).then(
 			function (data){
@@ -1241,14 +1231,16 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 					$scope.rechazos = data.rechazos;
 					$('#myModal4').modal();
 				};	
-			},
-			function (error){
-				$scope.mensaje = error;
-				$scope.tipoalerta = 'alert-warning';
-			}
-		);
+		        
+                $('#boton').button('reset');
+            },
+            function (error){
+                $scope.mensaje = error;
+                $scope.tipoalerta = 'alert-warning';
+                $('#boton').button('reset');
+            }
+        );
 
-		$('#boton').button('reset');
 
 	}
 
@@ -1355,8 +1347,11 @@ app.controller('listadoEntregasCtrl', function ($scope, $rootScope, $routeParams
 });
 
 //muestra los folios por recibir
-app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios){
-	//Carga Configuracion Inicial
+app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios,datos){
+	
+    loading.despedida();
+
+    //Carga Configuracion Inicial
 	$scope.inicio = function(){
 
 		$scope.tituloLR = 'Listado Pendientes de Recibir';
@@ -1366,14 +1361,12 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 		$scope.selectosAc = [];
 		$scope.empresas();
 		$scope.altaunidades();
-		$scope.cargaRecepcion();
+		$scope.listadoRecepcion = datos.data;
 
 	}
 
 	//Carga la lista de archivos a Recibir de otras areas 
 	$scope.cargaRecepcion = function(){
-
-		loading.cargando('Buscando Folios');
 
 		find.listadorecepcion($rootScope.id).success( function (data){
        
@@ -1382,8 +1375,6 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
             }else{
                 $scope.listadoRecepcion = [];
         	}
-
-        	loading.despedida();
 			
 		});
 	}
@@ -1438,7 +1429,7 @@ app.controller('listadoRecepcionCtrl', function ($scope, $rootScope, $routeParam
 
             checkFolios.rechazaEntrega($scope.selectos,$rootScope.id)
             .then(function (data){
-                $('#boton').button('reset');
+                $('#boton2').button('reset');
                 $scope.mensaje = data.respuesta;
                 $scope.tipoalerta = 'alert-success';
                 $scope.cargaRecepcion();

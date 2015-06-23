@@ -329,7 +329,6 @@ app.directive('capitalize', function() {
    
 });
 
-
 //funcion para convertir mayusculas pero con acciones al presionar enter
 app.directive('capitalizeex', function() {
     return {

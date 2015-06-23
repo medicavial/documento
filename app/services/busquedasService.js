@@ -107,7 +107,13 @@ app.factory("find", function($http,api){
             return $http.get(api+'consulta/verificafoliopase/'+folio);
         },
         verificaprefijo:function(prefijo,empresa){
-            return $http.get(api + 'consulta/verificaprefijo/'+prefijo +"/"+empresa);
+            return $http.get(api + 'consulta/verificaprefijo/'+prefijo +'/'+empresa);
+        },
+        listaPagosRecepcion:function(datos){
+            return $http.post(api + 'flujopagos/fecharecepcion',datos);
+        },
+        listaPagos:function(datos){
+            return $http.post(api + 'flujopagos/fecharecepcion',datos);
         }
     }
 })

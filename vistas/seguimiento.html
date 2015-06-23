@@ -3,44 +3,48 @@
 		<a href="#/" class="icon-arrow-left"></a>
 		<h1>{{tituloR}}</h1>
 	</div>
+	
 	<ul id="rb-grid-small" class="rb-grid-small clearfix">
 	    <li class="rb-span-1" id="color3">
 
 	        <h3>Por Recibir<span ng-show=" recibidos > 0 " class="push">{{recibidos}}</span></h3>
-	        <a href="#/listadoRecepcion/seguimiento">
+	        <a href="#/listadoRecepcion/mesacontrol">
 	            <span class="icon-box-add"></span>
 	        </a>
+	        
 	    </li>
 		
-		<li class="rb-span-1" id="color3">
+		<!-- <li class="rb-span-1" id="color3">
 
 	        <h3>Traspasos</h3>
-	        <a href="#/traspasos/seguimiento">
+	        <a href="#/traspasos/mesacontrol">
 	            <span class="icon-enter"></span>
 	        </a>
-	    </li>
-
+	    </li> -->
+		
 	    <li class="rb-span-1" id="color3">
 
 	        <h3>Rechazos<span ng-show=" rechazados > 0 " class="push">{{rechazados}}</span></h3>
-	        <a href="#/Rechazos/seguimiento">
+	        <a href="#/Rechazos/mesacontrol">
 	            <span class=" icon-cancel-circle"></span>
 	        </a>
 	    </li>
+
 	    <li class="rb-span-1" id="color3">
 
 	        <h3>Entregas Efectuada</h3>
-	        <a href="#/listadoEntregas/seguimiento">
+	        <a href="#/listadoEntregas/mesacontrol">
 	            <span class=" icon-list"></span>
 	        </a>
 	    </li>
 	</ul>
+
 	<h2>Tus Folios Activos</h2>
 	<div class="row">
 		<div class="col-md-3">
 			<fieldset>
 				<legend>Folio</legend>
-				<input type="text" ng-model="folio" class="form-control" ng-keydown="presionaFolio" ng-change="filtra()" capitalize>
+				<input type="text" ng-model="folio" class="form-control" ng-change="filtra()" folio>
 			</fieldset>
 		</div>
 		<div class="col-md-5">
@@ -92,10 +96,10 @@
 			</fieldset>
 		</div>
 	</div>
-	<div class="gridStyle" ng-grid="gridOptions"></div>
-	<br>
+	<div class="gridStyle" ng-grid="gridOptions"></div>	
 	<!-- directiva para exportar a excel ver app.js mas nfo -->
-	<excel info="exportables"></excel>	
+	<excel info="exportables"></excel>
+	<br>
 	<br>
 	<fieldset>
 		<legend>Datos de Entrega</legend>
@@ -128,7 +132,7 @@
 		</form>
 	</div>
 	<br>
-	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert alert-success animate-show">{{mensaje}}</div>
+	<div ng-show="mensaje" ng-class="tipoalerta" class="alert alert-success animate-show">{{mensaje}}</div>
 	<br>
 	<br>
 </div>

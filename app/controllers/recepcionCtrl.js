@@ -1,5 +1,7 @@
-function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api){
+function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api,datos){
 	
+	loading.despedida();
+
 	//Con parametros de inicio
 	$scope.inicio = function(){
 
@@ -8,6 +10,9 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		$scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];	
 		$scope.limpia();
 		$scope.cargaInfo();
+    	$scope.listado = datos.activos;
+    	$scope.rechazados = datos.rechazos.length;
+
 	}
 	
 	$scope.limpia = function(){
@@ -32,8 +37,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 	$scope.cargaInfo = function(){
 
-		loading.cargando('Buscando Folios');
-
 		carga.informacion().then(function(data){
 
 			// console.log(data);
@@ -44,32 +47,34 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			$scope.areas = data.areaOperativa;
 			$scope.escolaridades = data.escolaridad;
 
-			$scope.cargaFlujo();
-
 		});
+
 	}
 
 	//carga todos los folios del area activos y rechazados por usuario
 	$scope.cargaFlujo = function(){
 
+		// console.log(datos);
+		$rootScope.prueba = false;
+
 		carga.flujo($rootScope.id).then(function (data){
 
 			$scope.mensaje = '';
-			// console.log(data);
-			if(data.activos){
-        		$scope.listado = data.activos;
+
+			if(datos.activos){
+        		$scope.listado = datos.activos;
         	}else{
         		$scope.listado = [];
         	}
 
-        	if(data.rechazos){
-        		$scope.rechazados = data.rechazos.length;
+        	if(datos.rechazos){
+        		$scope.rechazados = datos.rechazos.length;
         	}else{
         		$scope.rechazados = 0;
         	}
 
-			loading.despedida();
 		})
+		
 	}
 
 	// parte donde se captura el original
@@ -501,4 +506,4 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 }
 
-app.controller('recepcionCtrl', ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api', recepcionCtrl]);
+app.controller('recepcionCtrl', ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api','datos', recepcionCtrl]);

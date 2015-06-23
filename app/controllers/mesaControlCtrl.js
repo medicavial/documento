@@ -1,6 +1,8 @@
 
 //Area de mesa de control
-app.controller('mesaControlCtrl',function ($scope, $rootScope, find , loading, $http, checkFolios, carga, api){
+app.controller('mesaControlCtrl',function ($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
+
+	loading.despedida();
 
 	$scope.inicio = function(){
 
@@ -17,14 +19,16 @@ app.controller('mesaControlCtrl',function ($scope, $rootScope, find , loading, $
 		$scope.lesionado = '';
 		$scope.cargar = false;
 
+		$scope.listado = datos.activos;
+		$scope.rechazados = datos.rechazos.length;
+		$scope.recibidos = datos.recepcion.length;
+        	
 		$scope.cargaInfo();
 
 	}
 
 
 	$scope.cargaInfo = function(){
-
-		loading.cargando('Buscando Folios');
 
 		carga.informacion().then(function(data){
 
@@ -36,9 +40,9 @@ app.controller('mesaControlCtrl',function ($scope, $rootScope, find , loading, $
 			$scope.areas = data.areaOperativa;
 			$scope.escolaridades = data.escolaridad;
 
-			$scope.cargaFlujo();
 
 		});
+		
 	}
 
 	//carga todos los folios del area activos, rechazados y por recibir por usuario
@@ -66,7 +70,6 @@ app.controller('mesaControlCtrl',function ($scope, $rootScope, find , loading, $
 
         	$scope.mensaje = '';
 
-			loading.despedida();
 		})
 	}
 
@@ -321,8 +324,10 @@ app.controller('mesaControlCtrl',function ($scope, $rootScope, find , loading, $
 
 });
 
-//mustra los documentos entregados pendientes de recibir
-app.controller('nopagarCtrl',function ($scope, $rootScope, $routeParams, find, $http, loading, api){
+//mustra los documentos entregados de no pagar hasta cobrar
+app.controller('nopagarCtrl',function ($scope, $rootScope, $routeParams, find, $http, loading, api,datos){
+	
+	loading.despedida();
 	//Carga Configuracion Inicial
 	$scope.inicio = function(){
 
@@ -331,15 +336,13 @@ app.controller('nopagarCtrl',function ($scope, $rootScope, $routeParams, find, $
 		$scope.folio = '';
 		$scope.empresas();
 		$scope.altaunidades();
-		$scope.cargaEntregas();
+		$scope.listado = datos.data;
 		$scope.mensaje = '';
 
 	}
 
 	//Carga la lista de archivos a Recibir de otras areas 
 	$scope.cargaEntregas = function(){
-
-		loading.cargando('Buscando Folios');
 
 		find.listadogeneralnpc($rootScope.id).success( function (data){
        		
@@ -352,9 +355,7 @@ app.controller('nopagarCtrl',function ($scope, $rootScope, $routeParams, find, $
         	}
 
         	$scope.gridOptions.$gridScope.toggleSelectAll(false);
-
-        	loading.despedida();
-			
+		
 		});
 
 	}

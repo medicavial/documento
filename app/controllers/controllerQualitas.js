@@ -2,6 +2,7 @@
 app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, loading,api , qualitas){
 
 	$scope.inicio = function(){
+
 		$scope.tituloFQ = "Formato de Facturas Qualitas";
 		$scope.fechaini = FechaAct;
 		$scope.fechafin = FechaAct;
@@ -12,6 +13,7 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
 			$scope.gridOptions.$gridScope.toggleSelectAll(false);
 		 	$scope.buscafacturas();
 		});
+		
 	}
 
 	//busca productos

@@ -72,7 +72,13 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     $routeProvider.when('/facturacion',{
             templateUrl    :'vistas/facturacion.html',
-            controller     :'facturacionCtrl'
+            controller     :'facturacionCtrl',
+            resolve:{
+                datos:function(loading,carga,$rootScope){
+                    loading.cargando('Cargando Informacón');
+                    return carga.flujo($rootScope.id);
+                }
+            }
     });
 
     $routeProvider.when('/flujo',{
@@ -143,76 +149,128 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     $routeProvider.when('/listadoEntregas/:area',{
             templateUrl   : 'vistas/listadoentrega.html',
-            controller    : 'listadoEntregasCtrl'        
+            controller    : 'listadoEntregasCtrl',
+            resolve       :{
+                datos:function($rootScope,loading,find){
+                    loading.cargando('Cargando Entregas');
+                    return find.listadoentrega($rootScope.id);
+                }
+            }     
     });
 
     $routeProvider.when('/listadoRecepcion/:area',{
             templateUrl   : 'vistas/listadoRecepcion.html',
-            controller    : 'listadoRecepcionCtrl'      
+            controller    : 'listadoRecepcionCtrl',
+            resolve       :{
+                datos:function($rootScope,loading,find){
+                    loading.cargando('Cargando Entregas');
+                    return find.listadorecepcion($rootScope.id);
+                }
+            }     
     });
 
-   $routeProvider.when('/login',{
+    $routeProvider.when('/login',{
             templateUrl   : 'vistas/login.html',
             controller    : 'loginCtrl'       
     });
 
 
-   $routeProvider.when('/logout',{
+    $routeProvider.when('/logout',{
             templateUrl   : 'vistas/adios.html',
             controller    : 'logoutCtrl'       
     });
 
-   $routeProvider.when('/mapa',{
+    $routeProvider.when('/mapa',{
             templateUrl   : 'vistas/mapa.html',
             controller    : 'mapaCtrl'       
     });
 
-   $routeProvider.when('/mesacontrol',{
+    $routeProvider.when('/mesacontrol',{
             templateUrl   : 'vistas/mesacontrol.html',
-            controller    : 'mesaControlCtrl'       
+            controller    : 'mesaControlCtrl',
+            resolve       :{
+                datos:function(loading,carga,$rootScope){
+                    loading.cargando('Cargando Informacón');
+                    return carga.flujo($rootScope.id);
+                }
+            }  
     });
 
-   $routeProvider.when('/pagosrechazos',{
+    $routeProvider.when('/pagosrechazos',{
             templateUrl   : 'vistas/menuRechazo.html',
             controller    : 'rechazosFolioCtrl'       
     });
 
-   $routeProvider.when('/nopagar',{
+    $routeProvider.when('/nopagar',{
             templateUrl   : 'vistas/listadoentreganpc.html',
-            controller    : 'nopagarCtrl'        
+            controller    : 'nopagarCtrl',
+            resolve       :{
+                datos:function(loading,find,$rootScope){
+                    loading.cargando('Cargando Informacón');
+                    return find.listadogeneralnpc($rootScope.id);
+                }
+            }          
     });
 
-   $routeProvider.when('/pagos',{
+    $routeProvider.when('/pagos',{
             templateUrl   : 'vistas/pagos.html',
-            controller    : 'pagosCtrl'       
+            controller    : 'pagosCtrl',
+            resolve       :{
+                datos:function(loading,find,$rootScope){
+                    loading.cargando('Cargando información');
+                    var datos = {
+                        fechainiPag:primerdiames,
+                        fechafinPag:FechaAct
+                    }
+                    return find.listaPagos(datos);
+                }
+            }        
     });
 
-   $routeProvider.when('/Rechazos/:area',{
+    $routeProvider.when('/Rechazos/:area',{
             templateUrl   : 'vistas/rechazos.html',
-            controller    : 'rechazosCtrl'       
+            controller    : 'rechazosCtrl',
+            resolve       :{
+                datos:function(loading,find,$rootScope){
+                    loading.cargando('Cargando rechazos');
+                    return find.listadorechazos($rootScope.id);
+                }
+            }    
     });
 
-   $routeProvider.when('/Recepcion',{
+    $routeProvider.when('/Recepcion',{
             templateUrl   : 'vistas/recepcion.html',
-            controller    : 'recepcionCtrl'
+            controller    : 'recepcionCtrl',
+            resolve:{
+                datos:function(loading,carga,$rootScope){
+                    loading.cargando('Cargando Informacón');
+                    return carga.flujo($rootScope.id);
+                }
+            }
     });
 
-   $routeProvider.when('/seguimiento',{
+    $routeProvider.when('/seguimiento',{
             templateUrl   : 'vistas/seguimiento.html',
-            controller    : 'seguimientoCtrl'
+            controller    : 'seguimientoCtrl',
+            resolve:{
+                datos:function(loading,carga,$rootScope){
+                    loading.cargando('Cargando Informacón');
+                    return carga.flujo($rootScope.id);
+                }
+            }
     });
 
-   $routeProvider.when('/ticket',{
+    $routeProvider.when('/ticket',{
             templateUrl   : 'vistas/menuticket.html',
             controller    : 'menuticketCtrl'
     });
 
-   $routeProvider.when('/ticketpagos',{
+    $routeProvider.when('/ticketpagos',{
             templateUrl   : 'vistas/menuticketPagos.html',
             controller    : 'menuticketPagosCtrl'
     });
 
-   $routeProvider.when('/traspasos/:area',{
+    $routeProvider.when('/traspasos/:area',{
             templateUrl   : 'vistas/traspasos.html',
             controller    : 'traspasosCtrl'
     });

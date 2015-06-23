@@ -1,5 +1,7 @@
 //Area de facturacion
-app.controller('facturacionCtrl',function ($scope, $rootScope, find , loading, $http, checkFolios, carga, api){
+app.controller('facturacionCtrl',function ($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
+
+	loading.despedida();
 
 	$scope.inicio = function(){
 
@@ -16,13 +18,15 @@ app.controller('facturacionCtrl',function ($scope, $rootScope, find , loading, $
 		$scope.lesionado = '';
 		$scope.cargar = false;
 
+		$scope.listado = datos.activos;
+		$scope.rechazados = datos.rechazos.length;
+		$scope.recibidos = datos.recepcion.length;
+
 		$scope.cargaInfo();
 
 	}
 
 	$scope.cargaInfo = function(){
-
-		loading.cargando('Buscando Folios');
 
 		carga.informacion().then(function(data){
 
@@ -33,8 +37,6 @@ app.controller('facturacionCtrl',function ($scope, $rootScope, find , loading, $
 			$scope.productos = data.productos;
 			$scope.areas = data.areaOperativa;
 			$scope.escolaridades = data.escolaridad;
-
-			$scope.cargaFlujo();
 
 		});
 	}
@@ -64,7 +66,6 @@ app.controller('facturacionCtrl',function ($scope, $rootScope, find , loading, $
 
         	$scope.mensaje = '';
 
-			loading.despedida();
 		})
 	}
 
