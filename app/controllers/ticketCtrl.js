@@ -517,7 +517,15 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 
 //menu de tickets donde se imprimen los generados al dia
 
-app.controller('menuticketCtrl', function ($scope, $rootScope, $http, find, loading, $location,$window,$compile,$filter){
+app.controller('menuticketCtrl', function ($scope, $location, find, loading,datos){
+
+	loading.despedida();
+
+	$scope.clientes = datos[0].data;
+	$scope.status = datos[1].data;
+	$scope.unidades = datos[2].data;
+	$scope.usuarios = datos[3].data;
+	$scope.listado = datos[4].data;
 
 	$scope.inicio = function(){
 
@@ -526,193 +534,49 @@ app.controller('menuticketCtrl', function ($scope, $rootScope, $http, find, load
 		$scope.fechafin = FechaAct;
 		$scope.interno = '';
 		$scope.web = '';
-		$scope.empresasWeb();
-		$scope.statusweb();
-		$scope.unidadesWeb();
-		$scope.usuariosWeb();
-
-		$scope.ticketsxfecha();
 
 	}
 
-	//busquedas
-	//busca clientes
-	$scope.empresasWeb = function(){
 
-		find.empresasweb().success( function (data) {
 
-			$scope.clientes = data;
 
-		 });
+
+	$scope.ticketxfoliointerno = function(){
+
+		loading.cargando('Buscando Ticket(s)');
+
+		find.ticketsxfoliointerno($scope.interno).success( function (data) {
+
+			$scope.listado = data;
+			loading.despedida();
+			$scope.quitafiltro();
+
+		});
+
 	}
 
-	//busca status
-	$scope.statusweb = function(){
-
-		find.statusweb().success( function (data) {
-
-			$scope.status = data;
-
-		 });
-	}
-
-
-	//busca unidades
-	$scope.unidadesWeb = function(){
-
-		find.unidadesweb().success( function (data) {
-
-			$scope.unidades = data;
-
-		 });
-	}
 
 	$scope.ticketxfolio = function(){
 
 		loading.cargando('Buscando Ticket(s)');
 
-		find.listatickets($scope.interno).success( function (data) {
+		find.ticketsxfolio($scope.web).success( function (data) {
 
 			$scope.listado = data;
 			loading.despedida();
+			$scope.quitafiltro();
 
 		 });
 
-		 $scope.quitafiltro();
 	}
-
-
-	// presiona Folio
-	$scope.presionaFolio = function(evento){
-
-		//contamos la cadena completa
-		var cantidad = $scope.web.length;
-
-		//los primero cuatro caracteres NO deben ser numeros
-		if(cantidad < 3){
-			if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//los ultimos 6 NO deben ser letras
-		if(cantidad > 3 && cantidad < 9){
-			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//Si son mas de 10 digitos no escribas mas
-		if(cantidad > 9){
-			if (evento.keyCode != 8  && evento.keyCode != 46 ) {
-
-		      	evento.preventDefault();
-		    }      	
-		}
-
-		//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
-		if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-	      	$scope.verificaFolio();
-
-	    }	
-
-	}
-
-	$scope.verificaFolio = function(){
-
-		if ($scope.web != '') {
-
-			var totalletras = $scope.web.length
-
-			var letras = $scope.web.substr(0,4);
-			var numeros = $scope.web.substr(4,totalletras);
-
-			if(letras.length < 4 ){
-
-				var faltantes = 4 - letras.length;
-
-				for (var i = 0; i < faltantes; i++) {
-
-					var letra = letras.charAt(i);
-					letras = letras + "0";
-				}
-			}
-
-			if(numeros.length < 6 ){
-
-				var faltantes = 6 - numeros.length;
-
-				for (var i = 0; i < faltantes; i++) {
-					
-					numeros = "0" + numeros;
-				}
-			}
-
-			$scope.web = letras + numeros;
-
-			$scope.ticketxweb();
-		}	
-
-	}
-
-	$scope.ticketxweb = function(){
-
-		loading.cargando('Buscando Ticket(s)');
-
-		find.listaticketsfolio($scope.web).success( function (data) {
-
-			$scope.listado = data;
-			loading.despedida();
-
-		 }).error( function (xhr,status,data){
-
-		 	loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		 });
-
-		$scope.quitafiltro();
-	}
-
-
-	//busca usuarios
-	$scope.usuariosWeb = function(){
-
-		find.usuariosweb().success( function (data) {
-
-			$scope.usuarios = data;
-
-		 }).error( function (xhr,status,data){
-
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		 });
-	}
-
 
 	$scope.ticketsxfecha = function(){
 
 		loading.cargando('Buscando Ticket(s)');
-
-		$http({
-			url:'/documento/api/listatickets',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data:{fechaini:$scope.fechaini,fechafin:$scope.fechafin}
-		}).success( function (data){
-
-				//console.log(data);
+		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
+		find.ticketsxfecha(datos).success( function (data){
         		$scope.listado = data;
         		loading.despedida();
-
-		}).error( function (data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-
 		});
 
 	}	
@@ -725,20 +589,6 @@ app.controller('menuticketCtrl', function ($scope, $rootScope, $http, find, load
 	    filterText: '',
 	    useExternalFilter: false
 	};
-
-	// var csvOpts = { columnOverrides: { obj: function (o) {
-	//     return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
-	//     } },
-	//     iEUrl: 'downloads/download_as_csv'
-	// };
-
-	var csvOpts = { columnOverrides: { obj: function (o) {
-	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
-	    } },
-	    iEUrl: 'downloads/download_as_csv'
-	};
-
-	//var csvOpts = { columnOverrides: { obj: function(o) { return o.a + '|' +  o.b; } } }
 
 	var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
 
@@ -780,8 +630,7 @@ app.controller('menuticketCtrl', function ($scope, $rootScope, $http, find, load
 		            // { field:'Cancelado', width: 120 }
         ],
         showFooter: true,
-        showFilter:false,
-        plugins: [new ngGridCsvExportPlugin(csvOpts,$http,$window,$compile,$filter)]
+        showFilter:false
     };
 
     $scope.filtra = function(){
@@ -789,7 +638,7 @@ app.controller('menuticketCtrl', function ($scope, $rootScope, $http, find, load
     	//$scope.filterOptions.filterText = "";
     	//var filtro = "";
 
-    	console.log($scope.unidad.Nombre);
+    	console.log($scope.unidad);
 
     	if($scope.unidad == undefined || $scope.unidad == 0){
     		var objeto1 = "";
@@ -826,13 +675,6 @@ app.controller('menuticketCtrl', function ($scope, $rootScope, $http, find, load
     		var objeto6 = "Status:" + $scope.statu.Nombre + "; ";
     		
     	}
-
-    	// if($scope.etapa == undefined || $scope.etapa == 0){
-    	// 	var objeto7 = "";
-    	// }else{
-    	// 	var objeto7 = "Etapa:" + $scope.Nombre + "; ";
-    		
-    	// }
 
 
     	var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6; //+ objeto7;

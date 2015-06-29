@@ -2,6 +2,9 @@
 app.controller('facturacionCtrl',function ($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
 
 	loading.despedida();
+	$scope.listado = datos.activos;
+	$scope.rechazados = datos.rechazos.length;
+	$scope.recibidos = datos.recepcion.length;
 
 	$scope.inicio = function(){
 
@@ -17,10 +20,6 @@ app.controller('facturacionCtrl',function ($scope, $rootScope, find , loading, $
 		$scope.folio = '';
 		$scope.lesionado = '';
 		$scope.cargar = false;
-
-		$scope.listado = datos.activos;
-		$scope.rechazados = datos.rechazos.length;
-		$scope.recibidos = datos.recepcion.length;
 
 		$scope.cargaInfo();
 

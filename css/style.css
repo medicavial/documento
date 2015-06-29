@@ -18,6 +18,24 @@ blockquote{
     margin: 0 0 2px;
 }
 
+
+/* estilos para graficas */
+
+.graficas{
+  
+  height:400px;
+  width:100%; 
+}
+
+.graficas a{
+  
+  display: none!important;
+}
+
+.graficas g text{
+  /*font-size: 1em;*/
+}
+
 #contenido{
   width: 100%;
   overflow-x: auto;

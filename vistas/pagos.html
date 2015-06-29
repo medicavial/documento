@@ -91,7 +91,7 @@
 	<div class="row">
 		<div class="col-md-2">
 				<label>Folio</label>
-				<input type="text" ng-model="folio" class="form-control" ng-keydown="presionaFolio" ng-change="filtra()" capitalize>
+				<input type="text" ng-model="folio" class="form-control" folio>
 		</div>
 		<div class="col-md-4">
 
@@ -174,7 +174,7 @@
 	
 	<br>
 	
-	<excel info="listado"></excel>	
+	<button ng-click="exporta()" data-loading-text="Generando..." id="boton" class="btn btn-success glyphicon glyphicon-download-alt"> Exportar</button>
 	<br>
 </div>
 <script type="text/javascript">

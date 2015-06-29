@@ -21,6 +21,52 @@ function decimal(e, field) {
 }
 
 
+
+function utf8_decode(str_data) {
+
+
+  var tmp_arr = [],
+    i = 0,
+    ac = 0,
+    c1 = 0,
+    c2 = 0,
+    c3 = 0,
+    c4 = 0;
+
+  str_data += '';
+
+  while (i < str_data.length) {
+    c1 = str_data.charCodeAt(i);
+    if (c1 <= 191) {
+      tmp_arr[ac++] = String.fromCharCode(c1);
+      i++;
+    } else if (c1 <= 223) {
+      c2 = str_data.charCodeAt(i + 1);
+      tmp_arr[ac++] = String.fromCharCode(((c1 & 31) << 6) | (c2 & 63));
+      i += 2;
+    } else if (c1 <= 239) {
+      // http://en.wikipedia.org/wiki/UTF-8#Codepage_layout
+      c2 = str_data.charCodeAt(i + 1);
+      c3 = str_data.charCodeAt(i + 2);
+      tmp_arr[ac++] = String.fromCharCode(((c1 & 15) << 12) | ((c2 & 63) << 6) | (c3 & 63));
+      i += 3;
+    } else {
+      c2 = str_data.charCodeAt(i + 1);
+      c3 = str_data.charCodeAt(i + 2);
+      c4 = str_data.charCodeAt(i + 3);
+      c1 = ((c1 & 7) << 18) | ((c2 & 63) << 12) | ((c3 & 63) << 6) | (c4 & 63);
+      c1 -= 0x10000;
+      tmp_arr[ac++] = String.fromCharCode(0xD800 | ((c1 >> 10) & 0x3FF));
+      tmp_arr[ac++] = String.fromCharCode(0xDC00 | (c1 & 0x3FF));
+      i += 4;
+    }
+  }
+
+  return tmp_arr.join('');
+}
+
+
+
 function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
     //If JSONData is not an object then JSON.parse will parse the JSON string in an Object
     var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
@@ -66,32 +112,29 @@ function JSONToCSVConvertor(JSONData, ReportTitle, ShowLabel) {
         alert("Invalid data");
         return;
     }   
+
     
-    //Generate a file name
-    var fileName = "Reporte_";
-    //this will remove the blank-spaces from the title and replace it with an underscore
-    fileName += ReportTitle.replace(/ /g,"_");   
-    
-    //Initialize file format you want csv or xls
-    var uri = 'data:text/csv;charset=utf-8,' + escape(CSV);
-    
-    // Now the little tricky part.
-    // you can use either>> window.open(uri);
-    // but this will not work in some browsers
-    // or you will not get the correct file extension    
-    
-    //this trick will generate a temp <a /> tag
+    //this trick will generate a temp "a" tag
     var link = document.createElement("a");    
-    link.href = uri;
-    
-    //set the visibility hidden so it will not effect on your web-layout
-    link.style = "visibility:hidden";
-    link.download = fileName + ".xls";
-    
+    link.id="lnkDwnldLnk";
+
     //this part will append the anchor tag and remove it after automatic click
     document.body.appendChild(link);
-    link.click();
+
+    var csv = CSV;
+
+    blob = new Blob([csv], { type: 'data:application/vnd.ms-excel;charset=utf-8' }); 
+    var csvUrl = window.webkitURL.createObjectURL(blob);
+    var filename = 'Reporte.csv';
+    $("#lnkDwnldLnk")
+    .attr({
+        'download': filename,
+        'href': csvUrl
+    }); 
+
+    $('#lnkDwnldLnk')[0].click();    
     document.body.removeChild(link);
+
 }
 
 
@@ -200,6 +243,7 @@ var yyyy = hoy.getFullYear();
 //armamos fecha para los datepicker
 var FechaAct = dd + '/' + mm + '/' + yyyy;
 
+
 var primerdiames = '01/' + mm + '/' + yyyy;
 
 
@@ -218,8 +262,6 @@ app.controller('loginCtrl', function ( $rootScope , $scope , auth){
 	
 
 	$scope.login = function(){
-
-		
 		$rootScope.mensaje = '';
         auth.login($scope.username, $scope.password);
     }
@@ -1641,7 +1683,14 @@ app.controller('consultaCtrl', function ($scope,$rootScope, find){
 });
 
 //carga el historico del folio
-app.controller('historialCtrl', function ($scope, $rootScope, find ,$routeParams){
+app.controller('historialCtrl', function ($scope,$routeParams, $rootScope, datos, loading){
+
+    loading.despedida();
+    // console.log($routeParams.folio);
+    $scope.historias = datos.data;
+    $scope.info = datos.data[0];
+
+    console.log($scope.historias);
 
 	$scope.inicio = function(){
 
@@ -1650,43 +1699,14 @@ app.controller('historialCtrl', function ($scope, $rootScope, find ,$routeParams
 		$scope.numero = false;
 		$scope.historial = false;
 		$scope.mensaje = '';
-		$scope.numeroentregas =  [];
-		$scope.folio = $routeParams.folio;
-		$scope.tipoDoc = $routeParams.etapa;
-		$scope.entrega = $routeParams.entrega;
-		$scope.muestrHistorico();
 	}
 
-	
-
-	$scope.muestrHistorico = function(){
-		//console.log($scope.entrega);
-		$scope.cargar = true;
-		$scope.mensaje = '';
-
-		find.muestrahistorico($scope.folio, $scope.tipoDoc, $scope.entrega).success(function (data){
-			if(data.respuesta){
-				$scope.cargar = false;
-				$scope.historial = false;
-				$scope.mensaje = data.respuesta;
-
-			}else{
-				$scope.historias = data;
-				$scope.historial = true;
-				$scope.cargar = false;
-			}
-			
-		}).error(function (xhr,status,data){
-			$scope.historial = true;
-			$scope.cargar = false;
-		});
-
-	}
 		
 });
 
 //buscar un folio en el flujo
 app.controller('consultaFlujoCtrl',function ($scope,$rootScope, find){
+
 	$scope.inicio = function(){
 
 		$scope.tituloCF = "Consulta de Folio en Flujo";
@@ -1699,83 +1719,8 @@ app.controller('consultaFlujoCtrl',function ($scope,$rootScope, find){
 
 	}
 
-
-	// presiona Folio
-	$scope.presionaFolio = function(evento){
-
-		//contamos la cadena completa
-		var cantidad = $scope.criterio.length;
-
-		//los primero cuatro caracteres NO deben ser numeros
-		if(cantidad < 3){
-			if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//los ultimos 6 NO deben ser letras
-		if(cantidad > 3 && cantidad < 9){
-			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//Si son mas de 10 digitos no escribas mas
-		if(cantidad > 9){
-			if (evento.keyCode != 8  && evento.keyCode != 46 ) {
-
-		      	evento.preventDefault();
-		    }      	
-		}
-
-		//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
-		if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-	      	$scope.verificaFolio();
-
-	    }
-
-	}
-
-	$scope.verificaFolio = function(){
-
-		if ($scope.criterio != '') {
-
-			var totalletras = $scope.criterio.length
-
-			var letras = $scope.criterio.substr(0,4);
-			var numeros = $scope.criterio.substr(4,totalletras);
-
-			if(letras.length < 4 ){
-
-				var faltantes = 4 - letras.length;
-
-				for (var i = 0; i < faltantes; i++) {
-
-					var letra = letras.charAt(i);
-					letras = letras + "0";
-				}
-			}
-
-			if(numeros.length < 6 ){
-
-				var faltantes = 6 - numeros.length;
-
-				for (var i = 0; i < faltantes; i++) {
-					
-					numeros = "0" + numeros;
-				}
-			}
-
-			$scope.criterio = letras + numeros;
-
-			$scope.foliosxfolio();
-		}	
-
-	}
-
 	//busqueda de folio especiico
-	$scope.foliosxfolio = function(){
+	$scope.buscaFlujo = function(){
 
 		$scope.mensaje = '';
 		$scope.busqueda = false;
@@ -1783,29 +1728,13 @@ app.controller('consultaFlujoCtrl',function ($scope,$rootScope, find){
 		
 		find.listadofolio($scope.criterio).success( function (data){
         	
-        
-        	if(data.respuesta){
-
-        		$('#boton').button('reset');
-        		$scope.mensaje  = data.respuesta;
-
-        	}else{
-
-        		$('#boton').button('reset');
-        		$scope.listado = data;
-
-        	}
-
-        	$scope.busqueda = true;
-			$scope.cargando = false;
-			
-			//console.log(data);
-		}).error( function (xhr,status,data){
-
-			$('#boton').button('reset');
-
-			$scope.cargando = false;
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+            if (data) {
+            	$scope.listado  = data;
+            	$scope.busqueda = true;
+    			$scope.cargando = false;
+            }else{
+                $scope.mensaje = 'No se encontraron datos';
+            }
 
 		});
 
@@ -2085,9 +2014,9 @@ app.controller('controlDocumentosCtrl',function ($scope, $http, loading, find, a
 
     $scope.exporta = function(){
 
-        $('#boton').button('loading');
         $scope.selectos = $filter('filter')($scope.listado, $scope.filtrado);
-        reportes.descargar($scope.selectos);
+        // reportes.descargar($scope.selectos);
+        JSONToCSVConvertor($scope.selectos,'Reporte',true);
         
     }
 
@@ -2183,467 +2112,6 @@ app.controller('infoPaseCtrl',function ($scope, $rootScope, $routeParams){
 		}	
 
 	}
-
-});
-
-
-//Area neutral pro usuario
-app.controller('flujoCtrl',function ($scope, $rootScope, find , loading, $http){
-
-	$scope.inicio = function(){
-
-		$rootScope.area = $rootScope.areaUsuario;
-		$scope.tituloFL = "Mis folios";
-		$scope.push = false;
-		$scope.rechazados = 0;
-		$scope.recibidos = 0;
-
-		$scope.empresas();
-		$scope.Altaunidades();
-		$scope.productos();
-		$scope.mensaje = '';
-		$scope.fechaini = '';
-		$scope.fechafin = '';
-		$scope.folio = '';
-		$scope.lesionado = '';
-		$scope.cargar = false;
-		$scope.verareaoperativa();
-
-		$scope.cargaEntrada();
-		$scope.Altarechazados();
-		$scope.pendientesRecibir();
-
-	}
-
-	//carga todos los folios del area activos por usuario
-	$scope.cargaEntrada = function(){
-
-		loading.cargando('Buscando Folios');
-
-		find.listadogeneral($rootScope.id).success( function (data){
-       
-        	if(data.respuesta){
-        		loading.mensaje(data.respuesta);
-        	}else{
-        		$scope.listado = data;
-        	}
-
-        	loading.despedida();
-        	$scope.mensaje = '';
-			
-		}).error( function (xhr,status,data){
-
-			loading.despedida();
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		});
-	}
-
-
-	///Enlista las areas disponibles
-	$scope.verareaoperativa = function(){
-
-		find.areaoperativa().success( function (data) {
-
-			$scope.areas = data;
-
-		 }).error( function (xhr,status,data){
-
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		 });
-
-	}
-
-	//enlista los usuarios de cada area 
-	$scope.altausuariosarea = function(area){
-
-		if ($rootScope.area == area) {
-
-			alert('No puedes emitir entregas a tu misma area');
-			$scope.areaOp = '';
-
-		}else{
-
-			$scope.area = area;
-			find.usuariosarea(area).success( function (data){
-
-				$scope.usuarios = data;
-
-			 }).error( function (xhr,status,data){
-
-				alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-			 });
-		}
-	}
-
-	//guardamos pero antes verificamos que tengamos documentos seleccionados
-	$scope.entrega = function(){
-
-		
-		if ($scope.selectos.length > 0) {
-			$scope.validainfo();
-
-		}else{
-			alert('No se ha seleccionado ningun documento');
-		}
-	}
-
-	//valida la informacion
-	$scope.validainfo = function(){
-
-		$scope.mensaje = '';
-		$('#boton').button('loading');
-
-		//console.log($scope.selectos);
-		for (var i = 0; i < $scope.selectos.length; i++) {
-
-			try{
-
-				var documento = $scope.selectos[i];
-				//Si es Etapa 2 o 3 y Etapa 1 no esta capturada
-				if(documento.Etapa > 1 && documento.CapEt2 == 0){
-					throw 'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede entregar debido a que la etapa 1 no esta capturada';
-				}
-				//Si se envia a Facturación y no es original ó ya fue enviado anteriormente manda mensaje de error
-				//se agrego indexof(busca el contenido que se ponga aqui) por que javascript no soporta muchos && y || en un mismo if 
-				if( (documento.FaxOrigianl.indexOf('O') == -1  && $scope.areaOp == 5) || ($scope.areaOp == 5 && documento.FLD_AROent == 5 && documento.USU_ent != 'null')||($scope.areaOp == 5 && documento.EnvFac == 'SI' && documento.Etapa == 1) ){
-					throw 'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede enviar a Facturación debido a que no es etapa 1 o ya fue mandado';
-				}
-				//Si se envia a Facturación y no es etapa 1
-				if($scope.areaOp == 5 && documento.Etapa > 1) {
-					throw 'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede enviar a Facturación debido a que no es etapa 1';
-				}
-				//Si se envia a pagos y no es original 
-				if($scope.areaOp == 6 && documento.EnvFac != 'SI' && documento.Etapa == 1) {
-
-					if(confirm('El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se a enviado a Facturación. ¿Desea proseguir?')){							
-						//si es facturacion agrega un juego mas al flujo
-
-						$scope.actualizaFlujo(i);
-
-						throw 1;
-					}
-				}
-
-				//Si se envia a Facturación y es mesa de control
-				if($scope.areaOp == 5 && $rootScope.area == 4) {
-
-					$scope.guardaFlujo(i);
-					throw 1;
-				}else if($scope.areaOp == 5 && $rootScope.area != 4){
-					throw 'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede enviar a Facturación tu usuario no tiene permisos';
-				}
-
-
-				$scope.actualizaFlujo(i);
-
-			}catch(err){
-
-				if(err != 1){
-					alert(err);
-				}
-				
-			}
-		} //Termina for
-
-		if (i == $scope.selectos.length -1) {
-
-			$('#boton').button('reset');
-			$scope.mensaje = 'Termino el Envio';
-			$scope.quitaselectos();
-			$scope.cargaEntrada();
-
-		};
-		
-	}
-
-
-	//caso de juego de facturacion
-	$scope.guardaFlujo = function(indice){
-
-		var documentoEnv = $scope.selectos[indice];
-		
-		var datos = {
-			folio:documentoEnv.Folio,
-			etapa:documentoEnv.Etapa,
-			cantidad:documentoEnv.Cantidad,
-			documento:Number(documentoEnv.documento),
-			usuarioentrega:$rootScope.id,
-			areaentrega:Number(documentoEnv.area),
-			usuariorecibe:Number($scope.user),
-			arearecibe:Number($scope.areaOp),
-			clave:Number(documentoEnv.FLD_claveint),
-			observaciones:documentoEnv.Observaciones
-		};
-
-		console.log(datos);
-
-	    $http({
-			url:'/documento/api/altaentrega',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data:datos
-		}).success( function (data){
-			
-			console.log(data);
-			$scope.mensaje = data.respuesta;
-			$scope.tipoalerta = 'alert-success';			
-
-		}).error( function (data){
-
-			$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-			$scope.tipoalerta = 'alert-warning';
-
-		});
-
-	}
-
-	$scope.actualizaFlujo = function(indice){
-
-		//seleccionamos el folio a mandar 
-		var documentoEnv = $scope.selectos[indice];
-		
-		console.log(documentoEnv);
-		//generamos el JSON necesario incluyendo los datos del area y usuario para enviarlo mediante post 
-		var datos = {
-			folio:documentoEnv.Folio,
-			etapa:documentoEnv.Etapa,
-			cantidad:documentoEnv.Cantidad,
-			documento:Number(documentoEnv.documento),
-			usuarioentrega:$rootScope.id,
-			areaentrega:Number(documentoEnv.area),
-			usuariorecibe:Number($scope.user),
-			arearecibe:Number($scope.areaOp),
-			clave:Number(documentoEnv.FLD_claveint),
-			observaciones:documentoEnv.Observaciones
-		};
-
-	    $http({
-			url:'/documento/api/actualizaentrega',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
-			data:datos
-		}).success( function (data){
-			        	
-			$scope.mensaje = data.respuesta;
-			$scope.tipoalerta = 'alert-success';			
-
-		}).error( function (data){
-
-			$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-			$scope.tipoalerta = 'alert-warning';
-
-		});
-
-	}
-
-	$scope.pendientesRecibir = function(){
-
-		find.listadorecepcion($rootScope.id).success( function (data){
-       
-        	if(data.respuesta){
-        		$scope.recibidos = 0;
-        	}else{
-        		$scope.recibidos = data.length;
-        	}
-
-        	console.log($scope.recibidos);
-
-		});
-
-	}
-
-	///Busquedas 
-
-	//busca clientes
-	$scope.empresas = function(){
-
-		find.empresas().success( function (data) {
-
-			$scope.clientes = data;
-
-		 });
-	}
-
-	//busca productos
-	$scope.productos = function(){
-
-		find.productos().success( function (data) {
-
-			$scope.productosini = data;
-
-		 });
-	}
-
-
-	//busca unidades
-	$scope.Altaunidades = function(){
-
-		find.unidades().success( function (data) {
-
-			$scope.unidades = data;
-
-		 });
-	}
-
-	//busca rechazos
-	$scope.Altarechazados = function(){
-
-		find.listadorechazos($rootScope.id).success( function (data) {
-			
-			console.log(data);
-			if(data.respuesta){
-        		$scope.rechazados = 0;
-        	}else{
-        		$scope.rechazados = data.length;
-        	}
-
-		 });
-	}
-
-
-	//////LLena el grid y toma filtros
-
-	///filtros
-	$scope.selectos = [];
-
-	$scope.filterOptions = {
-	    filterText: '',
-	    useExternalFilter: false
-	};
-
-    var csvOpts = { columnOverrides: { obj: function (o) {
-	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
-	    } },
-	    iEUrl: 'downloads/download_as_csv'
-	};
-
-    ////opciones del grid                 
-   $scope.gridOptions = { 
-    	data: 'listado', 
-    	enableColumnResize:true,
-    	enablePinning: true, 
-    	enableRowSelection:true,
-    	multiSelect:true,
-    	enableCellSelection: true,
-    	selectedItems: $scope.selectos, 
-    	filterOptions: $scope.filterOptions,
-    	columnDefs: [
-                    { field:'Folio', width: 120, pinned:true, enableCellEdit: true },
-		            { field:'Etapa', width: 120 },
-		            { field:'Cantidad', width: 100 },
-		            { field:'Empresa', width: 120 },
-		            { field:'Unidad', width: 200 },
-		            { field:'FaxOrigianl', width: 120 },
-		            { field:'FechaRecepcion', width: 130 },
-		            { field:'FLD_claveint', width: 100, visible:false },
-		            { field:'documento', width: 100, visible:false },
-		            { field:'CapEt2', width: 100, visible:false },
-		            { field:'EnvFac', width: 100, visible:true },
-		            { field:'FLD_AROent', width: 100, visible:false },
-		            { field:'area', width: 100, visible:false },
-		            { field:'USU_ent', width: 100, visible:false },
-		            { field:'Observaciones', width: 320, enableCellEdit: true}
-		            
-        ],
-        showFooter: true,
-        showFilter:false
-    };
-
-    $scope.$on('ngGridEventRows', function (newFilterText){
-
-    	var filas = newFilterText.targetScope.renderedRows;
-
-    	$scope.exportables = [];
-
-    	angular.forEach(filas , function(item){
-    		$scope.exportables.push(item.entity);
-    	});
-
-    });
-
-    $scope.filtra = function(){
-
-    	//$scope.filterOptions.filterText = "";
-    	//var filtro = "";
-    	//console.log($scope.fechaini);
-
-    	if($scope.unidad == undefined || $scope.unidad == 0){
-    		var objeto1 = "";
-    	}else{
-    		var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
-    		
-    	}
-    	if($scope.cliente == undefined || $scope.cliente == 0){
-    		var objeto2 = "";
-    	}else{
-    		var objeto2 = "Empresa:" + $scope.cliente.nombre + "; ";
-    	}
-
-    	if($scope.tipo == 'fax'){
-    		var objeto3 = "FaxOrigianl:F; ";
-    	}else if($scope.tipo == 'original'){
-    		var objeto3 = "FaxOrigianl:O; ";
-    	}else{
-    		var objeto3 = ""; 
-    	}
-
-    	if($scope.folio.length == 0){
-    		var objeto4 = "";
-    	}else{
-    		var objeto4 = "Folio:" + $scope.folio + "; ";	
-    	}
-
-    	if($scope.lesionado.length == 0){
-    		var objeto5 = "";
-    	}else{
-    		var objeto5 = "Lesionado:" + $scope.lesionado + "; ";	
-    	}
-
-    	if($scope.producto == undefined || $scope.producto == 0){
-    		var objeto6 = "";
-    	}else{
-    		var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
-    		
-    	}
-
-    	if($scope.etapa == undefined || $scope.etapa == 0){
-    		var objeto7 = "";
-    	}else{
-    		var objeto7 = "Etapa:" + $scope.etapa + "; ";
-    		
-    	}
-
-
-    	var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7;
-
-    	$scope.filterOptions.filterText = filtro;
-
-    	console.log(filtro);
-
-    }
-
-    $scope.quitafiltro = function(){
-
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
-    	$scope.cliente = 0;
-    	$scope.folio = '';
-    	$scope.fechaini = '';
-    	$scope.fechafin = '';
-    	$scope.lesionado = '';
-    	$scope.foliosxarea();
-    
-    }
-
-    $scope.quitaselectos = function(){
-
-    	$scope.gridOptions.$gridScope.toggleSelectAll(false);
-    }
 
 });
 

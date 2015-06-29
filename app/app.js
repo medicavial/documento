@@ -10,6 +10,7 @@ var app = angular.module('app', [
 ]);
 
 app.constant('api','http://localhost/apimv/public/api/')
+// app.constant('api','http://172.17.10.15/apimv/public/api/')
 
 //configuramos las rutas y asignamos html y controlador segun la ruta
 app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
@@ -83,7 +84,13 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     $routeProvider.when('/flujo',{
             templateUrl    :'vistas/flujo.html',
-            controller     :'flujoCtrl'
+            controller     :'flujoCtrl',
+            resolve:{
+                datos:function(loading,carga,$rootScope){
+                    loading.cargando('Cargando Informacón');
+                    return carga.flujo($rootScope.id);
+                }
+            }
     });
 
     $routeProvider.when('/flujopagos',{
@@ -134,7 +141,17 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     $routeProvider.when('/historial/:folio/:etapa/:entrega',{
             templateUrl   : 'vistas/timeline.html',
-            controller    : 'historialCtrl'        
+            controller    : 'historialCtrl',
+            resolve       :{
+                datos:function($route,find,loading){
+                    loading.cargando('Cargando Información');
+                    var folio = $route.current.params.folio,
+                        etapa = $route.current.params.etapa,
+                        entrega = $route.current.params.entrega;
+                   
+                    return find.muestrahistorico(folio,etapa,entrega);
+                }
+            }        
     });
 
     $routeProvider.when('/infopase',{
@@ -258,6 +275,30 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             }
     });
 
+
+    $routeProvider.when('/reportes',{
+            templateUrl   : 'vistas/reportes.html'
+    });
+
+    $routeProvider.when('/reportes/tickets',{
+            templateUrl   : 'vistas/reportestickets.html',
+            controller    : 'reportesTicketsCtrl',
+            resolve       :{
+                datos:function(loading,find,$q){
+                    loading.cargando('Cargando reporte');
+                    var promesa = $q.defer(),
+                        historico = find.reporteTickets(),
+                        actual = find.reporteTicketsDia();
+
+                    $q.all([actual,historico]).then(function (data){
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
+                }
+            }
+    });
+
     $routeProvider.when('/seguimiento',{
             templateUrl   : 'vistas/seguimiento.html',
             controller    : 'seguimientoCtrl',
@@ -271,7 +312,30 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     $routeProvider.when('/ticket',{
             templateUrl   : 'vistas/menuticket.html',
-            controller    : 'menuticketCtrl'
+            controller    : 'menuticketCtrl',
+            resolve       :{
+                datos:function($q,find,loading){
+
+                    loading.cargando('Cargando Tickets');
+
+                    var datos = {
+                        fechaini:FechaAct,
+                        fechafin:FechaAct
+                    }
+                    var promesa = $q.defer(),
+                        clientes = find.empresasweb(),
+                        status = find.statusweb(),
+                        unidades = find.unidadesweb(),
+                        usuarios = find.usuariosweb(),
+                        tickets = find.ticketsxfecha(datos);
+
+                    $q.all([clientes,status,unidades,usuarios,tickets]).then(function (data){
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
+                }
+            }
     });
 
     $routeProvider.when('/ticketpagos',{

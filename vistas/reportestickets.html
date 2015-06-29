@@ -1,0 +1,62 @@
+<div ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/reportes" class="icon-arrow-left"></a>
+        <h1>Reportes de tickets</h1>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-4 col-sm-5 col-xs-6">
+            <div class="input-group">
+                <input type="text" ng-model="fecha" class="form-control" id="datepicker" placeholder="Fecha" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="buscaxdia()"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <fieldset>
+        
+        <legend>Grafica de Tickets clinicas propias el dia de {{fecha}}</legend>
+        <div ng-show="actualClinicas.length > 0" class="graficas animate-show" id="chartdiv-1"></div>
+        <div ng-hide="actualClinicas.length > 0" class="alert alert-warning animate-show" role="alert">Sin Información capturada</div>
+
+    </fieldset>
+
+    <fieldset>
+        
+        <legend>Grafica de Tickets clinicas propias por categoria el dia de {{fecha}}</legend>
+        <div ng-show="actualCategorias.length > 0" class="graficas animate-show" id="chartdiv-2"></div>
+        <div ng-hide="actualCategorias.length > 0" class="alert alert-warning animate-show" role="alert">Sin Información capturada</div>
+
+    </fieldset>
+
+    <fieldset>
+        
+        <legend>Grafica de Tickets clinicas propias Historico (apartir 1o de mayo)</legend>
+        <div ng-show="periodoClinicas.length > 0" class="graficas" id="chartdiv-3"></div>
+        <div ng-hide="periodoClinicas.length > 0" class="alert alert-warning" role="alert">Sin Información capturada</div>
+
+    </fieldset>
+
+    <fieldset>
+        
+        <legend>Grafica de Tickets clinicas propias por categoria Historico (apartir 1o de mayo)</legend>
+        <div ng-show="periodoCategorias.length > 0" class="graficas" id="chartdiv-4"></div>
+        <div ng-hide="periodoCategorias.length > 0" class="alert alert-warning" role="alert">Sin Información capturada</div>
+
+    </fieldset>
+
+    <br><br>
+
+</div>
+
+
+<script type="text/javascript">
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    $( "#datepicker" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1
+    });
+</script>

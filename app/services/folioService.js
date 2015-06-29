@@ -14,7 +14,7 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                 var documento = folio;
 
-                console.log(documento);
+                console.log(documento.DOC_situacionoriginal);
                 //Si es Etapa 2 o 3 y Etapa 1 no esta capturada
                 if(documento.FLD_etapa > 1 && documento.CapEt2 == 0){
                     foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede entregar debido a que la etapa 1 no esta capturada'});

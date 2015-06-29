@@ -1,6 +1,8 @@
 function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api,datos){
 	
 	loading.despedida();
+	$scope.listado = datos.activos;
+	$scope.rechazados = datos.rechazos.length;
 
 	//Con parametros de inicio
 	$scope.inicio = function(){
@@ -10,15 +12,11 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		$scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];	
 		$scope.limpia();
 		$scope.cargaInfo();
-    	$scope.listado = datos.activos;
-    	$scope.rechazados = datos.rechazos.length;
-
 	}
 	
 	$scope.limpia = function(){
 		$scope.FaxOriginal = true;
 		$scope.push = false;
-		$scope.rechazados = 0;
 		$scope.datos = {
 			fechaini:FechaAct,
 			fechafin:FechaAct,
@@ -54,21 +52,21 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	//carga todos los folios del area activos y rechazados por usuario
 	$scope.cargaFlujo = function(){
 
-		// console.log(datos);
 		$rootScope.prueba = false;
 
 		carga.flujo($rootScope.id).then(function (data){
 
+			console.log(data);
 			$scope.mensaje = '';
 
 			if(datos.activos){
-        		$scope.listado = datos.activos;
+        		$scope.listado = data.activos;
         	}else{
         		$scope.listado = [];
         	}
 
         	if(datos.rechazos){
-        		$scope.rechazados = datos.rechazos.length;
+        		$scope.rechazados = data.rechazos.length;
         	}else{
         		$scope.rechazados = 0;
         	}
@@ -232,7 +230,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 				checkFolios.preparaGuardado($scope.original, $scope.esoriginal, $scope.esfax, $scope.esfe)
 				.then(function (data){
-					console.log(data);
+					// console.log(data);
 					//actualiza folio (solo original)
 					if (data.agregaOriginal) {
 						var alta = $http.post(api+'altaoriginal',data.info);
@@ -249,6 +247,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 					    $scope.limpiaVariables();
 					    $scope.original.folio = '';
 					    $('#folioO').focus();
+
 					})
 					.error(function (data){
 						$('#boton2').button('reset');
@@ -432,7 +431,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
     	});
 
     });
-
+    
     $scope.filtra = function(){
 
     	if($scope.unidad == undefined || $scope.unidad == 0){
