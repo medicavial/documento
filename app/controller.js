@@ -2662,18 +2662,27 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find,$window,
 	//Verifica que la fecha no sea mayor a la fecha que se esta capturando
 	$scope.validafecha = function(tipo){
 
-		if(tipo == 'Fax'){
+		// if(tipo == 'Fax'){
 
-			if($scope.fax.fecha > FechaAct){
-				$scope.fax.fecha = FechaAct;
-			}
+		// 	if($scope.fax.fecha > FechaAct){
+		// 		$scope.fax.fecha = FechaAct;
+		// 	}
 
-		}else{
+		// }else{
+			if (Date.parse($scope.original.fecha) != NaN) {
+				
 
-			if($scope.original.fecha > FechaAct){
-				$scope.original.fecha = FechaAct;
-			}
-		}
+				if(Date.parse($scope.original.fecha) > Date.parse(FechaAct)){
+
+					console.log('ORIGINAL ' + Date.parse($scope.original.fecha));
+
+					console.log('HOY ' + Date.parse(FechaAct));
+					alert('La fecha no debe ser mayor a la de hoy');
+					$scope.original.fecha = FechaAct;
+				}
+
+			};
+		// }
 		
 	}
 
@@ -7949,18 +7958,20 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	//Verifica que la fecha no sea mayor a la fecha que se esta capturando
 	$scope.validafecha = function(tipo){
 
-		if(tipo == 'Fax'){
+		console.log('entro')
+		// if(tipo == 'Fax'){
 
-			if($scope.fax.fecha > FechaAct){
-				$scope.fax.fecha = FechaAct;
-			}
+		// 	if($scope.fax.fecha > FechaAct){
+		// 		$scope.fax.fecha = FechaAct;
+		// 	}
 
-		}else{
-
+		// }else{
+			console.log($scope.original.fecha);
+			console.log(FechaAct);
 			if($scope.original.fecha > FechaAct){
 				$scope.original.fecha = FechaAct;
 			}
-		}
+		// }
 		
 	}
 
