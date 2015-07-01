@@ -2994,7 +2994,7 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find,$window,
 
 		}else{
 
-			if (fecha > FechaAct) {
+			if (Date.parse(fecha) > Date.parse(FechaAct)) {
 
 				$scope.mensaje = 'La fecha de captura no debe ser mayor al dia de hoy';
 				$scope.tipoalerta = 'alert-danger';
