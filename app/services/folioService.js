@@ -651,3 +651,16 @@ app.factory("qualitas", function($q,$http,find,api){
 });
 
 
+app.factory("tickets", function($q,$http,find,api){
+    return{
+        guarda:function(datos){
+            console.log(datos);
+            return $http.post(api+'qualitas/actualiza/'+ envio, datos);
+        },
+        actualiza:function(datos){
+            return $http.post(api+'qualitas/envios', datos);
+        }
+    }
+});
+
+

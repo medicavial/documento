@@ -5,7 +5,7 @@ app.factory("find", function($http,api){
             return $http.get(api+'consulta/areas');
         },
         categorias:function(){
-            return $http.get('/documento/api/categorias');
+            return $http.get(api+'tickets/categorias');
         },
         consultaFacturaQualitas:function(folio){
             return $http.get(api+'qualitas/consulta/' + folio);
@@ -17,7 +17,7 @@ app.factory("find", function($http,api){
             return $http.get(api+'consulta/empresas');
         },
         empresasweb:function(){
-            return $http.get('/documento/api/empresasweb');
+            return $http.get(api + 'consulta/empresasweb');
         },
         escolaridad:function(){
             return $http.get(api+'consulta/escolaridad');
@@ -80,16 +80,16 @@ app.factory("find", function($http,api){
             return $http.get('/documento/api/statusweb');
         },
         subcategorias:function(categoria){
-            return $http.get('/documento/api/subcategorias/'+categoria);
+            return $http.get(api +'tickets/subcategorias/'+categoria);
         },
         ultimoticket:function(){
-            return $http.get('/documento/api/ticket');
+            return $http.get(api +'ticket/maximo');
         },
         unidades:function(){
             return $http.get(api+'consulta/unidades');
         },
         unidadesweb:function(){
-            return $http.get('/documento/api/unidadesweb');
+            return $http.get(api+'consulta/unidadesweb');
         },
         usuariosarea:function(area){
             return $http.get(api+'consulta/usuarios/'+area);

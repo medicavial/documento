@@ -6,6 +6,7 @@ app.controller('editaTicketCtrl', function ($scope,$rootScope, $http, find, $rou
 		$scope.tituloT = "Generar Ticket"
 		$scope.mensaje = '';
 		$scope.mensaje2 = '';
+		
 		$scope.datos = {
 			folioweb:'',
 			folioIn:'',
@@ -23,6 +24,7 @@ app.controller('editaTicketCtrl', function ($scope,$rootScope, $http, find, $rou
 			usuario:$rootScope.userWeb,
 			usuariomv:$rootScope.id
 		}
+
 		$scope.cargar = false;
 		$scope.edicion = true;
 		$scope.altacategorias();
@@ -266,11 +268,9 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 		$scope.mensaje = '';
 
 		if ($rootScope.userWeb == undefined){
-
 			$scope.mensaje = 'No tienes usuario para dar de alta ticket solicitalo en el area de sistemas';
 			$scope.bloqueado = true;
 		};
-
 
 		$scope.tituloT = "Generar Ticket"
 		$scope.mensaje2 = '';
@@ -288,6 +288,7 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 			notas:'',
 			comunicacion:'',
 			fechacomunica:'',
+			observaciones:'',
 			usuario:$rootScope.userWeb,
 			usuariomv:$rootScope.id
 		}
@@ -303,7 +304,6 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 		$scope.unidadesWeb();
 		$scope.datos.folioIn = 'NUEVO';
 
-
 	}
 
 	$scope.siguiente = function(){
@@ -316,7 +316,6 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 			});
 
 		}else{
-
 
 			$scope.tipoalerta = 'alert-warning';
 			$scope.mensaje2  = 'El folio interno ya fue guardado';
@@ -335,8 +334,6 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 		 });
 
 	}
-
-
 	//busca unidades
 	$scope.unidadesWeb = function(){
 
@@ -344,7 +341,7 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 
 			$scope.unidades = data;
 
-		 });
+		});
 
 	}
 
@@ -370,122 +367,44 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 		});
 	}
 
-	// presiona Folio
-	$scope.presionaFolio = function(evento){
-
-		//contamos la cadena completa
-		var cantidad = $scope.datos.folioweb.length;
-
-		//los primero cuatro caracteres NO deben ser numeros
-		if(cantidad < 3){
-			if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//los ultimos 6 NO deben ser letras
-		if(cantidad > 3 && cantidad < 9){
-			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//Si son mas de 10 digitos no escribas mas
-		if(cantidad > 9){
-			if (evento.keyCode != 8  && evento.keyCode != 46 ) {
-
-		      	evento.preventDefault();
-		    }      	
-		}
-
-		//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
-		if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-	      	$scope.verificaFolio();
-
-	    }	
-
-	}
-
-	$scope.verificaFolio = function(){
-
-		if ($scope.datos.folioweb != '') {
-
-			var totalletras = $scope.datos.folioweb.length
-
-			var letras = $scope.datos.folioweb.substr(0,4);
-			var numeros = $scope.datos.folioweb.substr(4,totalletras);
-
-			if(letras.length < 4 ){
-
-				var faltantes = 4 - letras.length;
-
-				for (var i = 0; i < faltantes; i++) {
-
-					var letra = letras.charAt(i);
-					letras = letras + "0";
-				}
-			}
-
-			if(numeros.length < 6 ){
-
-				var faltantes = 6 - numeros.length;
-
-				for (var i = 0; i < faltantes; i++) {
-					
-					numeros = "0" + numeros;
-				}
-			}
-
-			$scope.datos.folioweb = letras + numeros;
-
-			$scope.foliosxfolio();
-		}	
-
-	}
-
 	//busqueda de folio especiico
-	$scope.foliosxfolio = function(){
+	$scope.foliosxfolio = function(folio){
 
-		$scope.mensaje = '';
-		$scope.cargar = true;
-		
-		find.folioweb($scope.datos.folioweb).success( function (data){
-        	
-        
-        	if(data.length == 0){
-
-        		$scope.mensaje  = 'No se encontro el Folio Solicitado';
-
-        	}else{
-
-        		console.log(data[0].Cia_clave);
-        		console.log(data[0].Uni_clave);
-
-        		$scope.datos.cliente = data[0].Cia_clave;
-        		$scope.datos.unidad = data[0].Uni_clave;
-
-        		find.listaticketsfolio($scope.datos.folioweb).success(function (data){
-
-        			if (data.length > 0 ) {
-
-        				$scope.datos.etapa = 2;
-        			}else{
-        				$scope.datos.etapa = 1;
-        			}
-        		});
-
-        	}
-
-			$scope.cargar = false;
+		if ($scope.datos.folioweb) {
+			$scope.mensaje = '';
+			$scope.cargar = true;
 			
-			//console.log(data);
-		}).error( function (xhr,status,data){
+			find.folioweb($scope.datos.folioweb).success( function (data){
+	        	
+	        
+	        	if(data.length == 0){
 
-			$scope.cargar = false;
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+	        		$scope.mensaje  = 'No se encontro el Folio Solicitado';
 
-		});
+	        	}else{
+
+	        		console.log(data[0].Cia_clave);
+	        		console.log(data[0].Uni_clave);
+
+	        		$scope.datos.cliente = data[0].Cia_clave;
+	        		$scope.datos.unidad = data[0].Uni_clave;
+
+	        		find.listaticketsfolio($scope.datos.folioweb).success(function (data){
+
+	        			if (data.length > 0 ) {
+	        				$scope.datos.etapa = 2;
+	        			}else{
+	        				$scope.datos.etapa = 1;
+	        			}
+	        		});
+
+	        	}
+
+				$scope.cargar = false;
+				
+				//console.log(data);
+			});			
+		};
 
 	}
 
@@ -494,22 +413,22 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 		console.log($scope.datos);
 
 		$http({
-				url:'/documento/api/altaticket',
-				method:'POST', 
-				contentType: 'application/json', 
-				dataType: "json", 
-				data:$scope.datos
-			}).success( function (data){
-				        	
-				$scope.mensaje2 = data.respuesta;
-				$scope.tipoalerta = 'alert-success';			
+			url:'/documento/api/altaticket',
+			method:'POST', 
+			contentType: 'application/json', 
+			dataType: "json", 
+			data:$scope.datos
+		}).success( function (data){
+			        	
+			$scope.mensaje2 = data.respuesta;
+			$scope.tipoalerta = 'alert-success';			
 
-			}).error( function (data){
+		}).error( function (data){
 
-				$scope.mensaje2 = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-				$scope.tipoalerta = 'alert-warning';
+			$scope.mensaje2 = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+			$scope.tipoalerta = 'alert-warning';
 
-			});
+		});
 
 	}
 

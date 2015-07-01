@@ -1669,8 +1669,6 @@ $app->post('/altaticket', function(){
          	
         }else{
 
-
-
         	$query="INSERT INTO TicketSeguimiento (TSeg_clave,Exp_folio,TSeg_etapa,TCat_clave,TSub_clave,TSeg_obs,TStatus_clave,Uni_clave,Cia_clave,TSeg_asignado,TSeg_asignadofecha,TSeg_fechareg,TSeg_fechaactualizacion,Usu_registro,Usu_actualiza)
                      VALUES(:foliointerno,:folioweb,:etapa,:categoria,:subcategoria,:observaciones,:status,:unidad,:cliente,:asignado,:fechaasignado,now(),now(),:usuario,:usuario2)";
             
@@ -2030,8 +2028,6 @@ $app->get('/categorias', function(){
         $categorias = $result->fetchAll(PDO::FETCH_OBJ);
         $conexion = null;
         echo json_encode($categorias);
-
-        
 
 	}
 
