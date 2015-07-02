@@ -200,7 +200,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                         //Es fax
                         if(esfax == 1){
 
-                            if(datos.fecha < datos.fechafax){
+                            if(Date.parse(datos.fecha) < Date.parse(datos.fechafax)){
                                 error.mensaje = 'La fecha de captura del original no puede ser anterior a la fecha de captura del fax.';
                                 error.tipoalerta = 'alert-danger';
                                 promesa.reject(error);
@@ -213,7 +213,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                         //es factura express    
                         }else if(esfe == 1){
 
-                            if(datos.fecha < datos.fechafe){
+                            if(Date.parse(datos.fecha) < Date.parse(datos.fechafe)){
                                 error.mensaje = 'La fecha de captura del original no puede ser anterior a la fecha de captura de la factura express.';
                                 error.tipoalerta = 'alert-danger';
                                 promesa.reject(error);
@@ -319,7 +319,7 @@ app.factory("checkFolios", function($q,$http,find, api){
 
             }else{
 
-                if (fecha > FechaAct) {
+                if (Date.parse(fecha) > Date.parse(FechaAct)) {
 
                     error.mensaje = 'La fecha de captura no debe ser mayor al dia de hoy';
                     error.tipoalerta = 'alert-danger';

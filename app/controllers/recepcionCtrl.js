@@ -279,8 +279,9 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	//Verifica que la fecha no sea mayor a la fecha que se esta capturando
 	$scope.validafecha = function(){
 
-		if($scope.original.fecha > FechaAct){
+		if(Date.parse($scope.original.fecha) > Date.parse(FechaAct)){
 			$scope.original.fecha = FechaAct;
+			alert('La fecha no debe ser mayo al dia de hoy');
 		}
 	}
 
