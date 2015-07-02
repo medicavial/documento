@@ -2660,29 +2660,14 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find,$window,
 	}
 
 	//Verifica que la fecha no sea mayor a la fecha que se esta capturando
-	$scope.validafecha = function(tipo){
-
-		// if(tipo == 'Fax'){
-
-		// 	if($scope.fax.fecha > FechaAct){
-		// 		$scope.fax.fecha = FechaAct;
-		// 	}
-
-		// }else{
-
-				
-
+	$scope.validafecha = function(){
+			
 		if(Date.parse($scope.original.fecha) > Date.parse(FechaAct)){
 
-			console.log('ORIGINAL ' + Date.parse($scope.original.fecha));
-
-			console.log('HOY ' + Date.parse(FechaAct));
 			alert('La fecha no debe ser mayor a la de hoy');
 			$scope.original.fecha = FechaAct;
 		}
 
-
-		// }
 		
 	}
 
@@ -2726,37 +2711,41 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find,$window,
 	$scope.presionaFolioOriginal = function(evento){
 
 		//contamos la cadena completa
-		var cantidad = $scope.original.folio.length;
+		if ($scope.original.folio) {
 
-		//los primero cuatro caracteres NO deben ser numeros
-		if(cantidad < 4){
-			if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
-		      	evento.preventDefault();
+			var cantidad = $scope.original.folio.length;
+
+			//los primero cuatro caracteres NO deben ser numeros
+			if(cantidad < 4){
+				if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
+			      	evento.preventDefault();
+			    }
+			}
+
+			//los ultimos 6 NO deben ser letras
+			if(cantidad > 3 && cantidad < 9){
+				if (evento.keyCode >= 65 && evento.keyCode <= 90) {
+			      	evento.preventDefault();
+			    }
+			}
+
+			//Si son mas de 10 digitos no escribas mas
+			if(cantidad > 9){
+				if (evento.keyCode != 8  && evento.keyCode != 46 && evento.keyCode != 9) {
+
+			      	evento.preventDefault();
+			    }      	
+			}
+
+			//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
+			if (evento.keyCode == 13 || evento.keyCode == 9) {
+
+				$scope.mensaje = '';
+		      	$scope.verificaFolioO('Original',  $scope.original.folio);
+
 		    }
-		}
 
-		//los ultimos 6 NO deben ser letras
-		if(cantidad > 3 && cantidad < 9){
-			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//Si son mas de 10 digitos no escribas mas
-		if(cantidad > 9){
-			if (evento.keyCode != 8  && evento.keyCode != 46 && evento.keyCode != 9) {
-
-		      	evento.preventDefault();
-		    }      	
-		}
-
-		//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
-		if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-			$scope.mensaje = '';
-	      	$scope.verificaFolioO('Original',  $scope.original.folio);
-
-	    }
+		};
 	}
 
 	//funcion para autocompletar el folio 
@@ -2974,12 +2963,20 @@ function controlDocumentosCtrl($scope, $rootScope, $http, loading, find,$window,
 	///Proceso de guardado ya sea de fax u original
 	$scope.mandadatos = function(tipo){
 
-		if(tipo == 'Fax'){
-			$('#otro').button('loading');
-			$scope.verificaInfo($scope.fax.cliente, $scope.fax.producto, $scope.fax.escolaridad, $scope.fax.fecha, $scope.fax.folio, tipo);
+		if(Date.parse($scope.original.fecha) > Date.parse(FechaAct)){
+
+			alert('La fecha no debe ser mayor a la de hoy favor de modificar');
+
 		}else{
-			$scope.verificaInfo($scope.original.cliente, $scope.original.producto, $scope.original.escolaridad, $scope.original.fecha, $scope.original.folio, tipo);	
-		}
+
+			if(tipo == 'Fax'){
+				$('#otro').button('loading');
+				$scope.verificaInfo($scope.fax.cliente, $scope.fax.producto, $scope.fax.escolaridad, $scope.fax.fecha, $scope.fax.folio, tipo);
+			}else{
+				$scope.verificaInfo($scope.original.cliente, $scope.original.producto, $scope.original.escolaridad, $scope.original.fecha, $scope.original.folio, tipo);	
+			}
+			
+		}		
 
 	}
 
