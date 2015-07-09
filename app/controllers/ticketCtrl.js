@@ -1,5 +1,5 @@
 ///controlador para editar el ticket 
-app.controller('editaTicketCtrl', function ($scope,$rootScope, $http, find, $routeParams){
+function editaTicketCtrl($scope,$rootScope, $http, find, $routeParams){
 	
 	$scope.inicio = function(){
 
@@ -257,10 +257,10 @@ app.controller('editaTicketCtrl', function ($scope,$rootScope, $http, find, $rou
 
 	}
 
-});
+};
 	
 //generacion de tickets
-app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
+function ticketCtrl($scope,$rootScope, $http, find){
 
 	$scope.inicio = function(){
 
@@ -289,6 +289,30 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 			comunicacion:'',
 			fechacomunica:'',
 			observaciones:'',
+			diagnostico:false,
+			firma:false,
+			notamedica:false,
+			finiquito:false,
+			refactura:false,
+			pase:false,
+			suministro:false,
+			identificacion:false,
+			verificacion:false,
+			notamedicain:false,
+			informe:false,
+			reverso:false,
+			verificapar:false,
+			nocoincide:false,
+			pasemedico:false,
+			nombrein:false,
+			folioseg:false,
+			sinpase:false,
+			fueravigencia:false,
+			sinpoliza:false,
+			sindeducible:false,
+			sincuestionario:false,
+			firmamedico:false,
+			cruce:false,
 			usuario:$rootScope.userWeb,
 			usuariomv:$rootScope.id
 		}
@@ -432,11 +456,10 @@ app.controller('ticketCtrl', function ($scope,$rootScope, $http, find){
 
 	}
 
-});
+};
 
 //menu de tickets donde se imprimen los generados al dia
-
-app.controller('menuticketCtrl', function ($scope, $location, find, loading,datos){
+function menuticketCtrl($scope, $location, find, loading,datos){
 
 	loading.despedida();
 
@@ -616,4 +639,12 @@ app.controller('menuticketCtrl', function ($scope, $location, find, loading,dato
     
     }
 
-});
+};
+
+editaTicketCtrl.$inject = ['$scope','$rootScope', '$http', 'find', '$routeParams'];
+ticketCtrl.$inject = ['$scope','$rootScope', '$http', 'find'];
+menuticketCtrl.$inject = ['$scope', '$location', 'find', 'loading','datos'];
+
+app.controller('editaTicketCtrl',editaTicketCtrl);
+app.controller('ticketCtrl', ticketCtrl);
+app.controller('menuticketCtrl', menuticketCtrl);

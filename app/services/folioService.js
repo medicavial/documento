@@ -311,6 +311,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 tipoalerta:''
             }
 
+
             if(cliente == 20 && producto == 2 && (escolaridad == null || escolaridad == -1 || escolaridad == 0) ){
 
                 error.mensaje = 'La escolaridad es requerida para AXA AP.';
@@ -319,7 +320,7 @@ app.factory("checkFolios", function($q,$http,find, api){
 
             }else{
 
-                if (Date.parse(fecha) > Date.parse(FechaAct)) {
+                if (moment(fecha, 'DD/MM/YYYY') > moment(FechaAct, 'DD/MM/YYYY')) {
 
                     error.mensaje = 'La fecha de captura no debe ser mayor al dia de hoy';
                     error.tipoalerta = 'alert-danger';

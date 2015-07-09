@@ -211,7 +211,7 @@
                 <input type="checkbox" ng-model="datos.sincuestionario" ><i ng-show="datos.sincuestionario" class="glyphicon glyphicon-ok"></i> Sin cuestionario
               </label>
               <label class="btn btn-primary" ng-click="datos.firmamedico = !datos.firmamedico">
-                <input type="checkbox" ng-model="datos.firmamedico"  ng-true-value="FIRMA MÉDICO" ng-false-value="" ><i ng-show="datos.firmamedico" class="glyphicon glyphicon-ok"></i> Firma Médico
+                <input type="checkbox" ng-model="datos.firmamedico"  ng-true-value="'FIRMA MÉDICO'" ng-false-value="" ><i ng-show="datos.firmamedico" class="glyphicon glyphicon-ok"></i> Firma Médico
               </label>
               <label class="btn btn-primary" ng-click="datos.cruce = !datos.cruce">
                 <input type="checkbox" ng-model="datos.cruce"><i ng-show="datos.cruce" class="glyphicon glyphicon-ok"></i> Cruce Zima-MV
@@ -252,7 +252,7 @@
     </div>
     <br>
     <br>
-    <div ng-show="mensaje2 != '' " ng-class="tipoalerta" class="alert animate-show text-center">{{mensaje2}}</div>
+    <div ng-show="mensaje2" ng-class="tipoalerta" class="alert animate-show text-center">{{mensaje2}}</div>
     <br>
     <button ng-hide="edicion" type="reset" class="btn btn-success" ng-click="inicio()">Limpiar</button>
     <a ng-show="edicion" type="reset" class="btn btn-success" href="#/generaticket">Nuevo Ticket</a>

@@ -3,7 +3,7 @@
 		<a href="#/" class="icon-arrow-left"></a>
 		<h1>{{tituloCon}}</h1>
 	</div>
-	<form role="form" ng-submit="verificaFolio()">
+	<form role="form" ng-submit="verificaBusqueda()">
 		<div class="row">
 			<div class="col-md-6">
 				<div class="radio-inline">
@@ -22,13 +22,13 @@
 		</div>
 		<div class="row">
 			<div class="col-md-5" ng-show="tipo == 'folio'">
-				<input type="text" ng-model="folio" class="form-control" placeholder="Busqueda" folioex="foliosxfolio">
+				<input type="text" ng-model="folio" class="form-control" placeholder="Busqueda" folio>
 			</div>
 			<div class="col-md-5" ng-hide="tipo == 'folio'">
-				<input type="text" ng-model="lesionado" class="form-control" placeholder="Busqueda" capitalizeex="foliosxlesionado">
+				<input type="text" ng-model="lesionado" class="form-control" placeholder="Busqueda" capitalize>
 			</div>
 			<div class="col-md-2">
-				<button type="submit" id="boton" ng-click="verificaFolio()" class="btn btn-primary"  data-loading-text="Consultando...">Consultar</button>
+				<button type="submit" id="boton" class="btn btn-primary"  data-loading-text="Consultando...">Consultar</button>
 			</div>
 			<div class="col-md-2">
 	            <img ng-show="cargar" class="animate-show" src="images/cargando.gif">

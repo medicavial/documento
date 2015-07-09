@@ -1,5 +1,5 @@
 //Area de pagos
-app.controller('pagosCtrl',function ($scope, $rootScope, find , loading,datos,$filter){
+function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
     $scope.listado = datos[0].data;
     $scope.cantidad = datos[0].data.length -1;
@@ -347,11 +347,10 @@ app.controller('pagosCtrl',function ($scope, $rootScope, find , loading,datos,$f
         
     }
 
-});
-
+};
 
 //flujo de pagos general
-app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http, api,datos,$filter){
+function flujoPagosCtrl($scope,$rootScope, find,loading, $http, api,datos,$filter){
 
     console.log(datos);
     $scope.listado = datos.data;
@@ -692,4 +691,11 @@ app.controller('flujoPagosCtrl',function ($scope,$rootScope, find,loading, $http
     
     }
 
-});
+};
+
+
+pagosCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading','datos','$filter'];
+flujoPagosCtrl.$inject = ['$scope','$rootScope', 'find','loading', '$http', 'api','datos','$filter'];
+
+app.controller('pagosCtrl',pagosCtrl);
+app.controller('flujoPagosCtrl',flujoPagosCtrl);

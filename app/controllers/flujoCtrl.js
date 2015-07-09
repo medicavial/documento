@@ -1,15 +1,17 @@
 //Area de facturacion
-app.controller('flujoCtrl',function ($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
+function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
 
     loading.despedida();
+    console.log(datos);
+    $scope.listado = datos.activos;
+    $scope.rechazados = datos.rechazos.length;
+    $scope.recibidos = datos.recepcion.length;
 
     $scope.inicio = function(){
 
-        $rootScope.area = 5;
+        $rootScope.area = $rootScope.areaUsuario;
         $scope.tituloFL = "Flujo de documentos";
         $scope.push = false;
-        $scope.rechazados = 0;
-        $scope.recibidos = 0;
 
         $scope.mensaje = '';
         $scope.fechaini = '';
@@ -18,9 +20,6 @@ app.controller('flujoCtrl',function ($scope, $rootScope, find , loading, $http, 
         $scope.lesionado = '';
         $scope.cargar = false;
 
-        $scope.listado = datos.activos;
-        $scope.rechazados = datos.rechazos.length;
-        $scope.recibidos = datos.recepcion.length;
 
         $scope.cargaInfo();
 
@@ -315,4 +314,7 @@ app.controller('flujoCtrl',function ($scope, $rootScope, find , loading, $http, 
         $scope.gridOptions.$gridScope.toggleSelectAll(false);
     }
 
-});
+};
+
+flujoCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading', '$http', 'checkFolios', 'carga', 'api','datos'];
+app.controller('flujoCtrl',flujoCtrl);

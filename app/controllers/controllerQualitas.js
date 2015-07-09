@@ -1,5 +1,5 @@
 /// Facturas qualitas
-app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, loading,api , qualitas){
+function formatoQualitasCtrl($scope, $rootScope,$http, find, loading,api , qualitas){
 
 	$scope.inicio = function(){
 
@@ -278,10 +278,10 @@ app.controller('formatoQualitasCtrl',function ($scope, $rootScope,$http, find, l
     
     }
 
-});
+};
 
 // Facturas Qualitas que no tuvieron imagenes disponibles
-app.controller('formatoQualitasArchivosCtrl',function ($scope, $rootScope, find, loading, qualitas, reportes){
+function formatoQualitasArchivosCtrl($scope, $rootScope, find, loading, qualitas, reportes){
 
 	$scope.inicio = function(){
 
@@ -457,9 +457,9 @@ app.controller('formatoQualitasArchivosCtrl',function ($scope, $rootScope, find,
         
     }
 
-});
+};
 
-app.controller('formatoQualitasConsultaCtrl',function ($scope,$rootScope, find){
+function formatoQualitasConsultaCtrl($scope,$rootScope, find){
 
 	$scope.inicio = function(){
 
@@ -501,9 +501,9 @@ app.controller('formatoQualitasConsultaCtrl',function ($scope,$rootScope, find){
 
 	}
 
-});
+};
 
-app.controller('formatoQualitasEnviadoCtrl',function ($scope, $rootScope, find, loading, qualitas){
+function formatoQualitasEnviadoCtrl($scope, $rootScope, find, loading, qualitas){
 
 	$scope.inicio = function(){
 
@@ -775,9 +775,9 @@ app.controller('formatoQualitasEnviadoCtrl',function ($scope, $rootScope, find, 
         showFilter:false
     };
 
-});
+};
 
-app.controller('formatoQualitasIncompletosCtrl', function ($scope, $rootScope,$http, find, loading, qualitas){
+function formatoQualitasIncompletosCtrl($scope, $rootScope,$http, find, loading, qualitas){
 
 	$scope.inicio = function(){
 
@@ -877,11 +877,10 @@ app.controller('formatoQualitasIncompletosCtrl', function ($scope, $rootScope,$h
         showFilter:false
     };
 
-
-});
+};
 
 //rechazados por qualitas
-app.controller('formatoQualitasRechazadosCtrl',function ($scope, $rootScope, find, loading, qualitas){
+function formatoQualitasRechazadosCtrl($scope, $rootScope, find, loading, qualitas){
 
 	$scope.inicio = function(){
 
@@ -1048,4 +1047,18 @@ app.controller('formatoQualitasRechazadosCtrl',function ($scope, $rootScope, fin
     	};
     }
 
-});
+};
+
+formatoQualitasCtrl.$inject = ['$scope', '$rootScope','$http', 'find', 'loading', 'api', 'qualitas'];
+formatoQualitasArchivosCtrl.$inject = ['$scope', '$rootScope', 'find', 'loading', 'qualitas', 'reportes'];
+formatoQualitasConsultaCtrl.$inject = ['$scope','$rootScope', 'find'];
+formatoQualitasEnviadoCtrl.$inject = ['$scope', '$rootScope', 'find', 'loading', 'qualitas'];
+formatoQualitasIncompletosCtrl.$inject = ['$scope', '$rootScope','$http', 'find', 'loading', 'qualitas'];
+formatoQualitasRechazadosCtrl.$inject = ['$scope', '$rootScope', 'find', 'loading', 'qualitas'];
+
+app.controller('formatoQualitasArchivosCtrl',formatoQualitasArchivosCtrl);
+app.controller('formatoQualitasConsultaCtrl',formatoQualitasConsultaCtrl);
+app.controller('formatoQualitasEnviadoCtrl',formatoQualitasEnviadoCtrl);
+app.controller('formatoQualitasIncompletosCtrl', formatoQualitasIncompletosCtrl);
+app.controller('formatoQualitasCtrl',formatoQualitasCtrl);
+app.controller('formatoQualitasRechazadosCtrl',formatoQualitasRechazadosCtrl);

@@ -381,11 +381,13 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
         //la cuál hemos inyectado en la acción run de la aplicación
         barra.inicia();
         auth.checkStatus();
+        $rootScope.pagina = true;
 			
     });
 
     $rootScope.$on('$routeChangeSuccess', function(){
         barra.termina();  
+        $rootScope.pagina = false;
     });
 
 

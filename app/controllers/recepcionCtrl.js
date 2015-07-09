@@ -279,7 +279,10 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	//Verifica que la fecha no sea mayor a la fecha que se esta capturando
 	$scope.validafecha = function(){
 
-		if(Date.parse($scope.original.fecha) > Date.parse(FechaAct)){
+		var fecha1 = moment($scope.original.fecha, 'DD/MM/YYYY');
+		var fecha2 = moment(FechaAct, 'DD/MM/YYYY');
+		
+		if(fecha1 > fecha2){
 			$scope.original.fecha = FechaAct;
 			alert('La fecha no debe ser mayo al dia de hoy');
 		}
@@ -506,4 +509,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 }
 
-app.controller('recepcionCtrl', ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api','datos', recepcionCtrl]);
+recepcionCtrl.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api','datos'];
+
+app.controller('recepcionCtrl', recepcionCtrl);

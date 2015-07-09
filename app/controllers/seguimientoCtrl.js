@@ -1,5 +1,5 @@
 //Area de seguimiento
-app.controller('seguimientoCtrl',function ($scope, $rootScope, find , carga, loading, checkFolios,datos){
+function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,datos){
 
 
 	loading.despedida();
@@ -267,4 +267,7 @@ app.controller('seguimientoCtrl',function ($scope, $rootScope, find , carga, loa
     	$scope.gridOptions.$gridScope.toggleSelectAll(false);
     }
 
-});
+};
+
+seguimientoCtrl.$inject = ['$scope', '$rootScope', 'find' , 'carga', 'loading', 'checkFolios','datos'];
+app.controller('seguimientoCtrl',seguimientoCtrl);

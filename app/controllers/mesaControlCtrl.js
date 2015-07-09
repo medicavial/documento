@@ -1,6 +1,6 @@
 
 //Area de mesa de control
-app.controller('mesaControlCtrl',function ($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
+function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
 
 	loading.despedida();
 
@@ -322,10 +322,10 @@ app.controller('mesaControlCtrl',function ($scope, $rootScope, find , loading, $
     	$scope.gridOptions.$gridScope.toggleSelectAll(false);
     }
 
-});
+};
 
 //mustra los documentos entregados de no pagar hasta cobrar
-app.controller('nopagarCtrl',function ($scope, $rootScope, $routeParams, find, $http, loading, api,datos){
+function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api,datos){
 	
 	loading.despedida();
 	//Carga Configuracion Inicial
@@ -509,4 +509,11 @@ app.controller('nopagarCtrl',function ($scope, $rootScope, $routeParams, find, $
     	$scope.gridOptions.$gridScope.toggleSelectAll(false);
     }
 
-});
+};
+
+
+mesaControlCtrl.$inject = ['$scope', '$rootScope', 'find', 'loading', '$http', 'checkFolios', 'carga', 'api','datos'];
+nopagarCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', '$http', 'loading', 'api','datos'];
+
+app.controller('mesaControlCtrl', mesaControlCtrl);
+app.controller('nopagarCtrl', nopagarCtrl);

@@ -1,5 +1,5 @@
 //Area de facturacion
-app.controller('reportesTicketsCtrl',function ($scope, $rootScope, find , loading, datos){
+function reportesTicketsCtrl($scope, $rootScope, find , loading, datos){
 
 	loading.despedida();
 
@@ -117,4 +117,8 @@ app.controller('reportesTicketsCtrl',function ($scope, $rootScope, find , loadin
         });
     }
 
-});
+};
+
+reportesTicketsCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading', 'datos'];
+
+app.controller('reportesTicketsCtrl',reportesTicketsCtrl);

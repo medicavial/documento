@@ -1,5 +1,6 @@
-//Area de facturacion
-function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
+
+//Area de mesa de control
+function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
 
 	loading.despedida();
 	$scope.listado = datos.activos;
@@ -8,9 +9,11 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 
 	$scope.inicio = function(){
 
-		$rootScope.area = 5;
-		$scope.tituloR = "Facturación";
+		$rootScope.area = 3;
+		$scope.tituloR = "Capturas";
 		$scope.push = false;
+		$scope.rechazados = 0;
+		$scope.recibidos = 0;
 
 		$scope.mensaje = '';
 		$scope.fechaini = '';
@@ -18,10 +21,10 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 		$scope.folio = '';
 		$scope.lesionado = '';
 		$scope.cargar = false;
-
 		$scope.cargaInfo();
 
 	}
+
 
 	$scope.cargaInfo = function(){
 
@@ -35,7 +38,9 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 			$scope.areas = data.areaOperativa;
 			$scope.escolaridades = data.escolaridad;
 
+
 		});
+		
 	}
 
 	//carga todos los folios del area activos, rechazados y por recibir por usuario
@@ -122,51 +127,6 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 		}else{
 			alert('No se ha seleccionado ningun documento');
 		}
-
-	}
-
-	$scope.mandanpc = function(){
-
-		$scope.mensaje = '';
-
-		$('#boton2').button('loading');
-
-		if ($scope.selectos.length > 0) {
-
-			$http.post(api+'insertanpc',$scope.selectos).success(function (data){
-				$scope.mensaje = data.respuesta;
-				$scope.tipoalerta = 'alert-success';
-				$scope.cargaFlujo();
-				$('#boton2').button('reset');
-			}).error( function (data){
-				
-				$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-				$scope.tipoalerta = 'alert-warning';
-				$('#boton2').button('reset');
-
-			}); 
-
-			
-
-		}else{
-			alert('No se ha seleccionado ningun documento');
-		}
-
-	}
-
-	$scope.pendientesRecibir = function(){
-
-		find.listadorecepcion($rootScope.id).success( function (data){
-       
-        	if(data.respuesta){
-        		$scope.recibidos = 0;
-        	}else{
-        		$scope.recibidos = data.length;
-        	}
-
-        	//console.log($scope.recibidos);
-
-		});
 
 	}
 
@@ -314,6 +274,6 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 
 };
 
-facturacionCtrl.$inject =['$scope', '$rootScope', 'find', 'loading', '$http', 'checkFolios', 'carga', 'api','datos'];
+capturaslCtrl.$inject = ['$scope', '$rootScope', 'find ', 'loading', '$http', 'checkFolios', 'carga', 'api','datos'];
 
-app.controller('facturacionCtrl',facturacionCtrl);
+app.controller('capturaslCtrl', capturaslCtrl);
