@@ -61,11 +61,6 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             controller     :'cordinacionCtrl'
     });
 
-    $routeProvider.when('/editaticket/:foliointerno/:folioweb',{
-            templateUrl   : 'vistas/ticket.html',
-            controller    : 'editaTicketCtrl'
-    });
-
     $routeProvider.when('/entregas/:area',{
             templateUrl   : 'vistas/entregas.html',
             controller    : 'entregasCtrl'   
@@ -330,6 +325,31 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
                         tickets = find.ticketsxfecha(datos);
 
                     $q.all([clientes,status,unidades,usuarios,tickets]).then(function (data){
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
+                }
+            }
+    });
+
+    $routeProvider.when('/ticket/:foliointerno/:folioweb',{
+            templateUrl   : 'vistas/ticket.html',
+            controller    : 'editaTicketCtrl',
+            resolve       :{
+                datos:function($q,find,loading,$route){
+
+                    loading.cargando('Cargando Ticket');
+
+                    var promesa = $q.defer(),
+                        clientes = find.empresasweb(),
+                        status = find.statusweb(),
+                        unidades = find.unidadesweb(),
+                        categorias = find.categorias(),
+                        ticket = find.detalleticket($route.current.params.foliointerno,$route.current.params.folioweb);
+
+
+                    $q.all([clientes,status,unidades,categorias,ticket]).then(function (data){
                         promesa.resolve(data);
                     });
 

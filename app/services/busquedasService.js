@@ -11,7 +11,7 @@ app.factory("find", function($http,api){
             return $http.get(api+'qualitas/consulta/' + folio);
         },
         detalleticket:function(folioint,folioweb){
-            return $http.get('/documento/api/ticketinfo/' + folioint + '/' + folioweb);
+            return $http.get( api + 'tickets/detalle/' + folioint + '/' + folioweb);
         },
         empresas:function(){
             return $http.get(api+'consulta/empresas');
@@ -52,12 +52,6 @@ app.factory("find", function($http,api){
         listadorechazos:function(usuario){
             return $http.get(api+'flujo/rechazos/'+usuario);
         },
-        listatickets:function(interno){
-            return $http.get('/documento/api/listatickets/'+interno);
-        },
-        listaticketsfolio:function(folio){
-            return $http.get('/documento/api/listaticketsfolio/'+folio);
-        },
         muestrahistorico:function(folio,etapa,entrega){
             return $http.get(api + 'consulta/historial/'+folio +"/"+etapa+"/"+entrega);
         },
@@ -83,7 +77,7 @@ app.factory("find", function($http,api){
             return $http.get(api +'tickets/subcategorias/'+categoria);
         },
         ultimoticket:function(){
-            return $http.get(api +'ticket/maximo');
+            return $http.get(api +'tickets/maximo');
         },
         unidades:function(){
             return $http.get(api+'consulta/unidades');
@@ -125,7 +119,7 @@ app.factory("find", function($http,api){
             return $http.post(api + 'reportes/ticketsdia',{fecha:fecha});
         },
         ticketsxfecha:function(datos){
-            return $http.post(api + 'tickets',datos);
+            return $http.post(api + 'tickets/consulta',datos);
         },
         ticketsxfolio:function(folio){
             return $http.get(api + 'tickets/folio/'+ folio);

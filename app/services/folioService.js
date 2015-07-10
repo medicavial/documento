@@ -654,12 +654,12 @@ app.factory("qualitas", function($q,$http,find,api){
 
 app.factory("tickets", function($q,$http,find,api){
     return{
-        guarda:function(datos){
-            console.log(datos);
-            return $http.post(api+'qualitas/actualiza/'+ envio, datos);
+        guardar:function(datos){
+            
+            return $http.post(api+'tickets', datos);
         },
         actualiza:function(datos){
-            return $http.post(api+'qualitas/envios', datos);
+            return $http.put(api+'tickets', datos);
         }
     }
 });

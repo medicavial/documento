@@ -31,13 +31,13 @@
         </div>
         <div class="row">
             <div class="col-md-3">
-                Telefono:<span style="margin-left:0.5em;">{{siniestro}}</span>
+                Telefono:<span style="margin-left:0.5em;">{{telefono}}</span>
             </div>
             <div class="col-md-3">
                 Mail:<span style="margin-left:0.5em;">{{mail}}</span>
             </div>
             <div class="col-md-3">
-                F. Nacimiento:<span style="margin-left:0.5em;">{{fechana | date:'medium'}}</span>
+                F. Nacimiento:<span style="margin-left:0.5em;">{{fechana}}</span>
             </div>
             <div class="col-md-3">
                 Sexo:<span style="margin-left:0.5em;">{{sexo}}</span>
@@ -261,7 +261,7 @@
   <br>
   <br>
   <div class="row" ng-show="edicion">
-    <div class="col-md-12">
+    <div class="col-md-6">
 
       <div class="panel panel-primary">
         <div class="panel-heading">
@@ -279,9 +279,9 @@
               </thead>
               <tbody>
                 <tr ng-repeat="comunicacion in comunicaciones">
-                  <td>{{comunicacion.Usuario}}</td>
-                  <td>{{comunicacion.Descripcion}}</td>
-                  <td>{{comunicacion.Fecha}}</td>
+                  <td>{{comunicacion.Usu_registro}}</td>
+                  <td>{{comunicacion.TC_descripcion}}</td>
+                  <td>{{comunicacion.TC_fechareg}}</td>
                 </tr>
               </tbody>
             </table>
@@ -290,7 +290,7 @@
       </div>
 
     </div>
-    <div class="col-md-12">
+    <div class="col-md-6">
       
       <div class="panel panel-primary">
         <div class="panel-heading">
@@ -308,9 +308,9 @@
               </thead>
               <tbody>
                 <tr ng-repeat="nota in notas">
-                  <td>{{nota.Usuario}}</td>
-                  <td>{{nota.Descripcion}}</td>
-                  <td>{{nota.Fecha}}</td>
+                  <td>{{nota.Usu_registro}}</td>
+                  <td>{{nota.TN_descripcion}}</td>
+                  <td>{{nota.TN_fechareg}}</td>
                 </tr>
               </tbody>
             </table>
