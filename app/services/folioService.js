@@ -14,7 +14,7 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                 var documento = folio;
 
-                console.log(documento.DOC_situacionoriginal);
+                // console.log(documento.DOC_situacionoriginal);
                 //Si es Etapa 2 o 3 y Etapa 1 no esta capturada
                 if(documento.FLD_etapa > 1 && documento.CapEt2 == 0){
                     foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede entregar debido a que la etapa 1 no esta capturada'});
@@ -132,7 +132,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 mensaje:'',
                 tipoalerta:''
             }
-            console.log(datos);
+            // console.log(datos);
             
             //verificamos si el folio tiene documento registrado
             if(datos.documento == 0){
@@ -557,6 +557,25 @@ app.factory("carga", function($q,$http,find,api){
             }); 
 
             return promesa.promise;
+        },
+        flujoArea:function(area){
+
+            var promesa        = $q.defer(),
+                activos        = $http.get(api+'flujo/activosarea/'+area),
+                recepcion      = $http.get(api+'flujo/recepcionarea/'+area),
+                rechazos       = $http.get(api+'flujo/rechazosarea/'+area);
+
+            $q.all([activos,rechazos,recepcion]).then(function(data) {
+                var datos = {
+                    activos:data[0].data,
+                    rechazos:data[1].data,
+                    recepcion:data[2].data
+                }
+                promesa.resolve(datos);
+
+            }); 
+
+            return promesa.promise;
         }
     }
 });
@@ -565,10 +584,10 @@ app.factory("carga", function($q,$http,find,api){
 
 //servicio de chekeo de folios para las cargar busquedas por bloque y carga informacion del flujo
 //por usuario
-app.factory("qualitas", function($q,$http,find,api){
+app.factory("qualitas", function($q,$http,find,api,publicfiles){
     return{
         actualiza:function(envio,datos){
-            console.log(datos);
+            // console.log(datos);
             return $http.post(api+'qualitas/actualiza/'+ envio, datos);
         },
         envios:function(datos){
@@ -632,8 +651,8 @@ app.factory("qualitas", function($q,$http,find,api){
         },
         descargaEnvio:function(archivo){
 
-            console.log(archivo);
-            var ruta = api + 'reportes/descargar/' + archivo;
+            // console.log(archivo);
+            var ruta = publicfiles + archivo;
             //this trick will generate a temp <a /> tag
             var link = document.createElement("a");    
             link.href = ruta;
@@ -655,13 +674,23 @@ app.factory("qualitas", function($q,$http,find,api){
 app.factory("tickets", function($q,$http,find,api){
     return{
         guardar:function(datos){
-            
-            return $http.post(api+'tickets', datos);
+            return $http.post(api + 'tickets', datos);
         },
         actualiza:function(datos){
-            return $http.put(api+'tickets', datos);
+            return $http.put(api + 'tickets', datos);
         }
     }
 });
 
+
+app.factory("ticketpagos", function($q,$http,find,api){
+    return{
+        guardar:function(datos){
+            return $http.post(api + 'tickets/pagos', datos);
+        },
+        actualiza:function(datos){
+            return $http.put(api + 'tickets/pagos', datos);
+        }
+    }
+});
 

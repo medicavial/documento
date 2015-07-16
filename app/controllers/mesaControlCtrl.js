@@ -77,7 +77,7 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 	//enlista los usuarios de cada area 
 	$scope.altausuariosarea = function(area){
 
-		if ($rootScope.area == area) {
+		if ($rootScope.area == area && $rootScope.id != 38) {
 
 			alert('No puedes emitir entregas a tu misma area');
 			$scope.areaOp = '';
@@ -112,7 +112,7 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 					$('#boton').button('reset');
 					if (data.rechazos.length > 0) {
 						$rootScope.rechazos = data.rechazos;
-						console.log($scope.rechazos);
+						// console.log($scope.rechazos);
 						$('#myModal3').modal();
 					};
 
@@ -208,6 +208,8 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
     	enablePinning: true, 
     	enableRowSelection:true,
     	multiSelect:true,
+    	showSelectionCheckbox: true,
+        selectWithCheckboxOnly: false,
     	enableCellSelection: true,
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
@@ -492,7 +494,7 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
 
     	$scope.filterOptions.filterText = filtro;
 
-    	console.log(filtro);
+    	// console.log(filtro);
 
     }
 

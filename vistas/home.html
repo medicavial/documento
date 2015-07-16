@@ -1,151 +1,193 @@
-<div>
-<h1>{{tituloH}}</h1>
-<ul id="rb-grid" class="rb-grid clearfix">
-    
-    <li class="rb-span-1" ng-class="{'inactivo': area != 12 && area != 3}" id="color4">
-    
-        <h3>Flujo de documentos</h3>
-        <a href="#/flujo">
-            <span class="icon-shuffle"></span>
-        </a>
-    
-    </li>
-    
-    <li class="rb-span-1"  ng-class="{'inactivo': area != 1}" id="color1">
-        <h3>Recepción de Documentos</h3>
-        <a href="#/Recepcion">
-            <span class="icon-box-add"></span>
-        </a>
-    </li>
- 
-    <li class="rb-span-1" ng-class="{'inactivo': area != 20}" id="color3">
+<div ng-init="inicio()">
+    <h1>{{tituloH}}</h1>
+    <ul id="rb-grid" class="rb-grid clearfix">
+        
+        <li class="rb-span-1" ng-class="{'inactivo': area != 2  && area != 7 && area != 12}" id="color4">
+        
+            <h3>Flujo de documentos</h3>
+            <a href="#/flujo">
+                <span class="icon-shuffle"></span>
+            </a>
+        
+        </li>
 
-        <h3>Cordinacion Médica</h3>
-        <a href="#/cordinacion">
-            <span class="icon-paste"></span>
-        </a>
-    </li>
-    
-    <li class="rb-span-1" ng-class="{'inactivo': area != 20}" id="color7">
+        <li class="rb-span-1" ng-class="{'inactivo': area != 12}" id="color4">
+        
+            <h3>Flujo Manual</h3>
+            <a href="" data-toggle="modal" data-target="#modalT">
+                <span class="icon-enter"></span>
+            </a>
+        
+        </li>
+        
+        <li class="rb-span-1"  ng-class="{'inactivo': area != 1}" id="color1">
+            <h3>Recepción de Documentos</h3>
+            <a href="#/Recepcion">
+                <span class="icon-box-add"></span>
+            </a>
+        </li>
+     
+        <li class="rb-span-1" ng-class="{'inactivo': area != 20}" id="color3">
 
-        <h3>Captura</h3>
-        <a href="#/captura">
-            <span class="icon-keyboard"></span>
-        </a>
-    </li>
+            <h3>Cordinacion Médica</h3>
+            <a href="#/cordinacion">
+                <span class="icon-paste"></span>
+            </a>
+        </li>
+        
+        <li class="rb-span-1" ng-class="{'inactivo': area != 3}" id="color7">
 
-    <li class="rb-span-1" ng-class="{'inactivo': area != 4}" id="color4">
+            <h3>Captura</h3>
+            <a href="#/captura">
+                <span class="icon-keyboard"></span>
+            </a>
+        </li>
 
-        <h3>Mesa de Control</h3>
-        <a href="#/mesacontrol">
-            <span class="icon-map"></span>
-        </a>
-    </li>
+        <li class="rb-span-1" ng-class="{'inactivo': area != 4}" id="color4">
 
-    <li class="rb-span-1" ng-class="{'inactivo': area != 6}" id="color4">
+            <h3>Mesa de Control</h3>
+            <a href="#/mesacontrol">
+                <span class="icon-map"></span>
+            </a>
+        </li>
 
-        <h3>Pagos</h3>
-        <a href="#/pagos">
-            <span class="icon-coin"></span>
-        </a>
-    </li>
+        <li class="rb-span-1" ng-class="{'inactivo': area != 6}" id="color4">
 
-    <li class="rb-span-1" ng-class="{'inactivo': area != 8}" id="color4">
+            <h3>Pagos</h3>
+            <a href="#/pagos">
+                <span class="icon-coin"></span>
+            </a>
+        </li>
 
-        <h3>Seguimiento</h3>
-        <a href="#/seguimiento">
-            <span class="icon-compass"></span>
-        </a>
-    </li>
+        <li class="rb-span-1" ng-class="{'inactivo': area != 8}" id="color4">
 
-    <li class="rb-span-1" ng-class="{'inactivo': area != 5}" id="color4">
+            <h3>Seguimiento</h3>
+            <a href="#/seguimiento">
+                <span class="icon-compass"></span>
+            </a>
+        </li>
 
-        <h3>Facturación</h3>
-        <a href="#/facturacion">
-            <span class="icon-qrcode"></span>
-        </a>
-    </li>
+        <li class="rb-span-1" ng-class="{'inactivo': area != 5}" id="color4">
 
-    <li class="rb-span-1" id="color4" ng-class="{'inactivo': area != 5 && area != 12}">
+            <h3>Facturación</h3>
+            <a href="#/facturacion">
+                <span class="icon-qrcode"></span>
+            </a>
+        </li>
 
-        <h3>Formato Qualitas</h3>
-        <a href="#/formatoqualitas">
-            <span class="icon-file-excel"></span>
-        </a>
-    </li>
+        <li class="rb-span-1" id="color4" ng-class="{'inactivo': area != 5 && area != 12}">
 
-    <li class="rb-span-1" ng-class="{'inactivo': area != 20}" id="color4">
+            <h3>Formato Qualitas</h3>
+            <a href="#/formatoqualitas">
+                <span class="icon-file-excel"></span>
+            </a>
+        </li>
 
-        <h3>Archivo</h3>
-        <a href="#/archivo">
-            <span class="icon-folder-open"></span>
-        </a>
-    </li>
+        <li class="rb-span-1" ng-class="{'inactivo': area != 20}" id="color4">
 
-    <li class="rb-span-1" ng-class="{'inactivo': area != 20}" id="color4">
+            <h3>Archivo</h3>
+            <a href="#/archivo">
+                <span class="icon-folder-open"></span>
+            </a>
+        </li>
 
-        <h3>Zima</h3>
-        <a href="#/logout">
-            <span class="icon-shuffle"></span>
-        </a>
-    </li>
+        <li class="rb-span-1" ng-class="{'inactivo': area != 20}" id="color4">
 
-    <li class="rb-span-1" id="color4">
+            <h3>Zima</h3>
+            <a href="#/logout">
+                <span class="icon-shuffle"></span>
+            </a>
+        </li>
 
-        <h3>Consulta Individual</h3>
-        <a href="#/consulta">
-            <span class="icon-binoculars"></span>
-        </a>
-    </li>
-    
-    <li class="rb-span-1" id="color3" ng-class="{'inactivo': area != 8 && area != 12 && area != 1}">
-        <h3>Tickets</h3>
-        <a href="#/ticket">
-            <span class=" icon-ticket"></span>
-        </a>
-    </li>
-    
-    <li class="rb-span-1" id="color4" ng-class="{'inactivo': area != 4 && area != 8 && area != 12}">
+        <li class="rb-span-1" id="color4">
 
-        <h3>Reportes</h3>
-        <a href="#/reportes">
-            <span class="icon-pie"></span>
-        </a>
-    </li>
+            <h3>Consulta Individual</h3>
+            <a href="#/consulta">
+                <span class="icon-binoculars"></span>
+            </a>
+        </li>
+        
+        <li class="rb-span-1" id="color3" ng-class="{'inactivo':area != 6 && area != 8 && area != 12 && area != 1}">
+            <h3>Tickets</h3>
+            <a href="#/ticket">
+                <span class=" icon-ticket"></span>
+            </a>
+        </li>
+        
+        <li class="rb-span-1" id="color4" ng-class="{'inactivo': area != 4 && area != 8 && area != 12}">
 
-    <li class="rb-span-1" id="color4">
+            <h3>Reportes</h3>
+            <a href="#/reportes">
+                <span class="icon-pie"></span>
+            </a>
+        </li>
 
-        <h3>Control de Documentos</h3>
-        <a href="#/control">
-            <span class="icon-drawer2"></span>
-        </a>
-    </li>
+        <li class="rb-span-1" id="color4">
 
-    <li class="rb-span-1" id="color4" ng-class="{'inactivo': area != 20}">
+            <h3>Control de Documentos</h3>
+            <a href="#/control">
+                <span class="icon-drawer2"></span>
+            </a>
+        </li>
 
-        <h3>Flujo de Pagos</h3>
-        <a href="#/flujopagos">
-            <span class="icon-book"></span>
-        </a>
-    </li>
+        <li class="rb-span-1" id="color4" ng-class="{'inactivo': area != 12}">
+
+            <h3>Flujo de Pagos</h3>
+            <a href="#/flujopagos">
+                <span class="icon-book"></span>
+            </a>
+
+        </li>
 
 
-    <li class="rb-span-1" ng-class="{'inactivo': area != 4 && area != 6 && area != 12}" id="color4">
+        <li class="rb-span-1" ng-class="{'inactivo': area != 20}" id="color4">
 
-        <h3>Rechazo de pagos</h3>
-        <a href="#/pagosrechazos">
-            <span class="glyphicon glyphicon-eye-close"></span>
-        </a>
-    </li>
+            <h3>Rechazo de pagos</h3>
+            <a href="#/pagosrechazos">
+                <span class="glyphicon glyphicon-eye-close"></span>
+            </a>
+        </li>
 
-    <!-- <li class="rb-span-1" id="color4">
+        <!-- <li class="rb-span-1" id="color4">
 
-        <h3>Configuración</h3>
-        <a href="#/admin">
-            <span class="icon-cog"></span>
-        </a>
-    </li> -->
+            <h3>Configuración</h3>
+            <a href="#/admin">
+                <span class="icon-cog"></span>
+            </a>
+        </li> -->
 
-</ul>
+    </ul>
 
+</div>
+
+
+<!--Ventana para mostrar los folios que se no se generaron-->
+<div class="modal fade  bs-example-modal-sm" id="modalT" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Selecciona el area y usuario a consultar</h4>
+      </div>
+      <div class="modal-body">
+           <div class="row">
+                <form name="formEntrega"  novalidate>
+
+                    <div class="col-md-12">
+                        <select class="form-control" id="area" ng-model="areaManual" ng-options="area.calve as area.nombre for area in areas" required>
+                            <option value="">Area Operativa</option>
+                        </select>
+                    </div>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary" ng-click="consulta()">Consultar Flujo</button>
+                    </div>
+
+
+                </form>
+    </div>
+      </div>
+      <div class="modal-footer text-center">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar Ventana</button>
+      </div>
+    </div>
+  </div>
 </div>

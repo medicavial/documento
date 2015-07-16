@@ -6,7 +6,6 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 	//Con parametros de inicio
 	$scope.inicio = function(){
-
 		$rootScope.area = 1;
 		$scope.tituloR = "Recepcion de Documentos";
 		$scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];	
@@ -56,7 +55,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 		carga.flujo($rootScope.id).then(function (data){
 
-			console.log(data);
+			// console.log(data);
 			$scope.mensaje = '';
 
 			if(datos.activos){
@@ -82,6 +81,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 		$('#myModal2').modal();
 
+		$scope.muestraEsc = false;
 		$scope.original = {
 			folio:'',
 			documento:0,
@@ -177,7 +177,9 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 			$scope.productos = data;
 
-		 });
+			$scope.verificaEscolaridad();
+
+		});
 	}
 
 	//busqueda de referencias por unidad
@@ -185,6 +187,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 		find.referenciaxunidad(unidad).success(function (data){
 			$scope.label1 = data[0].referencia;
+			$scope.verificaatencion();
 		});
 	}
 
@@ -213,6 +216,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		$scope.esfe = 0;
 		$scope.bloqueo = false;
 		$scope.bloqueoUni = false;
+		$scope.muestraEsc = false;
 	}
 
 	/////////Inicia proceso de guardado 
@@ -288,11 +292,30 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		}
 	}
 
+	//verifica si se tiene que mostrar la escolaridad
+	$scope.verificaEscolaridad = function(){
+
+		if ($scope.original.producto) {
+
+			if ($scope.original.producto == 2 && ($scope.original.cliente == 20 || $scope.original.cliente == 42) ) {
+				$scope.muestraEsc = true;
+			}else{
+				$scope.muestraEsc = false;
+			}
+
+		};
+
+	}
+
 	//verificamos que tipo de atencion es y si ya tien fax capturado al momento de cambiar el tipo de documento 
 	$scope.verificaatencion = function(){
 
-		if(($scope.original.tipoDoc == 2 || $scope.original.tipoDoc == 3) && $scope.bloqueoUni == true){
+		// console.log($scope.original.tipoDoc);
+		// console.log($scope.bloqueoUni);
 
+		if(($scope.original.tipoDoc == 2 || $scope.original.tipoDoc == 3) && $scope.bloqueoUni == false){
+
+	
 			$scope.original.unidad = $scope.unidadref;//asignamos el valor de referencia por si queremos regresar al estado anterior
 			$scope.bloqueoUni = false;
 			
@@ -354,7 +377,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 					$('#boton').button('reset');
 					if (data.rechazos.length > 0) {
 						$rootScope.rechazos = data.rechazos;
-						console.log($scope.rechazos);
+						// console.log($scope.rechazos);
 						$('#myModal3').modal();
 					};
 

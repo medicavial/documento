@@ -33,6 +33,9 @@
 	<div class="gridStyle" ng-grid="gridOptions"></div>
 
 	<br>
+	
+	<button ng-click="exporta()" data-loading-text="Generando..." id="boton" class="btn btn-success glyphicon glyphicon-download-alt"> Exportar</button>
+
 	<div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
 	<div class="row">
 		<div class="col-md-3">

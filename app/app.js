@@ -9,8 +9,9 @@ var app = angular.module('app', [
     'webStorageModule'
 ]);
 
-app.constant('api','http://localhost/apimv/public/api/')
-// app.constant('api','http://172.17.10.15/apimv/public/api/')
+// app.constant('api','http://localhost/apimv/public/api/')
+app.constant('api','http://172.17.10.15/apimv/public/api/')
+app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/')
 
 //configuramos las rutas y asignamos html y controlador segun la ruta
 app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
@@ -38,7 +39,13 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     $routeProvider.when('/captura',{
             templateUrl    :'vistas/captura.html',
-            controller     :'capturaCtrl'
+            controller     :'capturaslCtrl',
+            resolve:{
+                datos:function(loading,carga,$rootScope){
+                    loading.cargando('Cargando Informacón');
+                    return carga.flujoArea($rootScope.area);
+                }
+            }
     });
 
     $routeProvider.when('/consulta',{
@@ -88,9 +95,40 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             }
     });
 
+    $routeProvider.when('/flujoArea',{
+            templateUrl    :'vistas/flujoArea.html',
+            controller     :'flujoAreaCtrl',
+            resolve:{
+                datos:function(loading,carga,$rootScope,$route){
+                    loading.cargando('Cargando Informacón');
+                    // var area = $route.current.params.area;
+                    return carga.flujoArea($rootScope.areaM);
+                }
+            }
+    });
+
     $routeProvider.when('/flujopagos',{
             templateUrl   : 'vistas/flujopagos.html',
-            controller    : 'flujoPagosCtrl'   
+            controller    : 'pagosCtrl',
+            resolve       :{
+                datos:function(loading,find,carga,$rootScope,$q){
+
+                    loading.cargando('Cargando información');
+                    var info = {
+                        fechainiPag:primerdiames,
+                        fechafinPag:FechaAct
+                    },
+                    promesa = $q.defer(),
+                    pagos = find.listaPagos(info),
+                    flujo = carga.flujo($rootScope.id);
+
+                    $q.all([pagos,flujo]).then(function (data){
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
+                }
+            }        
     });
 
     $routeProvider.when('/formatoqualitas',{
@@ -170,6 +208,17 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             }     
     });
 
+    $routeProvider.when('/listadoEntregasAreas/:area',{
+            templateUrl   : 'vistas/listadoentrega.html',
+            controller    : 'listadoEntregasAreaCtrl',
+            resolve       :{
+                datos:function($rootScope,loading,find){
+                    loading.cargando('Cargando Entregas');
+                    return find.listadoentregaarea($rootScope.area);
+                }
+            }     
+    });
+
     $routeProvider.when('/listadoRecepcion/:area',{
             templateUrl   : 'vistas/listadoRecepcion.html',
             controller    : 'listadoRecepcionCtrl',
@@ -177,6 +226,17 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
                 datos:function($rootScope,loading,find){
                     loading.cargando('Cargando Entregas');
                     return find.listadorecepcion($rootScope.id);
+                }
+            }     
+    });
+
+    $routeProvider.when('/listadoRecepcionarea/:area',{
+            templateUrl   : 'vistas/listadoRecepcion.html',
+            controller    : 'listadoRecepcionAreaCtrl',
+            resolve       :{
+                datos:function($rootScope,loading,find){
+                    loading.cargando('Cargando Entregas');
+                    return find.listadorecepcionarea($rootScope.area);
                 }
             }     
     });
@@ -255,6 +315,17 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
                 datos:function(loading,find,$rootScope){
                     loading.cargando('Cargando rechazos');
                     return find.listadorechazos($rootScope.id);
+                }
+            }    
+    });
+
+    $routeProvider.when('/Rechazosarea/:area',{
+            templateUrl   : 'vistas/rechazos.html',
+            controller    : 'rechazosAreaCtrl',
+            resolve       :{
+                datos:function(loading,find,$rootScope){
+                    loading.cargando('Cargando rechazos');
+                    return find.listadorechazosarea($rootScope.area);
                 }
             }    
     });
@@ -360,7 +431,55 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     $routeProvider.when('/ticketpagos',{
             templateUrl   : 'vistas/menuticketPagos.html',
-            controller    : 'menuticketPagosCtrl'
+            controller    : 'menuticketPagosCtrl',
+            resolve       :{
+                datos:function($q,find,loading){
+
+                    loading.cargando('Cargando Tickets');
+
+                    var datos = {
+                        fechaini:FechaAct,
+                        fechafin:FechaAct
+                    }
+                    var promesa = $q.defer(),
+                        clientes = find.empresasweb(),
+                        status = find.statuspagos(),
+                        unidades = find.unidadesweb(),
+                        usuarios = find.usuariosweb(),
+                        tickets = find.ticketspagosxfecha(datos);
+
+                    $q.all([clientes,status,unidades,usuarios,tickets]).then(function (data){
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
+                }
+            }
+    });
+
+    $routeProvider.when('/ticketpagos/:foliointerno/:folioweb',{
+            templateUrl   : 'vistas/ticketpagos.html',
+            controller    : 'editaTicketPagosCtrl',
+            resolve       :{
+                datos:function($q,find,loading,$route){
+
+                    loading.cargando('Cargando Ticket');
+
+                    var promesa = $q.defer(),
+                        clientes = find.empresasweb(),
+                        status = find.statuspagos(),
+                        unidades = find.unidadesweb(),
+                        categorias = find.categoriaspagos(),
+                        ticket = find.detalleticketpagos($route.current.params.foliointerno,$route.current.params.folioweb);
+
+
+                    $q.all([clientes,status,unidades,categorias,ticket]).then(function (data){
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
+                }
+            }
     });
 
     $routeProvider.when('/traspasos/:area',{
@@ -392,8 +511,11 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
     $rootScope.username = webStorage.session.get('username');
     $rootScope.id = webStorage.session.get('id');
     $rootScope.areaUsuario = webStorage.session.get('areaUsuario');
+    $rootScope.area = webStorage.session.get('areaUsuario');
     $rootScope.user = webStorage.session.get('user');
     $rootScope.userWeb = webStorage.session.get('userWeb');
+
+    $rootScope.areaM = webStorage.session.get('areaManual');
 
 
     $rootScope.$on('$routeChangeStart', function(){
@@ -466,7 +588,7 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
         // the user appears to have gone idle
 
         if($location.path() != "/login"){
-            console.log('iniciando estado temporal');
+            // console.log('iniciando estado temporal');
         }
     });
 

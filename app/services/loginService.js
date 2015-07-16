@@ -17,6 +17,7 @@ app.factory("auth", function($location, $rootScope, $http, webStorage, api){
                 $rootScope.username = data[0].nombre;
                 $rootScope.id = data[0].clave;
                 $rootScope.areaUsuario = data[0].area;
+                $rootScope.area = data[0].area;
                 $rootScope.user = data[0].usuario;
                 $rootScope.userWeb = data[0].usuarioweb;
 

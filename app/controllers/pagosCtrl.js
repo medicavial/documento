@@ -35,15 +35,15 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
         $scope.filtrado = {
             Unidad : '',
             Cliente : '',
-            FormaRecep : '',
-            Folio  :'',
-            Lesionado  :'',
-            Etapa:'',
-            Producto:'',
-            Relacion:'',
-            RelP:'',
-            Cobrado:'', 
-            Pagado:''
+            Etapa:''
+            // FormaRecep : '',
+            // Folio  :'',
+            // Lesionado  :'',
+            // Producto:'',
+            // Relacion:'',
+            // RelP:'',
+            // Cobrado:'', 
+            // Pagado:''
         };
 
 
@@ -160,28 +160,32 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
         enableCellEdit: true,
         columnDefs: [
                     { field:'USUNombre', width: 120, pinned: true},
-                    { field:'Folio', width: 120, pinned: false},
+                    { field:'Producto', width: 120 },
+                    { field:'Triage', width: 120 },
                     { field:'Cliente', width: 100 },
                     { field:'Unidad', width: 220 },
+                    { field:'Folio', width: 120, pinned: false},
                     { field:'Lesionado', width: 330 },
-                    //{ field:'Producto', width: 120 },
                     { field:'Etapa', width: 120 },
                     { field:'Entrega', width: 80 },
+                    { field:'FAtencion', width: 120},
                     { field:'FormaRecep', width: 90 },
                     { field:'fechaRecepcion', width: 120},
                     { field:'FechaRecepPag', width: 120,  cellFilter: 'date:\'dd/MM/yyyy\'' },
+                    { field:'Tipo', width: 120 },
+                    { field:'Lesion', width: 120 },
                     { field:'Relacion', width: 120 },
-                    { field:'RelP', width: 120 },
+                    { field:'FRelacion', displayName:'F.relacion', width: 120 },
+                    { field:'FRelPago', displayName:'F.Pago.Rel.', width: 120 },
+                    { field:'FRelPagoReg', displayName:'F.Pago.Rel.Reg.', width: 120 },
                     { field:'PasC', width: 120 },
                     { field:'FPasCobrado', width: 120 },
                     { field:'Pago', width: 120 },
                     { field:'Reserva', width: 120 },
-                    { field:'LNombre', width: 120 },
-                    { field:'TNombre', width: 120 },
-                    { field:'Pagado', width: 80 },
-                    { field:'Cobrado', width: 80 },
                     { field:'FacturaRelacion', width: 80 },
-                    { field:'FacturaControl', width: 80 }
+                    { field:'FacDoc', width: 80 }
+                    // { field:'Pagado', width: 80 },
+                    // { field:'Cobrado', width: 80 },
         ],
         showFooter: true,
         showFilter:false
@@ -227,38 +231,38 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
         if($scope.tipo == 'fax'){
             var objeto3 = "FormaRecep:F; ";
-            $scope.filtrado.FormaRecep = 'F';
+            // $scope.filtrado.FormaRecep = 'F';
         }else if($scope.tipo == 'original'){
             var objeto3 = "FormaRecep:O; ";
-            $scope.filtrado.FormaRecep = 'O';
+            // $scope.filtrado.FormaRecep = 'O';
         }else{
             var objeto3 = "";
-            $scope.filtrado.FormaRecep = '';
+            // $scope.filtrado.FormaRecep = '';
         }
 
 
         if($scope.folio.length == 0){
             var objeto4 = "";
-            $scope.filtrado.Folio = '';  
+            // $scope.filtrado.Folio = '';  
         }else{
             var objeto4 = "Folio:" + $scope.folio + "; "; 
-            $scope.filtrado.Folio = $scope.folio;  
+            // $scope.filtrado.Folio = $scope.folio;  
         }
 
         if($scope.lesionado.length == 0){
             var objeto5 = "";
-            $scope.filtrado.Lesionado = '';
+            // $scope.filtrado.Lesionado = '';
         }else{
             var objeto5 = "Lesionado:" + $scope.lesionado + "; "; 
-            $scope.filtrado.Lesionado = $scope.lesionado;  
+            // $scope.filtrado.Lesionado = $scope.lesionado;  
         }
 
         if($scope.producto == undefined || $scope.producto == 0){
             var objeto6 = "";
-            $scope.filtrado.Producto = '';  
+            // $scope.filtrado.Producto = '';  
         }else{
             var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
-            $scope.filtrado.Producto = $scope.producto.nombre;  
+            // $scope.filtrado.Producto = $scope.producto.nombre;  
             
         }
 
@@ -272,34 +276,34 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
         if($scope.relacion.length == 0){
             var objeto8 = "";
-            $scope.filtrado.Relacion = '';
+            // $scope.filtrado.Relacion = '';
         }else{
             var objeto8 = "Relacion:" + $scope.relacion + "; "; 
-            $scope.filtrado.Relacion = $scope.relacion;
+            // $scope.filtrado.Relacion = $scope.relacion;
         }
 
         if ($scope.relacionado) {
             var objeto9 = "RelP:X ; ";  
-            $scope.filtrado.RelP ='X';
+            // $scope.filtrado.RelP ='X';
         }else{
             var objeto9 = "";
-            $scope.filtrado.RelP = '';
+            // $scope.filtrado.RelP = '';
         }
 
         if ($scope.cobrado) {
             var objeto10 = "Cobrado:1 ; "; 
-            $scope.filtrado.Cobrado = '1'; 
+            // $scope.filtrado.Cobrado = '1'; 
         }else{
             var objeto10 = "";
-            $scope.filtrado.Cobrado = '';
+            // $scope.filtrado.Cobrado = '';
         }
 
         if ($scope.pagado) {
             var objeto11 = "Pagado:1 ; "; 
-            $scope.filtrado.Pagado = '1';  
+            // $scope.filtrado.Pagado = '1';  
         }else{
             var objeto11 = "";
-            $scope.filtrado.Pagado = '';
+            // $scope.filtrado.Pagado = '';
         }
 
 
@@ -307,7 +311,7 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
         $scope.filterOptions.filterText = filtro;
 
-        console.log(filtro);
+        // console.log(filtro);
 
     }
 
@@ -326,7 +330,21 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
         $scope.fechainiRec = '';
         $scope.fechainiRec = '';
 
-        console.log($scope.buscarXfecha);
+        $scope.filtrado = {
+            Unidad : '',
+            Cliente : '',
+            Etapa:''
+            // FormaRecep : '',
+            // Folio  :'',
+            // Lesionado  :'',
+            // Producto:'',
+            // Relacion:'',
+            // RelP:'',
+            // Cobrado:'', 
+            // Pagado:''
+        };
+
+        // console.log($scope.buscarXfecha);
 
         if ($scope.buscarXfecha == 1) {
 
@@ -340,9 +358,8 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
     $scope.exporta = function(){
 
-        $scope.selectos = $filter('filter')($scope.listado, $scope.filtrado);
 
-        console.log($scope.filtrado);
+        $scope.selectos = $filter('filter')($scope.listado, $scope.filtrado);
         JSONToCSVConvertor($scope.selectos,'Reporte',true);
         
     }
@@ -352,7 +369,7 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 //flujo de pagos general
 function flujoPagosCtrl($scope,$rootScope, find,loading, $http, api,datos,$filter){
 
-    console.log(datos);
+    // console.log(datos);
     $scope.listado = datos.data;
     $scope.cantidad = datos.data.length -1;
     loading.despedida();
@@ -549,28 +566,30 @@ function flujoPagosCtrl($scope,$rootScope, find,loading, $http, api,datos,$filte
     	enableCellEdit: true,
     	columnDefs: [
                     { field:'USUNombre', width: 120, pinned: true},
-                    { field:'Folio', width: 120, pinned: false},
+                    { field:'Producto', width: 120 },
+                    { field:'Triage', width: 120 },
                     { field:'Cliente', width: 100 },
                     { field:'Unidad', width: 220 },
+                    { field:'Folio', width: 120, pinned: false},
                     { field:'Lesionado', width: 330 },
-                    //{ field:'Producto', width: 120 },
-		            { field:'Etapa', width: 120 },
-		            { field:'Entrega', width: 80 },
-		            { field:'FormaRecep', width: 90 },
-		            { field:'fechaRecepcion', width: 120},
-		            { field:'FechaRecepPag', width: 120,  cellFilter: 'date:\'dd/MM/yyyy\'' },
-		            { field:'Relacion', width: 120 },
-		            { field:'RelP', width: 120 },
-		            { field:'PasC', width: 120 },
-		            { field:'FPasCobrado', width: 120 },
-		            { field:'Pago', width: 120 },
-		            { field:'Reserva', width: 120 },
-		            { field:'LNombre', width: 120 },
-		            { field:'TNombre', width: 120 },
-		            { field:'Pagado', width: 80 },
-		            { field:'Cobrado', width: 80 },
-		            { field:'FacturaRelacion', width: 80 },
-		            { field:'FacturaControl', width: 80 }
+                    { field:'Etapa', width: 120 },
+                    { field:'Entrega', width: 80 },
+                    { field:'FAtencion', width: 120},
+                    { field:'FormaRecep', width: 90 },
+                    { field:'fechaRecepcion', width: 120},
+                    { field:'FechaRecepPag', width: 120,  cellFilter: 'date:\'dd/MM/yyyy\'' },
+                    { field:'Tipo', width: 120 },
+                    { field:'Lesion', width: 120 },
+                    { field:'Relacion', width: 120 },
+                    { field:'FRelacion', displayName:'F.relacion', width: 120 },
+                    { field:'FRelPago', displayName:'F.Pago.Rel.', width: 120 },
+                    { field:'FRelPagoReg', displayName:'F.Pago.Rel.Reg.', width: 120 },
+                    { field:'PasC', width: 120 },
+                    { field:'FPasCobrado', width: 120 },
+                    { field:'Pago', width: 120 },
+                    { field:'Reserva', width: 120 },
+                    { field:'FacturaRelacion', width: 80 },
+                    { field:'FacDoc', width: 80 }
         ],
         showFooter: true,
         showFilter:false
@@ -660,7 +679,7 @@ function flujoPagosCtrl($scope,$rootScope, find,loading, $http, api,datos,$filte
 
     	$scope.filterOptions.filterText = filtro;
 
-    	console.log(filtro);
+    	// console.log(filtro);
 
     }
 
@@ -680,7 +699,7 @@ function flujoPagosCtrl($scope,$rootScope, find,loading, $http, api,datos,$filte
     	$scope.fechainiRec = '';
     	$scope.fechainiRec = '';
 
-    	console.log($scope.buscarXfecha);
+    	// console.log($scope.buscarXfecha);
 
     	if ($scope.buscarXfecha == 1) {
 

@@ -7,11 +7,17 @@ app.factory("find", function($http,api){
         categorias:function(){
             return $http.get(api+'tickets/categorias');
         },
+        categoriaspagos:function(){
+            return $http.get(api+'tickets/pagos/categorias');
+        },
         consultaFacturaQualitas:function(folio){
             return $http.get(api+'qualitas/consulta/' + folio);
         },
         detalleticket:function(folioint,folioweb){
             return $http.get( api + 'tickets/detalle/' + folioint + '/' + folioweb);
+        },
+        detalleticketpagos:function(folioint,folioweb){
+            return $http.get( api + 'tickets/pagos/detalle/' + folioint + '/' + folioweb);
         },
         empresas:function(){
             return $http.get(api+'consulta/empresas');
@@ -25,21 +31,24 @@ app.factory("find", function($http,api){
         folioweb:function(folio){
             return $http.get(api+'consulta/folioweb/'+folio);
         },
-        foliosxArea:function(area){
-            return $http.get('/documento/api/folioactivoarea/'+area);
-        },
-        foliosxAreaxFecha:function(area,fechaini,fechafin){
-            return $http.get('/documento/api/folioactivoareafecha/'+area+"/"+fechaini+"/"+fechafin);
-        },
+        // foliosxArea:function(area){
+        //     return $http.get('/documento/api/folioactivoarea/'+area);
+        // },
+        // foliosxAreaxFecha:function(area,fechaini,fechafin){
+        //     return $http.get('/documento/api/folioactivoareafecha/'+area+"/"+fechaini+"/"+fechafin);
+        // },
         listadoentrega:function(usuario){
             return $http.get(api+'flujo/entregas/'+usuario);
+        },
+        listadoentregaarea:function(area){
+            return $http.get(api+'flujo/entregasarea/'+area);
         },
         listadofolio:function(folio){
             return $http.get(api + 'consulta/flujo/'+folio);
         },
-        listadogeneral:function(usuario){
-            return $http.get('/documento/api/listageneral/'+usuario);
-        },
+        // listadogeneral:function(usuario){
+        //     return $http.get('/documento/api/listageneral/'+usuario);
+        // },
         listadogeneralnpc:function(usuario){
             return $http.get(api+'flujo/npc/'+usuario);
         },
@@ -49,8 +58,14 @@ app.factory("find", function($http,api){
         listadorecepcion:function(usuario){
             return $http.get(api+'flujo/recepcion/'+usuario);
         },
+        listadorecepcionarea:function(area){
+            return $http.get(api+'flujo/recepcionarea/'+area);
+        },
         listadorechazos:function(usuario){
             return $http.get(api+'flujo/rechazos/'+usuario);
+        },
+        listadorechazosarea:function(area){
+            return $http.get(api+'flujo/rechazosarea/'+area);
         },
         muestrahistorico:function(folio,etapa,entrega){
             return $http.get(api + 'consulta/historial/'+folio +"/"+etapa+"/"+entrega);
@@ -70,11 +85,17 @@ app.factory("find", function($http,api){
         referenciaxunidad:function(unidad){
             return $http.get(api + 'consulta/referencia/'+ unidad);
         },
+        statuspagos:function(){
+            return $http.get(api + 'tickets/pagos/status');
+        },
         statusweb:function(){
-            return $http.get('/documento/api/statusweb');
+            return $http.get(api + 'tickets/status');
         },
         subcategorias:function(categoria){
             return $http.get(api +'tickets/subcategorias/'+categoria);
+        },
+        subcategoriaspagos:function(categoria){
+            return $http.get(api +'tickets/pagos/subcategorias/'+categoria);
         },
         ultimoticket:function(){
             return $http.get(api +'tickets/maximo');
@@ -88,8 +109,8 @@ app.factory("find", function($http,api){
         usuariosarea:function(area){
             return $http.get(api+'consulta/usuarios/'+area);
         },
-        usuariosweb:function(area){
-            return $http.get('/documento/api/usuariosweb');
+        usuariosweb:function(){
+            return $http.get(api +'consulta/usuariosweb');
         },
         verificaetapaentrega:function(folio,etapa){
             return $http.get(api+'consulta/verificaetapaentrega/'+folio +"/"+etapa);
@@ -126,6 +147,15 @@ app.factory("find", function($http,api){
         },
         ticketsxfoliointerno:function(folio){
             return $http.get(api + 'tickets/foliointerno/'+ folio);
+        },
+        ticketspagosxfecha:function(datos){
+            return $http.post(api + 'tickets/pagos/consulta',datos);
+        },
+        ticketspagosxfolio:function(folio){
+            return $http.get(api + 'tickets/pagos/folio/'+ folio);
+        },
+        ticketspagosxfoliointerno:function(folio){
+            return $http.get(api + 'tickets/pagos/foliointerno/'+ folio);
         }
     }
 })

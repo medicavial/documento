@@ -50,7 +50,7 @@ function altaRechazosCtrl($scope, $rootScope,$http, find, loading){
 	}
 
 	$scope.verFolio = function(folio){
-		console.log(folio);
+		// console.log(folio);
 	}
 
 	$scope.guardar = function(){
@@ -58,7 +58,7 @@ function altaRechazosCtrl($scope, $rootScope,$http, find, loading){
 		if (Number($scope.datos.monto) > 0) {
 			$('#boton').button('loading');
 			$http.post('/documento/api/rechazos',$scope.datos).success(function (data){
-				console.log(data);
+				// console.log(data);
 				$scope.mensaje = data.respuesta;
 				$('#boton').button('reset');
 				$scope.guardado=true;

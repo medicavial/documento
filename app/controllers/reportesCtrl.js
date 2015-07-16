@@ -105,7 +105,7 @@ function reportesTicketsCtrl($scope, $rootScope, find , loading, datos){
 
     $scope.buscaxdia = function(){
         find.reporteTicketsDiaEspecifico($scope.fecha).success(function (data){
-            console.log(data);
+            // console.log(data);
             $scope.actualClinicas =  data.clinicas;
             $scope.actualCategorias =  data.categorias;
             

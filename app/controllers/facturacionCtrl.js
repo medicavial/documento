@@ -105,7 +105,7 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 					$('#boton').button('reset');
 					if (data.rechazos.length > 0) {
 						$rootScope.rechazos = data.rechazos;
-						console.log($scope.rechazos);
+						// console.log($scope.rechazos);
 						$('#myModal3').modal();
 					};
 
@@ -198,6 +198,8 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
     	enablePinning: true, 
     	enableRowSelection:true,
     	multiSelect:true,
+    	showSelectionCheckbox: true,
+        selectWithCheckboxOnly: false,
     	enableCellSelection: true,
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
@@ -208,7 +210,7 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
 		            { field:'UNI_nombrecorto', displayName:'Unidad', width: 200 },
 		            { field:'FLD_formaRecep', displayName:'FaxOrigianl', width: 120 },
-		            { field:'FLD_fechaRecep', displayName:'FechaRecepcion', width: 130 },
+		            { field:'FLD_fechaRec', displayName:'FechaRecepcion', width: 130 },
 		            { field:'FLD_claveint', displayName:'FLD_claveint', width: 100, visible:false },
 		            { field:'DOC_claveint', displayName:'documento', width: 100, visible:false },
 		            { field:'CapEt2', displayName:'CapEt2', width: 100, visible:false },
@@ -216,7 +218,8 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 		            { field:'FLD_AROent', displayName:'FLD_AROent', width: 100, visible:false },
 		            { field:'ARO_activa', displayName:'area', width: 100, visible:false },
 		            { field:'USU_ent', displayName:'USU_ent', width: 100, visible:false },
-		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true}
+		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true},
+		            { field:'FLD_fechaRecep', width: 130 }
         ],
         showFooter: true,
         showFilter:false

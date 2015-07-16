@@ -5,18 +5,20 @@
 	</div>
 
 	<div class="row">
+		
+		
 		<div class="col-md-6">
 
 				<label>Fecha Recepción</label>
 				<div class="row">
 					<div class="col-md-6">
-						<input type="text" ng-model="fechainiRec" class="form-control" id="fechaRecIni" placeholder="inicial">
+						<input type="text" ng-model="datosRecepcion.fechainiRec" class="form-control" id="fechaRecIni" placeholder="inicial">
 					</div>
 					<div class="col-md-6">
 						<div class="input-group">
-							<input type="text" ng-model="fechafinRec" class="form-control" id="fechaRecFin" placeholder="Final">
+							<input type="text" ng-model="datosRecepcion.fechafinRec" class="form-control" id="fechaRecFin" placeholder="Final">
 							<span class="input-group-btn">
-					        	<button class="btn btn-default" ng-disabled="fechainiRec == ''|| fechafinRec == '' " ng-click="foliosXfecha('Recepcion')" type="button"><i class="icon-search"></i></button>
+					        	<button class="btn btn-default" ng-disabled="datosRecepcion.fechainiRec == ''|| datosRecepcion.fechafinRec == '' " ng-click="recepcionRec()" type="button"><i class="icon-search"></i></button>
 					      	</span>
 					    </div>
 					</div>
@@ -29,13 +31,13 @@
 				<label>Fecha Recepción Pagos</label>
 				<div class="row">
 					<div class="col-md-6">
-						<input type="text" ng-model="fechainiPag" class="form-control" id="fechaPagIni" placeholder="inicial">
+						<input type="text" ng-model="datosPagos.fechainiPag" class="form-control" id="fechaPagIni" placeholder="inicial">
 					</div>
 					<div class="col-md-6">
 						<div class="input-group">
-							<input type="text" ng-model="fechafinPag" class="form-control" id="fechaPagFin" placeholder="Final">
+							<input type="text" ng-model="datosPagos.fechafinPag" class="form-control" id="fechaPagFin" placeholder="Final">
 							<span class="input-group-btn">
-					        	<button class="btn btn-default" ng-disabled="fechainiPag == ''|| fechafinPag == '' " type="button" ng-click="foliosXfecha('Pagos')"><i class="icon-search"></i></button>
+					        	<button class="btn btn-default" ng-disabled="datosPagos.fechainiPag == ''|| datosPagos.fechafinPag == '' " type="button" ng-click="recepcionPagos()"><i class="icon-search"></i></button>
 					      	</span>
 					    </div>
 					</div>
@@ -47,7 +49,7 @@
 	<div class="row">
 		<div class="col-md-2">
 				<label>Folio</label>
-				<input type="text" ng-model="folio" class="form-control" ng-keydown="presionaFolio" ng-change="filtra()" capitalize>
+				<input type="text" ng-model="folio" class="form-control" folio>
 		</div>
 		<div class="col-md-4">
 
@@ -112,11 +114,6 @@
 				<option value="original">Original</option>
 			</select>
 		</div>
-		<!-- <div class="col-md-2">
-			<select class="form-control" id="producto" ng-model="producto" ng-change="filtra()" ng-options="producto as producto.nombre for producto in productosini" required>
-				<option value="">Producto</option>
-			</select>
-		</div> -->
 		<div class="col-md-2">
 			<select class="form-control" id="tipodoc" ng-change="filtra()" ng-model="etapa">
 				<option value="">Etapa</option>
@@ -128,13 +125,14 @@
 		<div class="col-md-2">
 			<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
 		</div>
+
 	</div>
 	<br>
 	<div class="gridStyle" ng-grid="gridOptions"></div>
-	<!-- <h4 ng-show="listado.length > 0">Documentos Encontrados: {{cantidad}} </h4> -->
+	
 	<br>
-	<!-- directiva para exportar a excel ver app.js mas nfo -->
-	<excel info="exportables"></excel>	
+	
+	<button ng-click="exporta()" data-loading-text="Generando..." id="boton" class="btn btn-success glyphicon glyphicon-download-alt"> Exportar</button>
 	<br>
 </div>
 <script type="text/javascript">

@@ -62,7 +62,7 @@ function formatoQualitasCtrl($scope, $rootScope,$http, find, loading,api , quali
     	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
 
 		qualitas.procesaEnvio(datos).success(function (data){
-			console.log(data);
+			// console.log(data);
 			JSONToXLSConvertor($scope.listos, "Reporte", true);
 			qualitas.descargaEnvio($scope.ruta);
 		});
@@ -172,7 +172,7 @@ function formatoQualitasCtrl($scope, $rootScope,$http, find, loading,api , quali
 
 		});
 
-		console.log($scope.selectos);
+		// console.log($scope.selectos);
 	};
 	
 	$scope.quitaselectos = function(){
@@ -196,7 +196,7 @@ function formatoQualitasCtrl($scope, $rootScope,$http, find, loading,api , quali
     	}
 
     	if($scope.tipo == 'fax'){
-    		console.log('entro a fax');
+    		// console.log('entro a fax');
     		var objeto3 = "FormaRecep:F; ";
     	}else if($scope.tipo == 'original'){
     		var objeto3 = "FormaRecep:O; ";
@@ -327,7 +327,7 @@ function formatoQualitasArchivosCtrl($scope, $rootScope, find, loading, qualitas
 	}
 
 	$scope.quitalistado = function(item){
-		console.log(item);
+		// console.log(item);
 	}
 
 	$scope.selecciona = function(limite){
@@ -344,7 +344,7 @@ function formatoQualitasArchivosCtrl($scope, $rootScope, find, loading, qualitas
 
 		});
 
-		console.log($scope.selectos);
+		// console.log($scope.selectos);
 	};
 
 
@@ -360,7 +360,7 @@ function formatoQualitasArchivosCtrl($scope, $rootScope, find, loading, qualitas
     	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
 
 		qualitas.procesaEnvio(datos).success(function (data){
-			console.log(data);
+			// console.log(data);
 			JSONToXLSConvertor($scope.listos, "Reporte", true);
 			qualitas.descargaEnvio($scope.ruta);
 		});
@@ -445,7 +445,7 @@ function formatoQualitasArchivosCtrl($scope, $rootScope, find, loading, qualitas
     };
 
     $scope.verifica = function(valor,item){
-    	console.log(item);
+    	// console.log(item);
     	if (item) {
     		$scope.rechazados.push(item);
     	};
@@ -582,7 +582,7 @@ function formatoQualitasEnviadoCtrl($scope, $rootScope, find, loading, qualitas)
 
 		qualitas.actualiza($scope.claveenvio,$scope.selectos).success(function (data){
 
-			console.log(data);
+			// console.log(data);
         	$scope.mensajeA = data.respuesta;
         	$scope.listado2 = data.faltantes;
         	$('#boton').button('reset');
@@ -649,7 +649,7 @@ function formatoQualitasEnviadoCtrl($scope, $rootScope, find, loading, qualitas)
 		angular.forEach($scope.selectos2, function(item, index){
 			
 			item.Motivo = causa;
-			console.log(item);
+			// console.log(item);
 
 		});
 
@@ -749,7 +749,7 @@ function formatoQualitasEnviadoCtrl($scope, $rootScope, find, loading, qualitas)
     });
 
     $scope.verifica = function(valor,item){
-    	console.log(item);
+    	// console.log(item);
     	if (item) {
     		$scope.rechazados.push(item);
     	};
@@ -817,7 +817,7 @@ function formatoQualitasIncompletosCtrl($scope, $rootScope,$http, find, loading,
 	}
 
 	$scope.quitalistado = function(item){
-		console.log(item);
+		// console.log(item);
 	}
 
 
@@ -955,7 +955,7 @@ function formatoQualitasRechazadosCtrl($scope, $rootScope, find, loading, qualit
 
 		});
 
-		console.log($scope.selectos);
+		// console.log($scope.selectos);
 
 	};
 
@@ -1041,7 +1041,7 @@ function formatoQualitasRechazadosCtrl($scope, $rootScope, find, loading, qualit
 
 
     $scope.verifica = function(valor,item){
-    	console.log(item);
+    	// console.log(item);
     	if (item) {
     		$scope.rechazados.push(item);
     	};

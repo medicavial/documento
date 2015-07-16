@@ -275,11 +275,11 @@
                 	<div class="row">
                 		<div class="col-md-6">
                 				<label for="producto">Producto</label>
-								<select class="form-control" id="producto" ng-disabled="bloqueo"  ng-model="original.producto" ng-options="producto.id as producto.nombre for producto in productos" required>
+								<select class="form-control" id="producto" ng-disabled="bloqueo"  ng-model="original.producto" ng-options="producto.id as producto.nombre for producto in productos" ng-change="verificaEscolaridad()" required>
 									<option value="">Producto</option>
 								</select>
                 		</div>
-                		<div class="col-md-6" ng-show="original.cliente == 20; original.producto == 2">
+                		<div class="col-md-6" ng-show="muestraEsc">
                 			<label for="escolaridad">Escolaridad</label>
                 			<select  id="escolaridad" class="form-control" ng-disabled="bloqueo"  ng-model="original.escolaridad" ng-options="escolaridad.id as escolaridad.nombre for escolaridad in escolaridades">
 								<option value="">Escolaridad</option>

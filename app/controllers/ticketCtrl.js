@@ -69,7 +69,7 @@ function editaTicketCtrl($scope,$rootScope, $http, find, $routeParams, datos, lo
 		$scope.altasubcategorias(data.ticket.TCat_clave);
 
 		$scope.datos.subcategoria = data.ticket.TSub_clave;
-		$scope.datos.statusa = String(data.ticket.TStatus_clave);
+		$scope.datos.statusa = data.ticket.TStatus_clave;
 		$scope.observaciones = data.ticket.TSeg_obs;
 
 		$scope.notas = data.notas;
@@ -79,17 +79,20 @@ function editaTicketCtrl($scope,$rootScope, $http, find, $routeParams, datos, lo
 
 	$scope.siguiente = function(){
 
-		console.log($scope.datos);
+		// console.log($scope.datos);
+		$('#boton').button('loading');
 
-		// tickets.actualiza($scope.datos).success( function (data){  
+		tickets.actualiza($scope.datos).success( function (data){  
 
-		// 	$scope.mensaje2 = data.respuesta;
-		// 	$scope.tipoalerta = 'alert-success';
+			$scope.mensaje2 = data.respuesta;
+			$scope.tipoalerta = 'alert-success';
+			$('#boton').button('reset');
 		
-		// }).error( function (data){
-		// 	$scope.mensaje2 = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-		// 	$scope.tipoalerta = 'alert-warning';
-		// });
+		}).error( function (data){
+			$scope.mensaje2 = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+			$scope.tipoalerta = 'alert-warning';
+			$('#boton').button('reset');
+		});
 
 	}
 
@@ -259,13 +262,13 @@ function ticketCtrl($scope,$rootScope, $http, find, tickets){
 	        		$scope.datos.unidad = data[0].Uni_clave;
 
 	        		find.ticketsxfolio($scope.datos.folioweb).success(function (data){
-	        			console.log(data);
+	        			// console.log(data);
 	        			if (data.length == 0) {
 	        				$scope.datos.etapa = '1';
 	        			}else{
 	        				$scope.datos.etapa = '2';
 	        			}
-	        			console.log($scope.datos.etapa);
+	        			// console.log($scope.datos.etapa);
 	        		});
 
 	        	}
@@ -377,7 +380,7 @@ function menuticketCtrl($scope, $location, find, loading,datos){
 	var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
 
 	$scope.onDblClickRow = function(row){
-	  console.log(row.entity.Folio_Interno);
+	  // console.log(row.entity.Folio_Interno);
 	  $location.path('/ticket/'+row.entity.Folio_Interno+'/'+row.entity.Folio_Web );
 	};
 
@@ -386,7 +389,7 @@ function menuticketCtrl($scope, $location, find, loading,datos){
     	data: 'listado', 
     	enableColumnResize:true,
     	enablePinning: true, 
-    	enableRowSelection:true,
+    	enableRowSelection:false,
     	multiSelect:false,
     	rowTemplate: rowTempl,
     	selectedItems: $scope.selectos, 
@@ -422,7 +425,7 @@ function menuticketCtrl($scope, $location, find, loading,datos){
     	//$scope.filterOptions.filterText = "";
     	//var filtro = "";
 
-    	console.log($scope.unidad);
+    	// console.log($scope.unidad);
 
     	if($scope.unidad == undefined || $scope.unidad == 0){
     		var objeto1 = "";
@@ -465,7 +468,7 @@ function menuticketCtrl($scope, $location, find, loading,datos){
 
     	$scope.filterOptions.filterText = filtro;
 
-    	console.log(filtro);
+    	// console.log(filtro);
 
     }
 

@@ -12,8 +12,6 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 		$rootScope.area = 3;
 		$scope.tituloR = "Capturas";
 		$scope.push = false;
-		$scope.rechazados = 0;
-		$scope.recibidos = 0;
 
 		$scope.mensaje = '';
 		$scope.fechaini = '';
@@ -110,7 +108,7 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 					$('#boton').button('reset');
 					if (data.rechazos.length > 0) {
 						$rootScope.rechazos = data.rechazos;
-						console.log($scope.rechazos);
+						// console.log($scope.rechazos);
 						$('#myModal3').modal();
 					};
 
@@ -163,6 +161,7 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
                     { field:'PAS_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: true },
+                    { field:'DOC_fechacapturado', displayName:'Fecha Captura', width: 160, enableCellEdit: true},
 		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
 		            { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
 		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
@@ -176,7 +175,8 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 		            { field:'FLD_AROent', displayName:'FLD_AROent', width: 100, visible:false },
 		            { field:'ARO_activa', displayName:'area', width: 100, visible:false },
 		            { field:'USU_ent', displayName:'USU_ent', width: 100, visible:false },
-		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true}
+		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true},
+		            { field:'DOC_situacionoriginal', displayName:'Capturado', width: 320, enableCellEdit: true}
         ],
         showFooter: true,
         showFilter:false
@@ -274,6 +274,6 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 
 };
 
-capturaslCtrl.$inject = ['$scope', '$rootScope', 'find ', 'loading', '$http', 'checkFolios', 'carga', 'api','datos'];
+capturaslCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading', '$http', 'checkFolios', 'carga', 'api','datos'];
 
 app.controller('capturaslCtrl', capturaslCtrl);

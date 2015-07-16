@@ -110,7 +110,7 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
 					$('#boton').button('reset');
 					if (data.rechazos.length > 0) {
 						$rootScope.rechazos = data.rechazos;
-						console.log($scope.rechazos);
+						// console.log($scope.rechazos);
 						$('#myModal3').modal();
 					};
 
@@ -154,6 +154,8 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
     	enableRowSelection:true,
     	multiSelect:true,
     	enableCellSelection: true,
+    	showSelectionCheckbox: true,
+        selectWithCheckboxOnly: false,
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
     	columnDefs: [

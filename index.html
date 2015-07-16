@@ -5,44 +5,23 @@
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
 		<title>Sistema integral médicavial</title>
+		<!-- build:css css/style.min.css -->
 		<link rel="stylesheet" href="lib/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.4.custom.css" />
-		<link rel="stylesheet" href="css/ng-grid.min.css" />
 		<link rel="stylesheet" href="css/iconos.css" />
 		<link rel="stylesheet" href="css/style.css" />
 		<link rel="stylesheet" href="css/animate.css"/>
 		<link rel="stylesheet" href="css/animacion.css"/>
 		<link rel="stylesheet" href="css/loading.min.css" />
 		<link rel="stylesheet" href="css/ngProgress.css" />
+		<link rel="stylesheet" href="css/ng-grid.min.css" />
+		<!-- endbuild -->
 		<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
-		<script src="js/prefixfree.min.js"></script>
-		
 		<!--[if lt IE 9]>
 		    <script>
 		        location.href="navegadorviejo.html";
 		    </script>
 		<![endif]-->
-		<!--[if gte IE 9]>
-		  <style type="text/css">
-		    .gradient {
-		       filter: none;
-		    }
-		  </style>
-		<![endif]-->
-		<!--[if IE 8]>
-	      <script src="js/json3.min.js"></script>
-	      <script>
-	        document.createElement('ng-include');
-	        document.createElement('ng-pluralize');
-	        document.createElement('ng-view');
-	 
-	        // Optionally these for CSS
-	        document.createElement('ng:include');
-	        document.createElement('ng:pluralize');
-	        document.createElement('ng:view');
-	      </script>
-	    <![endif]-->
-
 	</head>
 	<body class="ng-cloak">
 		
@@ -142,21 +121,12 @@
 		    </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 		
-			
-		<!-- Firebase 
-			<script src="https://cdn.firebase.com/libs/angularfire/0.7.1/angularfire.min.js"></script>
-			<script src="https://cdn.firebase.com/js/client/1.0.17/firebase.js"></script>
-			<script src="modulos/angular-file-upload-shim.min.js"></script> 
-			<script src="modulos/angular-strap.min.js"></script>
-			<script src="modulos/angular-strap.tpl.min.js"></script>
-			<script src="js/amcharts.js"></script> 
-			<script src="js/serial.js"></script> 
-			<script src="js/amstock.js"></script>
-		-->
+		<!-- build:js js/vendor.min.js -->
 		<script src="lib/jquery.min.js"></script>
 		<script src="lib/angular.min.js" ></script>
 		<script src="lib/bootstrap.min.js"></script>
 		<script src="lib/jquery.dataTables.min.js"></script>
+		<script src="js/prefixfree.min.js"></script> 
 		<script src="js/jquery.ui.datepicker-es.js"></script>
 		<script src="js/jquery-ui-1.10.4.custom.min.js"></script>
 		<script src="js/date.format.js"></script>
@@ -164,7 +134,8 @@
 		<script src="js/moment.js"></script>
 		<script src="js/amcharts.js"></script>
 		<script src="js/serial.js"></script>
-		
+		<!-- endbuild -->
+		<!-- build:js js/modules.min.js --> 
 		<script src="modules/angular-file-upload-all.min.js"></script> 
 		<script src="modules/angular-route.min.js" ></script>
 		<script src="modules/angular-cookies.min.js" ></script>
@@ -174,7 +145,9 @@
 		<script src="modules/ng-grid-csv-export.js"></script>
 		<script src="modules/ngProgress.min.js"></script>
 		<script src="modules/angular-webstorage.min.js"></script>
+		<!-- endbuild -->
         <!-- archivos de la aplicacion -->
+        <!-- build:js js/app.min.js --> 
 		<script src="app/app.js" ></script>
 		<script src="app/directives/directivasMv.js" ></script>
 		<script src="app/services/loginService.js" ></script>
@@ -194,5 +167,8 @@
 		<script src="app/controllers/controllerTicketsPagos.js"></script>
 		<script src="app/controllers/flujoCtrl.js"></script>
 		<script src="app/controllers/reportesCtrl.js"></script>
+		<script src="app/controllers/capturasCtrl.js"></script>
+		<script src="app/controllers/listadosCtrl.js"></script>
+		<!-- endbuild -->
 	</body>
 </html>	

@@ -1,11 +1,20 @@
 //edicion de tickets
-function editaTicketPagosCtrl($scope,$rootScope, $http, find, $routeParams){
 
+function editaTicketPagosCtrl($scope,$rootScope, $http, find, $routeParams, datos, loading,ticketpagos){
+
+	loading.despedida();
+
+	$scope.clientes = datos[0].data;
+	$scope.status = datos[1].data;
+	$scope.unidades = datos[2].data;
+	$scope.categorias = datos[3].data;
+	
 	$scope.inicio = function(){
 
-		$scope.tituloT = "Ticket " + $routeParams.foliointerno;
+		$scope.tituloT = "Generar Ticket";
 		$scope.mensaje = '';
 		$scope.mensaje2 = '';
+		
 		$scope.datos = {
 			folioweb:'',
 			folioIn:'',
@@ -24,337 +33,134 @@ function editaTicketPagosCtrl($scope,$rootScope, $http, find, $routeParams){
 			usuariomv:$rootScope.id
 		}
 
-		if ($rootScope.userWeb == undefined){
-			$scope.mensaje = 'No tienes usuario para editar ticket solicitalo en el area de sistemas';
-			$scope.bloqueado = true;
-		};
-
 		$scope.cargar = false;
 		$scope.edicion = true;
-		$scope.altacategorias();
-		$scope.altastatus();
-		$scope.empresasWeb();
-		$scope.unidadesWeb();
 
-		$scope.muestraticket();
+		$scope.muestraticket(datos[4].data);
 
-	}
-
-	$scope.ValidaInfo = function(){
-
-		if ($scope.bloqueado) {
-			return true;
-		}else{
-			return $scope.formTicket.$invalid;
-		}
-	}
-
-	//busca clientes
-	$scope.empresasWeb = function(){
-
-		find.empresasweb().success( function (data) {
-
-			$scope.clientes = data;
-
-		 });
-	}
-
-
-	//busca unidades
-	$scope.unidadesWeb = function(){
-
-		find.unidadesweb().success( function (data) {
-
-			$scope.unidades = data;
-
-		 });
-
-	}
-
-	$scope.altacategorias = function(){
-
-		find.categorias().success(function (data){
-			$scope.categorias = data;
-		});
 	}
 
 	$scope.altasubcategorias = function(id){
 		
-		find.subcategorias(id).success(function (data){
+		find.subcategoriaspagos(id).success(function (data){
 			$scope.subcategorias = data;
 		});
 	}
 
-	$scope.altastatus = function(){
 
-		find.statusweb().success(function (data){
-			$scope.status = data;
-		});
-	}
+	$scope.muestraticket = function(data){
 
-	$scope.muestraticket = function(){
+		$scope.nombre = data.expediente.Exp_completo;
+		$scope.compania = data.expediente.Cia_nombrecorto;
+		$scope.siniestro = data.expediente.Exp_siniestro;
+		$scope.reporte = data.expediente.Exp_reporte;
+		$scope.poliza = data.expediente.Exp_poliza;
+		$scope.telefono = data.expediente.Exp_telefono;
+		$scope.mail = data.expediente.Exp_mail;
+		$scope.fechana = data.expediente.Exp_fechaNac;
+		$scope.sexo = data.expediente.Exp_sexo;
 
-		find.detalleticket($routeParams.foliointerno,$routeParams.folioweb).success(function (data){
+		$scope.datos.folioweb = data.ticket.Exp_folio;
+		$scope.datos.folioIn = data.ticket.TSeg_clave;
+		$scope.datos.categoria = data.ticket.TCat_clave;
+		$scope.datos.asignado = data.ticket.TSeg_asignado;
+		$scope.datos.fechaasignado = data.ticket.TSeg_asignadofecha;
+		$scope.datos.etapa = data.ticket.TSeg_etapa;
 
-			$scope.nombre = data.expediente[0].Nombre;
-			$scope.compania = data.expediente[0].Cia_nombrecorto;
-			$scope.siniestro = data.expediente[0].Exp_siniestro;
-			$scope.reporte = data.expediente[0].Exp_reporte;
-			$scope.poliza = data.expediente[0].Exp_poliza;
-			$scope.telefono = data.expediente[0].Exp_telefono;
-			$scope.mail = data.expediente[0].Exp_mail;
-			$scope.fechana = data.expediente[0].Exp_fechaNac;
-			$scope.sexo = data.expediente[0].Exp_sexo;
+		$scope.altasubcategorias(data.ticket.TCat_clave);
 
-			$scope.datos.folioweb = data.ticket[0].Exp_folio;
-			$scope.datos.folioIn = data.ticket[0].TSeg_clave;
-			$scope.datos.categoria = data.ticket[0].TCat_clave;
-			$scope.datos.asignado = data.ticket[0].TSeg_asignado;
-			$scope.datos.fechaasignado = data.ticket[0].TSeg_asignadofecha;
-			$scope.datos.etapa = data.ticket[0].TSeg_etapa;
+		$scope.datos.subcategoria = data.ticket.TSub_clave;
+		$scope.datos.statusa = data.ticket.TStatus_clave;
+		$scope.datos.observaciones = data.ticket.TSeg_obs;
 
-			$scope.altasubcategorias(data.ticket[0].TCat_clave);
-
-			$scope.datos.subcategoria = data.ticket[0].TSub_clave;
-			$scope.datos.statusa = data.ticket[0].TStatus_clave;
-			$scope.observaciones = data.ticket[0].TSeg_obs;
-
-			$scope.notas = data.notas;
-			$scope.comunicaciones = data.comunicacion;
-
-		});
-	}
-
-	// presiona Folio
-	$scope.presionaFolio = function(evento){
-
-		//contamos la cadena completa
-		var cantidad = $scope.datos.folioweb.length;
-
-		//los primero cuatro caracteres NO deben ser numeros
-		if(cantidad < 3){
-			if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//los ultimos 6 NO deben ser letras
-		if(cantidad > 3 && cantidad < 9){
-			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//Si son mas de 10 digitos no escribas mas
-		if(cantidad > 9){
-			if (evento.keyCode != 8  && evento.keyCode != 46 ) {
-
-		      	evento.preventDefault();
-		    }      	
-		}
-
-		//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
-		if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-	      	$scope.verificaFolio();
-
-	    }	
+		$scope.notas = data.notas;
 
 	}
 
-	$scope.verificaFolio = function(){
+	$scope.guardaTicket = function(){
 
-		if ($scope.datos.folioweb != '') {
+		// console.log($scope.datos);
+		$('#boton').button('loading');
 
-			var totalletras = $scope.datos.folioweb.length
+		ticketpagos.actualiza($scope.datos).success( function (data){  
 
-			var letras = $scope.datos.folioweb.substr(0,4);
-			var numeros = $scope.datos.folioweb.substr(4,totalletras);
-
-			if(letras.length < 4 ){
-
-				var faltantes = 4 - letras.length;
-
-				for (var i = 0; i < faltantes; i++) {
-
-					var letra = letras.charAt(i);
-					letras = letras + "0";
-				}
-			}
-
-			if(numeros.length < 6 ){
-
-				var faltantes = 6 - numeros.length;
-
-				for (var i = 0; i < faltantes; i++) {
-					
-					numeros = "0" + numeros;
-				}
-			}
-
-			$scope.datos.folioweb = letras + numeros;
-
-			$scope.foliosxfolio();
-		}	
-
-	}
-
-	//busqueda de folio especiico
-	$scope.foliosxfolio = function(){
-
-		$scope.mensaje = '';
-		$scope.cargar = true;
+			$scope.mensaje2 = data.respuesta;
+			$scope.tipoalerta = 'alert-success';
+			$('#boton').button('reset');
 		
-		find.folioweb($scope.datos.folioweb).success( function (data){
-        	
-        
-        	if(data.length == 0){
-
-        		$scope.mensaje  = 'No se encontro el Folio Solicitado';
-
-        	}else{
-
-        		console.log(data[0].Cia_clave);
-        		console.log(data[0].Uni_clave);
-
-        		$scope.datos.cliente = data[0].Cia_clave;
-        		$scope.datos.unidad = data[0].Uni_clave;
-
-        		find.listaticketsfolio($scope.datos.folioweb).success(function (data){
-
-        			if (data.length > 0 ) {
-
-        				$scope.datos.etapa = 2;
-        			}else{
-        				$scope.datos.etapa = 1;
-        			}
-        		});
-
-        	}
-
-			$scope.cargar = false;
-			
-			//console.log(data);
-		}).error( function (xhr,status,data){
-
-			$scope.cargar = false;
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
+		}).error( function (data){
+			$scope.mensaje2 = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+			$scope.tipoalerta = 'alert-warning';
+			$('#boton').button('reset');
 		});
 
 	}
 
-	$scope.siguiente = function(){
-
-		console.log($scope.datos);
-
-		$http({
-				url:'/documento/api/actualizaticket',
-				method:'POST', 
-				contentType: 'application/json', 
-				dataType: "json", 
-				data:$scope.datos
-			}).success( function (data){
-				        	
-				$scope.mensaje2 = data.respuesta;
-				$scope.tipoalerta = 'alert-success';
-
-				$scope.muestraticket();			
-
-			}).error( function (data){
-
-				$scope.mensaje2 = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-				$scope.tipoalerta = 'alert-warning';
-
-			});
-
-	}
-	
-}
+};
 
 //menu de tickets donde se imprimen los generados al dia
-function menuticketPagosCtrl($scope, $rootScope, $http, find, loading, $location,$window,$compile,$filter){
+function menuticketPagosCtrl($scope, $location, find, loading,datos){
+
+	loading.despedida();
+
+	$scope.clientes = datos[0].data;
+	$scope.status = datos[1].data;
+	$scope.unidades = datos[2].data;
+	$scope.usuarios = datos[3].data;
+	$scope.listado = datos[4].data;
 
 	$scope.inicio = function(){
 
-		$scope.tituloTi = "Tickets de pagos";
-		$scope.limpia();
-		$scope.empresasWeb();
-		$scope.statusweb();
-		$scope.unidadesWeb();
-		$scope.usuariosWeb();
-		$scope.listatickets();
+		$scope.tituloTi = "Tickets";
+		$scope.fechaini = FechaAct;
+		$scope.fechafin = FechaAct;
+		$scope.interno = '';
+		$scope.web = '';
 
 	}
 
-	$scope.limpia = function(){
-		$scope.datos = {
-			fechaini:'',
-			fechafin:'',
-			interno:'',
-			folio:''
-		}
-	}
 
 
-	$scope.listatickets = function(){
-		$http.get('/documento/api/ticketpagos').success(function (data){
+
+
+	$scope.ticketxfoliointerno = function(){
+
+		loading.cargando('Buscando Ticket(s)');
+
+		find.ticketspagosxfoliointerno($scope.interno).success( function (data) {
+
 			$scope.listado = data;
+			loading.despedida();
+			$scope.quitafiltro();
+
 		});
+
 	}
 
-	$scope.buscatickets = function(){
-		$http.post('/documento/api/ticketpagos',$scope.datos).success(function (data){
+
+	$scope.ticketxfolio = function(){
+
+		loading.cargando('Buscando Ticket(s)');
+
+		find.ticketspagosxfolio($scope.web).success( function (data) {
+
 			$scope.listado = data;
-			$scope.limpia();
+			loading.despedida();
+			$scope.quitafiltro();
+
+		 });
+
+	}
+
+	$scope.ticketsxfecha = function(){
+
+		loading.cargando('Buscando Ticket(s)');
+		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
+		find.ticketspagosxfecha(datos).success( function (data){
+        		$scope.listado = data;
+        		loading.despedida();
 		});
-	}
 
-	//busquedas
-	//busca clientes
-	$scope.empresasWeb = function(){
-
-		find.empresasweb().success( function (data) {
-
-			$scope.clientes = data;
-
-		 });
-	}
-
-	//busca status
-	$scope.statusweb = function(){
-
-		find.statusweb().success( function (data) {
-
-			$scope.status = data;
-
-		 });
-	}
-
-
-	//busca unidades
-	$scope.unidadesWeb = function(){
-
-		find.unidadesweb().success( function (data) {
-
-			$scope.unidades = data;
-
-		 });
-	}
-
-
-	//busca usuarios
-	$scope.usuariosWeb = function(){
-
-		find.usuariosweb().success( function (data) {
-
-			$scope.usuarios = data;
-
-		 }).error( function (xhr,status,data){
-
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-		 });
 	}	
 
 
@@ -366,25 +172,11 @@ function menuticketPagosCtrl($scope, $rootScope, $http, find, loading, $location
 	    useExternalFilter: false
 	};
 
-	// var csvOpts = { columnOverrides: { obj: function (o) {
-	//     return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
-	//     } },
-	//     iEUrl: 'downloads/download_as_csv'
-	// };
-
-	var csvOpts = { columnOverrides: { obj: function (o) {
-	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
-	    } },
-	    iEUrl: 'downloads/download_as_csv'
-	};
-
-	//var csvOpts = { columnOverrides: { obj: function(o) { return o.a + '|' +  o.b; } } }
-
 	var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
 
 	$scope.onDblClickRow = function(row){
-	  console.log(row.entity.Folio_Interno);
-	  $location.path('/editaticket/'+row.entity.Folio_Interno+'/'+row.entity.Folio_Web );
+	  // console.log(row.entity.Folio_Interno);
+	  $location.path('/ticketpagos/'+row.entity.Folio_Interno+'/'+row.entity.Folio_Web );
 	};
 
     ////opciones del grid                 
@@ -420,8 +212,7 @@ function menuticketPagosCtrl($scope, $rootScope, $http, find, loading, $location
 		            // { field:'Cancelado', width: 120 }
         ],
         showFooter: true,
-        showFilter:false,
-        plugins: [new ngGridCsvExportPlugin(csvOpts,$http,$window,$compile,$filter)]
+        showFilter:false
     };
 
     $scope.filtra = function(){
@@ -429,7 +220,7 @@ function menuticketPagosCtrl($scope, $rootScope, $http, find, loading, $location
     	//$scope.filterOptions.filterText = "";
     	//var filtro = "";
 
-    	console.log($scope.unidad.Nombre);
+    	// console.log($scope.unidad);
 
     	if($scope.unidad == undefined || $scope.unidad == 0){
     		var objeto1 = "";
@@ -467,19 +258,12 @@ function menuticketPagosCtrl($scope, $rootScope, $http, find, loading, $location
     		
     	}
 
-    	// if($scope.etapa == undefined || $scope.etapa == 0){
-    	// 	var objeto7 = "";
-    	// }else{
-    	// 	var objeto7 = "Etapa:" + $scope.Nombre + "; ";
-    		
-    	// }
-
 
     	var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6; //+ objeto7;
 
     	$scope.filterOptions.filterText = filtro;
 
-    	console.log(filtro);
+    	// console.log(filtro);
 
     }
 
@@ -494,11 +278,11 @@ function menuticketPagosCtrl($scope, $rootScope, $http, find, loading, $location
 		$scope.web = '';
     
     }
-    
-}
+
+};
 
 //generacion de tickets
-function ticketPagoCtrl($scope,$rootScope, $http, find){
+function ticketPagoCtrl($scope,$rootScope, find, ticketpagos){
 
 	$scope.inicio = function(){
 
@@ -506,12 +290,11 @@ function ticketPagoCtrl($scope,$rootScope, $http, find){
 		$scope.mensaje = '';
 
 		if ($rootScope.userWeb == undefined){
-
 			$scope.mensaje = 'No tienes usuario para dar de alta ticket solicitalo en el area de sistemas';
 			$scope.bloqueado = true;
 		};
 
-		$scope.tituloT = "Generar Ticket"
+		$scope.tituloT = "Generar Ticket de Pagos"
 		$scope.mensaje2 = '';
 		$scope.datos = {
 			folioweb:'',
@@ -527,6 +310,7 @@ function ticketPagoCtrl($scope,$rootScope, $http, find){
 			notas:'',
 			comunicacion:'',
 			fechacomunica:'',
+			observaciones:'',
 			usuario:$rootScope.userWeb,
 			usuariomv:$rootScope.id
 		}
@@ -542,7 +326,6 @@ function ticketPagoCtrl($scope,$rootScope, $http, find){
 		$scope.unidadesWeb();
 		$scope.datos.folioIn = 'NUEVO';
 
-
 	}
 
 	$scope.ValidaInfo = function(){
@@ -554,25 +337,6 @@ function ticketPagoCtrl($scope,$rootScope, $http, find){
 		}
 	}
 
-	$scope.siguiente = function(){
-
-		if ($scope.datos.folioIn == 'NUEVO') {
-
-			find.ultimoticket().success(function (data){
-				$scope.datos.folioIn = Number(data[0].ultimo) + 1; 
-				$scope.guardaTicket();
-			});
-
-		}else{
-
-
-			$scope.tipoalerta = 'alert-warning';
-			$scope.mensaje2  = 'El folio interno ya fue guardado';
-
-		}
-		
-	}
-
 	//busca clientes
 	$scope.empresasWeb = function(){
 
@@ -581,9 +345,8 @@ function ticketPagoCtrl($scope,$rootScope, $http, find){
 			$scope.clientes = data;
 
 		 });
+
 	}
-
-
 	//busca unidades
 	$scope.unidadesWeb = function(){
 
@@ -591,172 +354,100 @@ function ticketPagoCtrl($scope,$rootScope, $http, find){
 
 			$scope.unidades = data;
 
-		 });
+		});
 
 	}
 
 	$scope.altacategorias = function(){
 
-		find.categorias().success(function (data){
+		find.categoriaspagos().success(function (data){
 			$scope.categorias = data;
 		});
+		
 	}
 
 	$scope.altasubcategorias = function(id){
 		
-		find.subcategorias(id).success(function (data){
+		find.subcategoriaspagos(id).success(function (data){
 			$scope.subcategorias = data;
 		});
 	}
 
 	$scope.altastatus = function(){
 
-		find.statusweb().success(function (data){
+		find.statuspagos().success(function (data){
 			$scope.status = data;
 		});
 	}
 
-	// presiona Folio
-	$scope.presionaFolio = function(evento){
-
-		//contamos la cadena completa
-		var cantidad = $scope.datos.folioweb.length;
-
-		//los primero cuatro caracteres NO deben ser numeros
-		if(cantidad < 3){
-			if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//los ultimos 6 NO deben ser letras
-		if(cantidad > 3 && cantidad < 9){
-			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//Si son mas de 10 digitos no escribas mas
-		if(cantidad > 9){
-			if (evento.keyCode != 8  && evento.keyCode != 46 ) {
-
-		      	evento.preventDefault();
-		    }      	
-		}
-
-		//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
-		if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-	      	$scope.verificaFolio();
-
-	    }	
-
-	}
-
-	$scope.verificaFolio = function(){
-
-		if ($scope.datos.folioweb != '') {
-
-			var totalletras = $scope.datos.folioweb.length
-
-			var letras = $scope.datos.folioweb.substr(0,4);
-			var numeros = $scope.datos.folioweb.substr(4,totalletras);
-
-			if(letras.length < 4 ){
-
-				var faltantes = 4 - letras.length;
-
-				for (var i = 0; i < faltantes; i++) {
-
-					var letra = letras.charAt(i);
-					letras = letras + "0";
-				}
-			}
-
-			if(numeros.length < 6 ){
-
-				var faltantes = 6 - numeros.length;
-
-				for (var i = 0; i < faltantes; i++) {
-					
-					numeros = "0" + numeros;
-				}
-			}
-
-			$scope.datos.folioweb = letras + numeros;
-
-			$scope.foliosxfolio();
-		}	
-
-	}
-
 	//busqueda de folio especiico
-	$scope.foliosxfolio = function(){
+	$scope.foliosxfolio = function(folio){
 
-		$scope.mensaje = '';
-		$scope.cargar = true;
-		
-		find.folioweb($scope.datos.folioweb).success( function (data){
-        	
-        
-        	if(data.length == 0){
-
-        		$scope.mensaje  = 'No se encontro el Folio Solicitado';
-
-        	}else{
-
-        		console.log(data[0].Cia_clave);
-        		console.log(data[0].Uni_clave);
-
-        		$scope.datos.cliente = data[0].Cia_clave;
-        		$scope.datos.unidad = data[0].Uni_clave;
-
-        		find.listaticketsfolio($scope.datos.folioweb).success(function (data){
-
-        			if (data.length > 0 ) {
-
-        				$scope.datos.etapa = 2;
-        			}else{
-        				$scope.datos.etapa = 1;
-        			}
-        		});
-
-        	}
-
-			$scope.cargar = false;
+		if ($scope.datos.folioweb) {
+			$scope.mensaje = '';
+			$scope.cargar = true;
 			
-			//console.log(data);
-		}).error( function (xhr,status,data){
+			find.folioweb($scope.datos.folioweb).success( function (data){
+	        	
+	        
+	        	if(data.length == 0){
 
-			$scope.cargar = false;
-			alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+	        		$scope.mensaje  = 'No se encontro el Folio Solicitado';
 
-		});
+	        	}else{
+
+
+	        		$scope.datos.cliente = data[0].Cia_clave;
+	        		$scope.datos.unidad = data[0].Uni_clave;
+
+	        		find.ticketsxfolio($scope.datos.folioweb).success(function (data){
+	        			// console.log(data);
+	        			if (data.length == 0) {
+	        				$scope.datos.etapa = '1';
+	        			}else{
+	        				$scope.datos.etapa = '2';
+	        			}
+	        			// console.log($scope.datos.etapa);
+	        		});
+
+	        	}
+
+				$scope.cargar = false;
+				
+				//console.log(data);
+			});			
+		};
 
 	}
 
 	$scope.guardaTicket = function(){
 
-		console.log($scope.datos);
+		$('#boton').button('loading');
 
-		$http({
-				url:'/documento/api/altaticket',
-				method:'POST', 
-				contentType: 'application/json', 
-				dataType: "json", 
-				data:$scope.datos
-			}).success( function (data){
-				        	
-				$scope.mensaje2 = data.respuesta;
-				$scope.tipoalerta = 'alert-success';			
+		ticketpagos.guardar($scope.datos).success( function (data){
+			        	
+			$scope.mensaje2 = data.respuesta;
+			$scope.datos.folioIn = data.foliointerno;
+			$scope.tipoalerta = 'alert-success';
+			$('#boton').button('reset');			
 
-			}).error( function (data){
+		}).error( function (data){
 
-				$scope.mensaje2 = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
-				$scope.tipoalerta = 'alert-warning';
+			$scope.mensaje2 = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+			$scope.tipoalerta = 'alert-warning';
+			$('#boton').button('reset');
 
-			});
+		});
 
 	}
-	
-}
+
+};
+
+
+ticketPagoCtrl.$inject = ['$scope','$rootScope', 'find', 'ticketpagos'];
+menuticketPagosCtrl.$inject = ['$scope', '$location', 'find', 'loading','datos'];
+editaTicketPagosCtrl.$inject = ['$scope','$rootScope', '$http', 'find', '$routeParams', 'datos', 'loading','ticketpagos'];
+
+app.controller('ticketPagoCtrl',ticketPagoCtrl);
+app.controller('menuticketPagosCtrl',menuticketPagosCtrl);
+app.controller('editaTicketPagosCtrl',editaTicketPagosCtrl);
