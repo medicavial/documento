@@ -10,6 +10,9 @@ app.factory("find", function($http,api){
         categoriaspagos:function(){
             return $http.get(api+'tickets/pagos/categorias');
         },
+        consultaFlujo:function(usuario){
+            return $http.get(api+'flujo/consulta/' + usuario);
+        },
         consultaFacturaQualitas:function(folio){
             return $http.get(api+'qualitas/consulta/' + folio);
         },

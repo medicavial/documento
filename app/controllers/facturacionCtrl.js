@@ -2,9 +2,15 @@
 function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
 
 	loading.despedida();
-	$scope.listado = datos.activos;
-	$scope.rechazados = datos.rechazos.length;
-	$scope.recibidos = datos.recepcion.length;
+	// $scope.listado = datos.activos;
+	// $scope.rechazados = datos.rechazos.length;
+	// $scope.recibidos = datos.recepcion.length;
+
+	$scope.rechazados = datos.rechazos;
+	$scope.recibidos = datos.recepcion;
+	datos.activos.success(function (data){
+		$scope.listado = data;
+	});
 
 	$scope.inicio = function(){
 

@@ -4,13 +4,17 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 
 	loading.despedida();
 
+	$scope.rechazados = datos.rechazos;
+	$scope.recibidos = datos.recepcion;
+	datos.activos.success(function (data){
+		$scope.listado = data;
+	});
+
 	$scope.inicio = function(){
 
 		$rootScope.area = 4;
 		$scope.tituloR = "Mesa de Control";
 		$scope.push = false;
-		$scope.rechazados = 0;
-		$scope.recibidos = 0;
 
 		$scope.mensaje = '';
 		$scope.fechaini = '';
@@ -19,9 +23,6 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 		$scope.lesionado = '';
 		$scope.cargar = false;
 
-		$scope.listado = datos.activos;
-		$scope.rechazados = datos.rechazos.length;
-		$scope.recibidos = datos.recepcion.length;
         	
 		$scope.cargaInfo();
 
@@ -57,13 +58,13 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
         	}
 
         	if(data.rechazos){
-        		$scope.rechazados = data.rechazos.length;
+        		$scope.rechazados = data.rechazos;
         	}else{
         		$scope.rechazados = 0;
         	}
 
         	if(data.recepcion){
-        		$scope.recibidos = data.recepcion.length;
+        		$scope.recibidos = data.recepcion;
         	}else{
         		$scope.recibidos = 0;
         	}

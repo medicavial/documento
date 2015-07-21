@@ -2,10 +2,12 @@
 function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
 
     loading.despedida();
-    // console.log(datos);
-    $scope.listado = datos.activos;
-    $scope.rechazados = datos.rechazos.length;
-    $scope.recibidos = datos.recepcion.length;
+
+    $scope.rechazados = datos.rechazos;
+    $scope.recibidos = datos.recepcion;
+    datos.activos.success(function (data){
+        $scope.listado = data;
+    });
 
     $scope.inicio = function(){
 
@@ -19,7 +21,6 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
         $scope.folio = '';
         $scope.lesionado = '';
         $scope.cargar = false;
-
 
         $scope.cargaInfo();
 

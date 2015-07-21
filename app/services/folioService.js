@@ -543,14 +543,16 @@ app.factory("carga", function($q,$http,find,api){
 
             var promesa        = $q.defer(),
                 activos        = $http.get(api+'flujo/activos/'+usuario),
-                recepcion      = $http.get(api+'flujo/recepcion/'+usuario),
-                rechazos       = $http.get(api+'flujo/rechazos/'+usuario);
+                info           = $http.get(api+'flujo/consulta/'+usuario);
+                // recepcion      = $http.get(api+'flujo/recepcion/'+usuario),
+                // rechazos       = $http.get(api+'flujo/rechazos/'+usuario);
 
-            $q.all([activos,rechazos,recepcion]).then(function(data) {
+            $q.all([info]).then(function(data) {
+                console.log(data);
                 var datos = {
-                    activos:data[0].data,
-                    rechazos:data[1].data,
-                    recepcion:data[2].data
+                    activos:activos,
+                    rechazos:data[0].data.rechazos,
+                    recepcion:data[0].data.xrecibir
                 }
                 promesa.resolve(datos);
 

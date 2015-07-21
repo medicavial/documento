@@ -1,10 +1,15 @@
 //Area de pagos
 function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
-    $scope.listado = datos[0].data;
-    $scope.cantidad = datos[0].data.length -1;
-    $scope.recibidos = datos[1].recepcion.length;
+    // console.log(datos);
+
     loading.despedida();
+
+    $scope.recibidos = datos.recepcion;
+    datos.activos.success(function (data){
+        $scope.listado = data;
+        $scope.cantidad = data.length -1;
+    });
 
     $scope.inicio = function(){
 
@@ -367,354 +372,359 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 };
 
 //flujo de pagos general
-function flujoPagosCtrl($scope,$rootScope, find,loading, $http, api,datos,$filter){
+// function flujoPagosCtrl($scope,$rootScope, find,loading, $http, api,datos,$filter){
 
-    // console.log(datos);
-    $scope.listado = datos.data;
-    $scope.cantidad = datos.data.length -1;
-    loading.despedida();
+//     // console.log(datos);
+//     // $scope.listado = datos.data;
+//     // $scope.cantidad = datos.data.length -1;
+//     loading.despedida();
+    
+//     datos.activos.success(function (data){
+//         $scope.listado = data;
+//         $scope.cantidad = data.length -1;
+//     });
 
-	$scope.inicio = function(){
+// 	$scope.inicio = function(){
 
-		$rootScope.area = 6;
-		$scope.tituloFP = "Flujo de Pagos";
+// 		$rootScope.area = 6;
+// 		$scope.tituloFP = "Flujo de Pagos";
 
-		$scope.fechainiPag = primerdiames;
-    	$scope.fechafinPag = FechaAct;
-    	$scope.fechainiRec = FechaAct;
-    	$scope.fechafinRec = FechaAct;
-		$scope.folio = '';
-		$scope.lesionado = '';
-		$scope.relacion = '';
-		$scope.cargar = false;
-		$scope.buscarXfecha = 0;
+// 		$scope.fechainiPag = primerdiames;
+//     	$scope.fechafinPag = FechaAct;
+//     	$scope.fechainiRec = FechaAct;
+//     	$scope.fechafinRec = FechaAct;
+// 		$scope.folio = '';
+// 		$scope.lesionado = '';
+// 		$scope.relacion = '';
+// 		$scope.cargar = false;
+// 		$scope.buscarXfecha = 0;
 
-		$scope.empresas();
-		$scope.Altaunidades();
-		$scope.productos();
-
-
-        $scope.filtrado = {
-            unidad  : 0,
-            cliente :  0,
-            tipo :  0,
-            folio  : '',
-            fechaini  : '',
-            fechafin  : '',
-            lesionado  : '',
-            lesionado  : '',
-            fechainiPag  : '',
-            fechafinPag  : '',
-            fechainiRec  : '',
-            fechainiRec  : ''
-        };
+// 		$scope.empresas();
+// 		$scope.Altaunidades();
+// 		$scope.productos();
 
 
-	}
+//         $scope.filtrado = {
+//             unidad  : 0,
+//             cliente :  0,
+//             tipo :  0,
+//             folio  : '',
+//             fechaini  : '',
+//             fechafin  : '',
+//             lesionado  : '',
+//             lesionado  : '',
+//             fechainiPag  : '',
+//             fechafinPag  : '',
+//             fechainiRec  : '',
+//             fechainiRec  : ''
+//         };
 
-	//Busqueda de folios x area
-	// $scope.foliosxarea = function(){
 
-	// 	$('#busca2').button('loading');
-	// 	// loading.cargando('Buscando Folio');
+// 	}
 
-	// 	find.listadopagos().success( function (data){
+// 	//Busqueda de folios x area
+// 	// $scope.foliosxarea = function(){
+
+// 	// 	$('#busca2').button('loading');
+// 	// 	// loading.cargando('Buscando Folio');
+
+// 	// 	find.listadopagos().success( function (data){
         	
- //        	if(data.respuesta){
+//  //        	if(data.respuesta){
 
- //        		$('#busca2').button('reset');
- //        		loading.mensaje(data.respuesta);
- //        		loading.despedida();
- //        		$scope.listado = [];
+//  //        		$('#busca2').button('reset');
+//  //        		loading.mensaje(data.respuesta);
+//  //        		loading.despedida();
+//  //        		$scope.listado = [];
 
- //        	}else{
+//  //        	}else{
 
- //        		$('#busca2').button('reset');
- //        		$scope.listado = data;
- //        		$scope.cantidad = data.length -1;
+//  //        		$('#busca2').button('reset');
+//  //        		$scope.listado = data;
+//  //        		$scope.cantidad = data.length -1;
         		
         	
- //        	}
+//  //        	}
 			
-	// 		//console.log(data);
-	// 	}).error( function (xhr,status,data){
+// 	// 		//console.log(data);
+// 	// 	}).error( function (xhr,status,data){
 
-	// 		loading.despedida();
-	// 		$('#busca2').button('reset');
-	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+// 	// 		loading.despedida();
+// 	// 		$('#busca2').button('reset');
+// 	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
-	// 	});
+// 	// 	});
 
-	// }
+// 	// }
 
 
-	// $scope.foliosXfecha = function(tipo){
+// 	// $scope.foliosXfecha = function(tipo){
 
-	// 	loading.cargando('Buscando Folio');
-	// 	//valida el campo de fecha en caso de que alguno este lleno y el otro no
+// 	// 	loading.cargando('Buscando Folio');
+// 	// 	//valida el campo de fecha en caso de que alguno este lleno y el otro no
 
-	// 	if (tipo == 'Pagos') {
+// 	// 	if (tipo == 'Pagos') {
 
-	// 		fechaini = $scope.fechainiPag;
-	// 		fechafin = $scope.fechafinPag;
+// 	// 		fechaini = $scope.fechainiPag;
+// 	// 		fechafin = $scope.fechafinPag;
 
-	// 		var url = api + "flujopagos/fecharecepcion";
+// 	// 		var url = api + "flujopagos/fecharecepcion";
 
-	// 	}else{
+// 	// 	}else{
 
-	// 		fechaini = $scope.fechainiRec;
-	// 		fechafin = $scope.fechafinRec;
+// 	// 		fechaini = $scope.fechainiRec;
+// 	// 		fechafin = $scope.fechafinRec;
 
-	// 		var url = api + "flujopagos/fechapagos";
+// 	// 		var url = api + "flujopagos/fechapagos";
 
-	// 	};
+// 	// 	};
 
-	// 	//armamos los datos a enviar segun tipo de consulta (tipo)
-	// 	$scope.datos = {fechaini:fechaini,fechafin:fechafin};
-	// 	console.log($scope.datos);
+// 	// 	//armamos los datos a enviar segun tipo de consulta (tipo)
+// 	// 	$scope.datos = {fechaini:fechaini,fechafin:fechafin};
+// 	// 	console.log($scope.datos);
 
-	// 	$http.post(url,$scope.datos).success( function (data){
+// 	// 	$http.post(url,$scope.datos).success( function (data){
 			  
-	// 		if(data){
- //        		$scope.listado = data;
- //        		$scope.cantidad = data.length -1;
- //        		$scope.buscarXfecha = 1;
- //        	}else{ 
- //        		$scope.listado = [];
- //        	}
+// 	// 		if(data){
+//  //        		$scope.listado = data;
+//  //        		$scope.cantidad = data.length -1;
+//  //        		$scope.buscarXfecha = 1;
+//  //        	}else{ 
+//  //        		$scope.listado = [];
+//  //        	}
     		
- //    		loading.despedida();
+//  //    		loading.despedida();
 			
-	// 	});
+// 	// 	});
 
-	// }
-
-
-	///Busquedas 
-
-	//busca clientes
-	// $scope.empresas = function(){
-
-	// 	find.empresas().success( function (data) {
-
-	// 		$scope.clientes = data;
-
-	// 	 }).error( function (xhr,status,data){
-
-	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-	// 	 });
-
-	// }
-
-	// //busca productos
-	// $scope.productos = function(){
-
-	// 	find.productos().success( function (data) {
-
-	// 		$scope.productosini = data;
-
-	// 	 }).error( function (xhr,status,data){
-
-	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
-
-	// 	 });
-
-	// }
+// 	// }
 
 
-	// //busca unidades
-	// $scope.Altaunidades = function(){
+// 	///Busquedas 
 
-	// 	find.unidades().success( function (data) {
+// 	//busca clientes
+// 	// $scope.empresas = function(){
 
-	// 		$scope.unidades = data;
+// 	// 	find.empresas().success( function (data) {
 
-	// 	 }).error( function (xhr,status,data){
+// 	// 		$scope.clientes = data;
 
-	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+// 	// 	 }).error( function (xhr,status,data){
 
-	// 	 });
+// 	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
 
-	// }
+// 	// 	 });
 
-	//////LLena el grid y toma filtros
+// 	// }
 
-	///filtros
-	$scope.selectos = [];
+// 	// //busca productos
+// 	// $scope.productos = function(){
 
-	$scope.filterOptions = {
-	    filterText: '',
-	    useExternalFilter: false
-	};
+// 	// 	find.productos().success( function (data) {
 
-	var csvOpts = { columnOverrides: { obj: function (o) {
-	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
-	    } },
-	    iEUrl: 'downloads/download_as_csv'
-	};
+// 	// 		$scope.productosini = data;
 
-    ////opciones del grid                 
-    $scope.gridOptions = { 
-    	data: 'listado', 
-    	enableColumnResize:true,
-    	enablePinning: true, 
-    	enableRowSelection:true,
-    	multiSelect:false,
-    	selectedItems: $scope.selectos, 
-    	filterOptions: $scope.filterOptions,
-    	enableCellEdit: true,
-    	columnDefs: [
-                    { field:'USUNombre', width: 120, pinned: true},
-                    { field:'Producto', width: 120 },
-                    { field:'Triage', width: 120 },
-                    { field:'Cliente', width: 100 },
-                    { field:'Unidad', width: 220 },
-                    { field:'Folio', width: 120, pinned: false},
-                    { field:'Lesionado', width: 330 },
-                    { field:'Etapa', width: 120 },
-                    { field:'Entrega', width: 80 },
-                    { field:'FAtencion', width: 120},
-                    { field:'FormaRecep', width: 90 },
-                    { field:'fechaRecepcion', width: 120},
-                    { field:'FechaRecepPag', width: 120,  cellFilter: 'date:\'dd/MM/yyyy\'' },
-                    { field:'Tipo', width: 120 },
-                    { field:'Lesion', width: 120 },
-                    { field:'Relacion', width: 120 },
-                    { field:'FRelacion', displayName:'F.relacion', width: 120 },
-                    { field:'FRelPago', displayName:'F.Pago.Rel.', width: 120 },
-                    { field:'FRelPagoReg', displayName:'F.Pago.Rel.Reg.', width: 120 },
-                    { field:'PasC', width: 120 },
-                    { field:'FPasCobrado', width: 120 },
-                    { field:'Pago', width: 120 },
-                    { field:'Reserva', width: 120 },
-                    { field:'FacturaRelacion', width: 80 },
-                    { field:'FacDoc', width: 80 }
-        ],
-        showFooter: true,
-        showFilter:false
-    };
+// 	// 	 }).error( function (xhr,status,data){
 
-    $scope.filtra = function(){
+// 	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+
+// 	// 	 });
+
+// 	// }
 
 
-    	if($scope.unidad == undefined || $scope.unidad == 0){
-    		var objeto1 = "";
-            $scope.filtrado.Unidad = '';
-    	}else{
-    		var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
-    		$scope.filtrado.Unidad = $scope.unidad.nombre;
-    	}
-    	if($scope.cliente == undefined || $scope.cliente == 0){
-    		var objeto2 = "";
-            $scope.filtrado.Cliente = '';
-    	}else{
-    		var objeto2 = "Cliente:" + $scope.cliente.nombre + "; ";
-            $scope.filtrado.Cliente = $scope.cliente.nombre;
-    	}
+// 	// //busca unidades
+// 	// $scope.Altaunidades = function(){
 
-    	if($scope.tipo == 'fax'){
-    		var objeto3 = "FormaRecep:F; ";
-            $scope.filtrado.Fax = 'x';
-    	}else if($scope.tipo == 'original'){
-    		var objeto3 = "FormaRecep:O; ";
-            $scope.filtrado.Original = 'x';
-    	}else{
-    		var objeto3 = "";
-            $scope.filtrado.Original = '';
-    	}
+// 	// 	find.unidades().success( function (data) {
 
-    	if($scope.folio.length == 0){
-    		var objeto4 = "";
-    	}else{
-    		var objeto4 = "Folio:" + $scope.folio + "; ";	
-    	}
+// 	// 		$scope.unidades = data;
 
-    	if($scope.lesionado.length == 0){
-    		var objeto5 = "";
-    	}else{
-    		var objeto5 = "Lesionado:" + $scope.lesionado + "; ";	
-    	}
+// 	// 	 }).error( function (xhr,status,data){
 
-    	if($scope.producto == undefined || $scope.producto == 0){
-    		var objeto6 = "";
-    	}else{
-    		var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
+// 	// 		alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+
+// 	// 	 });
+
+// 	// }
+
+// 	//////LLena el grid y toma filtros
+
+// 	///filtros
+// 	$scope.selectos = [];
+
+// 	$scope.filterOptions = {
+// 	    filterText: '',
+// 	    useExternalFilter: false
+// 	};
+
+// 	var csvOpts = { columnOverrides: { obj: function (o) {
+// 	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
+// 	    } },
+// 	    iEUrl: 'downloads/download_as_csv'
+// 	};
+
+//     ////opciones del grid                 
+//     $scope.gridOptions = { 
+//     	data: 'listado', 
+//     	enableColumnResize:true,
+//     	enablePinning: true, 
+//     	enableRowSelection:true,
+//     	multiSelect:false,
+//     	selectedItems: $scope.selectos, 
+//     	filterOptions: $scope.filterOptions,
+//     	enableCellEdit: true,
+//     	columnDefs: [
+//                     { field:'USUNombre', width: 120, pinned: true},
+//                     { field:'Producto', width: 120 },
+//                     { field:'Triage', width: 120 },
+//                     { field:'Cliente', width: 100 },
+//                     { field:'Unidad', width: 220 },
+//                     { field:'Folio', width: 120, pinned: false},
+//                     { field:'Lesionado', width: 330 },
+//                     { field:'Etapa', width: 120 },
+//                     { field:'Entrega', width: 80 },
+//                     { field:'FAtencion', width: 120},
+//                     { field:'FormaRecep', width: 90 },
+//                     { field:'fechaRecepcion', width: 120},
+//                     { field:'FechaRecepPag', width: 120,  cellFilter: 'date:\'dd/MM/yyyy\'' },
+//                     { field:'Tipo', width: 120 },
+//                     { field:'Lesion', width: 120 },
+//                     { field:'Relacion', width: 120 },
+//                     { field:'FRelacion', displayName:'F.relacion', width: 120 },
+//                     { field:'FRelPago', displayName:'F.Pago.Rel.', width: 120 },
+//                     { field:'FRelPagoReg', displayName:'F.Pago.Rel.Reg.', width: 120 },
+//                     { field:'PasC', width: 120 },
+//                     { field:'FPasCobrado', width: 120 },
+//                     { field:'Pago', width: 120 },
+//                     { field:'Reserva', width: 120 },
+//                     { field:'FacturaRelacion', width: 80 },
+//                     { field:'FacDoc', width: 80 }
+//         ],
+//         showFooter: true,
+//         showFilter:false
+//     };
+
+//     $scope.filtra = function(){
+
+
+//     	if($scope.unidad == undefined || $scope.unidad == 0){
+//     		var objeto1 = "";
+//             $scope.filtrado.Unidad = '';
+//     	}else{
+//     		var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
+//     		$scope.filtrado.Unidad = $scope.unidad.nombre;
+//     	}
+//     	if($scope.cliente == undefined || $scope.cliente == 0){
+//     		var objeto2 = "";
+//             $scope.filtrado.Cliente = '';
+//     	}else{
+//     		var objeto2 = "Cliente:" + $scope.cliente.nombre + "; ";
+//             $scope.filtrado.Cliente = $scope.cliente.nombre;
+//     	}
+
+//     	if($scope.tipo == 'fax'){
+//     		var objeto3 = "FormaRecep:F; ";
+//             $scope.filtrado.Fax = 'x';
+//     	}else if($scope.tipo == 'original'){
+//     		var objeto3 = "FormaRecep:O; ";
+//             $scope.filtrado.Original = 'x';
+//     	}else{
+//     		var objeto3 = "";
+//             $scope.filtrado.Original = '';
+//     	}
+
+//     	if($scope.folio.length == 0){
+//     		var objeto4 = "";
+//     	}else{
+//     		var objeto4 = "Folio:" + $scope.folio + "; ";	
+//     	}
+
+//     	if($scope.lesionado.length == 0){
+//     		var objeto5 = "";
+//     	}else{
+//     		var objeto5 = "Lesionado:" + $scope.lesionado + "; ";	
+//     	}
+
+//     	if($scope.producto == undefined || $scope.producto == 0){
+//     		var objeto6 = "";
+//     	}else{
+//     		var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
     		
-    	}
+//     	}
 
-    	if($scope.etapa == undefined || $scope.etapa == 0){
-    		var objeto7 = "";
-    	}else{
-    		var objeto7 = "Etapa:" + $scope.etapa + "; ";
+//     	if($scope.etapa == undefined || $scope.etapa == 0){
+//     		var objeto7 = "";
+//     	}else{
+//     		var objeto7 = "Etapa:" + $scope.etapa + "; ";
     		
-    	}
+//     	}
 
-    	if($scope.relacion.length == 0){
-    		var objeto8 = "";
-    	}else{
-    		var objeto8 = "Relacion:" + $scope.relacion + "; ";	
-    	}
+//     	if($scope.relacion.length == 0){
+//     		var objeto8 = "";
+//     	}else{
+//     		var objeto8 = "Relacion:" + $scope.relacion + "; ";	
+//     	}
 
-    	if ($scope.relacionado) {
-    		var objeto9 = "RelP:X ; ";	
-    	}else{
-    		var objeto9 = "";
-    	}
+//     	if ($scope.relacionado) {
+//     		var objeto9 = "RelP:X ; ";	
+//     	}else{
+//     		var objeto9 = "";
+//     	}
 
-    	if ($scope.cobrado) {
-    		var objeto10 = "Cobrado:1 ; ";	
-    	}else{
-    		var objeto10 = "";
-    	}
+//     	if ($scope.cobrado) {
+//     		var objeto10 = "Cobrado:1 ; ";	
+//     	}else{
+//     		var objeto10 = "";
+//     	}
 
-    	if ($scope.pagado) {
-    		var objeto11 = "Pagado:1 ; ";	
-    	}else{
-    		var objeto11 = "";
-    	}
+//     	if ($scope.pagado) {
+//     		var objeto11 = "Pagado:1 ; ";	
+//     	}else{
+//     		var objeto11 = "";
+//     	}
 
 
-    	var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7 + objeto8 + objeto9 + objeto10 + objeto11;
+//     	var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7 + objeto8 + objeto9 + objeto10 + objeto11;
 
-    	$scope.filterOptions.filterText = filtro;
+//     	$scope.filterOptions.filterText = filtro;
 
-    	// console.log(filtro);
+//     	// console.log(filtro);
 
-    }
+//     }
 
-    $scope.quitafiltro = function(){
+//     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
-    	$scope.cliente = 0;
-    	$scope.tipo = 0;
-    	$scope.folio = '';
-    	$scope.fechaini = '';
-    	$scope.fechafin = '';
-    	$scope.lesionado = '';
-    	$scope.lesionado = '';
-    	$scope.fechainiPag = '';
-    	$scope.fechafinPag = '';
-    	$scope.fechainiRec = '';
-    	$scope.fechainiRec = '';
+//     	$scope.filterOptions.filterText = ''; 
+//     	$scope.unidad = 0; 
+//     	$scope.cliente = 0;
+//     	$scope.tipo = 0;
+//     	$scope.folio = '';
+//     	$scope.fechaini = '';
+//     	$scope.fechafin = '';
+//     	$scope.lesionado = '';
+//     	$scope.lesionado = '';
+//     	$scope.fechainiPag = '';
+//     	$scope.fechafinPag = '';
+//     	$scope.fechainiRec = '';
+//     	$scope.fechainiRec = '';
 
-    	// console.log($scope.buscarXfecha);
+//     	// console.log($scope.buscarXfecha);
 
-    	if ($scope.buscarXfecha == 1) {
+//     	if ($scope.buscarXfecha == 1) {
 
-    		$scope.buscarXfecha = 0;
-    		$scope.foliosxarea();
-    	};
+//     		$scope.buscarXfecha = 0;
+//     		$scope.foliosxarea();
+//     	};
     	
     
-    }
+//     }
 
-};
+// };
 
 
 pagosCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading','datos','$filter'];
-flujoPagosCtrl.$inject = ['$scope','$rootScope', 'find','loading', '$http', 'api','datos','$filter'];
+// flujoPagosCtrl.$inject = ['$scope','$rootScope', 'find','loading', '$http', 'api','datos','$filter'];
 
 app.controller('pagosCtrl',pagosCtrl);
-app.controller('flujoPagosCtrl',flujoPagosCtrl);
+// app.controller('flujoPagosCtrl',flujoPagosCtrl);

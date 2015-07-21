@@ -1,8 +1,12 @@
 function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api,datos){
 	
 	loading.despedida();
-	$scope.listado = datos.activos;
-	$scope.rechazados = datos.rechazos.length;
+
+	$scope.rechazados = datos.rechazos;
+	datos.activos.success(function (data){
+		$scope.listado = data;
+	});
+
 
 	//Con parametros de inicio
 	$scope.inicio = function(){

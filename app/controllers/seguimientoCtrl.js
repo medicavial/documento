@@ -3,14 +3,19 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
 
 
 	loading.despedida();
+    $scope.rechazados = datos.rechazos;
+    $scope.recibidos = datos.recepcion;
+    datos.activos.success(function (data){
+        $scope.listado = data;
+    });
+
 
 	$scope.inicio = function(){
 
 		$rootScope.area = 8;
 		$scope.tituloR = "Seguimiento";
 		$scope.push = false;
-		$scope.rechazados = 0;
-		$scope.recibidos = 0;
+
 
 		$scope.mensaje = '';
 		$scope.fechaini = '';
@@ -18,10 +23,6 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
 		$scope.folio = '';
 		$scope.lesionado = '';
 		$scope.cargar = false;
-
-		$scope.listado = datos.activos;
-		$scope.rechazados = datos.rechazos.length;
-		$scope.recibidos = datos.recepcion.length;
         	
 		$scope.cargaInfo();
 

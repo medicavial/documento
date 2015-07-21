@@ -111,7 +111,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             templateUrl   : 'vistas/flujopagos.html',
             controller    : 'pagosCtrl',
             resolve       :{
-                datos:function(loading,find,carga,$rootScope,$q){
+                datos:function(loading,find,carga,$rootScope,$q,$http,api){
 
                     loading.cargando('Cargando información');
                     var info = {
@@ -120,10 +120,19 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
                     },
                     promesa = $q.defer(),
                     pagos = find.listaPagos(info),
-                    flujo = carga.flujo($rootScope.id);
+                    info  = $http.get(api+'flujo/consulta/'+ $rootScope.id);
 
-                    $q.all([pagos,flujo]).then(function (data){
-                        promesa.resolve(data);
+                    $q.all([info]).then(function (data){
+
+                        // console.log(data);
+                        var respuesta = {
+                            activos:pagos,
+                            rechazos:data[0].data.rechazos,
+                            recepcion:data[0].data.xrecibir
+                        }
+                        
+                        promesa.resolve(respuesta);
+                        
                     });
 
                     return promesa.promise;
@@ -288,19 +297,28 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             templateUrl   : 'vistas/pagos.html',
             controller    : 'pagosCtrl',
             resolve       :{
-                datos:function(loading,find,carga,$rootScope,$q){
+                datos:function(loading,find,carga,$rootScope,$q,$http,api){
 
                     loading.cargando('Cargando información');
                     var info = {
                         fechainiPag:primerdiames,
                         fechafinPag:FechaAct
                     },
+
                     promesa = $q.defer(),
                     pagos = find.listaPagos(info),
-                    flujo = carga.flujo($rootScope.id);
+                    info  = $http.get(api+'flujo/consulta/'+ $rootScope.id);
 
-                    $q.all([pagos,flujo]).then(function (data){
-                        promesa.resolve(data);
+                    $q.all([info]).then(function (data){
+
+                        console.log(data);
+                        var respuesta = {
+                            activos:pagos,
+                            rechazos:data[0].data.rechazos,
+                            recepcion:data[0].data.xrecibir
+                        }
+                        promesa.resolve(respuesta);
+                        
                     });
 
                     return promesa.promise;
