@@ -57,24 +57,17 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 		$rootScope.prueba = false;
 
-		carga.flujo($rootScope.id).then(function (data){
+		carga.activos($rootScope.id).then(function (data){
+            
+            if (data) {
+                $scope.listado = data;         
+            }else{
+                $scope.listado = [];
+            }
+           
+            $scope.mensaje = '';
 
-			// console.log(data);
-			$scope.mensaje = '';
-
-			if(datos.activos){
-        		$scope.listado = data.activos;
-        	}else{
-        		$scope.listado = [];
-        	}
-
-        	if(datos.rechazos){
-        		$scope.rechazados = data.rechazos.length;
-        	}else{
-        		$scope.rechazados = 0;
-        	}
-
-		})
+        });
 		
 	}
 

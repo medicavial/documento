@@ -513,6 +513,18 @@ app.factory("checkFolios", function($q,$http,find, api){
 //por usuario
 app.factory("carga", function($q,$http,find,api){
     return{
+        activos:function(usuario){
+
+            var promesa        = $q.defer(),
+                activos        = $http.get(api+'flujo/activos/'+usuario);
+
+            $q.when(activos).then(function(data) {
+                promesa.resolve(data.data);
+
+            }); 
+
+            return promesa.promise;
+        },
         informacion:function(){
 
             var promesa        = $q.defer(),

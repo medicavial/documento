@@ -268,6 +268,17 @@ function homeCtrl($scope, $rootScope, auth, find,webStorage,$location){
     $scope.inicio = function(){
         $scope.buscaarea();
         $scope.areaManual = '';
+        $scope.usuarioManual = '';
+    }
+
+    $scope.altausuariosarea = function(area){
+
+            find.usuariosarea(area).success( function (data){
+
+                $scope.usuarios = data;
+
+             });
+       
     }
 
     $scope.buscaarea = function(){
@@ -279,48 +290,13 @@ function homeCtrl($scope, $rootScope, auth, find,webStorage,$location){
     $scope.consulta = function(){
 
         webStorage.session.add('areaManual', $scope.areaManual);
+        webStorage.session.add('usuarioManual', $scope.usuarioManual);
         $rootScope.areaM = $scope.areaManual;
-        $location.path('/flujoArea');
-
+        $rootScope.userM = $scope.usuarioManual;
+        $location.path('/flujoManual');
 
     }
     
-    $scope.altausuariosarea = function(area){
-
-        if ($rootScope.area == area) {
-
-            alert('No puedes emitir entregas a tu misma area');
-            $scope.areaOp = '';
-
-        }else{
-
-            $scope.area = area;
-            find.usuariosarea(area).success( function (data){
-
-                $scope.usuarios = data;
-
-             });
-        }
-    }
-
-    //enlista los usuarios de cada area 
-    $scope.altausuariosarea = function(area){
-
-        if ($rootScope.area == area) {
-
-            alert('No puedes seleccionar tu misma area');
-            $scope.areaOp = '';
-
-        }else{
-
-            $scope.area = area;
-            find.usuariosarea(area).success( function (data){
-
-                $scope.usuarios = data;
-
-             });
-        }
-    }
 
 
 };
@@ -504,7 +480,16 @@ function controlDocumentosCtrl($scope, $http, loading, find, api, $filter, repor
             PRO_nombre:'',
             Situacion:''
         };
+
+        $('#myModal3').on('hidden.bs.modal', function (e) {
+            $scope.foliosxfecha();
+        });
+        
 	}
+
+    $scope.muestraOriginal = function(){
+        $('#myModal3').modal();
+    }
 
 	//busquedas
 

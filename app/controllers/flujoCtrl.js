@@ -44,26 +44,14 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
     //carga todos los folios del area activos, rechazados y por recibir por usuario
     $scope.cargaFlujo = function(){
 
-        carga.flujo($rootScope.id).then(function (data){
-            // console.log(data);
-            if(data.activos){
-                $scope.listado = data.activos;
+        carga.activos($rootScope.id).then(function (data){
+            
+            if (data) {
+                $scope.listado = data;         
             }else{
                 $scope.listado = [];
             }
-
-            if(data.rechazos){
-                $scope.rechazados = data.rechazos.length;
-            }else{
-                $scope.rechazados = 0;
-            }
-
-            if(data.recepcion){
-                $scope.recibidos = data.recepcion.length;
-            }else{
-                $scope.recibidos = 0;
-            }
-
+           
             $scope.mensaje = '';
 
         })
@@ -73,20 +61,13 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
     //enlista los usuarios de cada area 
     $scope.altausuariosarea = function(area){
 
-        if ($rootScope.area == area) {
+        $scope.area = area;
+        find.usuariosarea(area).success( function (data){
 
-            alert('No puedes emitir entregas a tu misma area');
-            $scope.areaOp = '';
+            $scope.usuarios = data;
 
-        }else{
-
-            $scope.area = area;
-            find.usuariosarea(area).success( function (data){
-
-                $scope.usuarios = data;
-
-             });
-        }
+        });
+        
     }
 
     //guardamos pero antes verificamos que tengamos documentos seleccionados
@@ -323,10 +304,12 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
 function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
 
     loading.despedida();
-    // console.log(datos);
-    $scope.listado = datos.activos;
-    $scope.rechazados = datos.rechazos.length;
-    $scope.recibidos = datos.recepcion.length;
+
+    $scope.rechazados = datos.rechazos;
+    $scope.recibidos = datos.recepcion;
+    datos.activos.success(function (data){
+        $scope.listado = data;
+    });
 
     $scope.inicio = function(){
 
@@ -340,7 +323,6 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
         $scope.folio = '';
         $scope.lesionado = '';
         $scope.cargar = false;
-
 
         $scope.cargaInfo();
 
@@ -364,26 +346,14 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
     //carga todos los folios del area activos, rechazados y por recibir por usuario
     $scope.cargaFlujo = function(){
 
-        carga.flujoArea($rootScope.areaM).then(function (data){
-            // console.log(data);
-            if(data.activos){
-                $scope.listado = data.activos;
+        carga.activos($rootScope.userM).then(function (data){
+
+            if (data) {
+                $scope.listado = data;         
             }else{
                 $scope.listado = [];
             }
-
-            if(data.rechazos){
-                $scope.rechazados = data.rechazos.length;
-            }else{
-                $scope.rechazados = 0;
-            }
-
-            if(data.recepcion){
-                $scope.recibidos = data.recepcion.length;
-            }else{
-                $scope.recibidos = 0;
-            }
-
+           
             $scope.mensaje = '';
 
         })
@@ -393,20 +363,13 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
     //enlista los usuarios de cada area 
     $scope.altausuariosarea = function(area){
 
-        if ($rootScope.area == area) {
+        $scope.area = area;
+        find.usuariosarea(area).success( function (data){
 
-            alert('No puedes emitir entregas a tu misma area');
-            $scope.areaOp = '';
+            $scope.usuarios = data;
 
-        }else{
-
-            $scope.area = area;
-            find.usuariosarea(area).success( function (data){
-
-                $scope.usuarios = data;
-
-             });
-        }
+        });
+        
     }
 
     //guardamos pero antes verificamos que tengamos documentos seleccionados

@@ -317,7 +317,7 @@ function rechazosAreaCtrl( $scope, $rootScope, $routeParams, $location, find, lo
 
 		
 
-		find.listadorechazosarea($rootScope.area).success( function (data){
+		find.listadorechazos($rootScope.userM).success( function (data){
        
         	if(data){
         		$scope.listadoRechazos = data;
@@ -1475,7 +1475,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
     //Carga la lista de archivos a Recibir de otras areas 
     $scope.cargaEntregas = function(){
 
-        find.listadoentregaarea($rootScope.area).success( function (data){
+        find.listadoentrega($rootScope.userM).success( function (data){
             //console.log(data);
             if(data){
                 $scope.listadoEntregas = data;
@@ -1539,6 +1539,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
         var datos = $scope.selectos;
 
 		checkFolios.enviaRechazos(datos,$rootScope.area,$rootScope.id).then(
+			
 			function (data){
 				$scope.gridOptions.$gridScope.toggleSelectAll(false);
 				$scope.mensaje = data.respuesta;
@@ -1907,7 +1908,7 @@ function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loadin
 	//Carga la lista de archivos a Recibir de otras areas 
 	$scope.cargaRecepcion = function(){
 
-		find.listadorecepcion($rootScope.id).success( function (data){
+		find.listadorecepcion($rootScope.userM).success( function (data){
        
         	if(data.length>0){
         		$scope.listadoRecepcion = data;

@@ -49,49 +49,37 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 	//carga todos los folios del area activos, rechazados y por recibir por usuario
 	$scope.cargaFlujo = function(){
 
-		carga.flujo($rootScope.id).then(function (data){
-			// console.log(data);
-			if(data.activos){
-        		$scope.listado = data.activos;
-        	}else{
-        		$scope.listado = [];
-        	}
+		carga.activos($rootScope.id).then(function (data){
+            
+            if (data) {
+                $scope.listado = data;         
+            }else{
+                $scope.listado = [];
+            }
+           
+            $scope.mensaje = '';
 
-        	if(data.rechazos){
-        		$scope.rechazados = data.rechazos;
-        	}else{
-        		$scope.rechazados = 0;
-        	}
-
-        	if(data.recepcion){
-        		$scope.recibidos = data.recepcion;
-        	}else{
-        		$scope.recibidos = 0;
-        	}
-
-        	$scope.mensaje = '';
-
-		})
+        });
 	}
 
 
 	//enlista los usuarios de cada area 
 	$scope.altausuariosarea = function(area){
 
-		if ($rootScope.area == area && $rootScope.id != 38) {
+		// if ($rootScope.area == area && $rootScope.id != 38) {
 
-			alert('No puedes emitir entregas a tu misma area');
-			$scope.areaOp = '';
+		// 	alert('No puedes emitir entregas a tu misma area');
+		// 	$scope.areaOp = '';
 
-		}else{
+		// }else{
 
 			$scope.area = area;
 			find.usuariosarea(area).success( function (data){
 
 				$scope.usuarios = data;
 
-			 });
-		}
+			});
+		// }
 	}
 
 	//guardamos pero antes verificamos que tengamos documentos seleccionados

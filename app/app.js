@@ -95,14 +95,13 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             }
     });
 
-    $routeProvider.when('/flujoArea',{
+    $routeProvider.when('/flujoManual',{
             templateUrl    :'vistas/flujoArea.html',
             controller     :'flujoAreaCtrl',
             resolve:{
-                datos:function(loading,carga,$rootScope,$route){
+                datos:function(loading,carga,$rootScope){
                     loading.cargando('Cargando Informacón');
-                    // var area = $route.current.params.area;
-                    return carga.flujoArea($rootScope.areaM);
+                    return carga.flujo($rootScope.userM);
                 }
             }
     });
@@ -223,7 +222,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             resolve       :{
                 datos:function($rootScope,loading,find){
                     loading.cargando('Cargando Entregas');
-                    return find.listadoentregaarea($rootScope.area);
+                    return find.listadoentrega($rootScope.userM);
                 }
             }     
     });
@@ -245,7 +244,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             resolve       :{
                 datos:function($rootScope,loading,find){
                     loading.cargando('Cargando Entregas');
-                    return find.listadorecepcionarea($rootScope.area);
+                    return find.listadorecepcion($rootScope.userM);
                 }
             }     
     });
@@ -343,7 +342,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             resolve       :{
                 datos:function(loading,find,$rootScope){
                     loading.cargando('Cargando rechazos');
-                    return find.listadorechazosarea($rootScope.area);
+                    return find.listadorechazos($rootScope.userM);
                 }
             }    
     });
@@ -505,6 +504,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             controller    : 'traspasosCtrl'
     });
 
+    $routeProvider.when('/usuarios',{
+            templateUrl   : 'vistas/usuarios.html',
+            controller    : 'usuariosCtrl'
+    });
+
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
 
     $routeProvider.otherwise({redirectTo:'/login'});
@@ -516,7 +520,6 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
     $keepaliveProvider.interval(10); //
 
 });
-
 
 
 // var notificaciones = new Firebase("https://medicavial.firebaseio.com/notificaciones");
@@ -533,7 +536,21 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
     $rootScope.user = webStorage.session.get('user');
     $rootScope.userWeb = webStorage.session.get('userWeb');
 
+    //asignacion para administradores que verifican flujo de cada persona
     $rootScope.areaM = webStorage.session.get('areaManual');
+    $rootScope.userM = webStorage.session.get('usuarioManual');
+
+    //permisos del usuario
+    $rootScope.FlujoDocumentos = webStorage.session.get('FlujoDocumentos');
+    $rootScope.FlujoManual = webStorage.session.get('FlujoManual');
+    $rootScope.FlujoPagos = webStorage.session.get('FlujoPagos');
+    $rootScope.FormatoQualitas = webStorage.session.get('FormatoQualitas');
+    $rootScope.Reportes = webStorage.session.get('Reportes');
+    $rootScope.Tickets = webStorage.session.get('Tickets');
+    $rootScope.ControlDocumentos = webStorage.session.get('ControlDocumentos');
+    $rootScope.ConsultaIndividual = webStorage.session.get('ConsultaIndividual');
+    $rootScope.Captura = webStorage.session.get('Captura');
+    $rootScope.Usuarios = webStorage.session.get('Usuarios');
 
 
     $rootScope.$on('$routeChangeStart', function(){

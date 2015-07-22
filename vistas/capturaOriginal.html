@@ -1,0 +1,110 @@
+<!-- Muestra Original-->
+<div class="modal-dialog" ng-init="inicio()">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Recepcion de Original</h4>
+        </div>
+        <form name="formOriginal" ng-submit="guardaDatos()" novalidate>
+        <div class="modal-body" id="cantidad">
+            	<div class="row">
+            		<div class="col-md-5">
+            			<label for="folioO">Folio</label>
+            			<input type="text" id="folioO" class="form-control" folioex="validaOriginal" ng-model="original.folio">
+            		</div>
+            		<div class="col-md-1">
+            			<br>
+            			<img ng-show="cargar" src="images/cargando.gif">
+            		</div>
+            		<div class="col-md-6">
+            			<label for="datepicker4">fecha</label>
+            			<input type="text" ng-change="validafecha()" class="form-control" ng-model="original.fecha" id="datepickerA" >
+            		</div>
+            	</div>
+            	<div class="row">
+            		<div class="col-md-6">
+            			<label for="fac">Fac. Unidad:</label>
+            			<input type="text" id="fac" class="form-control" ng-maxlength="40"  ng-model="original.factura"  capitalize >
+            		</div>
+            		<div class="col-md-6">
+            			<label for="datepicker4">Total:</label>
+            			<input type="text" class="form-control" ng-model="original.totalfactura" money>
+            		</div>
+            	</div>
+            	<div class="row">
+					<div class="col-md-8">
+						<label for="lesionado">Lesionado</label>
+						<input type="text" id="lesionado" class="form-control" ng-model="original.lesionado" capitalize required>
+					</div>
+					<div class="col-md-4">
+            			<label for="tipodoc">Etapa</label>
+						<select class="form-control" id="tipodoc" ng-change="verificaatencion()" ng-model="original.tipoDoc" ng-options="tipodocumento.id as tipodocumento.nombre for tipodocumento in tipodocumentos" required>
+							<option value="">Tipo de Documento</option>
+						</select>
+
+            		</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<label for="cliente">Cliente</label>
+						<select class="form-control" ng-disabled="bloqueo" id="cliente" ng-model="original.cliente" ng-options="cliente.id as cliente.nombre for cliente in clientes" ng-change="productoOriginal(original.cliente)" required>
+							<option value="">Cliente</option>
+						</select>
+					</div>
+					<div class="col-md-6">
+            			<label for="unidad">Unidad</label>
+            			<select class="form-control" id="unidad" ng-disabled="bloqueoUni" ng-change="referencia(unidadref)" ng-model="unidadref" ng-options="unidad.id as unidad.nombre for unidad in unidades">
+							<option value="">Unidad</option>
+						</select>
+            		</div>
+				</div>
+            	<div class="row">
+            		<div class="col-md-6">
+            				<label for="producto">Producto</label>
+							<select class="form-control" id="producto" ng-disabled="bloqueo"  ng-model="original.producto" ng-options="producto.id as producto.nombre for producto in productos" ng-change="verificaEscolaridad()" required>
+								<option value="">Producto</option>
+							</select>
+            		</div>
+            		<div class="col-md-6" ng-show="muestraEsc">
+            			<label for="escolaridad">Escolaridad</label>
+            			<select  id="escolaridad" class="form-control" ng-disabled="bloqueo"  ng-model="original.escolaridad" ng-options="escolaridad.id as escolaridad.nombre for escolaridad in escolaridades">
+							<option value="">Escolaridad</option>
+						</select>
+            		</div>
+            	</div>
+            	<div class="row">
+            		<div class="col-md-6">
+            			<label for="remesa">Remesa</label>
+            			<input type="text" id="remesa" class="form-control" ng-model="remesa" remesa  required>
+            		</div>
+            		<div class="col-md-6">	
+            			<br>
+            			<blockquote>
+						  <p>{{label1}}</p>
+						</blockquote>
+            		</div>
+            	</div>
+            	<div class="row">
+            		<div class="col-md-6">
+            			<h3 class="text-center">{{label2}}</h3>
+            		</div>
+            		<div class="col-md-6">
+            			<h3 class="text-center">{{label3}}</h3>
+            		</div>
+            	</div>
+            	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
+        </div>
+        <div class="modal-footer">
+        	<button id="boton2" type="submit" ng-disabled="formOriginal.$invalid" data-loading-text="Guardando..." class="btn btn-primary">Guardar</button>
+        	<button type="button" class="btn btn-success" ng-click="inicio()">Limpiar</button>
+          	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div><!-- /.modal-content -->
+      </form>
+</div><!-- /.modal-dialog -->
+
+
+<script type="text/javascript">
+	$.datepicker.setDefaults($.datepicker.regional["es"]);
+	$( "#datepickerA" ).datepicker({showButtonPanel: true});
+</script>

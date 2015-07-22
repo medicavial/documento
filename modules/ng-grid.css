@@ -324,13 +324,13 @@
 }
 .ngRow {
   position: absolute;
-  border-bottom: 1px solid #d4d4d4;
+  border-bottom: 1px solid #d4d4d4 !important;
 }
 .ngRow.odd {
-  background-color: #fdfdfd;
+  background-color: #fdfdfd !important;
 }
 .ngRow.even {
-  background-color: #f3f3f3;
+  background-color: #f3f3f3 !important;
 }
 .ngRow.selected {
   background-color: #c9dde1;

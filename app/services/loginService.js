@@ -6,20 +6,46 @@ app.factory("auth", function($location, $rootScope, $http, webStorage, api){
             $http.post( api + 'login',{user:username,psw:password})
             .success( function (data){
 
+                // console.log(data);
+                var datos = data[0];
+                
                 $('#boton').button('reset');
                 //creamos la cookie con el nombre que nos han pasado
-                webStorage.session.add('username', data[0].nombre);
-                webStorage.session.add('id', data[0].clave);
-                webStorage.session.add('areaUsuario', data[0].area);
-                webStorage.session.add('user', data[0].usuario);
-                webStorage.session.add('userWeb', data[0].usuarioweb);
+                webStorage.session.add('username', datos.USU_nombre);
+                webStorage.session.add('id', datos.USU_claveint);
+                webStorage.session.add('areaUsuario', datos.area);
+                webStorage.session.add('user', datos.USU_login);
+                webStorage.session.add('userWeb', datos.USU_usuarioWeb);
 
-                $rootScope.username = data[0].nombre;
-                $rootScope.id = data[0].clave;
-                $rootScope.areaUsuario = data[0].area;
-                $rootScope.area = data[0].area;
-                $rootScope.user = data[0].usuario;
-                $rootScope.userWeb = data[0].usuarioweb;
+                webStorage.session.add('FlujoDocumentos', datos.USU_fdocumentos);
+                webStorage.session.add('FlujoManual', datos.USU_fmanual);
+                webStorage.session.add('FlujoPagos', datos.USU_fpagos);
+                webStorage.session.add('FormatoQualitas', datos.USU_fqualitas);
+                webStorage.session.add('Reportes', datos.USU_freportes);
+                webStorage.session.add('Tickets', datos.USU_ftickets);
+                webStorage.session.add('ControlDocumentos', datos.USU_fcontrolDocumentos);
+                webStorage.session.add('ConsultaIndividual', datos.USU_fconsultaIndividual);
+                webStorage.session.add('Captura', datos.USU_fcaptura);
+                webStorage.session.add('Usuarios', datos.USU_fusuarios);
+
+                $rootScope.username = datos.USU_nombre;
+                $rootScope.id = datos.USU_claveint;
+                $rootScope.areaUsuario = datos.area;
+                $rootScope.area = datos.area;
+                $rootScope.user = datos.USU_login;
+                $rootScope.userWeb = datos.USU_usuarioWeb;
+
+                //permisos del usuario                
+                $rootScope.FlujoDocumentos =  datos.USU_fdocumentos;
+                $rootScope.FlujoManual =  datos.USU_fmanual;
+                $rootScope.FlujoPagos =  datos.USU_fpagos;
+                $rootScope.FormatoQualitas =  datos.USU_fqualitas;
+                $rootScope.Reportes =  datos.USU_freportes;
+                $rootScope.Tickets =  datos.USU_ftickets;
+                $rootScope.ControlDocumentos =  datos.USU_fcontrolDocumentos;
+                $rootScope.ConsultaIndividual =  datos.USU_fconsultaIndividual;
+                $rootScope.Captura =  datos.USU_fcaptura;
+                $rootScope.Usuarios =  datos.USU_fusuarios;
 
                 //mandamos a la home o a la ventana que estaba antes de entrar a bloqueo
                 $('html').removeClass('lockscreen');
@@ -38,16 +64,16 @@ app.factory("auth", function($location, $rootScope, $http, webStorage, api){
 
                 }
 
-                if (navigator.geolocation) {
+                // if (navigator.geolocation) {
 
-                    navigator.geolocation.getCurrentPosition(function (posicion){
+                //     navigator.geolocation.getCurrentPosition(function (posicion){
 
-                        $rootScope.localidad = posicion;
-                        console.log($rootScope.localidad);
+                //         $rootScope.localidad = posicion;
+                //         console.log($rootScope.localidad);
 
-                    });
+                //     });
 
-                };
+                // };
 
           
             }).error( function (error){
@@ -90,7 +116,7 @@ app.factory("auth", function($location, $rootScope, $http, webStorage, api){
             //en el caso de que intente acceder al login y ya haya iniciado sesión lo mandamos a la home
             if($location.path() == "/login" && webStorage.session.get('username') != null)
             {
-                $location.path("/home");
+                $location.path("/");
             }
         }
     }

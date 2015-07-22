@@ -46,29 +46,17 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
 
 	$scope.cargaFlujo = function(){
 
-		carga.flujo($rootScope.id).then(function (data){
-			// console.log(data);
-			if(data.activos){
-        		$scope.listado = data.activos;
-        	}else{
-        		$scope.listado = [];
-        	}
+		carga.activos($rootScope.id).then(function (data){
+            
+            if (data) {
+                $scope.listado = data;         
+            }else{
+                $scope.listado = [];
+            }
+           
+            $scope.mensaje = '';
 
-        	if(data.rechazos){
-        		$scope.rechazados = data.rechazos.length;
-        	}else{
-        		$scope.rechazados = 0;
-        	}
-
-        	if(data.recepcion){
-        		$scope.recibidos = data.recepcion.length;
-        	}else{
-        		$scope.recibidos = 0;
-        	}
-
-        	$scope.mensaje = '';
-
-		})
+        });
 
 	}
 
