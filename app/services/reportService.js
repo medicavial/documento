@@ -1,10 +1,10 @@
-app.factory("reportes", function($http,api){
+app.factory("reportes", function($http,api,publicfiles){
     return{
         descargar:function(datos){
 
             $http.post(api+'reportes/controldocumentos',datos).success(function (data){
-
-                var archivo = api + 'reportes/descargar/' + data.file;
+                // console.log(data);
+                var archivo = publicfiles + data.file;
                 console.log(archivo);
                 //this trick will generate a temp <a /> tag
                 var link = document.createElement("a");    
