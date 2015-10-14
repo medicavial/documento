@@ -54,6 +54,9 @@
 					<td>{{flujo.FLD_etapa}}</td>
 					<td>{{flujo.FLD_numeroentrega}}</td>
 					<td>{{flujo.Status}}</td>
+					<td ng-if="area == 13">
+						<button class="btn btn-primary" ng-click="preparaEntrega($index)">Mandar A</button>
+					</td>
 		        </tr> 
 		    </tbody>
 		    
@@ -62,4 +65,46 @@
 
 	</div>
 			
+</div>
+
+<!--Ventana para mostrar los folios que se no se generaron-->
+<div class="modal fade  bs-example-modal-sm" id="modalF" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Selecciona el area y usuario a mandar</h4>
+      </div>
+      <div class="modal-body">
+           <div class="row">
+                <form name="formEntrega"  novalidate>
+
+                    <div class="col-md-12">
+                        <select class="form-control" id="area" ng-model="areaEntrega" ng-options="area.calve as area.nombre for area in areas" ng-change="altausuariosarea(areaEntrega)" required>
+                            <option value="">Area Operativa</option>
+                        </select>
+                    </div>
+                    <br>
+                    <div class="col-md-12">
+                        <select class="form-control" ng-show="areaEntrega > 0" id="usuario" ng-model="usuarioEntrega" ng-options="usuario.id as usuario.nombre for usuario in usuarios" required>
+                            <option value="">Usuario</option>
+                        </select>
+                    </div>
+                    <div class="col-md-12">
+                        <label>Observaciones</label>
+          				<textarea class="form-control" ng-model="observaciones" rows="3" capitalize required></textarea>
+                    </div>
+                    <br>
+                    <div class="text-center">
+                        <button type="button" class="btn btn-primary" ng-click="generaEntrega()">Enviar</button>
+                    </div>
+
+
+                </form>
+    </div>
+      </div>
+      <div class="modal-footer text-center">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar Ventana</button>
+      </div>
+    </div>
+  </div>
 </div>

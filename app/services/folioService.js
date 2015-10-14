@@ -98,7 +98,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     };
 
                     // generamos la peticion al servidor
-                    $http.post(ruta,datos)
+                    $http.post(ruta,datos,{timeout: 10000})
                     .success( function (data){
 
                         resultado.respuesta = data.respuesta;
@@ -291,7 +291,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     rechazos:respuesta[1]
                 }
 
-                $http.post(api+'flujo/elimina',folios_validos).success(function (data){
+                $http.post(api+'flujo/elimina',folios_validos,{timeout: 10000}).success(function (data){
                     resultado.respuesta = data.respuesta;
                     promesa.resolve(resultado);
                 }).error(function (data){
@@ -405,22 +405,23 @@ app.factory("checkFolios", function($q,$http,find, api){
                     if (interno.original == 1) {
                         
                         //segunda atencion
-                        datos.tipoDoc = 2;
                         datos.bloqueo = true;
                         datos.bloqueoUni = false;
                         datos.esoriginal = 1;
+                        datos.tipoDoc = 2;
                         
                     }else{
 
                         datos.documento = interno.clave;
                         //primera atencion
-                        datos.tipoDoc = 1;
+                        datos.tipoDoc = 2;
 
                         //verificamos que sea fax 
                         if(interno.fax == 1){
                             datos.label2 = 'FAX RECIBIDO: ' + interno.fechafax;
                             datos.fechafax = interno.fechafax;
                             datos.esfax = 1;
+                            datos.tipoDoc = 1;
                         }
                         //verificamos que sea factura express
                         if(interno.fe == 1){
@@ -480,7 +481,7 @@ app.factory("checkFolios", function($q,$http,find, api){
             return promesa.promise;
         },
         aceptaEntrega:function(folios){
-            return $http.post(api+'entregas/acepta',folios);
+            return $http.post(api+'entregas/acepta',folios,{timeout: 10000});
         },
         rechazaEntrega:function(folios, usuario){
             var promesa = $q.defer(),
@@ -496,9 +497,12 @@ app.factory("checkFolios", function($q,$http,find, api){
             //verifica que ya haya terminado para mandarlos el $q detecta cuando no se hayan efectuado cambios en los arreglos 
             $q.all(foliosIn).then(function (foliosgenerados){
 
-                $http.post(api+'entregas/rechaza',foliosgenerados)
+                $http.post(api+'entregas/rechaza',foliosgenerados,{timeout: 10000})
                 .success(function (data){
                     promesa.resolve(data);
+                })
+                .error(function (data){
+                    promesa.reject('Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas');
                 });
 
             });
@@ -554,8 +558,8 @@ app.factory("carga", function($q,$http,find,api){
         flujo:function(usuario){
 
             var promesa        = $q.defer(),
-                activos        = $http.get(api+'flujo/activos/'+usuario),
-                info           = $http.get(api+'flujo/consulta/'+usuario);
+                activos        = $http.get(api+'flujo/activos/'+usuario, {timeout: 10000}),
+                info           = $http.get(api+'flujo/consulta/'+usuario, {timeout: 10000});
                 // recepcion      = $http.get(api+'flujo/recepcion/'+usuario),
                 // rechazos       = $http.get(api+'flujo/rechazos/'+usuario);
 
@@ -657,6 +661,9 @@ app.factory("qualitas", function($q,$http,find,api,publicfiles){
         sinProcesar:function(datos){
             return $http.post(api+'qualitas/sinprocesar', datos);
         },
+        general:function(datos){
+            return $http.post(api+'qualitas/general', datos);
+        },
         generaEnvio:function(datos){
             return $http.post(api + 'qualitas/genera', datos);
         },
@@ -680,6 +687,9 @@ app.factory("qualitas", function($q,$http,find,api,publicfiles){
             link.click();
             document.body.removeChild(link);
             $('#boton').button('reset');
+        },
+        renombrar:function(datos){
+            return $http.post(api + 'qualitas/renombrar', datos);
         }
     }
 });
@@ -688,10 +698,10 @@ app.factory("qualitas", function($q,$http,find,api,publicfiles){
 app.factory("tickets", function($q,$http,find,api){
     return{
         guardar:function(datos){
-            return $http.post(api + 'tickets', datos);
+            return $http.post(api + 'tickets', datos,{timeout: 10000});
         },
         actualiza:function(datos){
-            return $http.put(api + 'tickets', datos);
+            return $http.put(api + 'tickets', datos,{timeout: 10000});
         }
     }
 });

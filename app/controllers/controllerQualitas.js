@@ -453,7 +453,8 @@ function formatoQualitasArchivosCtrl($scope, $rootScope, find, loading, qualitas
 
     $scope.exporta = function(){
     	
-        reportes.descargar($scope.detalle);
+        // reportes.descargar($scope.detalle);
+        JSONToCSVConvertor($scope.detalle,'Reporte',true);
         
     }
 
@@ -1049,12 +1050,214 @@ function formatoQualitasRechazadosCtrl($scope, $rootScope, find, loading, qualit
 
 };
 
+
+// Facturas Qualitas que no tuvieron imagenes disponibles
+function formatoQualitasRenombrarCtrl($scope, $rootScope, find, loading, qualitas, reportes){
+
+	$scope.inicio = function(){
+
+		$scope.tituloFQR = "Renombrar archivos";
+		$scope.fechaini = FechaAct;
+		$scope.fechafin = FechaAct;
+		$scope.muestra = false;
+		$scope.mensaje = '';
+		$scope.listado = [];
+
+		$('#modalEx').on('hidden.bs.modal', function (e) {
+		 	$scope.buscafacturas();
+		});
+
+	}
+
+	$scope.buscafacturas = function(){
+
+		$scope.gridOptions.$gridScope.toggleSelectAll(false);
+		
+		loading.cargando('Buscando Factura(s)');
+
+		//armamos los datos a enviar segun tipo de consulta (tipo)
+
+		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
+
+		qualitas.general(datos).success( function (data){
+			
+			if(data){
+        		$scope.listado = data;
+        		
+        	}else{
+        		$scope.listado = [];
+        	}
+    		
+    		loading.despedida();
+			
+		}).error( function (xhr,status,data){
+			loading.despedida();
+		});
+
+	}
+
+	$scope.quitalistado = function(item){
+		// console.log(item);
+	}
+
+	$scope.selecciona = function(limite){
+
+    	$scope.gridOptions.$gridScope.toggleSelectAll(false);
+
+    	var numero = Number(limite);
+		angular.forEach($scope.listado, function(item, index){
+			
+			if (index < numero) {
+				//$scope.selectos.push(item);
+				$scope.gridOptions.selectItem(index, true);
+			};
+
+		});
+
+		// console.log($scope.selectos);
+	};
+
+
+	$scope.generarListado = function(){
+
+    	JSONToXLSConvertor($scope.listado, "Facturas", true);
+
+    }
+
+    //genera el archivo una vez verificados
+    $scope.generaarchivos = function(){
+
+    	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
+
+		qualitas.procesaEnvio(datos).success(function (data){
+			// console.log(data);
+			JSONToXLSConvertor($scope.listos, "Reporte", true);
+			qualitas.descargaEnvio($scope.ruta);
+		});
+
+    }
+
+    //prepara los folios y renombra la imagen en caso de tener
+    $scope.renombrarSelectos = function(){
+
+    	$('#boton2').button('loading');
+    	qualitas.renombrar($scope.selectos).success( function (data){
+			 
+			// console.log(data);
+			alert('Todos los archivos se han renombrado con exito puedes exportar el detalle');
+			$scope.detalle = data;
+
+			$('#boton2').button('reset');
+			
+		}).error( function (xhr,status,data){
+			$('#boton2').button('reset');
+		});
+
+    }
+
+    //prepara los folios y busca las imagenes para el envio
+    $scope.generarSelectos = function(){
+
+    	$('#boton').button('loading');
+    	qualitas.generaEnvio($scope.selectos).success( function (data){
+			 
+			if (data.correctos.length == 0) {
+
+				loading.error('No se encontraron archivos de nungun folio');
+
+			}else{
+
+				$scope.total = $scope.selectos.length;
+				$scope.numerocorrectos = data.correctos.length;
+				$scope.compresos = data.comprimidos.length;
+				$scope.incorrectos = data.incorrectos;
+				$scope.correctos = data.correctos;
+				$scope.listos = data.comprimidos;
+				$scope.ruta = data.archivo;
+				$('#modalEx').modal({
+					backdrop:'static',
+					keyboard:false
+				});
+			}
+
+			$('#boton').button('reset');
+			
+		}).error( function (xhr,status,data){
+			$('#boton').button('reset');
+		});
+
+    }
+
+ 	var CellTemplate ='<div class="ngSelectionCell"><input tabindex="-1" class="ngSelectionCheckbox" type="checkbox" ng-model="row.entity.Procesado" ng-change="verifica(row.entity.Procesado,row.entity)" checked/></div>';
+	///filtros
+	$scope.selectos = [];
+
+	$scope.filterOptions = {
+	    filterText: '',
+	    useExternalFilter: false
+	};
+
+    ////opciones del grid                 
+    $scope.gridOptions = { 
+    	data: 'listado', 
+    	enableColumnResize:true,
+    	enablePinning: true, 
+    	enableRowSelection:true,
+    	multiSelect:true,
+    	showSelectionCheckbox: true,
+    	selectWithCheckboxOnly: false,
+    	selectedItems: $scope.selectos, 
+    	filterOptions: $scope.filterOptions,
+    	enableCellEdit: false,
+    	columnDefs: [
+                    { field:'folioElectronico',displayName:'FOLIO QUA', width: 120, pinned: true},
+                    { field:'folioAdministradora',displayName:'FOLIO ADMIN', width: 120, pinned: false},
+                    { field:'folioSistema',displayName:'FOLIO SISTEMA', width: 120 },
+                    { field:'claveproovedor',displayName:'PROVEEDOR', width: 120 },
+                    { field:'claveprestador',displayName:'PROV SERV', width: 120 },
+                    { field:'Siniestro',displayName:'SINIESTRO', width: 120 },
+		            { field:'Reporte',displayName:'REPORTE', width: 120 },
+		            { field:'Poliza',displayName:'POLIZA', width: 120 },
+		            { field:'Lesionado',displayName:'LESIONADO', width: 330 },
+		            { field:'Afectado',displayName:'AFECTADO', width: 120},
+		            { field:'Cobertura',displayName:'COBERTURA', width: 120 },
+		            { field:'Subtotal',displayName:'SUBTOTAL', width: 120 },
+		            { field:'iva',displayName:'IVA', width: 120 },
+		            { field:'Descuento',displayName:'DESCUENTO', width: 120 },
+		            { field:'Total',displayName:'TOTAL', width: 120 },
+		            { field:'FechaCaptura',visible:false, width: 120 },
+		            { field:'TipoUnidad',visible:false, width: 120 }
+        ],
+        showFooter: true,
+        showFilter:false
+    };
+
+    $scope.verifica = function(valor,item){
+    	// console.log(item);
+    	if (item) {
+    		$scope.rechazados.push(item);
+    	};
+    }
+
+    $scope.exporta = function(){
+    	
+        // reportes.descargar($scope.detalle);
+        JSONToCSVConvertor($scope.detalle,'Reporte',true);
+        
+    }
+
+};
+
+
+
 formatoQualitasCtrl.$inject = ['$scope', '$rootScope','$http', 'find', 'loading', 'api', 'qualitas'];
 formatoQualitasArchivosCtrl.$inject = ['$scope', '$rootScope', 'find', 'loading', 'qualitas', 'reportes'];
 formatoQualitasConsultaCtrl.$inject = ['$scope','$rootScope', 'find'];
 formatoQualitasEnviadoCtrl.$inject = ['$scope', '$rootScope', 'find', 'loading', 'qualitas'];
 formatoQualitasIncompletosCtrl.$inject = ['$scope', '$rootScope','$http', 'find', 'loading', 'qualitas'];
 formatoQualitasRechazadosCtrl.$inject = ['$scope', '$rootScope', 'find', 'loading', 'qualitas'];
+formatoQualitasRenombrarCtrl.$inject = ['$scope', '$rootScope', 'find', 'loading', 'qualitas'];
+
 
 app.controller('formatoQualitasArchivosCtrl',formatoQualitasArchivosCtrl);
 app.controller('formatoQualitasConsultaCtrl',formatoQualitasConsultaCtrl);
@@ -1062,3 +1265,4 @@ app.controller('formatoQualitasEnviadoCtrl',formatoQualitasEnviadoCtrl);
 app.controller('formatoQualitasIncompletosCtrl', formatoQualitasIncompletosCtrl);
 app.controller('formatoQualitasCtrl',formatoQualitasCtrl);
 app.controller('formatoQualitasRechazadosCtrl',formatoQualitasRechazadosCtrl);
+app.controller('formatoQualitasRenombrarCtrl',formatoQualitasRenombrarCtrl);

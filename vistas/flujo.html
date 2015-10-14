@@ -100,8 +100,9 @@
 	<div class="gridStyle" ng-grid="gridOptions"></div>
 	<br>	
 	<!-- directiva para exportar a excel ver app.js mas nfo -->
-	<excel info="exportables"></excel>
+	<button ng-click="exporta()" data-loading-text="Generando..." id="boton" class="btn btn-success glyphicon glyphicon-download-alt"> Exportar</button>
 	<br>
+
 	<fieldset>
 		<legend>Datos de Entrega</legend>
 	</fieldset>
@@ -137,11 +138,3 @@
 	<br>
 	<br>
 </div>
-
-<script type="text/javascript">
-	$.datepicker.setDefaults($.datepicker.regional["es"]);
-	$( "#datepicker" ).datepicker({showButtonPanel: true});
-	$( "#datepicker2" ).datepicker({showButtonPanel: true});
-	$( "#datepicker3" ).datepicker({showButtonPanel: true});
-	$( "#datepicker4" ).datepicker({showButtonPanel: true});
-</script>

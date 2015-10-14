@@ -17,7 +17,7 @@ $app = new \Slim\Slim();
 
 function conectarActual(){
 
-	$produccion = false;
+	$produccion = true;
 	
 	if ($produccion) {
 
@@ -411,6 +411,43 @@ function archivos($folio, $fecha){
 	return $encontrados;
 
 }
+
+
+$app->get('/', function(){
+	
+    //echo "Hola Mundo";
+    //Trusted_Connection=yes;
+    try {
+
+	    $hostname = "GEN";
+	    $dbname = "MV";
+
+	    $conn = new PDO("sqlsrv:Server=$hostname;Database=$dbname", "", "");
+	    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
+
+	    $sql = "EXEC MV_FLU_ListaPagosXfechaRecepcionPagos @fechaini = '01/01/2015', @fechafin = '04/08/2015 23:59:58.999'";
+
+	    $stmt = $conn->query($sql);
+	    // $stmt->bindParam("usuario", $usuario, PDO::PARAM_STR);
+	    // $stmt->bindParam("psw", $contrasena, PDO::PARAM_STR);
+
+		$stmt->execute();
+
+	    // $numero = $stmt->rowCount();
+        $datos = $stmt->fetchAll(PDO::FETCH_OBJ);
+
+	    //$datos = array('respuesta' => 'El Usuario o contraseña son inorrectos');    
+	    
+	    echo json_encode($datos);
+
+	} catch (PDOException $e) {
+
+		echo "Failed to get DB handle: " . $e->getMessage() . "\n";
+		exit;
+	}
+
+
+});
 
 //modulo para subir info de sql server a mysql 
 $app->get('/altainfoweb', function(){
@@ -1039,55 +1076,6 @@ $app->get('/altamovimientos', function(){
 
 	}
 	
-});
-
-
-$app->get('/', function(){
-	
-    //echo "Hola Mundo";
-    //Trusted_Connection=yes;
-    try {
-
-	    $hostname = "SISTEMAS4";
-	    $dbname = "MV2";
-
-	    $conn = new PDO("sqlsrv:Server=$hostname;Database=$dbname", "", "");
-	    $conn->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
-
-	    $usuario =  'admin';
-    	$contrasena =  md5('xagg2'); 
-
-	    $sql = "SELECT * FROM Usuario
-	            left join UsuarioArea on Usuario.USU_claveint = UsuarioArea.USU_claveint
-	            where USU_login = :usuario and USU_password = :psw ";
-
-
-	    $stmt = $conn->prepare($sql);
-	    $stmt->bindParam("usuario", $usuario, PDO::PARAM_STR);
-	    $stmt->bindParam("psw", $contrasena, PDO::PARAM_STR);
-
-		$stmt->execute();
-
-	    $numero = $stmt->rowCount();
-	    
-	    if ($numero){
-
-	        $datos = $stmt->fetchAll(PDO::FETCH_OBJ);
-	        
-	    }else{
-
-	        $datos = array('respuesta' => 'El Usuario o contraseña son inorrectos');
-	    }
-	    
-	    echo json_encode($datos);
-
-	} catch (PDOException $e) {
-
-		echo "Failed to get DB handle: " . $e->getMessage() . "\n";
-		exit;
-	}
-
-
 });
 
 

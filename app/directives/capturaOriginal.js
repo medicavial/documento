@@ -18,7 +18,7 @@ controlador.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 
 function controlador($scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api) {
     // Injecting $scope just for comparison
     //muestra Ventan de alta de Original
-    $('#myModal3').on('hidden.bs.modal', function (e) {
+    $('#myModal10').on('hidden.bs.modal', function (e) {
         $scope.inicio();
     });
 
@@ -29,7 +29,7 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
             folio:'',
             documento:0,
             tipoDoc:'',
-            remesa:'',
+            remesa:0,
             fecha:FechaAct,
             cliente:'',
             lesionado:'',
@@ -48,7 +48,7 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
         };
 
         $scope.mensaje = '';
-        $scope.remesa = '';
+        $scope.remesa = 0;
         $scope.label1 = '';
         $scope.label2 = '';
         $scope.label3 = '';
@@ -143,6 +143,9 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
     //busqueda de referencias por unidad
     $scope.referencia = function(unidad){
 
+        $scope.original.unidad = unidad;
+
+
         find.referenciaxunidad(unidad).success(function (data){
             $scope.label1 = data[0].referencia;
             $scope.verificaatencion();
@@ -156,8 +159,8 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
         $scope.original.documento = '';
         $scope.original.internet =  1;
         $scope.original.tipoDoc ='';
-        $scope.original.remesa ='';
-        $scope.remesa = '';
+        $scope.original.remesa =0;
+        $scope.remesa = 0;
         $scope.original.fecha =FechaAct;
         $scope.original.cliente ='';
         $scope.original.lesionado ='';

@@ -107,13 +107,16 @@ app.factory("find", function($http,api){
             return $http.get(api+'consulta/unidades');
         },
         unidadesweb:function(){
-            return $http.get(api+'consulta/unidadesweb');
+            return $http.get(api+'consulta/unidadesweb',{timeout: 10000});
         },
         usuariosarea:function(area){
             return $http.get(api+'consulta/usuarios/'+area);
         },
+        usuariosareatodos:function(area){
+            return $http.get(api+'consulta/usuariostodos/'+area);
+        },
         usuariosweb:function(){
-            return $http.get(api +'consulta/usuariosweb');
+            return $http.get(api +'consulta/usuariosweb',{timeout: 10000});
         },
         verificaetapaentrega:function(folio,etapa){
             return $http.get(api+'consulta/verificaetapaentrega/'+folio +"/"+etapa);
@@ -143,13 +146,13 @@ app.factory("find", function($http,api){
             return $http.post(api + 'reportes/ticketsdia',{fecha:fecha});
         },
         ticketsxfecha:function(datos){
-            return $http.post(api + 'tickets/consulta',datos);
+            return $http.post(api + 'tickets/consulta',datos,{timeout: 10000});
         },
         ticketsxfolio:function(folio){
-            return $http.get(api + 'tickets/folio/'+ folio);
+            return $http.get(api + 'tickets/folio/'+ folio,{timeout: 10000});
         },
         ticketsxfoliointerno:function(folio){
-            return $http.get(api + 'tickets/foliointerno/'+ folio);
+            return $http.get(api + 'tickets/foliointerno/'+ folio,{timeout: 10000});
         },
         ticketspagosxfecha:function(datos){
             return $http.post(api + 'tickets/pagos/consulta',datos);

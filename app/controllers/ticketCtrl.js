@@ -89,7 +89,7 @@ function editaTicketCtrl($scope,$rootScope, $http, find, $routeParams, datos, lo
 			$('#boton').button('reset');
 		
 		}).error( function (data){
-			$scope.mensaje2 = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+			$scope.mensaje2 = 'Ups parece que el internet esta lento no te desesperes intentalo nuevamente y se feliz =D';
 			$scope.tipoalerta = 'alert-warning';
 			$('#boton').button('reset');
 		});
@@ -149,6 +149,8 @@ function ticketCtrl($scope,$rootScope, $http, find, tickets){
 			fueravigencia:false,
 			sinpoliza:false,
 			sindeducible:false,
+			cedulaT:false,
+			cedulaI:false,
 			sincuestionario:false,
 			firmamedico:false,
 			cruce:false,
@@ -304,15 +306,29 @@ function ticketCtrl($scope,$rootScope, $http, find, tickets){
 };
 
 //menu de tickets donde se imprimen los generados al dia
-function menuticketCtrl($scope, $location, find, loading,datos){
+function menuticketCtrl($scope, $location, find, loading){
 
-	loading.despedida();
+	// loading.despedida();
 
-	$scope.clientes = datos[0].data;
-	$scope.status = datos[1].data;
-	$scope.unidades = datos[2].data;
-	$scope.usuarios = datos[3].data;
-	$scope.listado = datos[4].data;
+	// loading.cargando('Cargando Tickets');
+
+	// $scope.clientes = datos[0].data;
+	// $scope.status = datos[1].data;
+	// $scope.unidades = datos[2].data;
+	// $scope.usuarios = datos[3].data;
+
+	find.empresasweb().success(function (data){
+		$scope.clientes = data;	
+	});
+    find.statusweb().success(function (data){
+    	$scope.status = data;	
+    });
+    find.unidadesweb().success(function (data){
+    	$scope.unidades = data;	
+    });
+    find.usuariosweb().success(function (data){
+    	$scope.usuarios = data;	
+    });
 
 	$scope.inicio = function(){
 
@@ -321,11 +337,14 @@ function menuticketCtrl($scope, $location, find, loading,datos){
 		$scope.fechafin = FechaAct;
 		$scope.interno = '';
 		$scope.web = '';
+		$scope.ticketsxfecha();
 
 	}
 
 
-
+	$scope.exportar = function(){
+		JSONToCSVConvertor($scope.listado,'Reporte',true);
+	}
 
 
 	$scope.ticketxfoliointerno = function(){
@@ -488,7 +507,7 @@ function menuticketCtrl($scope, $location, find, loading,datos){
 
 editaTicketCtrl.$inject = ['$scope','$rootScope', '$http', 'find', '$routeParams','datos','loading','tickets'];
 ticketCtrl.$inject = ['$scope','$rootScope', '$http', 'find','tickets'];
-menuticketCtrl.$inject = ['$scope', '$location', 'find', 'loading','datos'];
+menuticketCtrl.$inject = ['$scope', '$location', 'find', 'loading'];
 
 app.controller('editaTicketCtrl',editaTicketCtrl);
 app.controller('ticketCtrl', ticketCtrl);

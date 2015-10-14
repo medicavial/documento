@@ -23,6 +23,7 @@ app.factory("auth", function($location, $rootScope, $http, webStorage, api){
                 webStorage.session.add('FormatoQualitas', datos.USU_fqualitas);
                 webStorage.session.add('Reportes', datos.USU_freportes);
                 webStorage.session.add('Tickets', datos.USU_ftickets);
+                webStorage.session.add('TicketsPagos', datos.USU_fticketPagos);
                 webStorage.session.add('ControlDocumentos', datos.USU_fcontrolDocumentos);
                 webStorage.session.add('ConsultaIndividual', datos.USU_fconsultaIndividual);
                 webStorage.session.add('Captura', datos.USU_fcaptura);
@@ -42,6 +43,7 @@ app.factory("auth", function($location, $rootScope, $http, webStorage, api){
                 $rootScope.FormatoQualitas =  datos.USU_fqualitas;
                 $rootScope.Reportes =  datos.USU_freportes;
                 $rootScope.Tickets =  datos.USU_ftickets;
+                $rootScope.TicketsPagos =  datos.USU_fticketPagos;
                 $rootScope.ControlDocumentos =  datos.USU_fcontrolDocumentos;
                 $rootScope.ConsultaIndividual =  datos.USU_fconsultaIndividual;
                 $rootScope.Captura =  datos.USU_fcaptura;

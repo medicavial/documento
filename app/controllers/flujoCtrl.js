@@ -1,5 +1,5 @@
 //flujo donde entra cualquier usuario
-function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
+function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos,$filter){
 
     loading.despedida();
 
@@ -21,6 +21,12 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
         $scope.folio = '';
         $scope.lesionado = '';
         $scope.cargar = false;
+
+        $scope.filtrado = {
+            UNI_nombrecorto : '',
+            EMP_nombrecorto : '',
+            FLD_etapa:''
+        };
 
         $scope.cargaInfo();
 
@@ -210,13 +216,13 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
 
     $scope.$on('ngGridEventRows', function (newFilterText){
 
-        var filas = newFilterText.targetScope.renderedRows;
+        // var filas = newFilterText.targetScope.renderedRows;
 
-        $scope.exportables = [];
+        // $scope.exportables = [];
 
-        angular.forEach(filas , function(item){
-            $scope.exportables.push(item.entity);
-        });
+        // angular.forEach(filas , function(item){
+        //     $scope.exportables.push(item.entity);
+        // });
 
     });
 
@@ -228,14 +234,18 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
 
         if($scope.unidad == undefined || $scope.unidad == 0){
             var objeto1 = "";
+            $scope.filtrado.UNI_nombrecorto = '';
         }else{
             var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
+            $scope.filtrado.UNI_nombrecorto = $scope.unidad.nombre;
             
         }
         if($scope.cliente == undefined || $scope.cliente == 0){
             var objeto2 = "";
+            $scope.filtrado.EMP_nombrecorto = '';
         }else{
             var objeto2 = "Empresa:" + $scope.cliente.nombre + "; ";
+            $scope.filtrado.EMP_nombrecorto = $scope.cliente.nombre;
         }
         if($scope.tipo == 'fax'){
             var objeto3 = "FaxOrigianl:F; ";
@@ -266,8 +276,10 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
 
         if($scope.etapa == undefined || $scope.etapa == 0){
             var objeto7 = "";
+            $scope.filtrado.FLD_etapa = '';
         }else{
             var objeto7 = "Etapa:" + $scope.etapa + "; ";
+            $scope.filtrado.FLD_etapa = $scope.etapa;
             
         }
 
@@ -289,7 +301,13 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
         $scope.fechaini = '';
         $scope.fechafin = '';
         $scope.lesionado = '';
-        $scope.foliosxarea();
+
+        $scope.filtrado = {
+            UNI_nombrecorto : '',
+            EMP_nombrecorto : '',
+            FLD_etapa:''
+        };
+
     
     }
 
@@ -298,10 +316,17 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
         $scope.gridOptions.$gridScope.toggleSelectAll(false);
     }
 
+    $scope.exporta = function(){
+        
+        $scope.exportables = $filter('filter')($scope.listado, $scope.filtrado);
+        JSONToCSVConvertor($scope.exportables,'Reporte',true);
+        
+    }
+
 };
 
 //flujo donde se ven todos los movimientos por area
-function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
+function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos,$filter){
 
     loading.despedida();
 
@@ -323,6 +348,12 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
         $scope.folio = '';
         $scope.lesionado = '';
         $scope.cargar = false;
+
+        $scope.filtrado = {
+            UNI_nombrecorto : '',
+            EMP_nombrecorto : '',
+            FLD_etapa:''
+        };
 
         $scope.cargaInfo();
 
@@ -512,13 +543,13 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 
     $scope.$on('ngGridEventRows', function (newFilterText){
 
-        var filas = newFilterText.targetScope.renderedRows;
+        // var filas = newFilterText.targetScope.renderedRows;
 
-        $scope.exportables = [];
+        // $scope.exportables = [];
 
-        angular.forEach(filas , function(item){
-            $scope.exportables.push(item.entity);
-        });
+        // angular.forEach(filas , function(item){
+        //     $scope.exportables.push(item.entity);
+        // });
 
     });
 
@@ -530,14 +561,18 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 
         if($scope.unidad == undefined || $scope.unidad == 0){
             var objeto1 = "";
+            $scope.filtrado.UNI_nombrecorto = '';
         }else{
             var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
+            $scope.filtrado.UNI_nombrecorto = $scope.unidad.nombre;
             
         }
         if($scope.cliente == undefined || $scope.cliente == 0){
             var objeto2 = "";
+            $scope.filtrado.EMP_nombrecorto = '';
         }else{
             var objeto2 = "Empresa:" + $scope.cliente.nombre + "; ";
+            $scope.filtrado.EMP_nombrecorto = $scope.cliente.nombre;
         }
         if($scope.tipo == 'fax'){
             var objeto3 = "FaxOrigianl:F; ";
@@ -568,8 +603,10 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 
         if($scope.etapa == undefined || $scope.etapa == 0){
             var objeto7 = "";
+            $scope.filtrado.FLD_etapa = '';
         }else{
             var objeto7 = "Etapa:" + $scope.etapa + "; ";
+            $scope.filtrado.FLD_etapa = $scope.etapa;
             
         }
 
@@ -591,7 +628,13 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
         $scope.fechaini = '';
         $scope.fechafin = '';
         $scope.lesionado = '';
-        $scope.foliosxarea();
+
+        $scope.filtrado = {
+            UNI_nombrecorto : '',
+            EMP_nombrecorto : '',
+            FLD_etapa:''
+        };
+
     
     }
 
@@ -600,9 +643,16 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
         $scope.gridOptions.$gridScope.toggleSelectAll(false);
     }
 
+    $scope.exporta = function(){
+
+        $scope.exportables = $filter('filter')($scope.listado, $scope.filtrado);
+        JSONToCSVConvertor($scope.exportables,'Reporte',true);
+        
+    }
+
 };
 
-flujoCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading', '$http', 'checkFolios', 'carga', 'api','datos'];
-flujoAreaCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading', '$http', 'checkFolios', 'carga', 'api','datos'];
+flujoCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading', '$http', 'checkFolios', 'carga', 'api','datos','$filter'];
+flujoAreaCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading', '$http', 'checkFolios', 'carga', 'api','datos','$filter'];
 app.controller('flujoCtrl',flujoCtrl);
 app.controller('flujoAreaCtrl',flujoAreaCtrl);

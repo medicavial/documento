@@ -43,7 +43,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             resolve:{
                 datos:function(loading,carga,$rootScope){
                     loading.cargando('Cargando Informacón');
-                    return carga.flujoArea($rootScope.area);
+                    return carga.flujo($rootScope.id);
                 }
             }
     });
@@ -115,7 +115,10 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
                     loading.cargando('Cargando información');
                     var info = {
                         fechainiPag:primerdiames,
-                        fechafinPag:FechaAct
+                        fechafinPag:FechaAct,
+                        unidad:'',
+                        empresa:'',
+                        folio:''
                     },
                     promesa = $q.defer(),
                     pagos = find.listaPagos(info),
@@ -162,6 +165,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
     $routeProvider.when('/formatoqualitasrechazados',{
             templateUrl   : 'vistas/formatoqualitasrechazados.html',
             controller    : 'formatoQualitasRechazadosCtrl'   
+    });
+
+    $routeProvider.when('/formatoqualitasrenombrar',{
+            templateUrl   : 'vistas/formatoqualitasrenombrar.html',
+            controller    : 'formatoQualitasRenombrarCtrl'   
     });
 
     $routeProvider.when('/formatoqualitasincompletos',{
@@ -395,30 +403,29 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     $routeProvider.when('/ticket',{
             templateUrl   : 'vistas/menuticket.html',
-            controller    : 'menuticketCtrl',
-            resolve       :{
-                datos:function($q,find,loading){
+            controller    : 'menuticketCtrl'
+            // resolve       :{
+            //     datos:function($q,find,loading){
 
-                    loading.cargando('Cargando Tickets');
+            //         loading.cargando('Cargando Tickets');
 
-                    var datos = {
-                        fechaini:FechaAct,
-                        fechafin:FechaAct
-                    }
-                    var promesa = $q.defer(),
-                        clientes = find.empresasweb(),
-                        status = find.statusweb(),
-                        unidades = find.unidadesweb(),
-                        usuarios = find.usuariosweb(),
-                        tickets = find.ticketsxfecha(datos);
+            //         var datos = {
+            //             fechaini:FechaAct,
+            //             fechafin:FechaAct
+            //         }
+            //         var promesa = $q.defer(),
+            //             clientes = find.empresasweb(),
+            //             status = find.statusweb(),
+            //             unidades = find.unidadesweb(),
+            //             usuarios = find.usuariosweb();
 
-                    $q.all([clientes,status,unidades,usuarios,tickets]).then(function (data){
-                        promesa.resolve(data);
-                    });
+            //         $q.all([clientes,status,unidades,usuarios]).then(function (data){
+            //             promesa.resolve(data);
+            //         });
 
-                    return promesa.promise;
-                }
-            }
+            //         return promesa.promise;
+            //     }
+            // }
     });
 
     $routeProvider.when('/ticket/:foliointerno/:folioweb',{
@@ -515,7 +522,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
     //$locationProvider.html5Mode(true);
 
-    $idleProvider.idleDuration(900); // tiempo en activarse el modo en reposo
+    $idleProvider.idleDuration(2700); // tiempo en activarse el modo en reposo
     $idleProvider.warningDuration(10); // tiempo que dura la alerta de sesion cerrada
     $keepaliveProvider.interval(10); //
 
@@ -547,6 +554,7 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
     $rootScope.FormatoQualitas = webStorage.session.get('FormatoQualitas');
     $rootScope.Reportes = webStorage.session.get('Reportes');
     $rootScope.Tickets = webStorage.session.get('Tickets');
+    $rootScope.TicketsPagos = webStorage.session.get('TicketsPagos');
     $rootScope.ControlDocumentos = webStorage.session.get('ControlDocumentos');
     $rootScope.ConsultaIndividual = webStorage.session.get('ConsultaIndividual');
     $rootScope.Captura = webStorage.session.get('Captura');
@@ -649,6 +657,7 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
                 $('#myModal2').modal('hide');
                 $('#myModal3').modal('hide');
                 $('#myModal4').modal('hide');
+                $('#myModal10').modal('hide');
                 $rootScope.ruta = $location.path(); //Guardamos
                 $location.path('/bloqueo');
             };

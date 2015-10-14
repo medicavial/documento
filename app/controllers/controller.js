@@ -273,7 +273,7 @@ function homeCtrl($scope, $rootScope, auth, find,webStorage,$location){
 
     $scope.altausuariosarea = function(area){
 
-            find.usuariosarea(area).success( function (data){
+            find.usuariosareatodos(area).success( function (data){
 
                 $scope.usuarios = data;
 
@@ -289,6 +289,7 @@ function homeCtrl($scope, $rootScope, auth, find,webStorage,$location){
 
     $scope.consulta = function(){
 
+        $('#modalT').modal('hide');
         webStorage.session.add('areaManual', $scope.areaManual);
         webStorage.session.add('usuarioManual', $scope.usuarioManual);
         $rootScope.areaM = $scope.areaManual;
@@ -429,10 +430,32 @@ function consultaFlujoCtrl($scope,$rootScope, find){
 		$scope.cargando = false;
 
 		$scope.mensaje = '';
+        $scope.areaEntrega = '';
+        $scope.usuarioEntrega = '';
+        $scope.observaciones = '';
 		$scope.criterio = '';
 		$scope.listado = [];
+        $scope.datos = [];
+
+        $scope.buscaarea();
 
 	}
+
+    $scope.altausuariosarea = function(area){
+
+        find.usuariosareatodos(area).success( function (data){
+
+            $scope.usuarios = data;
+
+         });
+       
+    }
+
+    $scope.buscaarea = function(){
+        find.areaoperativa().success(function (data){
+            $scope.areas = data;
+        });
+    }
 
 	//busqueda de folio especiico
 	$scope.buscaFlujo = function(){
@@ -454,6 +477,19 @@ function consultaFlujoCtrl($scope,$rootScope, find){
 		});
 
 	}
+
+    $scope.preparaEntrega = function(index){
+        var folio = $scope.listado[index];
+        console.log(folio);
+        $('#modalF').modal('show');
+    }
+
+    $scope.generaEntrega = function(){
+        $scope.datos.push({
+            FLD_claveint:'',
+            FLD_observaciones:''
+        })
+    }
 
 };
 
@@ -481,14 +517,14 @@ function controlDocumentosCtrl($scope, $http, loading, find, api, $filter, repor
             Situacion:''
         };
 
-        $('#myModal3').on('hidden.bs.modal', function (e) {
+        $('#myModal10').on('hidden.bs.modal', function (e) {
             $scope.foliosxfecha();
         });
         
 	}
 
     $scope.muestraOriginal = function(){
-        $('#myModal3').modal();
+        $('#myModal10').modal();
     }
 
 	//busquedas

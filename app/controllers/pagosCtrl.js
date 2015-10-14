@@ -1,3 +1,5 @@
+
+
 //Area de pagos
 function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
@@ -19,12 +21,18 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
         $scope.datosPagos = {
             fechainiPag : primerdiames,
-            fechafinPag : FechaAct
+            fechafinPag : FechaAct,
+            unidad:'',
+            empresa:'',
+            folio:''
         }
 
         $scope.datosRecepcion = {
             fechainiRec : FechaAct,
-            fechafinRec : FechaAct
+            fechafinRec : FechaAct,
+            unidad:'',
+            empresa:'',
+            folio:''
         }
 
         $scope.folio = '';
@@ -40,9 +48,8 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
         $scope.filtrado = {
             Unidad : '',
             Cliente : '',
-            Etapa:''
-            // FormaRecep : '',
-            // Folio  :'',
+            Etapa:'',
+            Folio  :''
             // Lesionado  :'',
             // Producto:'',
             // Relacion:'',
@@ -188,9 +195,10 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
                     { field:'Pago', width: 120 },
                     { field:'Reserva', width: 120 },
                     { field:'FacturaRelacion', width: 80 },
-                    { field:'FacDoc', width: 80 }
-                    // { field:'Pagado', width: 80 },
-                    // { field:'Cobrado', width: 80 },
+                    { field:'FacDoc', width: 80 },
+                    { field:'RelP', width: 80 },
+                    { field:'Pagado', width: 80 },
+                    { field:'Cobrado', width: 80 }
         ],
         showFooter: true,
         showFilter:false
@@ -209,12 +217,6 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
     });
 
     $scope.filtra = function(){
-
-        //$scope.filterOptions.filterText = "";
-        //var filtro = "";
-        //console.log($scope.relacionado);
-
-
 
         if($scope.unidad == undefined || $scope.unidad == 0){
             var objeto1 = "";
@@ -248,10 +250,10 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
         if($scope.folio.length == 0){
             var objeto4 = "";
-            // $scope.filtrado.Folio = '';  
+            $scope.filtrado.Folio = '';  
         }else{
             var objeto4 = "Folio:" + $scope.folio + "; "; 
-            // $scope.filtrado.Folio = $scope.folio;  
+            $scope.filtrado.Folio = $scope.folio;  
         }
 
         if($scope.lesionado.length == 0){
@@ -314,6 +316,8 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
         var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7 + objeto8 + objeto9 + objeto10 + objeto11;
 
+        
+        
         $scope.filterOptions.filterText = filtro;
 
         // console.log(filtro);

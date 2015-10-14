@@ -49,12 +49,12 @@
 	<div class="row">
 		<div class="col-md-2">
 				<label>Folio</label>
-				<input type="text" ng-model="folio" class="form-control" folio>
+				<input type="text" ng-model="folio" ng-change="filtra()" class="form-control" folio>
 		</div>
 		<div class="col-md-4">
 
 				<label>Lesionado</label>
-				<input type="text" ng-model="lesionado" ng-keydown="presionaLesionado" class="form-control" ng-change="filtra()" capitalize>
+				<input type="text" ng-model="lesionado" class="form-control" ng-change="filtra()" capitalize>
 
 		</div>
 		<div class="col-md-3">

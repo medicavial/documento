@@ -1750,6 +1750,11 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
                 $scope.cargaRecepcion();
                 $scope.gridOptions.$gridScope.toggleSelectAll(false);
 				$('#boton').button('reset');
+			})
+			.error(function (data){
+				$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+                $scope.tipoalerta = 'alert-error';
+				$('#boton').button('reset');	
 			});
 			
 		};
@@ -1765,13 +1770,20 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 		if ($scope.selectos.length > 0) {
 
             checkFolios.rechazaEntrega($scope.selectos,$rootScope.id)
-            .then(function (data){
-                $('#boton2').button('reset');
-                $scope.mensaje = data.respuesta;
-                $scope.tipoalerta = 'alert-success';
-                $scope.cargaRecepcion();
-                $scope.gridOptions.$gridScope.toggleSelectAll(false);
-            });
+            .then(
+	            function (data){
+	                $('#boton2').button('reset');
+	                $scope.mensaje = data.respuesta;
+	                $scope.tipoalerta = 'alert-success';
+	                $scope.cargaRecepcion();
+	                $scope.gridOptions.$gridScope.toggleSelectAll(false);
+	            },
+	            function (error){
+	            	$('#boton2').button('reset');
+	                $scope.mensaje = error;
+	                $scope.tipoalerta = 'alert-error';
+	            }
+            );
             
         };
 

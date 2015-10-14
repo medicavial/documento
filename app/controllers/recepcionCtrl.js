@@ -3,6 +3,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 	loading.despedida();
 
 	$scope.rechazados = datos.rechazos;
+	$scope.recibidos = datos.recepcion;
 	datos.activos.success(function (data){
 		$scope.listado = data;
 	});
@@ -83,7 +84,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 			folio:'',
 			documento:0,
 			tipoDoc:'',
-			remesa:'',
+			remesa:0,
 			fecha:FechaAct,
 			cliente:'',
 			lesionado:'',
@@ -102,7 +103,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		};
 
 		$scope.mensaje = '';
-		$scope.remesa = '';
+		$scope.remesa = 0;
 		$scope.label1 = '';
 		$scope.label2 = '';
 		$scope.label3 = '';
@@ -195,8 +196,8 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		$scope.original.documento = '';
 		$scope.original.internet =  1;
 		$scope.original.tipoDoc ='';
-		$scope.original.remesa ='';
-		$scope.remesa = '';
+		$scope.original.remesa =0;
+		$scope.remesa = 0;
 		$scope.original.fecha =FechaAct;
 		$scope.original.cliente ='';
 		$scope.original.lesionado ='';

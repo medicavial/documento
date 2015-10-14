@@ -100,7 +100,7 @@
         </div>
         <div class="col-md-3">
             <label for="subcategoria">Subcategoria</label>
-            <select id="subcategoria" class="form-control"  ng-model="datos.subcategoria" ng-options="subcategoria.Clave as subcategoria.Nombre for subcategoria in subcategorias" >
+            <select id="subcategoria" class="form-control"  ng-model="datos.subcategoria" ng-options="subcategoria.Clave as subcategoria.Nombre for subcategoria in subcategorias" required>
                 <option value="">Subcategoria</option>
             </select>
         </div> 
@@ -215,6 +215,12 @@
               </label>
               <label class="btn btn-primary" ng-click="datos.cruce = !datos.cruce">
                 <input type="checkbox" ng-model="datos.cruce"><i ng-show="datos.cruce" class="glyphicon glyphicon-ok"></i> Cruce Zima-MV
+              </label>
+              <label class="btn btn-primary" ng-click="datos.cadulaT = !datos.cadulaT">
+                <input type="checkbox" ng-model="datos.cadulaT"><i ng-show="datos.cadulaT" class="glyphicon glyphicon-ok"></i> Cédula en Tramite
+              </label>
+              <label class="btn btn-primary" ng-click="datos.cedulaI = !datos.cedulaI">
+                <input type="checkbox" ng-model="datos.cedulaI"><i ng-show="datos.cedulaI" class="glyphicon glyphicon-ok"></i> Cédula Invalida
               </label>
 
             </div>

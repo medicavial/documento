@@ -21,6 +21,7 @@ function editaTicketPagosCtrl($scope,$rootScope, $http, find, $routeParams, dato
 			cliente:'',
 			unidad:'',
 			etapa:'',
+			entrega:1,
 			categoria:'',
 			subcategoria:'',
 			statusa:'',
@@ -30,7 +31,8 @@ function editaTicketPagosCtrl($scope,$rootScope, $http, find, $routeParams, dato
 			comunicacion:'',
 			fechacomunica:'',
 			usuario:$rootScope.userWeb,
-			usuariomv:$rootScope.id
+			usuariomv:$rootScope.id,
+			factura:''
 		}
 
 		$scope.cargar = false;
@@ -66,6 +68,8 @@ function editaTicketPagosCtrl($scope,$rootScope, $http, find, $routeParams, dato
 		$scope.datos.asignado = data.ticket.TSeg_asignado;
 		$scope.datos.fechaasignado = data.ticket.TSeg_asignadofecha;
 		$scope.datos.etapa = data.ticket.TSeg_etapa;
+		$scope.datos.entrega = data.ticket.TSeg_entrega;
+		$scope.datos.factura = data.ticket.FAC_claveint;
 
 		$scope.altasubcategorias(data.ticket.TCat_clave);
 
@@ -99,7 +103,7 @@ function editaTicketPagosCtrl($scope,$rootScope, $http, find, $routeParams, dato
 };
 
 //menu de tickets donde se imprimen los generados al dia
-function menuticketPagosCtrl($scope, $location, find, loading,datos){
+function menuticketPagosCtrl($scope, $location, find, loading,datos,reportes){
 
 	loading.despedida();
 
@@ -120,7 +124,9 @@ function menuticketPagosCtrl($scope, $location, find, loading,datos){
 	}
 
 
-
+	$scope.exportar = function(){
+		JSONToCSVConvertor($scope.listado,'Reporte',true);
+	}
 
 
 	$scope.ticketxfoliointerno = function(){
@@ -196,6 +202,7 @@ function menuticketPagosCtrl($scope, $location, find, loading,datos){
                     { field:'Asignado', width: 200 },
                     { field:'Categoria', width: 220 },
 		            { field:'Etapa', width: 80 },
+		            { field:'Entrega', width: 80 },
 		            { field:'Lesionado', width: 320 },
 		            { field:'Registro', width: 200 },
 		            { field:'Status', width: 120},
@@ -203,7 +210,8 @@ function menuticketPagosCtrl($scope, $location, find, loading,datos){
 		            { field:'Subcategoria', width: 120 },
 		            { field:'Unidad', width: 350 },
 		            { field:'Usuario_Registro', width: 220 },
-		            { field:'Observaciones', width: 350 }
+		            { field:'Observaciones', width: 350 },
+		            { field:'Factura', width: 80 }
 		            // { field:'FechaPago', width: 120 },
 		            // { field:'FechaCaptura', width: 120 },
 		            // { field:'Factura', width: 120 },
@@ -279,6 +287,10 @@ function menuticketPagosCtrl($scope, $location, find, loading,datos){
     
     }
 
+    $scope.exportar = function(){
+    	reportes.descargar($scope.listado);
+    }
+
 };
 
 //generacion de tickets
@@ -302,6 +314,7 @@ function ticketPagoCtrl($scope,$rootScope, find, ticketpagos){
 			cliente:'',
 			unidad:'',
 			etapa:'',
+			entrega:1,
 			categoria:'',
 			subcategoria:'',
 			statusa:'',
@@ -312,7 +325,8 @@ function ticketPagoCtrl($scope,$rootScope, find, ticketpagos){
 			fechacomunica:'',
 			observaciones:'',
 			usuario:$rootScope.userWeb,
-			usuariomv:$rootScope.id
+			usuariomv:$rootScope.id,
+			factura:''
 		}
 
 		// $('.btn').button('toggle');
@@ -445,7 +459,7 @@ function ticketPagoCtrl($scope,$rootScope, find, ticketpagos){
 
 
 ticketPagoCtrl.$inject = ['$scope','$rootScope', 'find', 'ticketpagos'];
-menuticketPagosCtrl.$inject = ['$scope', '$location', 'find', 'loading','datos'];
+menuticketPagosCtrl.$inject = ['$scope', '$location', 'find', 'loading','datos','reportes'];
 editaTicketPagosCtrl.$inject = ['$scope','$rootScope', '$http', 'find', '$routeParams', 'datos', 'loading','ticketpagos'];
 
 app.controller('ticketPagoCtrl',ticketPagoCtrl);

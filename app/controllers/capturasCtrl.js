@@ -3,14 +3,17 @@
 function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga, api,datos){
 
 	loading.despedida();
-	$scope.listado = datos.activos;
-	$scope.rechazados = datos.rechazos.length;
-	$scope.recibidos = datos.recepcion.length;
+
+	$scope.rechazados = datos.rechazos;
+	$scope.recibidos = datos.recepcion;
+	datos.activos.success(function (data){
+		$scope.listado = data;
+	});
 
 	$scope.inicio = function(){
 
-		$rootScope.area = 3;
-		$scope.tituloR = "Capturas";
+		$rootScope.area = 4;
+		$scope.tituloR = "Mesa de Control";
 		$scope.push = false;
 
 		$scope.mensaje = '';
@@ -19,6 +22,8 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 		$scope.folio = '';
 		$scope.lesionado = '';
 		$scope.cargar = false;
+
+        	
 		$scope.cargaInfo();
 
 	}
@@ -61,20 +66,20 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 	//enlista los usuarios de cada area 
 	$scope.altausuariosarea = function(area){
 
-		if ($rootScope.area == area) {
+		// if ($rootScope.area == area && $rootScope.id != 38) {
 
-			alert('No puedes emitir entregas a tu misma area');
-			$scope.areaOp = '';
+		// 	alert('No puedes emitir entregas a tu misma area');
+		// 	$scope.areaOp = '';
 
-		}else{
+		// }else{
 
 			$scope.area = area;
 			find.usuariosarea(area).success( function (data){
 
 				$scope.usuarios = data;
 
-			 });
-		}
+			});
+		// }
 	}
 
 	//guardamos pero antes verificamos que tengamos documentos seleccionados
@@ -116,6 +121,54 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 
 	}
 
+	$scope.mandanpc = function(){
+
+		$scope.mensaje = '';
+
+		$('#boton2').button('loading');
+
+		if ($scope.selectos.length > 0) {
+
+			$http.post(api+'insertanpc',$scope.selectos).success(function (data){
+				
+				$scope.mensaje = data.respuesta;
+				$scope.tipoalerta = 'alert-success';
+				$scope.cargaFlujo();
+				$('#boton2').button('reset');
+				$scope.gridOptions.$gridScope.toggleSelectAll(false);
+
+			}).error( function (data){
+				
+				$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+				$scope.tipoalerta = 'alert-warning';
+				$('#boton2').button('reset');
+
+			}); 
+
+			
+
+		}else{
+			alert('No se ha seleccionado ningun documento');
+		}
+
+	}
+
+	$scope.pendientesRecibir = function(){
+
+		find.listadorecepcion($rootScope.id).success( function (data){
+       
+        	if(data.respuesta){
+        		$scope.recibidos = 0;
+        	}else{
+        		$scope.recibidos = data.length;
+        	}
+
+        	//console.log($scope.recibidos);
+
+		});
+
+	}
+
 	///Busquedas 
 
 
@@ -144,18 +197,20 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
     	enablePinning: true, 
     	enableRowSelection:true,
     	multiSelect:true,
+    	showSelectionCheckbox: true,
+        selectWithCheckboxOnly: false,
     	enableCellSelection: true,
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
                     { field:'PAS_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: true },
-                    { field:'DOC_fechacapturado', displayName:'Fecha Captura', width: 160, enableCellEdit: true},
 		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
 		            { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
 		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
 		            { field:'UNI_nombrecorto', displayName:'Unidad', width: 200 },
 		            { field:'FLD_formaRecep', displayName:'FaxOrigianl', width: 120 },
 		            { field:'FLD_fechaRecep', displayName:'FechaRecepcion', width: 130 },
+		            { field:'Triage', width: 120 },
 		            { field:'FLD_claveint', displayName:'FLD_claveint', width: 100, visible:false },
 		            { field:'DOC_claveint', displayName:'documento', width: 100, visible:false },
 		            { field:'CapEt2', displayName:'CapEt2', width: 100, visible:false },
@@ -163,8 +218,7 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 		            { field:'FLD_AROent', displayName:'FLD_AROent', width: 100, visible:false },
 		            { field:'ARO_activa', displayName:'area', width: 100, visible:false },
 		            { field:'USU_ent', displayName:'USU_ent', width: 100, visible:false },
-		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true},
-		            { field:'DOC_situacionoriginal', displayName:'Capturado', width: 320, enableCellEdit: true}
+		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true}
         ],
         showFooter: true,
         showFilter:false
@@ -261,6 +315,7 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
     }
 
 };
+
 
 capturaslCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading', '$http', 'checkFolios', 'carga', 'api','datos'];
 
