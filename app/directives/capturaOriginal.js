@@ -16,14 +16,11 @@ function capturaOriginal() {
 controlador.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api'];;
 
 function controlador($scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api) {
-    
     // Injecting $scope just for comparison
     //muestra Ventan de alta de Original
     $('#myModal10').on('hidden.bs.modal', function (e) {
         $scope.inicio();
     });
-
-
 
     $scope.inicio = function(){
 
@@ -73,6 +70,7 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
 
         carga.informacion().then(function(data){
 
+            // console.log(data);
             $scope.clientes = data.clientes;
             $scope.unidades = data.unidades;
             $scope.productosini = data.productos;
@@ -91,7 +89,7 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
         $scope.limpiaVariables();
         $scope.cargar = true;
         $scope.mensaje = '';
-        // console.log(folio);
+        console.log(folio);
         //verificamos si tiene primera atencion
         checkFolios.validaFolio(folio, 1)
         .then( function (data){

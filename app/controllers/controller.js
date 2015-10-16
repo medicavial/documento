@@ -527,10 +527,6 @@ function controlDocumentosCtrl($scope, $http, loading, find, api, $filter, repor
         $('#myModal10').modal();
     }
 
-    $scope.muestraCapturaTodo = function(){
-        $('#myModal20').modal();
-    }
-
 	//busquedas
 
 	//busca clientes
