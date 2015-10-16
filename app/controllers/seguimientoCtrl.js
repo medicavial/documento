@@ -9,6 +9,9 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
         $scope.listado = data;
     });
 
+    $('#myModal20').on('hidden.bs.modal', function (e) {
+        $scope.inicio();
+    });
 
 	$scope.inicio = function(){
 
@@ -27,6 +30,10 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
 		$scope.cargaInfo();
 
 	}
+
+    $scope.muestraCapturaTodo = function(){
+        $('#myModal20').modal();
+    }
 
 	$scope.cargaInfo = function(){
 

@@ -1,11 +1,11 @@
-app.directive('capturaOriginal', capturaOriginal);
+app.directive('capturaTodo', capturaTodo);
 
-function capturaOriginal() {
+function capturaTodo() {
 
     var directive = {
         restrict: 'EA',
-        templateUrl: 'vistas/capturaOriginal.html',
-        controller: controlador,
+        templateUrl: 'vistas/capturaTodo.html',
+        controller: controladorTodo,
         bindToController: true // because the scope is isolated
     };
 
@@ -13,14 +13,12 @@ function capturaOriginal() {
 
 }
 
-controlador.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api'];;
+controladorTodo.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api', 'tickets'];;
 
-function controlador($scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api) {
+function controladorTodo($scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api, tickets) {
+    
     // Injecting $scope just for comparison
     //muestra Ventan de alta de Original
-    $('#myModal10').on('hidden.bs.modal', function (e) {
-        $scope.inicio();
-    });
 
     $scope.inicio = function(){
 
@@ -44,8 +42,54 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
             numentrega:1,
             incompleto:'',
             factura:'',
+            npc:0,
             totalfactura:0
         };
+
+        $scope.ticket = {
+            folioweb:$scope.original.folio,
+            folioIn:'',
+            cliente:'',
+            unidad:'',
+            etapa:'',
+            categoria:'',
+            subcategoria:'',
+            statusa:'',
+            asignado:'',
+            fechaasignado:'',
+            notas:'',
+            comunicacion:'',
+            fechacomunica:'',
+            observaciones:'',
+            diagnostico:false,
+            firma:false,
+            notamedica:false,
+            finiquito:false,
+            refactura:false,
+            pase:false,
+            suministro:false,
+            identificacion:false,
+            verificacion:false,
+            notamedicain:false,
+            informe:false,
+            reverso:false,
+            verificapar:false,
+            nocoincide:false,
+            pasemedico:false,
+            nombrein:false,
+            folioseg:false,
+            sinpase:false,
+            fueravigencia:false,
+            sinpoliza:false,
+            sindeducible:false,
+            cedulaT:false,
+            cedulaI:false,
+            sincuestionario:false,
+            firmamedico:false,
+            cruce:false,
+            usuario:$rootScope.userWeb,
+            usuariomv:$rootScope.id
+        }
 
         $scope.mensaje = '';
         $scope.remesa = 0;
@@ -60,6 +104,11 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
         $scope.bloqueo = false;
         $scope.bloqueoUni = false;
         $scope.cargar = false;
+
+
+        if ($rootScope.userWeb == undefined){
+            $scope.mensaje = 'No tienes usuario para dar de alta ticket solicitalo en el area de sistemas';
+        };
 
         $scope.cargaInfo();
 
@@ -78,10 +127,57 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
             $scope.areas = data.areaOperativa;
             $scope.escolaridades = data.escolaridad;
             $scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}]; 
+            $scope.altacategorias();
+            $scope.altastatus();
+            $scope.empresasWeb();
+            $scope.unidadesWeb();
+        });
+
+    }
+
+    //busca clientes
+    $scope.empresasWeb = function(){
+
+        find.empresasweb().success( function (data) {
+
+            $scope.clientesweb = data;
+
+         });
+
+    }
+    //busca unidades
+    $scope.unidadesWeb = function(){
+
+        find.unidadesweb().success( function (data) {
+
+            $scope.unidadesweb = data;
 
         });
 
     }
+
+    $scope.altacategorias = function(){
+
+        find.categorias().success(function (data){
+            $scope.categorias = data;
+        });
+        
+    }
+
+    $scope.altasubcategorias = function(id){
+        
+        find.subcategorias(id).success(function (data){
+            $scope.subcategorias = data;
+        });
+    }
+
+    $scope.altastatus = function(){
+
+        find.statusweb().success(function (data){
+            $scope.status = data;
+        });
+    }
+
 
     //Verificamos si el fiolio esta dado de alta o se tiene que buscar en 
     $scope.validaOriginal = function(folio){
@@ -89,36 +185,60 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
         $scope.limpiaVariables();
         $scope.cargar = true;
         $scope.mensaje = '';
-        console.log(folio);
+        // console.log(folio);
         //verificamos si tiene primera atencion
         checkFolios.validaFolio(folio, 1)
         .then( function (data){
             
-            $scope.original.tipoDoc = data.tipoDoc;
-            $scope.original.documento = data.documento;
-            $scope.original.fechafax = data.fechafax;
-            $scope.original.fechafe = data.fechafe;
-            $scope.original.cliente = data.cliente;
-            $scope.original.lesionado = data.lesionado;
-            $scope.original.unidad = data.unidad;
-            $scope.original.documento = data.documento;
+            // console.log(data);
+            
+            if (data.tipoDoc == 1) {
 
-            $scope.productoOriginal($scope.original.cliente);
-            $scope.referencia($scope.original.unidad);
+                $scope.original.tipoDoc = data.tipoDoc;
+                $scope.original.documento = data.documento;
+                $scope.original.fechafax = data.fechafax;
+                $scope.original.fechafe = data.fechafe;
+                $scope.original.cliente = data.cliente;
+                $scope.original.lesionado = data.lesionado;
+                $scope.original.unidad = data.unidad;
+                $scope.original.documento = data.documento;
 
-            $scope.original.escolaridad = data.escolaridad;
-            $scope.original.producto = data.producto;
+                $scope.productoOriginal($scope.original.cliente);
+                $scope.referencia($scope.original.unidad);
 
-            $scope.label2 = data.label2;
-            $scope.label3 = data.label3;
-            $scope.esfax = data.esfax;
-            $scope.esfe = data.esfe;
-            $scope.escolaridad = data.esoriginal;
-            $scope.bloqueo = data.bloqueo;
-            $scope.bloqueoUni = data.bloqueoUni;
-            $scope.esoriginal = data.esoriginal;
-            $scope.unidadref = data.unidadref;
-            $scope.cargar = false;
+                $scope.original.escolaridad = data.escolaridad;
+                $scope.original.producto = data.producto;
+
+                $scope.label2 = data.label2;
+                $scope.label3 = data.label3;
+                $scope.esfax = data.esfax;
+                $scope.esfe = data.esfe;
+                $scope.escolaridad = data.esoriginal;
+                $scope.bloqueo = data.bloqueo;
+                $scope.bloqueoUni = data.bloqueoUni;
+                $scope.esoriginal = data.esoriginal;
+                $scope.unidadref = data.unidadref;
+                
+                find.folioweb(folio).success( function (data){
+
+                    $scope.ticket.cliente = data[0].Cia_clave;
+                    $scope.ticket.unidad = data[0].Uni_clave;
+                    $scope.ticket.statusa = 1;
+                    $scope.ticket.etapa = '1';
+
+                    find.ultimoticket().success(function (data){
+                        $scope.ticket.folioIn = Number(data) + 1; 
+                    });
+
+                    $scope.cargar = false;
+
+                }); 
+            
+            }else{
+                $scope.cargar = false;
+                alert('Solo puedes registrar etapa 1 si es etapa 2 o mas favor de registrar y registrar ticket por separado');
+            }
+
 
         })
         .catch(function (err){
@@ -159,6 +279,7 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
         $scope.original.internet =  1;
         $scope.original.tipoDoc ='';
         $scope.original.remesa =0;
+        $scope.original.npc = 0;
         $scope.remesa = 0;
         $scope.original.fecha =FechaAct;
         $scope.original.cliente ='';
@@ -177,6 +298,50 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
         $scope.bloqueo = false;
         $scope.bloqueoUni = false;
         $scope.muestraEsc = false;
+        $scope.ticket = {
+            folioweb:$scope.original.folio,
+            folioIn:'',
+            cliente:'',
+            unidad:'',
+            etapa:'',
+            categoria:'',
+            subcategoria:'',
+            statusa:'',
+            asignado:'',
+            fechaasignado:'',
+            notas:'',
+            comunicacion:'',
+            fechacomunica:'',
+            observaciones:'',
+            diagnostico:false,
+            firma:false,
+            notamedica:false,
+            finiquito:false,
+            refactura:false,
+            pase:false,
+            suministro:false,
+            identificacion:false,
+            verificacion:false,
+            notamedicain:false,
+            informe:false,
+            reverso:false,
+            verificapar:false,
+            nocoincide:false,
+            pasemedico:false,
+            nombrein:false,
+            folioseg:false,
+            sinpase:false,
+            fueravigencia:false,
+            sinpoliza:false,
+            sindeducible:false,
+            cedulaT:false,
+            cedulaI:false,
+            sincuestionario:false,
+            firmamedico:false,
+            cruce:false,
+            usuario:$rootScope.userWeb,
+            usuariomv:$rootScope.id
+        }
     }
 
     /////////Inicia proceso de guardado 
@@ -188,7 +353,8 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
 
             $('#boton2').button('loading');
             $scope.mensaje = '';
-            //Verificamos la informacion antes de guardar
+            // console.log($scope.original);
+            // Verificamos la informacion antes de guardar
             checkFolios.verificaInfo($scope.original.cliente, $scope.original.producto, $scope.original.escolaridad, $scope.original.fecha, $scope.original.folio)
             .then(function (data) {
 
@@ -205,17 +371,30 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
 
                     alta.success(function (data){
 
-                        $('#boton2').button('reset');
-                        $scope.mensaje = data.respuesta;
-                        $scope.tipoalerta = 'alert-success';
-                        $scope.limpiaVariables();
                         $scope.original.folio = '';
                         $('#folioO').focus();
+
+                        // console.log($scope.ticket);
+                        tickets.guardar($scope.ticket).success( function (data){
+                        
+                            $scope.mensaje = 'Folio registrado correctamente con el ticket ' + $scope.ticket.folioIn;
+                            $scope.tipoalerta = 'alert-success';
+                            $('#boton2').button('reset');            
+                            $scope.limpiaVariables();
+
+                        }).error( function (data){
+
+                            $scope.mensaje = 'El documento se gurado bien pero ocurrio un error al guardar el ticket intenta registrarlo de forma independiente';
+                            $scope.tipoalerta = 'alert-warning';
+                            $('#boton2').button('reset');
+                            $scope.limpiaVariables();
+
+                        });
 
                     })
                     .error(function (data){
                         $('#boton2').button('reset');
-                        alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+                        alert('Ocurrion Un Problema al guardar el documento intentalo nuevamente');
                     });
 
                 },

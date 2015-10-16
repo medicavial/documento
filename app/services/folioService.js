@@ -454,13 +454,14 @@ app.factory("checkFolios", function($q,$http,find, api){
                         if (web.Exp_cancelado) {
                             promesa.reject('El folio se encuentra cancelado en registro web favor de verificarlo');
                         }else{
+
                             datos.cliente = web.Cia_claveMV ? String(web.Cia_claveMV) : web.Cia_claveMV;
                             datos.lesionado = web.Exp_completo;
-                            datos.unidadref = web.UNI_claveMV ? String(web.UNI_claveMV) : web.UNI_claveMV;
-                            datos.unidad = web.UNI_claveMV ? String(web.UNI_claveMV) : web.UNI_claveMV;
+                            datos.unidadref = web.Uni_claveMV ? String(web.Uni_claveMV) : web.Uni_claveMV;
+                            datos.unidad = web.Uni_claveMV ? String(web.Uni_claveMV) : web.Uni_claveMV;
                             datos.producto = web.Pro_claveMV ? String(web.Pro_claveMV) : web.Pro_claveMV;
                             datos.escolaridad = web.Esc_claveMV ? String(web.Esc_claveMV) : web.Esc_claveMV;
-
+                            
                             datos.label2 = 'NO SE RECIBIO FAX';
                             datos.label3 = 'NO ES FAC. EXPRESS';
 
