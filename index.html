@@ -4,7 +4,7 @@
 		<meta charset="UTF-8" />
 		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
 		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-		<title>Sistema integral médicavial</title>
+		<title>Sistema integral médicavial 1.0</title>
 		<!-- build:css css/style.min.css -->
 		<link rel="stylesheet" href="lib/bootstrap.min.css" />
 		<link rel="stylesheet" href="css/cupertino/jquery-ui-1.10.4.custom.css" />
@@ -103,6 +103,12 @@
 		</div>
 
 
+		<!-- modal para captura de documentos originales y tickets en un solo movimiento -->
+		<div class="modal fade" id="myModal20" tabindex="-1" role="dialog" aria-labelledby="Captura de pases originales" aria-hidden="true">
+			<captura-Todo></captura-Todo>
+		</div>
+
+
 		<!-- Muestra Caja con errores-->
 		<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 		    <div class="modal-dialog">
@@ -156,6 +162,7 @@
 		<script src="app/app.js" ></script>
 		<script src="app/directives/directivasMv.js" ></script>
 		<script src="app/directives/capturaOriginal.js" ></script>
+		<script src="app/directives/capturaTodo.js" ></script>
 		<script src="app/services/loginService.js" ></script>
 		<script src="app/services/busquedasService.js" ></script>
 		<script src="app/services/textService.js" ></script>
