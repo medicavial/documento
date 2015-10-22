@@ -6,7 +6,8 @@ var app = angular.module('app', [
     'ngGrid',
     'ngIdle',
     'ngProgress',
-    'webStorageModule'
+    'webStorageModule',
+    'uxGenie'
 ]);
 
 // app.constant('api','http://localhost/apimv/public/api/')
@@ -534,6 +535,8 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
 
 //notificaciones que se ejecutan cuando la aplicacion inicia
 app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
+
+    // $rootScope.folioGlobal = '';
 
     //generamos al rootscope las variables que tenemos en las cookies para no perder la sesion
     $rootScope.username = webStorage.session.get('username');

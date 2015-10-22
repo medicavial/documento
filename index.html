@@ -15,6 +15,7 @@
 		<link rel="stylesheet" href="css/animacion.css"/>
 		<link rel="stylesheet" href="css/loading.min.css" />
 		<link rel="stylesheet" href="css/ngProgress.css" />
+		<link rel="stylesheet" href="css/genie.css" />
 		<!-- endbuild -->
 		<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
 		<!--[if lt IE 9]>
@@ -29,7 +30,7 @@
 		<div ng-show="username != '' " class="animate-show">
 			<div id="panelusuario">
 				<a href="" ng-click="logout()" class="icon-switch" id="tooltip1" rel="tooltip"  title="Cerrar Sesión"></a>
-				<!-- <a href="#/infopase" class="icon-newspaper" id="tooltip5" rel="tooltip"  title="Info Pase"></a> -->
+				<!-- <a href="" ng-click="doDishes()" class="icon-newspaper" id="tooltip5" rel="tooltip"  title="Buscqueda Global"  genie-wish></a> -->
 				<a href="#/control" class="icon-drawer2" id="tooltip2" rel="tooltip"  title="Control de Documentos"></a>
 				<a href="#/consultaflujo" class="glyphicon glyphicon-search" id="tooltip3" rel="tooltip"  title="Buscar Folio en Flujo"></a>
 				<a href="#/" class="icon-home" id="tooltip4" rel="tooltip"  title="Ir al Inicio"></a>
@@ -44,6 +45,8 @@
 			<div class="ng-view view-animate" ng-hide="pagina"></div>
 			<br>
 		</div>
+		
+		<buscador></buscador>
 
 		<!--imagen para cuando este cargando folio o contenido que el usuario busca-->
 		<div ng-show="cargando" class='centrar animate-show'>
@@ -137,6 +140,7 @@
 		<script src="lib/angular.min.js" ></script>
 		<script src="lib/bootstrap.min.js"></script>
 		<script src="lib/jquery.dataTables.min.js"></script>
+		<script src="js/genie.min.js"></script>
 		<script src="js/prefixfree.min.js"></script> 
 		<script src="js/jquery.ui.datepicker-es.js"></script>
 		<script src="js/jquery-ui-1.10.4.custom.min.js"></script>
@@ -156,6 +160,7 @@
 		<script src="modules/ng-grid-csv-export.js"></script>
 		<script src="modules/ngProgress.min.js"></script>
 		<script src="modules/angular-webstorage.min.js"></script>
+		<script src="modules/uxGenie.min.js" ></script>
 		<!-- endbuild -->
         <!-- archivos de la aplicacion -->
         <!-- build:js js/app.min.js --> 
@@ -163,6 +168,7 @@
 		<script src="app/directives/directivasMv.js" ></script>
 		<script src="app/directives/capturaOriginal.js" ></script>
 		<script src="app/directives/capturaTodo.js" ></script>
+		<script src="app/directives/buscador.js" ></script>
 		<script src="app/services/loginService.js" ></script>
 		<script src="app/services/busquedasService.js" ></script>
 		<script src="app/services/textService.js" ></script>

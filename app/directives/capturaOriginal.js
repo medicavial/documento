@@ -22,6 +22,15 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
         $scope.inicio();
     });
 
+    $rootScope.$watch('folioGlobal', function(newValue, oldValue) {
+        // console.log(newValue);
+        if (newValue.length == 10) {
+            $scope.original.folio = newValue;
+            $scope.validaOriginalA(newValue);
+        };
+    });
+
+
     $scope.inicio = function(){
 
         $scope.muestraEsc = false;
@@ -84,7 +93,7 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
     }
 
     //Verificamos si el fiolio esta dado de alta o se tiene que buscar en 
-    $scope.validaOriginal = function(folio){
+    $scope.validaOriginalA = function(folio){
 
         $scope.limpiaVariables();
         $scope.cargar = true;
@@ -184,7 +193,7 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
     ///Proceso de guardado ya sea de fax u original
     $scope.guardaDatos = function(){
 
-        if ($scope.formOriginal.$valid) {
+        if ($scope.formCapturaOriginal.$valid) {
 
             $('#boton2').button('loading');
             $scope.mensaje = '';

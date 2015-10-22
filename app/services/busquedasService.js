@@ -4,6 +4,9 @@ app.factory("find", function($http,api){
         areaoperativa:function(){
             return $http.get(api+'consulta/areas');
         },
+        buscador:function(consulta,tipo){
+            return $http.get(api+'consulta/buscador/'+ consulta + '/' + tipo);
+        },
         categorias:function(){
             return $http.get(api+'tickets/categorias');
         },
