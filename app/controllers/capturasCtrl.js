@@ -203,7 +203,7 @@ function capturaslCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
-                    { field:'PAS_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: true },
+                    { field:'PAS_folio', displayName:'Folio' , width: 120, pinned:true, enableCellEdit: true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
 		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
 		            { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
 		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },

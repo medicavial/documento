@@ -21,7 +21,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 }
                 //Si se envia a Facturación y no es original ó ya fue enviado anteriormente manda mensaje de error
                 //se agrego indexof(busca el contenido que se ponga aqui) por que javascript no soporta muchos && y || en un mismo if 
-                else if( (documento.FLD_formaRecep.indexOf('O') == -1  && areaRecibe == 5) || (areaRecibe == 5 && documento.FLD_AROent == 5 && documento.USU_ent != 'null')||(areaRecibe == 5 && documento.EnvFac == 'SI' && documento.FLD_etapa == 1) ){
+                else if( (   (documento.FLD_formaRecep.indexOf('O')  == -1 && documento.FLD_formaRecep.indexOf('NP') == -1)   && areaRecibe == 5)  || (areaRecibe == 5 && documento.FLD_AROent == 5 && documento.USU_ent != 'null')||(areaRecibe == 5 && documento.EnvFac == 'SI' && documento.FLD_etapa == 1) ){
                     foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede enviar a Facturación debido a que no es etapa 1 o ya fue mandado'});
                 }
 
@@ -432,7 +432,7 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                         //asignamos bloqueos de campos
                         datos.bloqueo = true;
-                        datos.bloqueoUni = true;
+                        datos.bloqueoUni = false;
                         datos.esoriginal = 0;
 
                     }
@@ -451,6 +451,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     //Como no ninguna atencion registrada en sql server buscamos en web 
                     if (web) {
 
+                        // console.log(web)
                         if (web.Exp_cancelado) {
                             promesa.reject('El folio se encuentra cancelado en registro web favor de verificarlo');
                         }else{

@@ -430,6 +430,10 @@ blockquote{
     overflow-x:scroll; 
 }
 
+.padding-cell{
+  padding: 5px;
+}
+
 .inactivo {
 
   background: #45484d !important;
@@ -704,6 +708,11 @@ blockquote{
     text-decoration: none;
 
 }
+
+.padding{
+  padding: 1em;
+}
+
 
 
 /*Time line*/

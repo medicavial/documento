@@ -485,10 +485,7 @@ function consultaFlujoCtrl($scope,$rootScope, find){
     }
 
     $scope.generaEntrega = function(){
-        $scope.datos.push({
-            FLD_claveint:'',
-            FLD_observaciones:''
-        })
+        
     }
 
 };

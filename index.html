@@ -34,7 +34,7 @@
 				<a href="#/control" class="icon-drawer2" id="tooltip2" rel="tooltip"  title="Control de Documentos"></a>
 				<a href="#/consultaflujo" class="glyphicon glyphicon-search" id="tooltip3" rel="tooltip"  title="Buscar Folio en Flujo"></a>
 				<a href="#/" class="icon-home" id="tooltip4" rel="tooltip"  title="Ir al Inicio"></a>
-				<!-- <button type="button" class="panelicon icon-bell" id="notificacion" rel="tooltip"  title="Mis Notificaciones" rel="popover"><span ng-show="push > 0" class="badge pull-right">{{push}}</span></button> -->
+				<button type="button" class="panelicon icon-bell" id="notificacion" rel="tooltip"  title="Mis Notificaciones" rel="popover"><span class="badge pull-right">1</span></button>
 				<h2>{{ username }}</h2>
 			</div>
 		</div>
@@ -77,19 +77,18 @@
 		      </div>
 		      <div class="modal-body">
 		        	<div id="contenidonot">
-		        		<div ng-show="push == 0" class="list-group">
+		        		<!-- <div ng-show="push == 0" class="list-group">
 		        			<a href="" class="list-group-item">
 		        				<h3 class="list-group-item-heading"></h3>
 		        				<span class="list-group-item-text">Sin Notificaciones</span>
 		        			</a>
-		        		</div>
-		        		<div ng-show="existen" class="list-group"  ng-repeat="notificacion in notificaciones">
+		        		</div> -->
+
+		        		<div class="list-group padding">
 		        			
-		        			<a href="{{notificacion.link}}" ng-mouseover="hoverIn()" ng-mouseleave="hoverOut()" class="list-group-item">
-		        				<h3 class="list-group-item-heading">{{notificacion.titulo}}</h3>
-		        				<p class="list-group-item-text">{{notificacion.detalle}}</p>
-		        				<p ng-show="hoverEdit" class="animate-show glyphicon glyphicon-trash">LOL</p>
-		        			</a>
+		        			<p>Si ves un folio como este en tus folios activos o flujo de pagos: </p>
+		        			<p><div class="text-danger"><i class="glyphicon glyphicon-warning-sign"></i> ROMV000000</div></p>
+		        			<p>Significa que el folio tiene una penalización</p>
 		        			<!-- <a href="#" ng-show="hover" class="glyphicon glyphicon-trash"> LOL</a> -->
 		        		</div>
 		        	</div>

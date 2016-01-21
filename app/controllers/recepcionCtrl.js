@@ -424,7 +424,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
-                    { field:'PAS_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: true },
+                    { field:'PAS_folio', displayName:'Folio' , width: 120, pinned:true, enableCellEdit: true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
 		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
 		            { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
 		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
@@ -438,6 +438,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		            { field:'FLD_AROent', displayName:'FLD_AROent', width: 100, visible:false },
 		            { field:'ARO_activa', displayName:'area', width: 100, visible:false },
 		            { field:'USU_ent', displayName:'USU_ent', width: 100, visible:false },
+		            { field:'DOC_situacionoriginal', displayName:'Capturado', width: 100, visible:true },
 		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true}
 		            
         ],

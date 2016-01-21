@@ -1,5 +1,5 @@
 //Area de seguimiento
-function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,datos){
+function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,datos,$http,api){
 
 
 	loading.despedida();
@@ -66,6 +66,38 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
         });
 
 	}
+
+    $scope.mandanpc = function(){
+
+        $scope.mensaje = '';
+
+        $('#boton2').button('loading');
+
+        if ($scope.selectos.length > 0) {
+
+            $http.post(api+'posiblenp',$scope.selectos).success(function (data){
+                
+                $scope.mensaje = data.respuesta;
+                $scope.tipoalerta = 'alert-success';
+                $scope.cargaFlujo();
+                $('#boton2').button('reset');
+                $scope.gridOptions.$gridScope.toggleSelectAll(false);
+
+            }).error( function (data){
+                
+                $scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+                $scope.tipoalerta = 'alert-warning';
+                $('#boton2').button('reset');
+
+            }); 
+
+            
+
+        }else{
+            alert('No se ha seleccionado ningun documento');
+        }
+
+    }
 
 
 	//enlista los usuarios de cada area 
@@ -155,7 +187,7 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
-                    { field:'PAS_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: true },
+                    { field:'PAS_folio', displayName:'Folio' , width: 120, pinned:true, enableCellEdit: true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
 		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
 		            { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
 		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
@@ -267,5 +299,5 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
 
 };
 
-seguimientoCtrl.$inject = ['$scope', '$rootScope', 'find' , 'carga', 'loading', 'checkFolios','datos'];
+seguimientoCtrl.$inject = ['$scope', '$rootScope', 'find' , 'carga', 'loading', 'checkFolios','datos','$http','api'];
 app.controller('seguimientoCtrl',seguimientoCtrl);

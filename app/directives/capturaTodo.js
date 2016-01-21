@@ -356,7 +356,7 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
     /////////Inicia proceso de guardado 
 
     ///Proceso de guardado ya sea de fax u original
-    $scope.guardaDatos = function(){
+    $scope.guardaDatosB = function(){
 
         if ($scope.formOriginalTodo.$valid) {
 

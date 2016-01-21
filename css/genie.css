@@ -17,6 +17,7 @@ div.genie-lamp-container {
   top: 10%;
   transition: all .2s ease-in-out;
   width: 600px;
+  z-index: -1;
 }
 
 div.genie-lamp-container.visible{

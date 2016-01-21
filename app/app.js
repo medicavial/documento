@@ -85,6 +85,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             }
     });
 
+    $routeProvider.when('/facturacionEx',{
+            templateUrl    :'vistas/facturacionEx.html',
+            controller     :'facturacionExCtrl'
+    });
+
     $routeProvider.when('/flujo',{
             templateUrl    :'vistas/flujo.html',
             controller     :'flujoCtrl',

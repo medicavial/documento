@@ -98,11 +98,12 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
         $scope.limpiaVariables();
         $scope.cargar = true;
         $scope.mensaje = '';
-        console.log(folio);
+        // console.log(folio);
         //verificamos si tiene primera atencion
         checkFolios.validaFolio(folio, 1)
         .then( function (data){
             
+            // console.log(data);
             $scope.original.tipoDoc = data.tipoDoc;
             $scope.original.documento = data.documento;
             $scope.original.fechafax = data.fechafax;
@@ -191,8 +192,9 @@ function controlador($scope, $rootScope, $filter, $location, $http, find, loadin
     /////////Inicia proceso de guardado 
 
     ///Proceso de guardado ya sea de fax u original
-    $scope.guardaDatos = function(){
+    $scope.guardaDatosA = function(){
 
+        console.log($scope.original);
         if ($scope.formCapturaOriginal.$valid) {
 
             $('#boton2').button('loading');

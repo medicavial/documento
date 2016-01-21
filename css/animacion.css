@@ -313,3 +313,33 @@
 .my-element.ng-hide-remove { ... }
 .my-element.ng-hide-remove.ng-hide-remove-active { ... }
 */
+
+
+.slide{
+    width: 100%;
+}
+
+.slide.ng-enter, .slide.ng-leave {
+    /*display:block;*/
+    position:absolute;
+    transition: 1s ease all;
+}
+
+.slide.ng-enter {
+
+    -webkit-animation: fadeInLeft 1s;
+    -moz-animation: fadeInLeft 1s;
+    -ms-animation: fadeInLeft 1s;
+    -o-animation: fadeInLeft 1s;
+    animation: fadeInLeft 1s;
+ 
+}
+.slide.ng-leave {
+
+    -webkit-animation: fadeOutRight 1s;
+    -moz-animation: fadeOutRight 1s;
+    -ms-animation: fadeOutRight 1s;
+    -o-animation: fadeOutRight 1s;
+    animation: fadeOutRight 1s;
+
+}
