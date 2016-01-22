@@ -37,8 +37,8 @@ app.factory("find", function($http,api){
         folioweb:function(folio){
             return $http.get(api+'consulta/folioweb/'+folio);
         },
-        foliosFePendientes:function(cliente){
-            return $http.get(api + 'facturacionExpress/activos/'+cliente);
+        foliosFePendientes:function(datos){
+            return $http.post(api + 'facturacionExpress/pendientes',datos);
         },
         // foliosxAreaxFecha:function(area,fechaini,fechafin){
         //     return $http.get('/documento/api/folioactivoareafecha/'+area+"/"+fechaini+"/"+fechafin);
