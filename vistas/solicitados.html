@@ -1,9 +1,9 @@
 <div ng-init="inicio()" id="contenedor">
 	<div class="titulos">
-		<a href="#/" class="icon-arrow-left"></a>
-		<h1>{{tituloFE}}</h1>
+		<a href="#/facturacionEx" class="icon-arrow-left"></a>
+		<h1>Folios Solicitados</h1>
 	</div>
-	<ul id="rb-grid-small" class="rb-grid-small clearfix">
+	<!-- <ul id="rb-grid-small" class="rb-grid-small clearfix">
 
 	    <li class="rb-span-1" id="color3">
 
@@ -31,7 +31,7 @@
 	        </a>
 
 	    </li>
-	</ul>
+	</ul> -->
 	<h2>Folios a Solicitar</h2>
 	
 	<div class="row">
@@ -77,25 +77,28 @@
 	<div class="gridStyle" ng-grid="gridOptions"></div>
 	<br>	
 
-	<fieldset>
+	<!-- <fieldset>
 		<legend>Datos para solicitar</legend>
-	</fieldset>
-	<div class="row">
+	</fieldset> -->
+	<!-- <div class="row">
 		<form name="formEntrega"  novalidate>
 
 			<div class="col-md-2">
 				<button type="button" id="boton" ng-disabled="formEntrega.$invalid" ng-click="entrega()" class="btn btn-primary btn-block icon-export" data-loading-text="Entregando..."> Solicitar Autorización </button>
 			</div>
-			<div class="col-md-2" id="estatus">
+			<div class="col-md-2" id="estatus"> -->
+
+				<!-- ESTA LINEA DE CODIGO PERMANECE COMENTADA -->
 				<!-- <input type="text" x-webkit-speech=""> -->
-				<button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
+
+				<!-- <button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
 			</div>
 
 			<div class="col-md-2">
 			</div>
 
 		</form>
-	</div>
+	</div> -->
 	<br>
 	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert alert-success animate-show">{{mensaje}}</div>
 	<br>
