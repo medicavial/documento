@@ -1,0 +1,103 @@
+<div ng-init="inicio()" id="contenedor">
+	<div class="titulos">
+		<a href="#/" class="icon-arrow-left"></a>
+		<h1>{{tituloFE}}</h1>
+	</div>
+	<ul id="rb-grid-small" class="rb-grid-small clearfix">
+
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Solicitados <span ng-show=" recibidos > 0 " class="push">{{recibidos}}</span></h3>
+	        <a href="#/solicitados">
+	            <span class="icon-box-add"></span>
+	        </a>
+
+	    </li>
+
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Rechazos<span ng-show=" rechazados > 0 " class="push">{{rechazados}}</span></h3>
+	        <a href="#/rechazados">
+	            <span class=" icon-cancel-circle"></span>
+	        </a>
+	        
+	    </li>
+
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Autorizados</h3>
+	        <a href="#/autorizados">
+	            <span class=" icon-folder-open"></span>
+	        </a>
+
+	    </li>
+	</ul>
+	<h2>Folios a Solicitar</h2>
+	
+	<div class="row">
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Selecciona Cliente</legend>
+				<div class="row">
+					<div class="col-md-2">
+						<select class="form-control"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes" ng-change="filtra()">
+							<option value="">Cliente</option>
+						</select>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+
+	<div class="row">
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Filtros</legend>
+				<div class="row">
+					<div class="col-md-2">
+						<select class="form-control"  ng-model="unidad" ng-change="filtra()">
+							<option value=""> Tipo Unidad</option>
+							<option value="'S'"> Propia</option>
+							<option value="'N'"> Red</option>
+						</select>
+					</div>
+					<div class="col-md-10">
+						<div class="input-group">
+							<div class="input-group-addon">
+						        <i class="glyphicon glyphicon-search"></i>
+						    </div>
+							<input type="text" ng-model="criterio" class="form-control" folio />
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+
+	<div class="gridStyle" ng-grid="gridOptions"></div>
+	<br>	
+
+	<fieldset>
+		<legend>Datos para solicitar</legend>
+	</fieldset>
+	<div class="row">
+		<form name="formEntrega"  novalidate>
+
+			<div class="col-md-2">
+				<button type="button" id="boton" ng-disabled="formEntrega.$invalid" ng-click="entrega()" class="btn btn-primary btn-block icon-export" data-loading-text="Entregando..."> Solicitar Autorización </button>
+			</div>
+			<div class="col-md-2" id="estatus">
+				<!-- <input type="text" x-webkit-speech=""> -->
+				<button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
+			</div>
+
+			<div class="col-md-2">
+			</div>
+
+		</form>
+	</div>
+	<br>
+	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert alert-success animate-show">{{mensaje}}</div>
+	<br>
+	<br>
+</div>
