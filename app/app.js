@@ -33,6 +33,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             controller    : 'archivoCtrl'
     });
 
+    $routeProvider.when('/autorizados',{
+            templateUrl    :'vistas/autorizados.html'
+    });
+
+
     $routeProvider.when('/bloqueo',{
             templateUrl: 'vistas/bloqueo.html',
             controller : 'bloqueoCtrl'
@@ -339,6 +344,10 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             }        
     });
 
+    $routeProvider.when('/rechazados',{
+            templateUrl    :'vistas/rechazados.html'
+    });
+
     $routeProvider.when('/Rechazos/:area',{
             templateUrl   : 'vistas/rechazos.html',
             controller    : 'rechazosCtrl',
@@ -394,6 +403,10 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
                     return promesa.promise;
                 }
             }
+    });
+
+    $routeProvider.when('/solicitados',{
+            templateUrl    :'vistas/solicitados.html'
     });
 
     $routeProvider.when('/seguimiento',{
