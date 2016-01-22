@@ -11,7 +11,7 @@ var app = angular.module('app', [
 ]);
 
 // app.constant('api','http://localhost/apimv/public/api/')
-app.constant('api','http://172.17.10.15/apimv/public/api/')
+app.constant('api','http://172.17.10.52/apimv/public/api/')
 app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/')
 
 //configuramos las rutas y asignamos html y controlador segun la ruta
