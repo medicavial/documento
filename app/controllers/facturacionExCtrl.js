@@ -1,11 +1,15 @@
 //Area de facturacion
 function facturacionExCtrl($scope, $rootScope, find , loading, checkFolios){
 
-	$rootScope.tituloFE = 'Facturación Express';
+	$rootScope.tituloFE = 'Facturación Express 2.0';
 
 	$scope.inicio = function(){
-        
+
 	}
+
+    $scope.consultaPendientes = function(id){
+        
+    }
 
 	//////LLena el grid y toma filtros
 
