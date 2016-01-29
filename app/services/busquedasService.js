@@ -4,6 +4,9 @@ app.factory("find", function($http,api){
         areaoperativa:function(){
             return $http.get(api+'consulta/areas');
         },
+        ajustadores:function(cliente){
+            return $http.get(api+'consulta/ajustadores/'+ cliente);
+        },
         buscador:function(consulta,tipo){
             return $http.get(api+'consulta/buscador/'+ consulta + '/' + tipo);
         },
@@ -18,6 +21,9 @@ app.factory("find", function($http,api){
         },
         consultaFacturaQualitas:function(folio){
             return $http.get(api+'qualitas/consulta/' + folio);
+        },
+        detalleFolioWeb:function(folio){
+            return $http.get(api + 'facturacionExpress/detalleFolio/'+ folio);
         },
         detalleticket:function(folioint,folioweb){
             return $http.get( api + 'tickets/detalle/' + folioint + '/' + folioweb);
@@ -40,9 +46,9 @@ app.factory("find", function($http,api){
         foliosFePendientes:function(datos){
             return $http.post(api + 'facturacionExpress/pendientes',datos);
         },
-        // foliosxAreaxFecha:function(area,fechaini,fechafin){
-        //     return $http.get('/documento/api/folioactivoareafecha/'+area+"/"+fechaini+"/"+fechafin);
-        // },
+        lesiones:function(id){
+            return $http.get(api + 'consulta/lesiones/'+ id);
+        },
         listadoentrega:function(usuario){
             return $http.get(api+'flujo/entregas/'+usuario);
         },
@@ -102,6 +108,12 @@ app.factory("find", function($http,api){
         },
         subcategoriaspagos:function(categoria){
             return $http.get(api +'tickets/pagos/subcategorias/'+categoria);
+        },
+        tabulador:function(lesion,folio){
+            return $http.get('http://api.medicavial.mx/api/mv/tabulador/' + lesion +'/' + folio);
+        },
+        tiposLesion:function(tipo){
+            return $http.get(api + 'consulta/tipoLesion/'+tipo);
         },
         ultimoticket:function(){
             return $http.get(api +'tickets/maximo');

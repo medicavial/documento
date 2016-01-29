@@ -18,6 +18,13 @@ blockquote{
     margin: 0 0 2px;
 }
 
+/* Estilo para los archivos */
+
+#files{
+  min-height: 1000px;
+  z-index: 2;
+}
+
 
 /* estilos para graficas */
 

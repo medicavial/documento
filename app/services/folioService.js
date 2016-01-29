@@ -709,6 +709,24 @@ app.factory("tickets", function($q,$http,find,api){
 });
 
 
+app.factory("facturacionExpress", function($q,$http,find,api){
+    return{
+        solicitarAutorizacion:function(datos){
+            return $http.post(api + 'facturacionExpress/solicitarAutorizacion', datos,{timeout: 10000});
+        },
+        actualizaFolio:function(datos){
+            return $http.put(api + 'facturacionExpress/actualizaFolio', datos,{timeout: 10000});
+        },
+        captura:function(datos){
+            return $http.put(api + 'facturacionExpress/captura', datos,{timeout: 10000});
+        },
+        capturaCuestionario:function(datos){
+            return $http.put(api + 'facturacionExpress/capturaCuestionario', datos,{timeout: 10000});
+        }
+    }
+});
+
+
 app.factory("ticketpagos", function($q,$http,find,api){
     return{
         guardar:function(datos){

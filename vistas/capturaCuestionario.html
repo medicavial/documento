@@ -1,0 +1,369 @@
+<div  align="center" style="width:100%">
+	<div>
+			<div class="row">
+				<div class="col-md-12 text-center">	  		
+					<b style="font-size:20px">Encuesta de Calidad</b>						
+				</div>		  	
+			</div>
+				
+			<form ng-submit="enviarCuestionario()" >
+			
+			<br>
+			<div class="row" >
+				<div class="col-md-4">
+					<label ><b>Acude a esta unidad Médica:</b></label>
+				</div>
+				<div class="col-md-4">
+					<label class="radio c-radio">
+					<input id="inlineradio1" value="1" ng-model="cuestionario.pregunta38"  type="radio" name="tipLesion">
+					En Ambulancia</label>      
+				</div>
+				<div class="col-md-4">
+					<label class="radio c-radio">
+					<input id="inlineradio1" value="2" ng-model="cuestionario.pregunta38"  type="radio" name="tipLesion">
+					Por sus propios medios</label>  
+				</div>			
+			</div>
+			
+			<br>
+
+			<div class="row">
+				<div>
+					<div class="col-md-2 col-md-offset-5">Excelente</div>
+					<div class="col-md-1">Bueno</div>
+					<div class="col-md-1">Regular</div>
+					<div class="col-md-1">Malo</div>
+					<div class="col-md-2">No Aplica</div>
+				</div>
+			</div>
+			<br>
+			<div class="row" align="center">
+				<div class="col-md-5" align="left">
+					¿El trato del Personal de Recepción fue?
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+					<input id="inlineradio1" value="1" ng-model="cuestionario.pregunta39"  type="radio" name="preg31">
+					</label>      
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+					<input id="inlineradio1" value="2" ng-model="cuestionario.pregunta39" type="radio" name="preg31">
+					</label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+					<input id="inlineradio1" value="3" ng-model="cuestionario.pregunta39" type="radio" name="preg31">
+					</label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+					<input id="inlineradio1" value="4" ng-model="cuestionario.pregunta39" type="radio" name="preg31">
+					</label>     
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+					<input id="inlineradio1" value="5" ng-model="cuestionario.pregunta39" type="radio" name="preg31">
+					</label>     
+				</div>
+			</div>
+			
+			<br>
+			<br>
+
+			<div class="row" align="center">
+				<div class="col-md-5" align="left">
+					¿El tiempo transcurrido desde su llegada a la recepción y hasta que le atendio el médico tratante fué?
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio" style="font-size:12px">
+					<input id="inlineradio1" value="1" ng-model="cuestionario.pregunta40"  type="radio" name="preg4">
+					5min</label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio" style="font-size:12px">
+					<input id="inlineradio1" value="1" ng-model="cuestionario.pregunta40"  type="radio" name="preg4">
+					15min</label> 
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio" style="font-size:12px">
+					<input id="inlineradio1" value="1" ng-model="cuestionario.pregunta40"  type="radio" name="preg4">
+					20min</label>    
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio" style="font-size:12px">
+					<input id="inlineradio1" value="1" ng-model="cuestionario.pregunta40"  type="radio" name="preg4">
+					30min</label> 
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio" style="font-size:12px">
+					<input id="inlineradio1" value="1" ng-model="cuestionario.pregunta40"  type="radio" name="preg4">
+					más de 35min</label>    
+				</div>
+			</div>
+			
+			<br>
+
+			<div class="row" align="center">
+				<div class="col-md-5" align="left">
+					¿En cuestión de comodidad, iluminación, limpieza las instalaciones son?
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="1" ng-model="cuestionario.pregunta41"  type="radio" name="preg5">
+	               </label>      
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="2" ng-model="cuestionario.pregunta41" type="radio" name="preg5">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="3" ng-model="cuestionario.pregunta41" type="radio" name="preg5">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="4" ng-model="cuestionario.pregunta41" type="radio" name="preg5">
+	               </label>     
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="5" ng-model="cuestionario.pregunta41" type="radio" name="preg5">
+	               </label>     
+				</div>
+			</div>
+			
+			<br>
+
+			<div class="row" align="center">
+				<div class="col-md-5" align="left">
+					¿La presentación del médico que le atendió fue?
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="1" ng-model="cuestionario.pregunta42"  type="radio" name="preg6">
+	               </label>      
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="2" ng-model="cuestionario.pregunta42" type="radio" name="preg6">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="3" ng-model="cuestionario.pregunta42" type="radio" name="preg6">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="4" ng-model="cuestionario.pregunta42" type="radio" name="preg6">
+	               </label>     
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="5" ng-model="cuestionario.pregunta42" type="radio" name="preg6">
+	               </label>     
+				</div>
+			</div>
+
+			<br>
+
+			<div class="row" align="center">
+				<div class="col-md-5" align="left">
+					¿El trato del médico que le atendió. Usted lo calificaría como?
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="1" ng-model="cuestionario.pregunta43"  type="radio" name="preg7">
+	               </label>      
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="2" ng-model="cuestionario.pregunta43" type="radio" name="preg7">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="3" ng-model="cuestionario.pregunta43" type="radio" name="preg7">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="4" ng-model="cuestionario.pregunta43" type="radio" name="preg7">
+	               </label>     
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="5" ng-model="cuestionario.pregunta43" type="radio" name="preg7">
+	               </label>     
+				</div>
+			</div>
+
+			<br>
+
+			<div class="row" align="center">
+				<div class="col-md-5" align="left">
+					¿La información proporcionada de su padecimiento y tratamiento por el médico tratante fue?
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="1" ng-model="cuestionario.pregunta44"  type="radio" name="preg8">
+	               </label>      
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="2" ng-model="cuestionario.pregunta44" type="radio" name="preg8">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="3" ng-model="cuestionario.pregunta44" type="radio" name="preg8">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="4" ng-model="cuestionario.pregunta44" type="radio" name="preg8">
+	               </label>     
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="5" ng-model="cuestionario.pregunta44" type="radio" name="preg8">
+	               </label>     
+				</div>
+			</div>
+
+			<br>
+
+			<div class="row" align="center">
+				<div class="col-md-5" align="left">
+					¿Los servicios de Rayos X fueron? 
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="1" ng-model="cuestionario.pregunta45"  type="radio" name="preg9">
+	               </label>      
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="2" ng-model="cuestionario.pregunta45" type="radio" name="preg9">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="3" ng-model="cuestionario.pregunta45" type="radio" name="preg9">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="4" ng-model="cuestionario.pregunta45" type="radio" name="preg9">
+	               </label>     
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="5" ng-model="cuestionario.pregunta45" type="radio" name="preg9">
+	               </label>     
+				</div>
+			</div>
+
+			<br>
+
+			<div class="row" align="center">
+				<div class="col-md-5" align="left">
+					¿Los servicios de Rehabilitación fueron? 
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="1" ng-model="cuestionario.pregunta46"  type="radio" name="preg10">
+	               </label>      
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="2" ng-model="cuestionario.pregunta46" type="radio" name="preg10">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="3" ng-model="cuestionario.pregunta46" type="radio" name="preg10">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="4" ng-model="cuestionario.pregunta46" type="radio" name="preg10">
+	               </label>     
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="5" ng-model="cuestionario.pregunta46" type="radio" name="preg10">
+	               </label>     
+				</div>
+			</div>
+
+			<br>
+
+			<div class="row" align="center">
+				<div class="col-md-5" align="left">
+					¿En general, el servicio ofrecido por MÉDICAVIAL fue? 
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="1" ng-model="cuestionario.pregunta47"  type="radio" name="preg11">
+	               </label>      
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="2" ng-model="cuestionario.pregunta47" type="radio" name="preg11">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="3" ng-model="cuestionario.pregunta47" type="radio" name="preg11">
+	               </label>     
+				</div>
+				<div class="col-md-1" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="4" ng-model="cuestionario.pregunta47" type="radio" name="preg11">
+	               </label>     
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio">
+	               <input id="inlineradio1" value="5" ng-model="cuestionario.pregunta47" type="radio" name="preg11">
+	               </label>     
+				</div>
+			</div>
+
+			<br>
+			<br>
+			
+			<div class="row" align="center">
+				<div class="col-md-5" align="left">
+					¿Recomendaría usted nuestro servicio?
+				</div>
+				<div class="col-md-2" align="center">				
+					<label class="radio c-radio" style="font-size:13px">
+	               <input id="inlineradio1" value="1" ng-model="cuestionario.pregunta48"  type="radio" name="preg48">
+	               Si</label>     			
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio" style="font-size:13px">
+	               <input id="inlineradio1" value="2" ng-model="cuestionario.pregunta48"  type="radio" name="preg48">
+	               Tal vez</label>   
+				</div>
+				<div class="col-md-2" align="center">
+					<label class="radio c-radio" style="font-size:13px">
+	               <input id="inlineradio1" value="3" ng-model="cuestionario.pregunta48"  type="radio" name="preg48">
+	               No</label>   
+				</div>
+				
+			</div>
+
+			<br>
+
+			<div class="row" align="right">
+				<div class="col-md-12">
+					<button class="btn btn-primary" type="submit">Guardar</button>
+				</div>
+			</div>
+	 </div>
+ </div>

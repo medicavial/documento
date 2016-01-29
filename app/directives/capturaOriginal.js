@@ -5,8 +5,8 @@ function capturaOriginal() {
     var directive = {
         restrict: 'EA',
         templateUrl: 'vistas/capturaOriginal.html',
-        controller: controlador,
-        bindToController: true // because the scope is isolated
+        controller: controlador
+        // bindToController: true // because the scope is isolated
     };
 
     return directive;

@@ -18,7 +18,13 @@ app.constant('api','http://localhost/apimv/public/api/')
 app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/')
 
 //configuramos las rutas y asignamos html y controlador segun la ruta
-app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
+app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDelegateProvider){
+
+    //configuramos ruta valida o de confinaza
+    $sceDelegateProvider.resourceUrlWhitelist([
+        'self',
+        'http://medicavial.net/registro/**'
+    ]);
 
     //Configuramos la ruta que queremos el html que le toca y que controlador usara
 	$routeProvider.when('/',{
@@ -97,8 +103,18 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider){
             templateUrl    :'vistas/facturacionEx.html',
             controller     :'facturacionExCtrl',
             resolve       :{
-                datos:function(find,loading){
+                datos:function(find,loading,$q){
                     loading.cargando('Cargando Informacion');
+                    var promesa = $q.defer(),
+                        empresas = find.empresasweb();
+
+                    $q.all([empresas]).then(function (data){
+                        // console.log(data);
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
+
                     return find.empresasweb();
                 }
             }
