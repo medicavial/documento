@@ -17,6 +17,7 @@ app.factory("auth", function($location, $rootScope, $http, webStorage, api){
                 webStorage.session.add('user', datos.USU_login);
                 webStorage.session.add('userWeb', datos.USU_usuarioWeb);
 
+                webStorage.session.add('FacturacionExpress', datos.USU_fexpress);
                 webStorage.session.add('FlujoDocumentos', datos.USU_fdocumentos);
                 webStorage.session.add('FlujoManual', datos.USU_fmanual);
                 webStorage.session.add('FlujoPagos', datos.USU_fpagos);
@@ -37,6 +38,7 @@ app.factory("auth", function($location, $rootScope, $http, webStorage, api){
                 $rootScope.userWeb = datos.USU_usuarioWeb;
 
                 //permisos del usuario                
+                $rootScope.FacturacionExpress =  datos.USU_fexpress;
                 $rootScope.FlujoDocumentos =  datos.USU_fdocumentos;
                 $rootScope.FlujoManual =  datos.USU_fmanual;
                 $rootScope.FlujoPagos =  datos.USU_fpagos;

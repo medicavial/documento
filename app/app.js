@@ -11,10 +11,10 @@ var app = angular.module('app', [
 ]);
 
 //ip prueba
-app.constant('api','http://localhost/apimv/public/api/')
+// app.constant('api','http://localhost/apimv/public/api/')
 
 //ip produccion
-// app.constant('api','http://172.17.10.15/apimv/public/api/')
+app.constant('api','http://172.17.10.15/apimv/public/api/')
 app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/')
 
 //configuramos las rutas y asignamos html y controlador segun la ruta
@@ -106,9 +106,10 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                 datos:function(find,loading,$q){
                     loading.cargando('Cargando Informacion');
                     var promesa = $q.defer(),
-                        empresas = find.empresasweb();
+                        empresas = find.empresasweb(),
+                        triages = find.triages();
 
-                    $q.all([empresas]).then(function (data){
+                    $q.all([empresas,triages]).then(function (data){
                         // console.log(data);
                         promesa.resolve(data);
                     });
@@ -594,6 +595,7 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
     $rootScope.userM = webStorage.session.get('usuarioManual');
 
     //permisos del usuario
+    $rootScope.FacturacionExpress = webStorage.session.get('FacturacionExpress');
     $rootScope.FlujoDocumentos = webStorage.session.get('FlujoDocumentos');
     $rootScope.FlujoManual = webStorage.session.get('FlujoManual');
     $rootScope.FlujoPagos = webStorage.session.get('FlujoPagos');

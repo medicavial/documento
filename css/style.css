@@ -18,6 +18,10 @@ blockquote{
     margin: 0 0 2px;
 }
 
+.white-text{
+  color: white;
+}
+
 /* Estilo para los archivos */
 
 #files{

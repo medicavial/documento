@@ -4,6 +4,7 @@ function facturacionExCtrl($scope, $rootScope, find , loading, checkFolios,datos
 
 	$rootScope.tituloFE = 'Facturación Express 2.0';
     $scope.clientes = datos[0].data;
+    $scope.triages = datos[1].data;
     loading.despedida();
     var expediente;
 
@@ -23,32 +24,33 @@ function facturacionExCtrl($scope, $rootScope, find , loading, checkFolios,datos
         $scope.vistaCuestionario = false;
         $scope.sinCaptura = true;
         $scope.sinCuestionario = true;
-
-        $scope.cuestionario = {  
-            tipoCuestionario:'',  
-            pregunta38:'',
-            pregunta39:'',
-            pregunta40:'',
-            pregunta41:'',
-            pregunta42:'',
-            pregunta43:'',
-            pregunta44:'',
-            pregunta45:'',
-            pregunta46:'',
-            pregunta47:'',
-            pregunta48:''
-        }
+        $scope.tabuladorListo  = false;
 
 
 	}
 
-
+    //funcion para capturar cuestionario
     $scope.enviarCuestionario = function(){
-        console.log($scope.cuestionario);
-        $scope.vistaCuestionario = false;
-        $scope.sinCuestionario = false;
+        
+        if ($scope.cuestionario.pase == '') {
+
+            $('#botonCue').button('loading');
+
+            operacion.capturaCuestionario($scope.cuestionario).success(function (data){
+                $scope.vistaCuestionario = false;
+                $scope.sinCuestionario = false;
+                $('#botonCue').button('loading');
+            }) 
+            
+
+        }else{
+
+            alert('Por favor captura primero antes de capturar cuestionario');
+        }
+        
     }
 
+    //consulta de ajustadores segun la compañia 
     $scope.buscaAjustadores = function(id){
         
         find.ajustadores(id).success(function (data){
@@ -57,6 +59,7 @@ function facturacionExCtrl($scope, $rootScope, find , loading, checkFolios,datos
 
     }
 
+    //consulta tipos de lesion existentes
     $scope.buscaTipoLesiones = function(id){
         
         find.tiposLesion(id).success(function (data){
@@ -65,34 +68,48 @@ function facturacionExCtrl($scope, $rootScope, find , loading, checkFolios,datos
 
     }
 
+    // busca la lesion segun el tipo de lesion 
     $scope.buscaLesiones = function(id){
         find.lesiones(id).success(function (data){
             $scope.lesiones = data;
         });
     }
 
-    $scope.verificaTabulador = function(id){
+    //verifica el tabulador 
+    $scope.verificaTabulador = function(lesion){
 
-        find.tabulador(id,expediente).success(function (data){
-            console.log(data);
+        find.tabulador(lesion.LES_claveEmp,expediente).success(function (data){
             $scope.captura.claveTabulador = data.claveTabulador;
             $scope.captura.importe = data.importe;
+            $scope.tabuladorListo  = true;
         }).error(function (data){
             alert('Intenta ingresar la lesion nuevamente por favor');
         });
     }
 
+
+    $scope.verificaDatos = function(){
+
+        if ($scope.capturaForm.$valid && $scope.tabuladorListo == true) {
+            return false
+        }else{
+            return true;
+        }
+
+    }
+
+
+    //consultamos lo que tenemos pendiente de mandar de axa 
     $scope.consultaPendientes = function(){
 
         loading.cargando('Cargando Información');
 
         find.foliosFePendientes($scope.datos).success(function (data){
-            console.log(data);
+            // console.log(data);
             $scope.listado = data.listado;
             $scope.rechazados = data.numeros.Rechazados;
             $scope.autorizados = data.numeros.AutorizadoNoFacturado;
             $scope.solicitados = data.numeros.XAutorizar;
-            $scope.buscaAjustadores($scope.datos.cliente);
             loading.despedida();
 
         }).error(function (data){
@@ -101,22 +118,22 @@ function facturacionExCtrl($scope, $rootScope, find , loading, checkFolios,datos
         });
     }
 
-	//////LLena el grid y toma filtros
+    //////LLena el grid y toma filtros
 
-	///filtros
+    ///filtros
 
-	$scope.selectos = [];
+    $scope.selectos = [];
 
-	$scope.filterOptions = {
-	    filterText: '',
-	    useExternalFilter: false
-	};
+    $scope.filterOptions = {
+        filterText: '',
+        useExternalFilter: false
+    };
 
     var csvOpts = { columnOverrides: { obj: function (o) {
-	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
-	    } },
-	    iEUrl: 'downloads/download_as_csv'
-	};
+        return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
+        } },
+        iEUrl: 'downloads/download_as_csv'
+    };
 
     var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
 
@@ -130,6 +147,11 @@ function facturacionExCtrl($scope, $rootScope, find , loading, checkFolios,datos
         find.detalleFolioWeb(expediente).success(function (data){
 
             loading.despedida();
+
+            $scope.sinCaptura = true;
+            $scope.sinCuestionario = true;
+            
+            $scope.buscaAjustadores(data.captura.EMPClave);
 
             $scope.autorizacion = {
                 usuario:$rootScope.userWeb,
@@ -155,23 +177,47 @@ function facturacionExCtrl($scope, $rootScope, find , loading, checkFolios,datos
                 }
             }
 
+
             //verificamos las lesiones disponibles segun el tipo
             $scope.buscaTipoLesiones($scope.tipoLes);
 
             
+            $scope.cuestionario = { 
+
+                tipoCuestionario:6,
+                pregunta38:'',
+                pregunta39:'',
+                pregunta40:'',
+                pregunta41:'',
+                pregunta42:'',
+                pregunta43:'',
+                pregunta44:'',
+                pregunta45:'',
+                pregunta46:'',
+                pregunta47:'',
+                pregunta48:'',
+                telefono:'',
+                pase : '',
+                folio:expediente,
+                usuario:$rootScope.id
+            }
 
             $scope.mensajeAut = '';
             $scope.mensaje = '';
             $scope.detalle = data;
             $scope.captura = data.captura;
+            $scope.suministros = data.suministros;
             $scope.edicion = true;
             $scope.vistaArchivos = false;
+            $scope.captura.triage = String(data.captura.triage);
 
         });
       
     };
 
+    // al dar click selecciona el tipo de documento que quiere ver 
     $scope.muestraArchivos  = function(archivos){
+
         $scope.vistaArchivos = false;
         //se crea un delay por que carge la imagen de forma correcta
         $timeout(function(){
@@ -181,12 +227,15 @@ function facturacionExCtrl($scope, $rootScope, find , loading, checkFolios,datos
 
     }
 
+
+    //obtiene la ruta de las imagenes que se solicitaron
     $scope.obtenerFrame = function(src) {
         return 'http://medicavial.net/registro/' + src;
     };
 
 
-    $scope.actualizaFolio = function(){
+    //guarda captura
+    $scope.capturaFE = function(){
 
         $('#botonAct').button('loading');
 
@@ -194,10 +243,33 @@ function facturacionExCtrl($scope, $rootScope, find , loading, checkFolios,datos
         $scope.detalle.expediente.siniestro = $scope.captura.Siniestro;
         $scope.detalle.expediente.reporte = $scope.captura.Reporte;
 
+
+        var datos = {
+            folio:expediente,
+            captura:$scope.captura,
+            suministros:$scope.suministros,
+            usuario:$rootScope.id
+        };
+
+
+        //actualizamos datos en web para verificar que la informacion este actualizada
         facturacionExpress.actualizaFolio($scope.detalle.expediente).success(function (data){
-            $('#botonAct').button('reset');
-            $scope.mensaje = data.respuesta;
-            $scope.sinCaptura = false;
+
+            //despues de que todo salio bien en web guardamos en proceso interno la captura de FE
+            facturacionExpress.captura(datos).success(function (data){
+                
+                $('#botonAct').button('reset');
+                $scope.mensaje = data.respuesta;
+                $scope.cuestionario.pase = data.clavePase;
+                //quitamos el true de sinCaptura por que ya esta capturado XD 
+                $scope.sinCaptura = false;
+                $('#DatosModal').modal('hide');
+
+            }).error(function (data){
+                alert('Surgio un problema intente nuevamente');
+                $('#botonAct').button('reset');
+            })
+
         }).error(function (data){
             alert('Surgio un problema intente nuevamente');
             $('#botonAct').button('reset');
@@ -238,18 +310,19 @@ function facturacionExCtrl($scope, $rootScope, find , loading, checkFolios,datos
         rowTemplate: rowTempl,
     	columnDefs: [
                     { field:'Exp_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: false },
-                    { field:'Exp_fecreg', displayName:'Fecha Atención', width: 120 },
-                    { field:'UNI_nombreMV', displayName:'Unidad', width: 180 },
-                    { field:'DocumentosDigitales', displayName:'Digitalizado', width: 120 },
-                    { field:'EXP_fechaCaptura', displayName:'Fecha Captura', width: 120 },
-                    { field:'Exp_poliza', displayName:'Poliza', width: 120 },
-                    { field:'Exp_siniestro', displayName:'Siniestro', width: 120 },
-                    { field:'Exp_reporte', displayName:'Reporte', width: 120 },
-                    { field:'Exp_completo', displayName:'Lesionado', width: 250 },
-                    { field:'RIE_nombre', displayName:'Riesgo', width: 120 },
-                    { field:'Triage_nombre', displayName:'Triage', width: 120 },
-                    { field:'EXP_costoEmpresa', displayName:'Costo', width: 120 },
-                    { field:'UNI_propia', width: 120,visible:false }
+                    { field:'Exp_fecreg', displayName:'Fecha Atención', width: 120, pinned:false },
+                    { field:'FExpedicion', displayName:'Fecha Expedición', width: 120, pinned:false },
+                    { field:'UNI_nombreMV', displayName:'Unidad', width: 180, pinned:false },
+                    { field:'DocumentosDigitales', displayName:'Digitalizado', width: 120, pinned:false },
+                    { field:'EXP_fechaCaptura', displayName:'Fecha Captura', width: 120, pinned:false },
+                    { field:'Exp_poliza', displayName:'Poliza', width: 120, pinned:false },
+                    { field:'Exp_siniestro', displayName:'Siniestro', width: 120, pinned:false },
+                    { field:'Exp_reporte', displayName:'Reporte', width: 120, pinned:false },
+                    { field:'Exp_completo', displayName:'Lesionado', width: 250, pinned:false },
+                    { field:'RIE_nombre', displayName:'Riesgo', width: 120, pinned:false },
+                    { field:'Triage_nombre', displayName:'Triage', width: 120, pinned:false },
+                    { field:'EXP_costoEmpresa', displayName:'Costo', width: 120, pinned:false },
+                    { field:'UNI_propia', width: 120,visible:false}
         ],
         showFooter: true,
         showFilter:false

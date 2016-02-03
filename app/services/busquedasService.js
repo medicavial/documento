@@ -115,6 +115,9 @@ app.factory("find", function($http,api){
         tiposLesion:function(tipo){
             return $http.get(api + 'consulta/tipoLesion/'+tipo);
         },
+        triages:function(){
+            return $http.get(api + 'consulta/triage');
+        },
         ultimoticket:function(){
             return $http.get(api +'tickets/maximo');
         },

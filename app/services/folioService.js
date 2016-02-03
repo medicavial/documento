@@ -718,10 +718,10 @@ app.factory("facturacionExpress", function($q,$http,find,api){
             return $http.put(api + 'facturacionExpress/actualizaFolio', datos,{timeout: 10000});
         },
         captura:function(datos){
-            return $http.put(api + 'facturacionExpress/captura', datos,{timeout: 10000});
+            return $http.post(api + 'facturacionExpress/captura', datos,{timeout: 50000});
         },
         capturaCuestionario:function(datos){
-            return $http.put(api + 'facturacionExpress/capturaCuestionario', datos,{timeout: 10000});
+            return $http.post(api + 'facturacionExpress/capturaCuestionario', datos,{timeout: 10000});
         }
     }
 });
