@@ -14,6 +14,11 @@ body{
 	font-family: 'SourceSansPro', sans-serif;
 }
 
+img {
+  cursor: -webkit-zoom-in; 
+  cursor: -moz-zoom-in;
+}
+
 blockquote{
     margin: 0 0 2px;
 }
@@ -21,6 +26,33 @@ blockquote{
 .white-text{
   color: white;
 }
+
+
+#izquierda-pantalla{
+  position: absolute;
+  left: 0;
+  top: 0;
+  width: 50%;
+  z-index: 2;
+  overflow: auto;
+  height: 600px;
+}
+
+#izquierda-pantalla .rotado{
+     -moz-transform: rotate(-180deg);
+     -o-transform: rotate(-180deg);
+     -webkit-transform: rotate(-180deg);
+     transform: rotate(-180deg);
+}
+
+#derecha-pantalla{
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50%;
+  z-index: 2;
+}
+
 
 /* Estilo para los archivos */
 

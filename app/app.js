@@ -11,7 +11,7 @@ var app = angular.module('app', [
 ]);
 
 //ip prueba
-// app.constant('api','http://localhost/apimv/public/api/')
+// app.constant('api','http://172.17.10.52/apimv/public/api/')
 
 //ip produccion
 app.constant('api','http://172.17.10.15/apimv/public/api/')
@@ -115,8 +115,44 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     });
 
                     return promesa.promise;
+                }
+            }
+    });
 
-                    return find.empresasweb();
+
+    $routeProvider.when('/facturacionEx/autorizados',{
+            templateUrl    :'vistas/autorizados.html',
+            controller     :'autorizadosCtrl',
+            resolve       :{
+                datos:function(facturacionExpress,loading,webStorage){
+                    loading.cargando('Cargando Informacion');
+                    var datos = JSON.parse( webStorage.local.get('facturacionExpressData') );
+                    return facturacionExpress.autorizados(datos);
+                }
+            }
+    });
+
+    $routeProvider.when('/facturacionEx/rechazados',{
+            templateUrl    :'vistas/rechazados.html',
+            controller     :'rechazadosCtrl',
+            resolve       :{
+                datos:function(facturacionExpress,loading,webStorage){
+                    loading.cargando('Cargando Informacion');
+                    var datos = JSON.parse( webStorage.local.get('facturacionExpressData') );
+                    return facturacionExpress.rechazados(datos);
+                }
+            }
+    });
+
+
+    $routeProvider.when('/facturacionEx/solicitados',{
+            templateUrl    :'vistas/solicitados.html',
+            controller     :'solicitadosCtrl',
+            resolve       :{
+                datos:function(facturacionExpress,loading,webStorage){
+                    loading.cargando('Cargando Informacion');
+                    var datos = JSON.parse( webStorage.local.get('facturacionExpressData') );
+                    return facturacionExpress.solicitados(datos);
                 }
             }
     });
@@ -431,9 +467,6 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             }
     });
 
-    $routeProvider.when('/solicitados',{
-            templateUrl    :'vistas/solicitados.html'
-    });
 
     $routeProvider.when('/seguimiento',{
             templateUrl   : 'vistas/seguimiento.html',

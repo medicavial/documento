@@ -711,17 +711,32 @@ app.factory("tickets", function($q,$http,find,api){
 
 app.factory("facturacionExpress", function($q,$http,find,api){
     return{
-        solicitarAutorizacion:function(datos){
-            return $http.post(api + 'facturacionExpress/solicitarAutorizacion', datos,{timeout: 10000});
-        },
         actualizaFolio:function(datos){
             return $http.put(api + 'facturacionExpress/actualizaFolio', datos,{timeout: 10000});
+        },
+        autorizados:function(datos){
+            return $http.post(api + 'facturacionExpress/autorizados', datos,{timeout: 10000});
         },
         captura:function(datos){
             return $http.post(api + 'facturacionExpress/captura', datos,{timeout: 50000});
         },
+        capturaAjustador:function(datos){
+            return $http.post(api + 'facturacionExpress/capturaAjustador', datos,{timeout: 10000});
+        },
         capturaCuestionario:function(datos){
             return $http.post(api + 'facturacionExpress/capturaCuestionario', datos,{timeout: 10000});
+        },
+        rechazados:function(datos){
+            return $http.post(api + 'facturacionExpress/rechazados', datos,{timeout: 10000});
+        },
+        solicitarAutorizacion:function(datos){
+            return $http.post(api + 'facturacionExpress/solicitarAutorizacion', datos,{timeout: 10000});
+        },
+        solicitarAutorizacionRechazos:function(datos){
+            return $http.post(api + 'facturacionExpress/solicitarAutorizacionRechazos', datos,{timeout: 10000});
+        },
+        solicitados:function(datos){
+            return $http.post(api + 'facturacionExpress/solicitados', datos,{timeout: 10000});
         }
     }
 });
