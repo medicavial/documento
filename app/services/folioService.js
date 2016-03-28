@@ -718,7 +718,7 @@ app.factory("facturacionExpress", function($q,$http,find,api){
             return $http.post(api + 'facturacionExpress/autorizados', datos,{timeout: 10000});
         },
         captura:function(datos){
-            return $http.post(api + 'facturacionExpress/captura', datos,{timeout: 50000});
+            return $http.post(api + 'facturacionExpress/captura', datos,{timeout: 100000});
         },
         capturaAjustador:function(datos){
             return $http.post(api + 'facturacionExpress/capturaAjustador', datos,{timeout: 10000});

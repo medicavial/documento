@@ -167,7 +167,6 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             $scope.edicion = false;
             $scope.vistaArchivos = false;
             $scope.vistaCuestionario = false;
-            $scope.sinCaptura = true;
             $scope.sinCuestionario = true;
             $scope.tabuladorListo  = false;
             $scope.nuevoAjustador = false;
