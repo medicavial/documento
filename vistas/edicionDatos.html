@@ -1,0 +1,100 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+	<div class="titulos">
+		<a href="#/" class="icon-arrow-left"></a>
+		<h1>{{tituloEdic}}</h1>
+	</div>
+
+	<div class="row">
+		<div class="col-md-4 col-xs-4" >
+			<input type="text" ng-model="folio" class="form-control" placeholder="Folio" folio>
+		</div>
+
+		<div class="col-md-4 col-xs-4">
+			<button type="submit" id="boton" class="btn btn-primary"  data-loading-text="Consultando...">Consultar
+			</button>
+		</div>
+
+		<div class="col-md-2">
+			<img ng-show="cargar" class="animate-show" src="images/cargando.gif">
+		</div>
+	</div>
+
+	<br>
+
+	<div class="loading-container" ng-show="cargando">
+	    <div class="loading"></div>
+	    <div id="loading-text">Cargando</div>
+	</div>
+	
+	<form role="form">
+
+		<div class="row" >
+			<div class="col-md-4 col-xs-4">
+				<input type="text" ng-model="nombre" class="form-control" placeholder="Nombre" nombre>
+			</div>
+
+			<div class="col-md-4 col-xs-4">
+				<input type="text" ng-model="apellidoP" class="form-control" placeholder="Apellido Paterno"
+				apellidoP>
+			</div>
+
+			<div class="col-md-4 col-xs-4" >
+				<input type="text" ng-model="apellidoM" class="form-control" placeholder="Apellido Materno" apellidoM>
+			</div>
+		</div>
+
+		<br>
+
+		<div class="row" >
+			<div class="col-md-4 col-xs-4">
+				<input type="text" ng-model="reporte" class="form-control" placeholder="Reporte" reporte>
+			</div>
+
+			<div class="col-md-4 col-xs-4">
+				<input type="text" ng-model="piliza" class="form-control" placeholder="Poliza" poliza>
+			</div>
+
+			<div class="col-md-4 col-xs-4" >
+				<input type="text" ng-model="cliente" class="form-control" placeholder="Cliente" cliente>
+			</div>
+		</div>
+
+		<br>
+
+		<div class="row" >
+			<div class="col-md-4 col-xs-4">
+				<input type="text" ng-model="producto" class="form-control" placeholder="Producto" nombre>
+			</div>
+
+			<div class="col-md-4 col-xs-4">
+				<input type="text" ng-model="costoEmp" class="form-control" placeholder="Costo Empresa" apellidoP>
+			</div>
+
+			<div class="col-md-4 col-xs-4" >
+				<input type="text" ng-model="fechNacim" class="form-control" placeholder="Fecha Nacimiento" fechaNacim>
+			</div>
+		</div>
+
+		<br>
+
+		<div class="row" >
+			<div class="col-md-4 col-xs-4">
+				<input type="text" ng-model="riesgo" class="form-control" placeholder="Riesgo" riesgo>
+			</div>
+
+			<div class="col-md-4 col-xs-4">
+				<input type="text" ng-model="posicion" class="form-control" placeholder="Posición" posicion>
+			</div>
+		</div>
+
+		<br>
+
+		<div class="col-md-12" "col-xs-6" align="center">
+			<button type="submit" id="boton" class="btn btn-success btn-group"  data-loading-text="Actualizando...">Actualizar</button>
+		</div>
+
+	</form>
+
+</div>	
+
+</div>
