@@ -256,6 +256,10 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'formatoQualitasIncompletosCtrl'   
     });
 
+    $routeProvider.when('/reportes/facturas',{
+            templateUrl   : 'vistas/facturas.html',
+            controller    : 'facturasCtrl'   
+    });
 
     $routeProvider.when('/generaticket',{
             templateUrl   : 'vistas/ticket.html',
