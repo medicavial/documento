@@ -10,7 +10,7 @@
 		</div>
 
 		<div class="col-md-4 col-xs-4">
-			<button type="submit" id="boton" class="btn btn-primary"  data-loading-text="Consultando...">Consultar
+			<button ng-click="ShowForm()" ng-hide="formVisible" type="submit" id="boton" class="btn btn-primary"  data-loading-text="Consultando...">Consultar
 			</button>
 		</div>
 
@@ -26,7 +26,7 @@
 	    <div id="loading-text">Cargando</div>
 	</div>
 	
-	<form role="form">
+	<form role="form" ng-show="formVisible">
 
 		<div class="row" >
 			<div class="col-md-4 col-xs-4">
@@ -90,11 +90,7 @@
 		<br>
 
 		<div class="col-md-12" "col-xs-6" align="center">
-			<button type="submit" id="boton" class="btn btn-success btn-group"  data-loading-text="Actualizando...">Actualizar</button>
-		</div>
-
+			<button ng-click="Actualiza()" type="submit" id="boton" class="btn btn-success btn-group"  data-loading-text="Actualizando...">Actualizar</button>
+		</div>	
 	</form>
-
 </div>	
-
-</div>
