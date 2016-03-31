@@ -257,8 +257,8 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
     });
 
     $routeProvider.when('/reportes/facturas',{
-            templateUrl   : 'vistas/facturas.html',
-            controller    : 'facturasCtrl'   
+            templateUrl   : 'vistas/reporteFacturas.html',
+            controller    : 'reporteFacturasCtrl'   
     });
 
     $routeProvider.when('/generaticket',{

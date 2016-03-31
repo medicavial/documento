@@ -154,6 +154,9 @@ app.factory("find", function($http,api){
         listaPagos:function(datos){
             return $http.post(api + 'flujopagos/fechapagos',datos);
         },
+        reporteFacturas:function(datos){
+            return $http.post(api + 'reportes/facturas',datos);
+        },
         reporteTickets:function(){
             return $http.get(api + 'reportes/tickets');
         },
