@@ -5,7 +5,7 @@ function capturaOriginal() {
     var directive = {
         restrict: 'EA',
         templateUrl: 'vistas/capturaOriginal.html',
-        controller: controlador
+        controller: controladorOriginal
         // bindToController: true // because the scope is isolated
     };
 
@@ -13,9 +13,9 @@ function capturaOriginal() {
 
 }
 
-controlador.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api'];;
+controladorOriginal.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api'];;
 
-function controlador($scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api) {
+function controladorOriginal($scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api) {
     // Injecting $scope just for comparison
     //muestra Ventan de alta de Original
     $('#myModal10').on('hidden.bs.modal', function (e) {

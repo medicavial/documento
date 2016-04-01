@@ -29,7 +29,7 @@
 	<body class="ng-cloak">
 		
 		<!--panel de usuario -->
-		<div ng-show="username != '' " class="animate-show">
+		<div ng-if="username != '' " class="animate-show">
 			<div id="panelusuario">
 				<a href="" ng-click="logout()" class="icon-switch" id="tooltip1" rel="tooltip"  title="Cerrar Sesión"></a>
 				<!-- <a href="" ng-click="doDishes()" class="icon-newspaper" id="tooltip5" rel="tooltip"  title="Buscqueda Global"  genie-wish></a> -->
@@ -137,7 +137,7 @@
 		</div><!-- /.modal -->
 		
 		<!-- chat -->
-		<div id="chat" ng-show="username != ''">
+		<div id="chat" ng-if=" username != '' && username == 'Administrador' ">
 	        <chat-mv usuario="username"></chat-mv>
 	    </div>
 
