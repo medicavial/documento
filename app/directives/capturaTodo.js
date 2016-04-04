@@ -360,7 +360,7 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
 
         if ($scope.formOriginalTodo.$valid) {
 
-            $('#boton2').button('loading');
+            $('#botonGuardaTodo').button('loading');
             $scope.mensaje = '';
             // console.log($scope.original);
             // Verificamos la informacion antes de guardar
@@ -388,21 +388,21 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
                         
                             $scope.mensaje = 'Folio registrado correctamente con el ticket ' + $scope.ticket.folioIn;
                             $scope.tipoalerta = 'alert-success';
-                            $('#boton2').button('reset');            
+                            $('#botonGuardaTodo').button('reset');            
                             $scope.limpiaVariables();
 
                         }).error( function (data){
 
                             $scope.mensaje = 'El documento se gurado bien pero ocurrio un error al guardar el ticket intenta registrarlo de forma independiente';
                             $scope.tipoalerta = 'alert-warning';
-                            $('#boton2').button('reset');
+                            $('#botonGuardaTodo').button('reset');
                             $scope.limpiaVariables();
 
                         });
 
                     })
                     .error(function (data){
-                        $('#boton2').button('reset');
+                        $('#botonGuardaTodo').button('reset');
                         alert('Ocurrion Un Problema al guardar el documento intentalo nuevamente');
                     });
 
@@ -410,13 +410,13 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
                 function (error){
                     $scope.mensaje = error.mensaje;
                     $scope.tipoalerta = error.tipoalerta;
-                    $('#boton2').button('reset');
+                    $('#botonGuardaTodo').button('reset');
                 });
 
             }, function (error) {
                 $scope.mensaje = error.mensaje;
                 $scope.tipoalerta = error.tipoalerta;
-                $('#boton2').button('reset');
+                $('#botonGuardaTodo').button('reset');
             });
 
         };
