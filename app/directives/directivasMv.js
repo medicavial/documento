@@ -267,6 +267,7 @@ app.directive('descarga', function(){
             }
         }
     }
+    
 });
 
 app.directive('fileUpload', function () {
@@ -283,6 +284,7 @@ app.directive('fileUpload', function () {
             });
         }
     };
+
 });
 
 
@@ -302,6 +304,7 @@ app.directive('ngKeydown', function() {
              });
         }
     };
+
 });
 
 
@@ -439,6 +442,7 @@ app.directive('excel', function(){
             }
         }
     }
+
 });
 
 
@@ -523,6 +527,7 @@ app.directive('excel2', function(){
             }
         }
     }
+
 });
 
 
@@ -634,6 +639,7 @@ app.directive('money', function () {
     require: 'ngModel',
     link: link
   };
+
 });
 
 

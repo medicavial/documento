@@ -57,7 +57,7 @@ blockquote{
 /* Estilo para los archivos */
 
 #files{
-  min-height: 1000px;
+  height: 500px;
   z-index: 2;
 }
 

@@ -85,6 +85,28 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
         }).error(function (data){
             alert('Intenta ingresar la lesion nuevamente por favor');
         });
+
+    }
+
+    $scope.imagen = function(archivo){
+        //se obtiene la extension del archivo
+        var extn = archivo.split(".").pop();
+
+        if (extn == 'jpg' || extn == 'jpeg' || extn == 'png' || extn == 'PNG' ) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    $scope.file = function(archivo){
+        //se obtiene la extension del archivo
+        var extn = archivo.split(".").pop();
+        if (extn == 'pdf' || extn == 'PDF') {
+            return true;
+        }else{
+            return false;
+        }
     }
 
 
