@@ -160,7 +160,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     $routeProvider.when('/edicionDatos',{
             templateUrl   : 'vistas/edicionDatos.html',
-            controller    : 'edicionDatosCtrl'   
+            controller    : 'edicionDatosCtrl',  
     });
 
     $routeProvider.when('/flujo',{

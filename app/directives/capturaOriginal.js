@@ -197,7 +197,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         console.log($scope.original);
         if ($scope.formCapturaOriginal.$valid) {
 
-            $('#boton2').button('loading');
+            $('#botonGuardaDatos').button('loading');
             $scope.mensaje = '';
             //Verificamos la informacion antes de guardar
             checkFolios.verificaInfo($scope.original.cliente, $scope.original.producto, $scope.original.escolaridad, $scope.original.fecha, $scope.original.folio)
@@ -216,7 +216,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
                     alta.success(function (data){
 
-                        $('#boton2').button('reset');
+                        $('#botonGuardaDatos').button('reset');
                         $scope.mensaje = data.respuesta;
                         $scope.tipoalerta = 'alert-success';
                         $scope.limpiaVariables();
@@ -225,7 +225,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
                     })
                     .error(function (data){
-                        $('#boton2').button('reset');
+                        $('#botonGuardaDatos').button('reset');
                         alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
                     });
 
@@ -233,13 +233,13 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                 function (error){
                     $scope.mensaje = error.mensaje;
                     $scope.tipoalerta = error.tipoalerta;
-                    $('#boton2').button('reset');
+                    $('#botonGuardaDatos').button('reset');
                 });
 
             }, function (error) {
                 $scope.mensaje = error.mensaje;
                 $scope.tipoalerta = error.tipoalerta;
-                $('#boton2').button('reset');
+                $('#botonGuardaDatos').button('reset');
             });
 
         };
