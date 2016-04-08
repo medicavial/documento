@@ -5,6 +5,7 @@ function capturaOriginal() {
     var directive = {
         restrict: 'EA',
         templateUrl: 'vistas/capturaOriginal.html',
+        scope:{},
         controller: controladorOriginal
         // bindToController: true // because the scope is isolated
     };
@@ -216,11 +217,11 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
                     alta.success(function (data){
 
-                        $('#botonGuardaDatos').button('reset');
                         $scope.mensaje = data.respuesta;
                         $scope.tipoalerta = 'alert-success';
                         $scope.limpiaVariables();
                         $scope.original.folio = '';
+                        $('#botonGuardaDatos').button('reset');
                         $('#folioO').focus();
 
                     })

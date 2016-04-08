@@ -43,7 +43,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 }
 
                 // si se envia a pagos o facturacion pero no esta capturado
-                else if( (areaRecibe == 5 || areaRecibe == 6) && documento.DOC_situacionoriginal == 0){
+                else if( (areaRecibe == 5 || areaRecibe == 6 || areaRecibe == 4) && documento.DOC_situacionoriginal == 0){
 
                     foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puedo generar envio por que no esta capturado'});
                 
