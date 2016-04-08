@@ -7,8 +7,7 @@ var app = angular.module('app', [
     'ngIdle',
     'ngProgress',
     'webStorageModule',
-    'uxGenie',
-    'chat'
+    'uxGenie'
 ]);
 
 //ip prueba

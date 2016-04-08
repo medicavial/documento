@@ -378,21 +378,22 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
                         var alta = $http.post(api+'actualizaoriginal',data.info);
                     };
 
-                    alta.success(function (data){
+                    alta.then(function (data){
 
-                        $scope.original.folio = '';
                         $('#folioO').focus();
 
                         // console.log($scope.ticket);
                         tickets.guardar($scope.ticket).success( function (data){
                         
+                            $scope.original.folio = '';
                             $scope.mensaje = 'Folio registrado correctamente con el ticket ' + $scope.ticket.folioIn;
                             $scope.tipoalerta = 'alert-success';
                             $('#botonGuardaTodo').button('reset');            
                             $scope.limpiaVariables();
 
                         }).error( function (data){
-
+                            
+                            $scope.original.folio = '';
                             $scope.mensaje = 'El documento se gurado bien pero ocurrio un error al guardar el ticket intenta registrarlo de forma independiente';
                             $scope.tipoalerta = 'alert-warning';
                             $('#botonGuardaTodo').button('reset');
@@ -400,10 +401,11 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
 
                         });
 
-                    })
-                    .error(function (data){
+                    },function (data){
+
                         $('#botonGuardaTodo').button('reset');
                         alert('Ocurrion Un Problema al guardar el documento intentalo nuevamente');
+
                     });
 
                 },

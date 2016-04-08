@@ -17,6 +17,7 @@ controladorBuscador.$inject = ['$scope', '$rootScope', '$filter', '$location', '
 
 function controladorBuscador($scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api, tickets) {
 
+    $rootScope.folioGlobal = '';
     $scope.tipo = 'lesionado';
     $scope.folio = '';
 

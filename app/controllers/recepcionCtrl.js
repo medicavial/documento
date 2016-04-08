@@ -243,12 +243,12 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 
 					alta.success(function (data){
 
-						$('#boton2').button('reset');
 						$scope.mensaje = data.respuesta;
 					    $scope.tipoalerta = 'alert-success';
 					    $scope.limpiaVariables();
 					    $scope.original.folio = '';
 					    $('#folioO').focus();
+						$('#boton2').button('reset');
 
 					})
 					.error(function (data){
