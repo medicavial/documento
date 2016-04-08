@@ -227,7 +227,12 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                     })
                     .error(function (data){
                         $('#botonGuardaDatos').button('reset');
-                        alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+
+                        if (data.respuesta) {
+                            alert(data.respuesta);
+                        }else{
+                            alert('Existe Un Problema de Conexion Intente Cargar Nuevamente la Pagina');
+                        }
                     });
 
                 },
