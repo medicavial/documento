@@ -43,6 +43,9 @@ app.factory("find", function($http,api){
         folioweb:function(folio){
             return $http.get(api+'consulta/folioweb/'+folio);
         },
+        // editaDatos:function(folio){
+        //     return $http.get(api+'consulta/editaDatos/'+folio);
+        // },
         foliosFePendientes:function(datos){
             return $http.post(api + 'facturacionExpress/pendientes',datos);
         },
