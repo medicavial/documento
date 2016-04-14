@@ -31,6 +31,9 @@ app.factory("find", function($http,api){
         detalleticketpagos:function(folioint,folioweb){
             return $http.get( api + 'tickets/pagos/detalle/' + folioint + '/' + folioweb);
         },
+        editaDatos:function(folio){
+            return $http.get(api+'consulta/editaDatos/'+folio);
+        },
         empresas:function(){
             return $http.get(api+'consulta/empresas');
         },
@@ -43,9 +46,6 @@ app.factory("find", function($http,api){
         folioweb:function(folio){
             return $http.get(api+'consulta/folioweb/'+folio);
         },
-        // editaDatos:function(folio){
-        //     return $http.get(api+'consulta/editaDatos/'+folio);
-        // },
         foliosFePendientes:function(datos){
             return $http.post(api + 'facturacionExpress/pendientes',datos);
         },
@@ -99,6 +99,9 @@ app.factory("find", function($http,api){
         },
         referenciaxunidad:function(unidad){
             return $http.get(api + 'consulta/referencia/'+ unidad);
+        },
+        riesgos:function(){
+            return $http.get(api+'consulta/riesgos');
         },
         statuspagos:function(){
             return $http.get(api + 'tickets/pagos/status');

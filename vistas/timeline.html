@@ -4,10 +4,11 @@
 		<h1>{{tituloTL}}</h1>
 	</div>
 	<div class="animate-show">
-		<h3>{{info.his_folio}} - {{info.DOC_lesionado}} - {{info.EMP_NombreCorto}} - {{info.UNI_nombrecorto}} con E{{info.his_etapa}}</h3>
+		<h3>{{info.His_folio}} - {{info.DOC_lesionado}} - {{info.EMP_NombreCorto}} - {{info.UNI_nombrecorto}} con Etapa {{info.His_etapa}} - {{info.his_entrega}}</h3>
 			<ul class="cbp_tmtimeline">
 				<li class="animate-repeat" ng-repeat="historia in historias">
-					<time class="cbp_tmtime"><span>{{historia.his_fecha | date:'shortDate'}}</span> <span>{{historia.his_hora}}</span></time>
+					<time class="cbp_tmtime"><span>{{historia.his_fecha | date:'shortDate'}}</span> 
+						<span></span></time>
 					<div class="cbp_tmicon cbp_tmicon-earth"></div>
 					<div class="cbp_tmlabel">
 						<h2>{{historia.his_titulo}}</h2>

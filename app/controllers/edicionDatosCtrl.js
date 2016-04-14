@@ -1,24 +1,30 @@
-app.controller('edicionDatosCtrl', function ($scope, loading) {
-	
-	$scope.Actualiza=function(){
-		$scope.formVisible=false;
-		console.log($scope.formVisible)
-		// loading.despedida();
-	}
-	
-	// $scope.formVisible=false;
+app.controller('edicionDatosCtrl', function ($scope, loading, find) {
 
-	$scope.ShowForm=function() {
-		// loading.cargando('Cargando...');
+	$scope.consultaDatos = function(){
+		$('#boton').button('loading');
+		find.editaDatos($scope.folio).success(function (data){
+			console.log(data)
+			$('#boton').button('reset');
+
+			$scope.AFE_nombre = data.lesionado;
+			$scope.AFE_fechaNac = data.fechaNacimiento;
+			$scope.DAS_poliza = data.poliza;
+			$scope.EMP_claveint = data.cliente;
+			$scope.DAS_reporte = data.reporte;
+			$scope.PRO_claveint = data.producto;
+			$scope.RIE_clave = data.riesgo;
+
+		});
+
 		$scope.formVisible=true;
+    }
+
+    $scope.Actualiza=function(){
+    	$scope.formVisible=false;
 		console.log($scope.formVisible)
 	}
 
-	$('.btn').on('click', function() {
-		var $this = $(this);
-		$this.button('loading');
-		setTimeout(function() {
-			$this.button('reset');
-			}, 3000);
-	})
+	$scope.ShowForm=function(){
+		console.log($scope.formVisible)
+	}
 });

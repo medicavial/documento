@@ -1,16 +1,18 @@
-<div id="contenedor" class="main" ng-init="inicio()">
+<div id="contenedor" class="main">
 	<div class="titulos">
 		<a href="#/" class="icon-arrow-left"></a>
-		<h1>Búsqueda de Folios</h1>
+		<h1>Edición de Datos</h1>
 	</div>
 
+	<label>Busqueda por Folio</label>
 	<div class="row">
 		<div class="col-md-4 col-xs-4" >
-			<input type="text" ng-model="folio" class="form-control" placeholder="Folio" folio>
+			<input type="text" ng-model="folio" class="form-control" placeholder="Folio">
 		</div>
 
 		<div class="col-md-4 col-xs-4">
-			<button ng-click="ShowForm()" ng-hide="formVisible" type="submit" id="boton" class="btn btn-primary"  data-loading-text="Consultando...">Consultar
+			<button ng-disabled="folio.length == 0" ng-click="consultaDatos()" type="submit" id="boton" class="btn 
+			btn-primary" data-loading-text="Consultando...">Consultar
 			</button>
 		</div>
 
@@ -27,69 +29,67 @@
 	</div>
 	
 	<form role="form" ng-show="formVisible">
+		<fieldset>
+			<legend></legend>
+			<div class="row" >
+				<div class="col-md-4 col-xs-4">
+					<label>Nombre Completo</label>
+					<input type="text" ng-model="AFE_nombre" class="form-control" required>
+				</div>
 
-		<div class="row" >
-			<div class="col-md-4 col-xs-4">
-				<input type="text" ng-model="nombre" class="form-control" placeholder="Nombre">
+				<div class="col-md-4 col-xs-4" >
+					<label>Fecha de Nacimiento</label>
+					<input type="text" ng-model="AFE_fechaNac" class="form-control">
+				</div>
+
+				<div class="col-md-4 col-xs-4">
+					<label>Póliza</label>
+					<input type="text" ng-model="DAS_poliza" class="form-control" required>
+				</div>
 			</div>
 
-			<div class="col-md-4 col-xs-4">
-				<input type="text" ng-model="apellidoP" class="form-control" placeholder="Apellido Paterno">
+			<br>
+
+			<div class="row" >
+				<div class="col-md-4 col-xs-4">
+					<label>Cliente</label>
+					<select class="form-control"  ng-model="EMP_claveint" ng-options="cliente as cliente.nombre for	cliente in clientes" ng-change="filtra()">
+						<option value="" disabled selected></option>
+					</select>
+				</div>
+
+				<div class="col-md-4 col-xs-4">
+					<label>Reporte</label>
+					<input type="text" ng-model="DAS_reporte" class="form-control" required>
+				</div>
+
+				<div class="col-md-4 col-xs-4">
+					<label>Producto</label>
+					<select class="form-control" id="producto" ng-model="PRO_claveint" ng-change="filtra()" ng-options="producto as producto.nombre for producto in productosini">
+						<option value="" disabled selected></option>
+					</select>
+				</div>
 			</div>
 
-			<div class="col-md-4 col-xs-4" >
-				<input type="text" ng-model="apellidoM" class="form-control" placeholder="Apellido Materno">
-			</div>
-		</div>
+			<br>
 
-		<br>
-
-		<div class="row" >
-			<div class="col-md-4 col-xs-4">
-				<input type="text" ng-model="reporte" class="form-control" placeholder="Reporte">
-			</div>
-
-			<div class="col-md-4 col-xs-4">
-				<input type="text" ng-model="poliza" class="form-control" placeholder="Póliza">
+			<div class="row" >
+				<div class="col-md-4 col-xs-4">
+					<label>Riesgo</label>
+					<select class="form-control" id="riesgo" ng-model="RIE_clave" ng-change="filtra()" ng-
+					options="">
+						<option value="" disabled selected></option>
+					</select>
+				</div>
 			</div>
 
-			<div class="col-md-4 col-xs-4" >
-				<input type="text" ng-model="cliente" class="form-control" placeholder="Cliente">
+			<div class="row" align="center">
+				<div class="footer" role="group" aria-label="...">
+					<button ng-disabled="!folio" ng-click="Actualiza()" type="submit" id="boton" class="btn btn-success" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Actualizando...">Actualizar</button>
+
+					<button ng-disabled="!folio" type="Reset" ng-click="Actualiza()" id="btnlimpia" class="btn btn-info">Limpiar</button>
+				</div>
 			</div>
-		</div>
-
-		<br>
-
-		<div class="row" >
-			<div class="col-md-4 col-xs-4">
-				<input type="text" ng-model="producto" class="form-control" placeholder="Producto">
-			</div>
-
-			<div class="col-md-4 col-xs-4">
-				<input type="text" ng-model="costoEmp" class="form-control" placeholder="Costo Empresa">
-			</div>
-
-			<div class="col-md-4 col-xs-4" >
-				<input type="text" ng-model="fechNacim" class="form-control" placeholder="Fecha Nacimiento">
-			</div>
-		</div>
-
-		<br>
-
-		<div class="row" >
-			<div class="col-md-4 col-xs-4">
-				<input type="text" ng-model="riesgo" class="form-control" placeholder="Riesgo">
-			</div>
-
-			<div class="col-md-4 col-xs-4">
-				<input type="text" ng-model="posicion" class="form-control" placeholder="Posición">
-			</div>
-		</div>
-
-		<br>
-
-		<div class="col-md-12" "col-xs-6" align="center">
-			<button ng-click="Actualiza()" type="submit" id="boton" class="btn btn-success btn-lg" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Actualizando..." >Actualizar</button>
-		</div>	
+		</fieldset>
 	</form>
 </div>	
