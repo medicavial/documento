@@ -477,6 +477,13 @@
 						<button type="button" class="btn btn-danger" ng-click="nuevoAjustador = !nuevoAjustador"><i class="icon-cancel-circle"></i></button>
 					</div>
 				</div>
+				<div class="row">
+                    <div class="col-md-12">
+						<label>Diagnostico</label>
+						<textarea class="form-control" ng-model="captura.Dx" rows="3" required></textarea>
+						<span ng-if="captura.Dx.length > 224" class="red">Largo de texto no permitido {{ captura.Dx.length }}</span>  
+                    </div>
+				</div>
 				<div ng-show="mensaje" class="alert alert-success animate-show">{{mensaje}}</div>
 				<br>
 				<div class="text-right">
