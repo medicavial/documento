@@ -6,13 +6,15 @@ app.controller('edicionDatosCtrl', function ($scope, loading, find) {
 			console.log(data)
 			$('#boton').button('reset');
 
-			$scope.AFE_nombre = data.lesionado;
-			$scope.AFE_fechaNac = data.fechaNacimiento;
-			$scope.DAS_poliza = data.poliza;
-			$scope.EMP_claveint = data.cliente;
-			$scope.DAS_reporte = data.reporte;
-			$scope.PRO_claveint = data.producto;
-			$scope.RIE_clave = data.riesgo;
+
+			$scope.datos = data;
+			// $scope.AFE_nombre = data.lesionado;
+			// $scope.AFE_fechaNac = data.fechaNacimiento;
+			// $scope.DAS_poliza = data.poliza;
+			// $scope.EMP_claveint = data.cliente;
+			// $scope.DAS_reporte = data.reporte;
+			// $scope.PRO_claveint = data.producto;
+			// $scope.RIE_clave = data.riesgo;
 
 		});
 
@@ -21,7 +23,7 @@ app.controller('edicionDatosCtrl', function ($scope, loading, find) {
 
     $scope.Actualiza=function(){
     	$scope.formVisible=false;
-		console.log($scope.formVisible)
+		console.log($scope.datos);
 	}
 
 	$scope.ShowForm=function(){

@@ -31,10 +31,15 @@
 	<form role="form" ng-show="formVisible">
 		<fieldset>
 			<legend></legend>
+			<div class="row">
+				<div class="col-md-4 col-xs-4" >
+					<input type="text" ng-model="folio" class="form-control" placeholder="Folio">
+				</div>
+			</div>
 			<div class="row" >
 				<div class="col-md-4 col-xs-4">
 					<label>Nombre Completo</label>
-					<input type="text" ng-model="AFE_nombre" class="form-control" required>
+					<input type="text" ng-model="datos.lesionado" class="form-control" required>
 				</div>
 
 				<div class="col-md-4 col-xs-4" >
@@ -87,7 +92,7 @@
 				<div class="footer" role="group" aria-label="...">
 					<button ng-disabled="!folio" ng-click="Actualiza()" type="submit" id="boton" class="btn btn-success" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Actualizando...">Actualizar</button>
 
-					<button ng-disabled="!folio" type="Reset" ng-click="Actualiza()" id="btnlimpia" class="btn btn-info">Limpiar</button>
+					<button ng-disabled="!folio" type="Reset" ng-click="folio = '' " id="btnlimpia" class="btn btn-info">Limpiar</button>
 				</div>
 			</div>
 		</fieldset>
