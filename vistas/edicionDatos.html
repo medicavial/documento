@@ -7,7 +7,7 @@
 	<label>Busqueda por Folio</label>
 	<div class="row">
 		<div class="col-md-4 col-xs-4" >
-			<input type="text" ng-model="folio" class="form-control" placeholder="Folio">
+			<input type="text" ng-model="folio" class="form-control" placeholder="Folio" capitalize>
 		</div>
 
 		<div class="col-md-4 col-xs-4">
@@ -31,25 +31,25 @@
 	<form role="form" ng-show="formVisible">
 		<fieldset>
 			<legend></legend>
-			<div class="row">
+			<!-- <div class="row">
 				<div class="col-md-4 col-xs-4" >
 					<input type="text" ng-model="folio" class="form-control" placeholder="Folio">
 				</div>
-			</div>
+			</div> -->
 			<div class="row" >
 				<div class="col-md-4 col-xs-4">
 					<label>Nombre Completo</label>
-					<input type="text" ng-model="datos.lesionado" class="form-control" required>
+					<input type="text" ng-model="datos.lesionado" class="form-control" required capitalize>
 				</div>
 
 				<div class="col-md-4 col-xs-4" >
 					<label>Fecha de Nacimiento</label>
-					<input type="text" ng-model="AFE_fechaNac" class="form-control">
+					<input type="text" ng-model="datos.fechaNacimiento" class="form-control">
 				</div>
 
 				<div class="col-md-4 col-xs-4">
 					<label>Póliza</label>
-					<input type="text" ng-model="DAS_poliza" class="form-control" required>
+					<input type="text" ng-model="datos.poliza" class="form-control" required>
 				</div>
 			</div>
 
@@ -58,19 +58,19 @@
 			<div class="row" >
 				<div class="col-md-4 col-xs-4">
 					<label>Cliente</label>
-					<select class="form-control"  ng-model="EMP_claveint" ng-options="cliente as cliente.nombre for	cliente in clientes" ng-change="filtra()">
+					<select class="form-control"  ng-model="datos.cliente" ng-options="cliente as cliente.nombre for	cliente in clientes" ng-change="filtra()">
 						<option value="" disabled selected></option>
 					</select>
 				</div>
 
 				<div class="col-md-4 col-xs-4">
 					<label>Reporte</label>
-					<input type="text" ng-model="DAS_reporte" class="form-control" required>
+					<input type="text" ng-model="datos.reporte" class="form-control" required>
 				</div>
 
 				<div class="col-md-4 col-xs-4">
 					<label>Producto</label>
-					<select class="form-control" id="producto" ng-model="PRO_claveint" ng-change="filtra()" ng-options="producto as producto.nombre for producto in productosini">
+					<select class="form-control" id="producto" ng-model="datos.producto" ng-change="filtra()" ng-options="producto as producto.nombre for producto in productosini">
 						<option value="" disabled selected></option>
 					</select>
 				</div>
@@ -81,7 +81,7 @@
 			<div class="row" >
 				<div class="col-md-4 col-xs-4">
 					<label>Riesgo</label>
-					<select class="form-control" id="riesgo" ng-model="RIE_clave" ng-change="filtra()" ng-
+					<select class="form-control" id="riesgo" ng-model="datos.riesgo" ng-change="filtra()" ng-
 					options="">
 						<option value="" disabled selected></option>
 					</select>
@@ -92,7 +92,7 @@
 				<div class="footer" role="group" aria-label="...">
 					<button ng-disabled="!folio" ng-click="Actualiza()" type="submit" id="boton" class="btn btn-success" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Actualizando...">Actualizar</button>
 
-					<button ng-disabled="!folio" type="Reset" ng-click="folio = '' " id="btnlimpia" class="btn btn-info">Limpiar</button>
+					<button ng-disabled="!folio" type="Reset" ng-click="Actualiza() " id="btnlimpia" class="btn btn-info">Editar Nuevo</button>
 				</div>
 			</div>
 		</fieldset>
