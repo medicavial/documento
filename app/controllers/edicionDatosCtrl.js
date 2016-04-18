@@ -7,17 +7,23 @@ app.controller('edicionDatosCtrl', function ($scope, loading, find) {
 			$('#boton').button('reset');
 
 			$scope.datos = data;
-
 		});
 
 		$scope.formVisible=true;
     }
 
-    $scope.Actualiza=function(){
-    	$scope.folio = ''
+    $scope.consultaRiesgos = function(){
+    	find.riesgos().success(function (data){
+    		$scope.riesgos = data;
+    	});
+    }
+
+    $scope.limpiaDatos = function(){
+    	$scope.datos = '';
+    	$scope.folio = '';
     	$scope.formVisible=false;
 		console.log($scope.datos);
-	}
+    }
 
 	$scope.ShowForm=function(){
 		console.log($scope.formVisible)
