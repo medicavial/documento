@@ -7,19 +7,33 @@ app.controller('edicionDatosCtrl', function ($scope, loading, find) {
 			$('#boton').button('reset');
 
 			$scope.datos = data;
+			$scope.datos.producto = String(data.producto);
+			$scope.datos.cliente = String(data.cliente);
+			$scope.datos.riesgo = String(data.riesgo);
+			
+			$scope.formVisible=true;
 		});
 
-		$scope.formVisible=true;
     }
 
-    $scope.consultaRiesgos = function(){
+    $scope.consulta = function(){
     	find.riesgos().success(function (data){
     		$scope.riesgos = data;
     	});
+    	find.empresas().success(function (data){
+    		$scope.empresas = data;
+    	});
+    	find.productos().success(function (data){
+    		$scope.productos = data;
+    	});
+    }
+
+    $scope.inicio = function (){
+    	$scope.consulta();
     }
 
     $scope.limpiaDatos = function(){
-    	$scope.datos = '';
+    	$scope.datos = [];
     	$scope.folio = '';
     	$scope.formVisible=false;
 		console.log($scope.datos);
