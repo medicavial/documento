@@ -33,13 +33,33 @@
 			<legend></legend>
 			<div class="row" >
 				<div class="col-md-4 col-xs-4">
-					<label>Nombre Completo</label>
-					<input type="text" ng-model="datos.lesionado" class="form-control" required capitalize>
+					<label>Apellido Paterno</label>
+					<input type="text" ng-model="datos.paterno" class="form-control" required capitalize>
 				</div>
 
+				<div class="col-md-4 col-xs-4">
+					<label>Apellido Materno</label>
+					<input type="text" ng-model="datos.materno" class="form-control" required capitalize>
+				</div>
+
+				<div class="col-md-4 col-xs-4">
+					<label>Nombre</label>
+					<input type="text" ng-model="datos.nombre" class="form-control" required capitalize>
+				</div>
+			</div>
+
+			<br>
+
+			<div class="row" >
 				<div class="col-md-4 col-xs-4" >
 					<label>Fecha de Nacimiento</label>
 					<input type="text" ng-model="datos.fechaNacimiento" class="form-control">
+				</div>
+				<div class="col-md-4 col-xs-4">
+					<label>Cliente</label>
+					<select class="form-control"  ng-model="datos.cliente" ng-options="clienteuni.id as clienteuni.nombre for clienteuni in clientes" >
+						<option value=""></option>
+					</select>
 				</div>
 
 				<div class="col-md-4 col-xs-4">
@@ -52,9 +72,10 @@
 
 			<div class="row" >
 				<div class="col-md-4 col-xs-4">
-					<label>Cliente</label>
-					<select class="form-control"  ng-model="datos.cliente" ng-options="clienteuni.id as clienteuni.nombre for clienteuni in clientes" >
-						<option value=""></option>
+					<label>Riesgo</label>
+					<select class="form-control" id="riesgo" ng-model="datos.riesgo" ng-options="riesgouni.
+					RIE_clave as riesgouni.RIE_nombre for riesgouni in riesgos">
+					<option value=""></option>
 					</select>
 				</div>
 
@@ -65,23 +86,14 @@
 
 				<div class="col-md-4 col-xs-4">
 					<label>Producto</label>
-					<select class="form-control" id="producto" ng-model="datos.producto" ng-options="productouni.id as productouni.nombre for productouni in productosini">
-						<option value=""></option>
+					<select class="form-control" id="producto" ng-model="datos.producto" ng-options="
+					productouni.id as productouni.nombre for productouni in productosini">
+					<option value=""></option>
 					</select>
 				</div>
 			</div>
-
 			<br>
-
-			<div class="row" >
-				<div class="col-md-4 col-xs-4">
-					<label>Riesgo</label>
-					<select class="form-control" id="riesgo" ng-model="datos.riesgo" ng-options="riesgouni.RIE_clave as riesgouni.RIE_nombre for riesgouni in riesgos">
-						<option value=""></option>
-					</select>
-				</div>
-			</div>
-
+			<br>
 			<div class="row" align="center">
 				<div class="footer" role="group" aria-label="...">
 					<button ng-disabled="!folio" ng-click="guardaDatos()" type="submit" class="
