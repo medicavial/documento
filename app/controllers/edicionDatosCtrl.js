@@ -58,6 +58,7 @@ app.controller('edicionDatosCtrl', function ($scope, loading, find, operacion) {
         .error (function (data){
             $scope.mensaje = "Ocurrio un error al guardar";
             $scope.tipoalerta = 'alert-warning';
+            $('#load').button('reset');
         });
     }
 });
