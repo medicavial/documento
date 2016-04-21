@@ -84,13 +84,16 @@
 
 			<div class="row" align="center">
 				<div class="footer" role="group" aria-label="...">
-					<button ng-disabled="!folio" ng-click="limpiaDatos()" type="submit" id="boton" class="
+					<button ng-disabled="!folio" ng-click="guardaDatos()" type="submit" class="
 					btn btn-success" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> 
 					Actualizando...">Actualizar</button>
 					<button ng-disabled="!folio" id="btnlimpia" ng-click="limpiaDatos()" class="btn btn-info
 					">Editar Nuevo</button>
 				</div>
 			</div>
+			<br>
+			<br>
+			<div ng-if="mensaje" ng-class="tipoalerta" class="alert alert-success animate-show">{{mensaje}}</div>
 		</fieldset>
 	</form>
 </div>	

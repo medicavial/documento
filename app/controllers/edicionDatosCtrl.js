@@ -1,4 +1,4 @@
-app.controller('edicionDatosCtrl', function ($scope, loading, find) {
+app.controller('edicionDatosCtrl', function ($scope, loading, find, operacion) {
 
 	$scope.consultaDatos = function(){
 		$('#boton').button('loading');
@@ -22,7 +22,7 @@ app.controller('edicionDatosCtrl', function ($scope, loading, find) {
     	});
     	find.empresas().success(function (data){
     		$scope.empresas = data;
-    	});
+    	 });
     	find.productos().success(function (data){
     		$scope.productos = data;
     	});
@@ -35,11 +35,29 @@ app.controller('edicionDatosCtrl', function ($scope, loading, find) {
     $scope.limpiaDatos = function(){
     	$scope.datos = [];
     	$scope.folio = '';
+        $scope.mensaje = '';
     	$scope.formVisible=false;
 		console.log($scope.datos);
     }
 
-	$scope.ShowForm=function(){
+	$scope.ShowForm = function (){
 		console.log($scope.formVisible)
 	}
+
+    $scope.guardaDatos = function (){
+
+        $('#load').button('loading');
+        operacion.actualizaDatos($scope.datos).success(function (data){
+            console.log(data)
+
+            $scope.mensaje = "Se guardo correctamente";
+            $scope.tipoalerta = 'alert-success';
+            $('#load').button('reset');
+
+        })
+        .error (function (data){
+            $scope.mensaje = "Ocurrio un error al guardar";
+            $scope.tipoalerta = 'alert-warning';
+        });
+    }
 });
