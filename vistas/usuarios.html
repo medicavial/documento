@@ -1,160 +1,148 @@
 <div ng-init="inicio()" id="contenedor">
 	<div class="titulos">
 		<a href="#/" class="icon-arrow-left"></a>
-		<h1>{{tituloU}}</h1>
+		<h1>Alta de Usuarios</h1>
 	</div>
 	<ul id="rb-grid-small" class="rb-grid-small clearfix">
 
-	    <li class="rb-span-1" id="color3" ng-if="Captura == 1">
+		<li class="rb-span-1" id="color3">
 
-	        <h3>Nuevo Usuario</h3>
-	        <a data-target="#myModal2" ng-click="muestraOriginal()" href="">
-	            <span class="icon-book"></span>
+			<h3>Nuevo Usuario</h3>
+			<a data-target="#myModal2" data-toggle="modal">
+	            <span class="glyphicon glyphicon-user"></span>
 	        </a>
-	        
 	    </li>
-		
 	</ul>
-	<h2>Usuarios</h2>
-	<!-- <div class="row">
-		<div class="col-md-3">
+	<br>
+	<div class="row">
+		<div class="col-md-2">
 			<fieldset>
-				<legend>Folio</legend>
-				<input type="text" ng-model="folio" class="form-control"  ng-change="filtra()" folio >
+				<legend>Filtrar por:</legend>
+				<select class="form-control"  ng-model="nombre">
+					<option value="">Nombre</option>
+				</select>
 			</fieldset>
 		</div>
-		<div class="col-md-5">
-			<fieldset>
-				<legend>Lesionado</legend>
-				<input type="text" ng-model="lesionado" class="form-control" ng-change="filtra()" capitalize>
-			</fieldset>
-		</div>
-	</div> -->
-	<!-- <div class="row">
-		<div class="col-md-12">
-			<fieldset>
-				<legend>Filtros</legend>
-				<div class="row">
-					<div class="col-md-2">
-						<select class="form-control"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes" ng-change="filtra()">
-							<option value="">Cliente</option>
-						</select>
-					</div>
-					<div class="col-md-2">
-						<select class="form-control"  ng-model="unidad" ng-options="unidad as unidad.nombre for unidad in unidades" ng-change="filtra()">
-							<option value="">Unidad</option>
-						</select>
-					</div>
-					<div class="col-md-2">
-						<select class="form-control"  ng-model="tipo" ng-change="filtra()">
-							<option value="">Fax Y Original</option>
-							<option value="fax">Fax</option>
-							<option value="original">Original</option>
-						</select>
-					</div>
-					<div class="col-md-2">
-						<select class="form-control" id="producto" ng-model="producto" ng-change="filtra()" ng-options="producto as producto.nombre for producto in productosini" required>
-							<option value="">Producto</option>
-						</select>
-					</div>
-					<div class="col-md-2">
-						<select class="form-control" id="tipodoc" ng-change="filtra()" ng-model="etapa">
-							<option value="">Etapa</option>
-							<option value="1">1</option>
-							<option value="2">2</option>
-							<option value="3">3</option>
-						</select>
-					</div>
-					<div class="col-md-2">
-						<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
-					</div>
-				</div>
-			</fieldset>
-		</div>
-	</div> -->
-	<div class="gridStyle" ng-grid="gridOptions"></div>
+	</div>
+	<br>
+	<div id="copiar" class="gridStyle" ng-grid="gridOptions"></div>
 	<br>	
-
+	<br>
+	<button class="btn btn-primary">Usuarios</button>
 </div>
 
-<!-- Muestra Alta de usuarios-->
-<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-              <h4 class="modal-title">Usuario</h4>
-            </div>
-            <form name="formFax"  novalidate>
-            <div class="modal-body" id="cantidad">
-                	<div class="row">
-                		<div class="col-md-5">
-                			<label for="folioF">Folio</label>
-                			<input type="text" id="folioF" class="form-control" ng-keydown="presionaFolioFax" ng-maxlength="10" ng-model="fax.folio"  capitalize required>
-                		</div>
-                		<div class="col-md-1">
+<!-- Modal Dialog de Alta de usuarios</!-->
+
+<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+				<h4 class="modal-title">Registro de Usuario</h4>
+			</div>
+			<form>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-6">
+							<label>Nombre:</label>
+							<input type="text" id="nombre" class="form-control" capitalize>
+						</div>
+						<div class="col-md-4">
+							<label>Password:</label>
+							<input type="text" id="folioAct" class="form-control">
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label>Login:</label>
+							<input type="text" class="form-control" ng-model="original.login">
+						</div>
+						<div class="row">
+							<div class="col-md-4">
+								<label>Usuario Activo:</label>
+								<input type="text" id="password" class="form-control" ng-model="original.factura">
+							</div>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-6">
+							<label class="checkbox-inline">
+								<input type="checkbox" value="">USU_fcaptura:</label>
+						</div>
+						<div class="col-md-6">
+							<label class="checkbox-inline">
+								<input type="checkbox" value="">USU_fcontrolDocum:</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label class="checkbox-inline">
+								<input type="checkbox" value="">USU_fconsultaIndiv:</label>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label class="checkbox-inline">
+									<input type="checkbox" value="">USU_ftickets:</label>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label class="checkbox-inline">
+									<input type="checkbox" value="">USU_fmanual:</label>
+						</div>
+						<div class="col-md-6">
+							<label class="checkbox-inline">
+									<input type="checkbox" value="">USU_fqualitas:</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label class="checkbox-inline">
+									<input type="checkbox" value="">USU_freportes:</label>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label class="checkbox-inline">
+									<input type="checkbox" value="">USU_fpagos:</label>
+							</div>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label class="checkbox-inline">
+									<input type="checkbox" value="">USU_fdocumentos:</label>
+						</div>
+						<div class="col-md-6">
+							<label class="checkbox-inline">
+									<input type="checkbox" value="">USU_fusuarios:</label>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-6">
+							<label class="checkbox-inline">
+									<input type="checkbox" value="">USU_fticketPagos:</label>
+						</div>
+						<div class="row">
+							<div class="col-md-6">
+								<label class="checkbox-inline">
+									<input type="checkbox" value="">USU_fexpress:</label>
+							</div>
+						</div>
+						<!-- <div class="col-md-1">
                 			<br>
                 			<img ng-show="cargar" src="images/cargando.gif">
-                		</div>
-                		<div class="col-md-6">
-                			<label for="datepicker3">Fecha</label>
-                			<input type="text" ng-change="validafecha('Fax')" class="form-control" ng-model="fax.fecha" id="datepicker3">
-                		</div>
-                	</div>
-					<div class="row">
-						<div class="col-md-12">
-							<label for="lesionado">Lesionado</label>
-							<input type="text" id="lesionado" class="form-control" ng-model="fax.lesionado" capitalize required>
-						</div>
+                		</div> -->
 					</div>
-					<div class="row">
-						<div class="col-md-6">
-							<label for="cliente">Cliente</label>
-							<select class="form-control" id="cliente" ng-model="fax.cliente" ng-options="cliente.id as cliente.nombre for cliente in clientes" ng-change="productoFax(fax.cliente)" required>
-								<option value="">Cliente</option>
-							</select>
-						</div>
-						<div class="col-md-6">
-                			<label for="unidad">Unidad</label>
-                			<select class="form-control" id="unidad"  ng-model="fax.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades" required>
-								<option value="">Unidad</option>
-							</select>
-                		</div>
-					</div>
-                	<div class="row">
-                		<div class="col-md-6">
-                				<label for="producto">Producto</label>
-								<select class="form-control" id="producto" ng-model="fax.producto" ng-options="producto.id as producto.nombre for producto in productos" required>
-									<option value="">Producto</option>
-								</select>
-                		</div>
-                		<div class="col-md-6" ng-show="fax.cliente == 20; fax.producto == 2">
-                			<label for="escolaridad">Escolaridad</label>
-                			<select id="escolaridad" class="form-control"  ng-model="fax.escolaridad" ng-options="escolaridad.id as escolaridad.nombre for escolaridad in escolaridades">
-								<option value="">Escolaridad</option>
-							</select>
-                		</div> 
-            		</div>
-                	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
-            </div>
-            <div class="modal-footer">
-            	<button id="otro" class="btn btn-primary" type="submit"  ng-disabled="formFax.$invalid" data-loading-text="Guardando..." ng-click="mandadatos('Fax')">Guardar</button>
-              	<button type="button" class="btn btn-success" ng-click="muestraFax()">Limpiar</button>
-              	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-            </div>
-
-        </div>
-        </form>
-    </div>
+				</div>
+				<div class="modal-footer">
+					<button id="boton2" type="submit" ng-disabled="formOriginal.$invalid" data-loading-text="
+	            	Guardando..." class="btn btn-primary">Guardar</button>
+	            	<button type="reset" class="btn btn-success" id="btnlimpia">Limpiar</button>
+	            	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	            </div>
+			</form>
+    	</div>
+	</div>
 </div>
-<!-- /.modal -->
-
-
-
-<script type="text/javascript">
-	$.datepicker.setDefaults($.datepicker.regional["es"]);
-	$( "#datepicker" ).datepicker({showButtonPanel: true});
-	$( "#datepicker2" ).datepicker({showButtonPanel: true});
-	$( "#datepicker3" ).datepicker({showButtonPanel: true});
-	$( "#datepicker4" ).datepicker({showButtonPanel: true});
-</script>

@@ -133,6 +133,9 @@ app.factory("find", function($http,api){
         unidadesweb:function(){
             return $http.get(api+'consulta/unidadesweb',{timeout: 10000});
         },
+        // usuarios:function(){
+        //     return $http.get(api+'consulta/usuarios/'+area);
+        // },
         usuariosarea:function(area){
             return $http.get(api+'consulta/usuarios/'+area);
         },
