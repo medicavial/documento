@@ -85,6 +85,9 @@ app.factory("find", function($http,api){
         muestrahistorico:function(folio,etapa,entrega){
             return $http.get(api + 'consulta/historial/'+folio +"/"+etapa+"/"+entrega);
         },
+        pagoUnidades:function(datos){
+            return $http.post(api + 'reportes/pago/unidades',datos);
+        },
         producto:function(empresa){
             return $http.get(api +'consulta/productos/'+ empresa);
         },

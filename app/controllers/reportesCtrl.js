@@ -1,4 +1,4 @@
-//Area de facturacion
+//Reportes
 function reportesTicketsCtrl($scope, $rootScope, find , loading, datos){
 
 	loading.despedida();
@@ -200,10 +200,87 @@ function reporteFacturasCtrl($scope, $rootScope, find , loading){
 
 };
 
+function pagoUnidadesCtrl($scope, $rootScope, find , loading){
+
+    loading.despedida();
+
+    $scope.inicio = function(){
+
+        $scope.datos = {
+            fechaini:FechaAct,
+            fechafin:FechaAct
+        };
+
+    }
+
+    $scope.buscaPagos = function(){
+
+        loading.cargando('Buscando Factura(s)');
+
+        find.pagoUnidades($scope.datos).success(function (data){
+            console.log(data);
+            $scope.listado = data;
+            loading.despedida();
+        })
+    }
+
+    $scope.selectos = [];
+
+    $scope.filterOptions = {
+        filterText: '',
+        useExternalFilter: false
+    };
+
+    var csvOpts = { columnOverrides: { obj: function (o) {
+        return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
+        } },
+        iEUrl: 'downloads/download_as_csv'
+    };
+
+    ////opciones del grid                 
+   $scope.gridOptions = { 
+        data: 'listado', 
+        enableColumnResize:true,
+        enablePinning: true, 
+        enableRowSelection:false,
+        multiSelect:false,
+        showSelectionCheckbox: false,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: false,
+        selectedItems: $scope.selectos, 
+        filterOptions: $scope.filterOptions,
+        columnDefs: [
+                    { field:'Folio', displayName:'Folio' , width: 120, pinned:true, enableCellEdit: true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
+                    { field:'Cliente', displayName:'Empresa', width: 120 },
+                    { field:'UniAtn', displayName:'Unidad Atencion', width: 200, visible:true },
+                    { field:'UniPag', displayName:'Unidad Pago', width: 200 },
+                    { field:'FAtn', displayName:'Fecha Atención', width: 200 },
+                    { field:'FCap', displayName:'Fecha Captura', width: 130 },
+                    { field:'FPago', displayName:'Fecha pago', width: 130, visible:true },
+                    { field:'FRel', displayName:'Fecha Relación', width: 130 },
+                    { field:'Fac', displayName:'Factura', width: 130 },
+                    { field:'Lesionado', displayName:'Lesionado', width: 250, visible:true },
+                    { field:'Pago', displayName:'Pago', width: 120, visible:true },
+                    { field:'Producto', displayName:'Producto', width: 120, visible:true },
+                    { field:'Relacion', displayName:'Relacion', width: 120, visible:true }
+        ],
+        showFooter: true,
+        showFilter:true
+    };
+
+    $scope.exportar = function(){
+        
+        JSONToCSVConvertor($scope.listado,'Reporte',true);
+        
+    }
+
+};
+
 reportesTicketsCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading', 'datos'];
 reporteFacturasCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
-
+pagoUnidadesCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
 
 
 app.controller('reportesTicketsCtrl',reportesTicketsCtrl);
 app.controller('reporteFacturasCtrl',reporteFacturasCtrl);
+app.controller('pagoUnidadesCtrl',pagoUnidadesCtrl);
