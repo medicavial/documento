@@ -260,6 +260,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'reporteFacturasCtrl'   
     });
 
+    $routeProvider.when('/reportes/pagoUnidades',{
+            templateUrl   : 'vistas/pagoUnidades.html',
+            controller    : 'pagoUnidadesCtrl'   
+    });
+
     $routeProvider.when('/generaticket',{
             templateUrl   : 'vistas/ticket.html',
             controller    : 'ticketCtrl'
@@ -600,7 +605,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     $routeProvider.when('/usuarios',{
             templateUrl   : 'vistas/usuarios.html',
-            controller    : 'usuariosCtrl'
+            controller    : 'controllerUsuarios'
     });
 
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
