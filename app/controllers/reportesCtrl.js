@@ -252,6 +252,7 @@ function pagoUnidadesCtrl($scope, $rootScope, find , loading){
         columnDefs: [
                     { field:'Folio', displayName:'Folio' , width: 120, pinned:true, enableCellEdit: true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
                     { field:'Cliente', displayName:'Empresa', width: 120 },
+                    { field:'Etapa', displayName:'Etapa', width: 120 },
                     { field:'UniAtn', displayName:'Unidad Atencion', width: 200, visible:true },
                     { field:'UniPag', displayName:'Unidad Pago', width: 200 },
                     { field:'FAtn', displayName:'Fecha Atención', width: 200 },
@@ -262,6 +263,7 @@ function pagoUnidadesCtrl($scope, $rootScope, find , loading){
                     { field:'Lesionado', displayName:'Lesionado', width: 250, visible:true },
                     { field:'Pago', displayName:'Pago', width: 120, visible:true },
                     { field:'Producto', displayName:'Producto', width: 120, visible:true },
+                    { field:'Triage', displayName:'Triage', width: 120, visible:true },
                     { field:'Relacion', displayName:'Relacion', width: 120, visible:true }
         ],
         showFooter: true,
