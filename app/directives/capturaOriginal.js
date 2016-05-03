@@ -23,6 +23,10 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         $scope.inicio();
     });
 
+    $('#myModal2').on('hidden.bs.modal', function (e) {
+        $scope.inicio();
+    });
+
     $rootScope.$watch('folioGlobal', function(newValue, oldValue) {
         // console.log(newValue);
         if (newValue.length == 10) {
