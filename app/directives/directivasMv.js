@@ -9,7 +9,6 @@ app.directive('folio', function() {
 
             //funcion que rellena folios 
             var rellenaFolio = function(folio){
-
                 if (folio != '') {
 
                     var totalletras = folio.length;
@@ -43,9 +42,7 @@ app.directive('folio', function() {
                     return folio;
 
                 }else{
-
                     return folio
-
                 }
             }
 
@@ -63,23 +60,16 @@ app.directive('folio', function() {
             element.on('keydown', function(e){
 
                 if (modelCtrl.$modelValue) {
-
                     var cantidad = modelCtrl.$modelValue.length;
-
                     //los primero cuatro caracteres NO deben ser numeros
                     if(cantidad < 4){
-
                         if (e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105) {
                             e.preventDefault();
                         }else{
-
                             element.css("text-transform","uppercase");
-
                         }
                     //los ultimos 6 NO deben ser letras
-
                     }else if(cantidad > 3 && cantidad < 10){
-
                         if (e.keyCode >= 65 && e.keyCode <= 90) {
                             e.preventDefault();
                         }else if (e.keyCode == 13) {
@@ -89,17 +79,12 @@ app.directive('folio', function() {
                             modelCtrl.$setViewValue(nuevo.toUpperCase());
                             modelCtrl.$render();
                             scope.$apply();
-
-                        }    
-                              
+                        }
                     }else{
-
                         if ((e.keyCode >= 65 && e.keyCode <= 90) || e.keyCode >= 48 && e.keyCode <= 57 || e.keyCode >= 96 && e.keyCode <= 105 ) {
                             e.preventDefault();
                         }
-
                     }
-                    
                 };
                 
             });
@@ -697,6 +682,29 @@ app.directive('remesa', function() {
             });
 
 
+
+      }
+
+    };
+    
+});
+
+app.directive('numero', function() {
+    return {
+        restrict: 'A',
+        require: 'ngModel',
+        link: function(scope, element, attrs, modelCtrl) {
+
+
+            element.on('keydown', function(e){
+
+                // console.log(e.keyCode);
+
+                if (e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode == 110 || e.keyCode == 190 || e.keyCode == 189 ) {
+                    e.preventDefault();
+                }    
+
+            });
 
       }
 

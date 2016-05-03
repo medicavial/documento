@@ -241,14 +241,18 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                     }else{
 
-                        //verifica que numero de segunda o tercera atencion es
-                        find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
 
-                            datos.numentrega = Number(data) + 1;
-                            //Agregamos un nuevo documento de segunda etapa o tercera
+                        //si es unidad propia de segunda etapa ya deberia tener numero de entrega
+                        if (datos.propias == 1 && datos.tipoDoc == 2) {
                             promesa.resolve({info:datos,agregaOriginal:1});
-
-                        });
+                        }else{
+                            //verifica que numero de segunda de red o tercera atencion es
+                            find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
+                                datos.numentrega = Number(data) + 1;
+                                //Agregamos un nuevo documento de segunda etapa o tercera
+                                promesa.resolve({info:datos,agregaOriginal:1});
+                            });
+                        }
 
                     }
 
@@ -387,6 +391,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 esfe: 0,
                 esoriginal: 0,
                 revisado: 0,
+                propia:'',
                 bloqueo: false,
                 bloqueoUni: false
             };
@@ -409,7 +414,16 @@ app.factory("checkFolios", function($q,$http,find, api){
                         datos.bloqueoUni = false;
                         datos.esoriginal = 1;
                         datos.tipoDoc = 2;
-                        
+
+                        //verificamos que sea factura express
+                        if(interno.fe == 1){
+                            datos.label2 = 'FAC. EXPRESS: ' + interno.fefecha;
+                            datos.fechafe = interno.fechafe;
+                            datos.esfe = 1;
+                        }
+
+
+                    // si entra aqui es por que esta registrado en documento pero es fax o FE
                     }else{
 
                         datos.documento = interno.clave;
@@ -423,6 +437,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                             datos.esfax = 1;
                             datos.tipoDoc = 1;
                         }
+
                         //verificamos que sea factura express
                         if(interno.fe == 1){
                             datos.label2 = 'FAC. EXPRESS: ' + interno.fefecha;
@@ -442,9 +457,11 @@ app.factory("checkFolios", function($q,$http,find, api){
                     datos.unidadref = interno.unidad;
                     datos.unidad = interno.unidad;
                     datos.documento = interno.clave;
+                    datos.propia = interno.propia;
 
                     datos.escolaridad = interno.escuela;
                     datos.producto = interno.producto;
+
 
                 }else{
 
