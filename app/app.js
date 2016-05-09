@@ -52,11 +52,6 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller : 'bloqueoCtrl'
     });
 
-    $routeProvider.when('/busquedaFacFTP',{
-            templateUrl   : 'vistas/busquedaFacFTP.html',
-            controller    : 'facturaFtpCTRL',  
-    });
-
     $routeProvider.when('/captura',{
             templateUrl    :'vistas/captura.html',
             controller     :'capturaslCtrl',
@@ -465,11 +460,6 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     $routeProvider.when('/reportes',{
             templateUrl   : 'vistas/reportes.html'
-    });
-
-    $routeProvider.when('/reportes/ticketsFE',{
-            templateUrl   : 'vistas/ticketFE.html',
-            controller    : 'ticketFECtrl'   
     });
 
     $routeProvider.when('/reportes/tickets',{
