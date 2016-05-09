@@ -4,30 +4,22 @@
 		<h1>Alta de Usuarios</h1>
 	</div>
 	<ul id="rb-grid-small" class="rb-grid-small clearfix">
-
 		<li class="rb-span-1" id="color3">
-
 			<h3>Nuevo Usuario</h3>
 			<a data-target="#myModal2" data-toggle="modal">
 	            <span class="glyphicon glyphicon-user"></span>
 	        </a>
 	    </li>
+	   <!--  <li class="rb-span-1" id="color3">
+			<h3>Folios FTP</h3>
+			<a data-target="#myModal2" data-toggle="modal">
+	            <span class="glyphicon glyphicon-search"></span>
+	        </a>
+	    </li> -->
 	</ul>
 	<br>
-	<div class="row">
-		<div class="col-md-2">
-			<fieldset>
-				<legend>Filtrar por:</legend>
-				<select class="form-control"  ng-model="nombre">
-					<option value="">Nombre</option>
-				</select>
-			</fieldset>
-		</div>
-	</div>
-	<br>
 	<div id="copiar" class="gridStyle" ng-grid="gridOptions"></div>
-	<br>	
-	<br>
+	<br><br>
 	<button class="btn btn-primary">Usuarios</button>
 </div>
 
@@ -55,79 +47,77 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label>Login:</label>
-							<input type="text" class="form-control" ng-model="original.login">
+							<input type="text" class="form-control" ng-model="">
 						</div>
-						<div class="row">
-							<div class="col-md-4">
-								<label>Usuario Activo:</label>
-								<input type="text" id="password" class="form-control" ng-model="original.factura">
-							</div>
+						<div class="col-md-4">
+							<label>Usuario Activo:</label>
+							<input type="text" id="password" class="form-control" ng-model="">
 						</div>
 					</div>
 					<br>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-								<input type="checkbox" value="">USU_fcaptura:</label>
+								<input type="checkbox" value="">Captura</label>
 						</div>
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-								<input type="checkbox" value="">USU_fcontrolDocum:</label>
+								<input type="checkbox" value="">Control de Documentos</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-								<input type="checkbox" value="">USU_fconsultaIndiv:</label>
+								<input type="checkbox" value="">Consulta Individual</label>
 						</div>
 						<div class="row">
 							<div class="col-md-6">
 								<label class="checkbox-inline">
-									<input type="checkbox" value="">USU_ftickets:</label>
+									<input type="checkbox" value="">Tickets</label>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">USU_fmanual:</label>
+									<input type="checkbox" value="">Flujo manual</label>
 						</div>
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">USU_fqualitas:</label>
+									<input type="checkbox" value="">Qualitas</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">USU_freportes:</label>
+									<input type="checkbox" value="">Reportes</label>
 						</div>
 						<div class="row">
 							<div class="col-md-6">
 								<label class="checkbox-inline">
-									<input type="checkbox" value="">USU_fpagos:</label>
+									<input type="checkbox" value="">Flujo de Pagos</label>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">USU_fdocumentos:</label>
+									<input type="checkbox" value="">Flujo de Documentos</label>
 						</div>
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">USU_fusuarios:</label>
+									<input type="checkbox" value="">Usuarios</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">USU_fticketPagos:</label>
+									<input type="checkbox" value="">Tickets de Pagos</label>
 						</div>
 						<div class="row">
 							<div class="col-md-6">
 								<label class="checkbox-inline">
-									<input type="checkbox" value="">USU_fexpress:</label>
+									<input type="checkbox" value="">Facturación Express</label>
 							</div>
 						</div>
 						<!-- <div class="col-md-1">

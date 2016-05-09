@@ -10,6 +10,9 @@ app.factory("find", function($http,api){
         buscador:function(consulta,tipo){
             return $http.get(api+'consulta/buscador/'+ consulta + '/' + tipo);
         },
+        // buscaFactura:function(){
+            // return $http.get(api+'consulta/buscaFactura');
+        // },
         categorias:function(){
             return $http.get(api+'tickets/categorias');
         },
@@ -64,9 +67,6 @@ app.factory("find", function($http,api){
         listadofolio:function(folio){
             return $http.get(api + 'consulta/flujo/'+folio);
         },
-        // listadogeneral:function(usuario){
-        //     return $http.get('/documento/api/listageneral/'+usuario);
-        // },
         listadogeneralnpc:function(usuario){
             return $http.get(api+'flujo/npc/'+usuario);
         },
