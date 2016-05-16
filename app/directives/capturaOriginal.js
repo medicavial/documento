@@ -169,7 +169,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
             //buscamos en subsecuencia de web por folio y numero de entrega
             find.consultaSubsecuencia($scope.original.folio,$scope.original.numentrega).success(function (data){
-                console.log(data);
+                // console.log(data);
                 //si existe informacion de subsecuencia en web
                 if (data) {
                     //si es propia la subsecuencia
@@ -190,27 +190,36 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
                     }else{
 
+                        $scope.muestraSubsecuencia = false;
                         $scope.consultaSub = false;
                         $scope.original.propia = 0;
                         $scope.original.numentrega = 1; 
                         // alert('La subsecuencia corresponde a una unidad de red verificalo en sistemas');
                     }
-
+                //si no verificamos que no sea de propia si es de red dejamos seguir
                 }else{
-
                     if ($scope.original.propia == 1) {
                         alert('La subsecuencia no existe verificalo nuevamente');
                         $scope.original.numentrega = ''; 
-                    };
+                    }else{
+                        $scope.muestraSubsecuencia = false;
+                        $scope.consultaSub = false;
+                        $scope.original.propia = 0;
+                        $scope.original.numentrega = 1; 
+                    }
                 }
 
                 $scope.consultaSub = false;
+
             }).error(function (data){
+
                 $scope.consultaSub = false;
                 if (data.respuesta && $scope.original.propia == 1) {
                     $scope.original.numentrega = ''; 
                     alert(data.respuesta);
                 }else if ($scope.original.propia == 0) {
+                    // console.log('entro aqui');
+                    $scope.muestraSubsecuencia = false;
                     $scope.consultaSub = false;
                     $scope.original.numentrega = 1; 
                 }else{
