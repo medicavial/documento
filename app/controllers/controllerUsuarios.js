@@ -1,5 +1,5 @@
 app.controller('controllerUsuarios', function ($scope, loading, find){
-
+	
 	$scope.inicio = function (){
 
 		$scope.cargaUsuarios();
@@ -8,7 +8,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find){
 	$scope.cargaUsuarios = function(){
 
 		loading.cargando('Buscando Usuarios');
-		find.usuarios(datos).success( function (data){
+		find.usuarios().success( function (data){
         		$scope.listado = data;
         		loading.despedida();
 		});
@@ -20,6 +20,13 @@ app.controller('controllerUsuarios', function ($scope, loading, find){
 	$scope.filterOptions = {
 		filterText: '',
 		useExternalFilter: false
+	};
+
+	var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
+
+	$scope.onDblClickRow = function(row){
+	  // console.log(row.entity.Folio_Interno);
+	  $location.path('/usuarios/'+row.entity.Folio_Interno+'/'+row.entity.Folio_Web );
 	};
 
 	$scope.gridOptions = { 
