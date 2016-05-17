@@ -406,6 +406,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     web     = data[1].data[0];
 
                 if(interno){
+                    console.log(interno);
                     //verificamos si es una segunda atencion o tercera pero la tercera es manual
                     if (interno.original == 1) {
                         

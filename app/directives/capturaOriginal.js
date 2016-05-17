@@ -119,6 +119,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         checkFolios.validaFolio(folio, 1)
         .then( function (data){
 
+            console.log(data);
             //verificamos que sea segunda y que sea de propia 
             if (data.tipoDoc == 2) {
                 $scope.muestraSubsecuencia = true;
