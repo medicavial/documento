@@ -1,10 +1,11 @@
-app.controller('controllerUsuarios', function ($scope, loading, find){
-	
+app.controller('controllerUsuarios', function ($scope, loading, find, operacion){
+
+ //*********MUESTRA LOS DATOS DE LA FUNCION EN EL GRID**********	
 	$scope.inicio = function (){
 
 		$scope.cargaUsuarios();
 	}
-
+ //*********RECIBO EL JSON DEL SERVICIO GET**********
 	$scope.cargaUsuarios = function(){
 
 		loading.cargando('Buscando Usuarios');
@@ -14,19 +15,12 @@ app.controller('controllerUsuarios', function ($scope, loading, find){
 		});
 
 	}
-
+ //*********SE DECLARA EL GRID Y SUS COLUMNAS********
 	$scope.listado = [];
 	///filtros
 	$scope.filterOptions = {
 		filterText: '',
 		useExternalFilter: false
-	};
-
-	var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
-
-	$scope.onDblClickRow = function(row){
-	  // console.log(row.entity.Folio_Interno);
-	  $location.path('/usuarios/'+row.entity.Folio_Interno+'/'+row.entity.Folio_Web );
 	};
 
 	$scope.gridOptions = { 
@@ -39,9 +33,10 @@ app.controller('controllerUsuarios', function ($scope, loading, find){
 		columnDefs: [
 
 					{ field:'USU_nombre', displayName:'Nombre' , width: 120, pinned:true,},
-	                { field:'USU_password', displayName:'Password', width: 120 },
+	                { field:'USU_password', displayName:'Password', width: 120, visible:false },
 	                { field:'USU_login', displayName:'Login', width: 100 },
 	                { field:'USU_factivo', displayName:'UsuarioActivo', width: 120 },
+	                { field:'USU_usuarioWeb', displayName:'UsuarioWeb', width: 100, visible: true},
 	                { field:'USU_fcaptura', displayName:'Captura', width: 100 },
 	                { field:'USU_fcontrolDocumentos', displayName:'ControlDocumentos', width: 120 },
 	                { field:'USU_fconsultaIndividual', displayName:'ConsultaIndividual', width: 130 },
@@ -61,4 +56,26 @@ app.controller('controllerUsuarios', function ($scope, loading, find){
 		showFilter:false
 	};	
 
+	// $scope. limpiaDatos = function (){
+	// 	$scope.datos = [];
+	// }
+
+ //***********ENLISTA LOS USUARIOS DE CADA AREA***********
+    $scope.altausuariosarea = function(area){
+
+        $scope.area = area;
+        find.usuariosarea(area).success( function (data){
+
+            $scope.usuarios = data;
+
+        });
+        
+    }
+
+    $scope.guardaUsuario = function (){
+
+        operacion.guardaUser($scope.datos).success(function (data){
+            console.log(data)
+        })
+	}
 });
