@@ -119,14 +119,19 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         checkFolios.validaFolio(folio, 1)
         .then( function (data){
 
-            console.log(data);
+            // console.log(data);
             //verificamos que sea segunda y que sea de propia 
             if (data.tipoDoc == 2) {
-                $scope.muestraSubsecuencia = true;
-                $scope.original.numentrega = '';
+
+                if (data.capturado == 0) {
+                    alert('La primera etapa del folio no se encuentra capturada, se guardará como registro normal');
+                }else{
+                    $scope.muestraSubsecuencia = true;
+                    $scope.original.numentrega = '';
+                    $scope.original.propia = data.propia;
+                }
             };
 
-            $scope.original.propia = data.propia;
             $scope.original.tipoDoc = data.tipoDoc;
             $scope.original.documento = data.documento;
             $scope.original.fechafax = data.fechafax;
