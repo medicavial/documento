@@ -1,13 +1,7 @@
 app.controller('controllerUsuarios', function ($scope, loading, find, operacion){
 
- //*********MUESTRA LOS DATOS DE LA FUNCION EN EL GRID**********	
-	$scope.inicio = function (){
-
-		$scope.cargaUsuarios();
-	}
  //*********RECIBO EL JSON DEL SERVICIO GET**********
 	$scope.cargaUsuarios = function(){
-
 		loading.cargando('Buscando Usuarios');
 		find.usuarios().success( function (data){
         		$scope.listado = data;
@@ -15,6 +9,13 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		});
 
 	}
+
+ //*********MUESTRA LOS DATOS DE LA FUNCION EN EL GRID**********	
+	$scope.inicio = function (){
+
+		$scope.cargaUsuarios();
+	}
+
  //*********SE DECLARA EL GRID Y SUS COLUMNAS********
 	$scope.listado = [];
 	///filtros
@@ -76,6 +77,12 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 
         operacion.guardaUser($scope.datos).success(function (data){
             console.log(data)
+            $scope.datos = [];
         })
 	}
+
+	$scope.limpiaDatos = function(){
+    	$scope.datos = [];
+		console.log($scope.datos);
+    }
 });
