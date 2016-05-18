@@ -1,6 +1,21 @@
-app.controller('unidadCtrl', function ($scope) {
+app.controller('unidadCtrl', function ($scope, loading, find) {
 
 	$scope.tituloUni = "Unidades";
+	
+    //*********RECIBO EL JSON DEL SERVICIO GET**********
+	$scope.consultaUnidad = function (){
+		loading.cargando('Buscando Unidades');
+		find.unidadesred().success(function (data){
+			$scope.listado = data;
+			loading.despedida();
+
+		});
+	}
+	//*********MUESTRA LOS DATOS DE LA FUNCION EN EL GRID**********	
+	$scope.inicio = function (){
+
+		$scope.consultaUnidad();
+	}
 
 
 	//*********SE DECLARA EL GRID Y SUS COLUMNAS********

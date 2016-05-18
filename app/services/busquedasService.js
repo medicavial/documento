@@ -136,6 +136,9 @@ app.factory("find", function($http,api){
         unidades:function(){
             return $http.get(api+'consulta/unidades');
         },
+        unidadesred:function(){
+            return $http.get(api+'consulta/unidades/red');
+        },
         unidadesweb:function(){
             return $http.get(api+'consulta/unidadesweb',{timeout: 10000});
         },
