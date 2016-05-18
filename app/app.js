@@ -618,6 +618,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'controllerUsuarios'
     });
 
+    $routeProvider.when('/unidades',{
+            templateUrl   : 'vistas/unidades.html',
+            controller    : 'unidadCtrl'
+    });
+
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
 
     $routeProvider.otherwise({redirectTo:'/login'});

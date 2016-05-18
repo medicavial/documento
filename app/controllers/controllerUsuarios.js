@@ -78,7 +78,14 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
         operacion.guardaUser($scope.datos).success(function (data){
             console.log(data)
             $scope.datos = [];
+
+            $scope.mensaje = "Se guardo correctamente";
+            $scope.tipoalerta = 'alert-success';
         })
+        .error (function (data){
+            $scope.mensaje = "Ocurrio un error al guardar";
+            $scope.tipoalerta = 'alert-warning';
+        });
 	}
 
 	$scope.limpiaDatos = function(){
