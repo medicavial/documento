@@ -241,18 +241,12 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                     }else{
 
-
-                        //si es unidad propia de segunda etapa ya deberia tener numero de entrega
-                        if (datos.propias == 1 && datos.tipoDoc == 2) {
+                        //verifica que numero de segunda o tercera atencion es
+                        find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
+                            datos.numentrega = Number(data) + 1;
+                            //Agregamos un nuevo documento de segunda etapa o tercera
                             promesa.resolve({info:datos,agregaOriginal:1});
-                        }else{
-                            //verifica que numero de segunda de red o tercera atencion es
-                            find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
-                                datos.numentrega = Number(data) + 1;
-                                //Agregamos un nuevo documento de segunda etapa o tercera
-                                promesa.resolve({info:datos,agregaOriginal:1});
-                            });
-                        }
+                        });
 
                     }
 
