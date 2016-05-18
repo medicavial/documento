@@ -39,20 +39,20 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label>Login:</label>
-							<input type="text" id="loginn" ng-model="datos.login" class="form-control">
+							<input type="text" id="loginn" ng-model="datos.login" class="form-control" capitalize>
 						</div>
 						<div class="col-md-4">
 							<label>Usuario Activo:</label>
 							<select class="form-control" id="usuactivo" ng-model="datos.usuactivo">
-								<option value="" selected>SI</option>
-								<option value="">NO</option>
+								<option value="1" selected>SI</option>
+								<option value="0">NO</option>
 							</select>
 						</div>
 					</div>
 					<br>
 					<div class="row">
 						<div class="col-md-6">
-							<select class="form-control" id="area" ng-model="areaOp" ng-options="area.calve as area.nombre for area in areas" ng-change="altausuariosarea(areaOp)" required>
+							<select class="form-control" id="area" ng-model="datos.areaOp" ng-options="area.calve as area.nombre for area in areas"required>
 								<option value="">Area Operativa</option>
 							</select>
 						</div>
