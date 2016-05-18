@@ -1,6 +1,35 @@
 app.controller('controllerUsuarios', function ($scope, loading, find, operacion){
 
- //*********RECIBO EL JSON DEL SERVICIO GET**********
+	// inicializa los datos del formulario usuario al abrir el modal
+	$('#myModalUser').on('show.bs.modal', function (e) {
+	 	$scope.nuevoUsuario();
+	});
+
+	// limpiamos variables
+	$scope.nuevoUsuario = function(){
+		$scope.datos = {
+			nombre:'',
+			password:'',
+			login:'',
+			userweb:'',
+			areaOp:'',
+			usuactivo:'1',
+			captura:false,
+			controldoc:false,
+			consulindiv:false,
+			tickets:false,
+			flujomanual:false,
+			qualitas:false,
+			reportes:false,
+			flujopagos:false,
+			flujodoc:false,
+			usuarios:false,
+			ticketspagos:false,
+			facexpress:false
+		}
+	}
+
+ 	//*********RECIBO EL JSON DEL SERVICIO GET**********
 	$scope.cargaUsuarios = function(){
 		loading.cargando('Buscando Usuarios');
 		find.usuarios().success( function (data){
@@ -10,13 +39,13 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 
 	}
 
- //*********MUESTRA LOS DATOS DE LA FUNCION EN EL GRID**********	
+ 	//*********MUESTRA LOS DATOS DE LA FUNCION EN EL GRID**********	
 	$scope.inicio = function (){
 
 		$scope.cargaUsuarios();
 	}
 
- //*********SE DECLARA EL GRID Y SUS COLUMNAS********
+ 	//*********SE DECLARA EL GRID Y SUS COLUMNAS********
 	$scope.listado = [];
 	///filtros
 	$scope.filterOptions = {
