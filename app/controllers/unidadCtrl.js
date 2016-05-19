@@ -17,6 +17,36 @@ app.controller('unidadCtrl', function ($scope, loading, find) {
 		$scope.consultaUnidad();
 	}
 
+	// $scope.action = function (){
+
+	// }
+
+	 $scope.filtra = function(){
+
+    	//$scope.filterOptions.filterText = "";
+    	//var filtro = "";
+    	// console.log($scope.unidad);
+
+    	if($scope.unidad == undefined || $scope.unidad == 0){
+    		var objeto1 = "";
+    	}else{
+    		var objeto1 = "UNI_propia:" + $scope.unidad + "; ";
+    	}
+
+        if($scope.digital == undefined || $scope.digital == 0){
+            var objeto2 = "";
+        }else{
+            var objeto2 = "DocumentosDigitales:" + $scope.digital + "; ";
+        }
+
+    	var filtro = objeto1 + objeto2 +  $scope.criterio;
+
+    	$scope.filterOptions.filterText = filtro;
+
+    	// console.log(filtro);
+
+    }
+
 
 	//*********SE DECLARA EL GRID Y SUS COLUMNAS********
 	$scope.listado = [];
@@ -42,8 +72,7 @@ app.controller('unidadCtrl', function ($scope, loading, find) {
 	                { field:'rfc', displayName:'RFC', width: 100, visible: true},
 	                { field:'direccion', displayName:'Direccion', width: 100 },
 	                { field:'activa',displayName:'Estatus', cellTemplate:'<div ng-if="row.entity.activa == 0">SI</div> <div ng-if="row.entity.activa == 1">NO</div>', width: 120 },
-	                { displayName:'Accion' ,cellTemplate:'  <a ng-if="row.entity.estatus == 0" href="" ng-click="elimina(row)">Desactivar</a> <a ng-if="row.entity.estatus == 1" href="" ng-click="elimina(row)">Activar</a>'}
-	                // { field:'id', displayName:'Estatus', width: 120 }
+	                { displayName:'Accion' ,cellTemplate:'  <button type="submit" class="btn btn-default" >Activar</button> <button type="submit" class="btn btn-default">Desactivar</button>' }
 
 				    ],
 
