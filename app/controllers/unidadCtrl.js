@@ -48,5 +48,31 @@ app.controller('unidadCtrl', function ($scope, loading, find) {
 
 		showFooter: true,
 		showFilter:false
-	};		
+	};
+
+	$scope.filtra = function(){
+
+    	//$scope.filterOptions.filterText = "";
+    	//var filtro = "";
+    	// console.log($scope.unidad);
+
+    	if($scope.unidad == undefined || $scope.unidad == 0){
+    		var objeto1 = "";
+    	}else{
+    		var objeto1 = "UNI_propia:" + $scope.unidad + "; ";
+    	}
+
+        if($scope.digital == undefined || $scope.digital == 0){
+            var objeto2 = "";
+        }else{
+            var objeto2 = "DocumentosDigitales:" + $scope.digital + "; ";
+        }
+
+    	var filtro = objeto1 + objeto2 +  $scope.criterio;
+
+    	$scope.filterOptions.filterText = filtro;
+
+    	// console.log(filtro);
+
+    }		
 });
