@@ -35,13 +35,14 @@ app.controller('unidadCtrl', function ($scope, loading, find) {
 		filterOptions: $scope.filterOptions,
 		columnDefs: [
 
-					{ field:'UNI_nombrecorto', displayName:'Nombre corto' , width: 120, pinned:true,},
-	                { field:'UNI_nombre', displayName:'Nombre', width: 120, visible:true },
-	                { field:'USU_login', displayName:'Estado', width: 100 },
-	                { field:'UNI_colonia', displayName:'Localidad', width: 120 },
-	                { field:'UNI_rfc', displayName:'RFC', width: 100, visible: true},
-	                { field:'UNI_callenum', displayName:'Direccion', width: 100 },
-	                { field:'UNI_activa', displayName:'Estatus', width: 120 } 
+					{ field:'nombreCorto', displayName:'Nombre corto' , width: 120, pinned:true,},
+	                { field:'nombre', displayName:'Nombre', width: 120, visible:true },
+	                { field:'estado', displayName:'Estado', width: 100 },
+	                { field:'localidad', displayName:'Localidad', width: 120 },
+	                { field:'rfc', displayName:'RFC', width: 100, visible: true},
+	                { field:'direccion', displayName:'Direccion', width: 100 },
+	                // { field:'id', displayName:'Estatus', width: 120 }
+	                { displayName:'Estatus' ,cellTemplate:'  <a ng-if="row.entity.estatus == 0" href="" ng-click="elimina(row)">Desactivar</a> <a ng-if="row.entity.estatus == 1" href="" ng-click="elimina(row)">Activar</a>'}
 
 				    ],
 
