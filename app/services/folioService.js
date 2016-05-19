@@ -241,18 +241,12 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                     }else{
 
-
-                        //si es unidad propia de segunda etapa ya deberia tener numero de entrega
-                        if (datos.propias == 1 && datos.tipoDoc == 2) {
+                        //verifica que numero de segunda o tercera atencion es
+                        find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
+                            datos.numentrega = Number(data) + 1;
+                            //Agregamos un nuevo documento de segunda etapa o tercera
                             promesa.resolve({info:datos,agregaOriginal:1});
-                        }else{
-                            //verifica que numero de segunda de red o tercera atencion es
-                            find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
-                                datos.numentrega = Number(data) + 1;
-                                //Agregamos un nuevo documento de segunda etapa o tercera
-                                promesa.resolve({info:datos,agregaOriginal:1});
-                            });
-                        }
+                        });
 
                     }
 
@@ -393,7 +387,8 @@ app.factory("checkFolios", function($q,$http,find, api){
                 revisado: 0,
                 propia:'',
                 bloqueo: false,
-                bloqueoUni: false
+                bloqueoUni: false,
+                capturado:0
             };
 
             var promesa        = $q.defer(),
@@ -406,6 +401,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     web     = data[1].data[0];
 
                 if(interno){
+                    // console.log(interno);
                     //verificamos si es una segunda atencion o tercera pero la tercera es manual
                     if (interno.original == 1) {
                         
@@ -458,6 +454,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     datos.unidad = interno.unidad;
                     datos.documento = interno.clave;
                     datos.propia = interno.propia;
+                    datos.capturado = interno.capturado;
 
                     datos.escolaridad = interno.escuela;
                     datos.producto = interno.producto;

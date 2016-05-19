@@ -119,13 +119,19 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         checkFolios.validaFolio(folio, 1)
         .then( function (data){
 
+            // console.log(data);
             //verificamos que sea segunda y que sea de propia 
-            if (data.tipoDoc == 2 && data.propia == 1) {
-                $scope.muestraSubsecuencia = true;
-                $scope.original.numentrega = '';
+            if (data.tipoDoc == 2) {
+
+                if (data.capturado == 0) {
+                    alert('La primera etapa del folio no se encuentra capturada, se guardará como registro normal');
+                }else{
+                    $scope.muestraSubsecuencia = true;
+                    $scope.original.numentrega = '';
+                    $scope.original.propia = data.propia;
+                }
             };
 
-            $scope.original.propia = data.propia;
             $scope.original.tipoDoc = data.tipoDoc;
             $scope.original.documento = data.documento;
             $scope.original.fechafax = data.fechafax;
@@ -169,32 +175,59 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
             //buscamos en subsecuencia de web por folio y numero de entrega
             find.consultaSubsecuencia($scope.original.folio,$scope.original.numentrega).success(function (data){
-                
+                // console.log(data);
                 //si existe informacion de subsecuencia en web
                 if (data) {
                     //si es propia la subsecuencia
                     if (data.propia == 'S') {
+
+                        console.log(data.unidad)
+
                         $scope.captura.medico = data.medico;
                         $scope.captura.unidad = data.unidad;
                         $scope.captura.fecha = data.fecha;
                         $scope.captura.hora = data.hora;
+                        
+                        $scope.original.propia = 1;
                         $scope.original.unidad = data.unidad;
-                    }else{
-                        alert('La subsecuencia corresponde a una unidad de red verificalo en sistemas');
-                        $scope.original.numentrega = ''; 
-                    }
+                        //se pasa a string por que sql server devuelve los id como string
+                        $scope.unidadref = String(data.unidad);
+                        $scope.referencia(data.unidad);
 
+                    }else{
+
+                        $scope.muestraSubsecuencia = false;
+                        $scope.consultaSub = false;
+                        $scope.original.propia = 0;
+                        $scope.original.numentrega = 1; 
+                        // alert('La subsecuencia corresponde a una unidad de red verificalo en sistemas');
+                    }
+                //si no verificamos que no sea de propia si es de red dejamos seguir
                 }else{
-                    alert('La subsecuencia no existe verificalo nuevamente');
-                    $scope.original.numentrega = ''; 
+                    if ($scope.original.propia == 1) {
+                        alert('La subsecuencia no existe verificalo nuevamente');
+                        $scope.original.numentrega = ''; 
+                    }else{
+                        $scope.muestraSubsecuencia = false;
+                        $scope.consultaSub = false;
+                        $scope.original.propia = 0;
+                        $scope.original.numentrega = 1; 
+                    }
                 }
 
                 $scope.consultaSub = false;
+
             }).error(function (data){
+
                 $scope.consultaSub = false;
-                $scope.original.numentrega = ''; 
-                if (data.respuesta) {
+                if (data.respuesta && $scope.original.propia == 1) {
+                    $scope.original.numentrega = ''; 
                     alert(data.respuesta);
+                }else if ($scope.original.propia == 0) {
+                    // console.log('entro aqui');
+                    $scope.muestraSubsecuencia = false;
+                    $scope.consultaSub = false;
+                    $scope.original.numentrega = 1; 
                 }else{
                     alert('Error en la conexion si el problema persiste ve al area de sistemas');
                 } 
@@ -367,7 +400,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
             if ($scope.original.tipoDoc == 2 && $scope.original.propia == 1) {
                 $scope.muestraSubsecuencia = true;
-                $scope.original.numentrega = '';
+                // $scope.original.numentrega = '';
             };
 
         }else if($scope.bloqueo == true && $scope.original.tipoDoc == 1){

@@ -6,130 +6,142 @@
 	<ul id="rb-grid-small" class="rb-grid-small clearfix">
 		<li class="rb-span-1" id="color3">
 			<h3>Nuevo Usuario</h3>
-			<a data-target="#myModal2" data-toggle="modal">
+			<a data-target="#myModalUser" data-toggle="modal">
 	            <span class="glyphicon glyphicon-user"></span>
 	        </a>
 	    </li>
-	   <!--  <li class="rb-span-1" id="color3">
-			<h3>Folios FTP</h3>
-			<a data-target="#myModal2" data-toggle="modal">
-	            <span class="glyphicon glyphicon-search"></span>
-	        </a>
-	    </li> -->
 	</ul>
 	<br>
 	<div id="copiar" class="gridStyle" ng-grid="gridOptions"></div>
-	<br><br>
-	<button class="btn btn-primary">Usuarios</button>
 </div>
 
 <!-- Modal Dialog de Alta de usuarios</!-->
 
-<div class="modal fade" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade" id="myModalUser" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
 				<h4 class="modal-title">Registro de Usuario</h4>
 			</div>
-			<form>
+			<form name="userForm">
 				<div class="modal-body">
 					<div class="row">
 						<div class="col-md-6">
 							<label>Nombre:</label>
-							<input type="text" id="nombre" class="form-control" capitalize>
+							<input type="text" id="nombre" ng-model="datos.nombre" class="form-control" capitalize required>
 						</div>
-						<div class="col-md-4">
+						<div class="col-md-6">
 							<label>Password:</label>
-							<input type="text" id="folioAct" class="form-control">
+							<input type="password" id="password" ng-model="datos.password" class="form-control" required>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label>Login:</label>
-							<input type="text" class="form-control" ng-model="">
+							<input type="text" id="loginn" ng-model="datos.login" class="form-control" capitalize required>
+						</div>
+						<div class="col-md-6">
+							<label>Usuario Web:</label>
+							<input type="text" id="loginn" ng-model="datos.userweb" class="form-control" capitalize>
+						</div>
+					</div>
+					<br>
+					<div class="row">
+						<div class="col-md-6">
+							<label></label>
+							<select class="form-control" id="area" ng-model="datos.areaOp" ng-options="area.calve as area.nombre for area in areas"required>
+								<option value="">Area Operativa</option>
+							</select>
 						</div>
 						<div class="col-md-4">
 							<label>Usuario Activo:</label>
-							<input type="text" id="password" class="form-control" ng-model="">
+							<select class="form-control" id="usuactivo" ng-model="datos.usuactivo" required>
+								<option value="1">SI</option>
+								<option value="0">NO</option>
+							</select>
 						</div>
 					</div>
 					<br>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-								<input type="checkbox" value="">Captura</label>
+								<input type="checkbox" id="captura" ng-model="datos.captura" value="">Captura</label>
 						</div>
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-								<input type="checkbox" value="">Control de Documentos</label>
+								<input type="checkbox" id="controldoc" ng-model="datos.controldoc" value="">Control de Documentos</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-								<input type="checkbox" value="">Consulta Individual</label>
+								<input type="checkbox" id="consulindiv" ng-model="datos.consulindiv" value="">Consulta Individual</label>
 						</div>
 						<div class="row">
 							<div class="col-md-6">
 								<label class="checkbox-inline">
-									<input type="checkbox" value="">Tickets</label>
+									<input type="checkbox" id="tickets" ng-model="datos.tickets" value="">Tickets</label>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">Flujo manual</label>
+									<input type="checkbox" id="flujomanu" ng-model="datos.flujomanual" value="">Flujo manual</label>
 						</div>
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">Qualitas</label>
+									<input type="checkbox" id="qualitas" ng-model="datos.qualitas" value="">Qualitas</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">Reportes</label>
+									<input type="checkbox" id="reportes" ng-model="datos.reportes" value="">Reportes</label>
 						</div>
 						<div class="row">
 							<div class="col-md-6">
 								<label class="checkbox-inline">
-									<input type="checkbox" value="">Flujo de Pagos</label>
+									<input type="checkbox" id="flujopagos" ng-model="datos.flujopagos" value="">Flujo de Pagos</label>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">Flujo de Documentos</label>
+									<input type="checkbox" id="flujodoc" ng-model="datos.flujodoc" value="">Flujo de Documentos</label>
 						</div>
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">Usuarios</label>
+									<input type="checkbox" id="usuarios" ng-model="datos.usuarios" value="">Usuarios</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" value="">Tickets de Pagos</label>
+									<input type="checkbox" id="ticketpagos" ng-model="datos.ticketspagos" value="">Tickets de Pagos</label>
 						</div>
 						<div class="row">
 							<div class="col-md-6">
 								<label class="checkbox-inline">
-									<input type="checkbox" value="">Facturación Express</label>
+									<input type="checkbox" id="facexpress" ng-model="datos.facexpress" value="">Facturación Express</label>
 							</div>
 						</div>
-						<!-- <div class="col-md-1">
+						<br><br>
+						<div class="col-md-1">
                 			<br>
                 			<img ng-show="cargar" src="images/cargando.gif">
-                		</div> -->
+                		</div>
+
+                		<div ng-if="mensaje" ng-class="tipoalerta" class="alert alert-success animate-show">{{mensaje}}</div>
 					</div>
 				</div>
 				<div class="modal-footer">
-					<button id="boton2" type="submit" ng-disabled="formOriginal.$invalid" data-loading-text="
-	            	Guardando..." class="btn btn-primary">Guardar</button>
-	            	<button type="reset" class="btn btn-success" id="btnlimpia">Limpiar</button>
+					<button id="boton2" type="submit" data-loading-text="Guardando..." class="btn btn-primary" ng-click="guardaUsuario()" ng-disabled="userForm.$invalid">Guardar</button>
+
+	            	<button ng-click="nuevoUsuario()" class="btn btn-success" id="btnlimpia">Limpiar</button>
+
 	            	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
 	            </div>
 			</form>
