@@ -1,4 +1,4 @@
-app.controller('unidadCtrl', function ($scope, loading, find) {
+app.controller('unidadCtrl', function ($scope, loading, find,operacion) {
 
 	$scope.tituloUni = "Unidades";
 	
@@ -71,7 +71,8 @@ app.controller('unidadCtrl', function ($scope, loading, find) {
 	                { field:'localidad', displayName:'Localidad', width: 120 },
 	                { field:'rfc', displayName:'RFC', width: 100, visible: true},
 	                { field:'direccion', displayName:'Direccion', width: 100 },
-	                { field:'activa',displayName:'Estatus', cellTemplate:'<div ng-if="row.entity.activa == 0">SI</div> <div ng-if="row.entity.activa == 1">NO</div>', width: 120 },
+	                { field:'activa',displayName:'Estatus', cellTemplate:'<div ng-if="row.entity.activa == 0">Activo</div> <div ng-if="row.entity.activa == 1">Inactivo</div>', width: 120 },
+	                //SE GENERAN LOS BOTONES CON LA FUNCIONALIDAD DE ACTIVAR O DESACTIVAR VALOR.
 	                { displayName:'Accion' ,cellTemplate:'  <button  class="btn btn-default" ng-if="row.entity.activa == 1" ng-click="cambio(row.entity.id,row.entity.activa)">Activar</button> <button class="btn btn-default" ng-if="row.entity.activa == 0" ng-click="cambio(row.entity.id,row.entity.activa)">Desactivar</button>' }
 
 				    ],
@@ -82,6 +83,14 @@ app.controller('unidadCtrl', function ($scope, loading, find) {
 
 
 	$scope.cambio = function(unidad,estatus){
-		operacion.cambiounidad(unidad,estatus)
-	}		
+		operacion.cambiounidad(unidad,estatus).success(function (data){
+			console.log(data)
+            alert("Cambio Exitoso") 
+            $scope.consultaUnidad();
+        })
+
+        .error (function (data){
+            alert("Ocurrio un error en el cambio, intente nuevamente")
+        });
+	}
 });
