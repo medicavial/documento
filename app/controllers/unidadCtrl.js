@@ -72,11 +72,16 @@ app.controller('unidadCtrl', function ($scope, loading, find) {
 	                { field:'rfc', displayName:'RFC', width: 100, visible: true},
 	                { field:'direccion', displayName:'Direccion', width: 100 },
 	                { field:'activa',displayName:'Estatus', cellTemplate:'<div ng-if="row.entity.activa == 0">SI</div> <div ng-if="row.entity.activa == 1">NO</div>', width: 120 },
-	                { displayName:'Accion' ,cellTemplate:'  <button type="submit" class="btn btn-default" >Activar</button> <button type="submit" class="btn btn-default">Desactivar</button>' }
+	                { displayName:'Accion' ,cellTemplate:'  <button  class="btn btn-default" ng-if="row.entity.activa == 1" ng-click="cambio(row.entity.id,row.entity.activa)">Activar</button> <button class="btn btn-default" ng-if="row.entity.activa == 0" ng-click="cambio(row.entity.id,row.entity.activa)">Desactivar</button>' }
 
 				    ],
 
 		showFooter: true,
 		showFilter:false
-	};		
+	};
+
+
+	$scope.cambio = function(unidad,estatus){
+		operacion.cambiounidad(unidad,estatus)
+	}		
 });
