@@ -43,7 +43,11 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
             unidad:'',
             medico:'',
             fecha:'',
-            hora:''
+            hora:'',
+            tipoRehabilitacion:'',
+            escalaDolor:'',
+            escalaMejoria:'',
+            observaciones:''
         }
 
         $scope.original = {
@@ -70,7 +74,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
             captura:$scope.captura
         };
 
-        $scope.muestraSubsecuencia = false;
+        $scope.muestraEntrega = false;
         $scope.consultaSub = false;
         $scope.mensaje = '';
         $scope.remesa = 0;
@@ -126,7 +130,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                 if (data.capturado == 0) {
                     alert('La primera etapa del folio no se encuentra capturada, se guardará como registro normal');
                 }else{
-                    $scope.muestraSubsecuencia = true;
+                    $scope.muestraEntrega = true;
                     $scope.original.numentrega = '';
                     $scope.original.propia = data.propia;
                 }
@@ -165,11 +169,18 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         });
     }
 
+    $scope.validaAtencion = function(){
+        if ($scope.original.tipoDoc == 2) {
+            $scope.validaSubsecuenciaA();
+        }else if ($scope.original.tipoDoc == 3) {
+            $scope.validaRehabilitacionA();
+        }
+    }
 
     //verificamos la subsecuencia 
     $scope.validaSubsecuenciaA = function(){
 
-        if ($scope.original.tipoDoc == 2 && $scope.muestraSubsecuencia && $scope.original.numentrega != '' && $scope.original.numentrega != undefined) {
+        if ($scope.original.numentrega != '' && $scope.original.numentrega != undefined) {
             // console.log('consulta web');
             $scope.consultaSub = true;
 
@@ -196,7 +207,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
                     }else{
 
-                        $scope.muestraSubsecuencia = false;
+                        $scope.muestraEntrega = false;
                         $scope.consultaSub = false;
                         $scope.original.propia = 0;
                         $scope.original.numentrega = 1; 
@@ -208,7 +219,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                         alert('La subsecuencia no existe verificalo nuevamente');
                         $scope.original.numentrega = ''; 
                     }else{
-                        $scope.muestraSubsecuencia = false;
+                        $scope.muestraEntrega = false;
                         $scope.consultaSub = false;
                         $scope.original.propia = 0;
                         $scope.original.numentrega = 1; 
@@ -225,7 +236,78 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                     alert(data.respuesta);
                 }else if ($scope.original.propia == 0) {
                     // console.log('entro aqui');
-                    $scope.muestraSubsecuencia = false;
+                    $scope.muestraEntrega = false;
+                    $scope.consultaSub = false;
+                    $scope.original.numentrega = 1; 
+                }else{
+                    alert('Error en la conexion si el problema persiste ve al area de sistemas');
+                } 
+            })
+        };
+    }
+
+    $scope.validaRehabilitacionA = function(){
+
+        if ($scope.original.numentrega != '' && $scope.original.numentrega != undefined) {
+            // console.log('consulta web');
+            $scope.consultaSub = true;
+
+            //buscamos en subsecuencia de web por folio y numero de entrega
+            find.consultaRehabilitacion($scope.original.folio,$scope.original.numentrega).success(function (data){
+                // console.log(data);
+                //si existe informacion de subsecuencia en web
+                if (data) {
+                    //si es propia la subsecuencia
+                    if (data.propia == 'S') {
+
+                        console.log(data.unidad)
+
+                        $scope.captura.medico = data.rehabilitador;
+                        $scope.captura.unidad = data.unidad;
+                        $scope.captura.fecha = data.fecha;
+                        $scope.captura.escalaDolor = data.escalaDolor;
+                        $scope.captura.escalaMejoria = data.escalaMejoria;
+                        $scope.captura.tipoRehabilitacion = data.tipoRehabilitacion;
+                        $scope.captura.observaciones = data.observaciones;
+                        
+                        $scope.original.propia = 1;
+                        $scope.original.unidad = data.unidad;
+                        //se pasa a string por que sql server devuelve los id como string
+                        $scope.unidadref = String(data.unidad);
+                        $scope.referencia(data.unidad);
+
+                    }else{
+
+                        $scope.muestraEntrega = false;
+                        $scope.consultaSub = false;
+                        $scope.original.propia = 0;
+                        $scope.original.numentrega = 1; 
+                        // alert('La subsecuencia corresponde a una unidad de red verificalo en sistemas');
+                    }
+                //si no verificamos que no sea de propia si es de red dejamos seguir
+                }else{
+                    if ($scope.original.propia == 1) {
+                        alert('La subsecuencia no existe verificalo nuevamente');
+                        $scope.original.numentrega = ''; 
+                    }else{
+                        $scope.muestraEntrega = false;
+                        $scope.consultaSub = false;
+                        $scope.original.propia = 0;
+                        $scope.original.numentrega = 1; 
+                    }
+                }
+
+                $scope.consultaSub = false;
+
+            }).error(function (data){
+
+                $scope.consultaSub = false;
+                if (data.respuesta && $scope.original.propia == 1) {
+                    $scope.original.numentrega = ''; 
+                    alert(data.respuesta);
+                }else if ($scope.original.propia == 0) {
+                    // console.log('entro aqui');
+                    $scope.muestraEntrega = false;
                     $scope.consultaSub = false;
                     $scope.original.numentrega = 1; 
                 }else{
@@ -392,16 +474,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
     
             $scope.original.unidad = $scope.unidadref;//asignamos el valor de referencia por si queremos regresar al estado anterior
             $scope.bloqueoUni = false;
-            
-            if ($scope.original.tipoDoc == 3) {
-                $scope.muestraSubsecuencia = false;
-                $scope.original.numentrega = 1;
-            };
-
-            if ($scope.original.tipoDoc == 2 && $scope.original.propia == 1) {
-                $scope.muestraSubsecuencia = true;
-                // $scope.original.numentrega = '';
-            };
+            $scope.muestraEntrega = true;
 
         }else if($scope.bloqueo == true && $scope.original.tipoDoc == 1){
 

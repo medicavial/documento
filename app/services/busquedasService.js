@@ -25,6 +25,9 @@ app.factory("find", function($http,api){
         consultaFacturaQualitas:function(folio){
             return $http.get(api+'qualitas/consulta/' + folio);
         },
+        consultaRehabilitacion :function(folio,etapa){
+            return $http.get(api + 'consulta/rehabilitacion/' + folio + '/' + etapa);
+        },
         consultaSubsecuencia :function(folio,etapa){
             return $http.get(api + 'consulta/subsecuencia/' + folio + '/' + etapa);
         },

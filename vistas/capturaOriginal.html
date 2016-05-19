@@ -42,12 +42,12 @@
 						<option value="">Tipo de Documento</option>
 					</select>
         		</div>
-                <div class="col-md-2" ng-if="muestraSubsecuencia">
+                <div class="col-md-2" ng-if="muestraEntrega">
                     <label for="numeroEntrega">Entrega</label>
-                    <input type="text" id="numeroEntrega" class="form-control" ng-model="original.numentrega" numero required ng-change="validaSubsecuenciaA()">
+                    <input type="text" id="numeroEntrega" class="form-control" ng-model="original.numentrega" numero required ng-change="validaAtencion()">
                 </div>
 			</div>
-            <label ng-if="consultaSub">Verificando Información de Subsecuencia</label>
+            <label ng-if="consultaSub">Verificando Información</label>
 			<div class="row">
 				<div class="col-md-6">
 					<label for="cliente">Cliente</label>
