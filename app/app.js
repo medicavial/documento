@@ -620,13 +620,10 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'controllerUsuarios'
     });
 
-<<<<<<< HEAD
-=======
     $routeProvider.when('/unidades',{
             templateUrl   : 'vistas/unidades.html',
             controller    : 'unidadCtrl'
     });
->>>>>>> origin/actualizacion-1.3
 
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
 
