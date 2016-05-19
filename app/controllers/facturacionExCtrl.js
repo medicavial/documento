@@ -119,9 +119,8 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
         }
 
     }
-
-
     //consultamos lo que tenemos pendiente de mandar de axa 
+    
     $scope.consultaPendientes = function(){
 
         loading.cargando('Cargando Información');

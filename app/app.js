@@ -15,7 +15,7 @@ app.constant('api','http://172.17.10.52/apimv/public/api/')
 
 //ip produccion
 // app.constant('api','http://172.17.10.15/apimv/public/api/')
-app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/')
+//app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/')
 
 //configuramos las rutas y asignamos html y controlador segun la ruta
 app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDelegateProvider){
@@ -414,8 +414,6 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     info  = $http.get(api+'flujo/consulta/'+ $rootScope.id);
 
                     $q.all([info]).then(function (data){
-
-                        console.log(data);
                         var respuesta = {
                             activos:pagos,
                             rechazos:data[0].data.rechazos,
@@ -461,12 +459,16 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'recepcionCtrl',
             resolve:{
                 datos:function(loading,carga,$rootScope){
-                    loading.cargando('Cargando Informacón');
+                    loading.cargando('Cargando Información');
                     return carga.flujo($rootScope.id);
                 }
             }
     });
 
+    $routeProvider.when('/relaciona/globales',{
+            templateUrl   : 'vistas/globales.html',
+            controller    : 'globalesCtrl'
+    });
 
     $routeProvider.when('/reportes',{
             templateUrl   : 'vistas/reportes.html'
@@ -490,8 +492,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                 }
             }
     });
-
-
+    
     $routeProvider.when('/seguimiento',{
             templateUrl   : 'vistas/seguimiento.html',
             controller    : 'seguimientoCtrl',
@@ -617,6 +618,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             templateUrl   : 'vistas/usuarios.html',
             controller    : 'controllerUsuarios'
     });
+
 
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
 

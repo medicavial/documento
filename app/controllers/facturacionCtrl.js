@@ -233,10 +233,6 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 
     $scope.filtra = function(){
 
-    	//$scope.filterOptions.filterText = "";
-    	//var filtro = "";
-    	//console.log($scope.fechaini);
-
     	if($scope.unidad == undefined || $scope.unidad == 0){
     		var objeto1 = "";
     	}else{
@@ -255,7 +251,6 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
     	}else{
     		var objeto3 = ""; 
     	}
-
     	if($scope.folio.length == 0){
     		var objeto4 = "";
     	}else{
@@ -282,7 +277,6 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
     		
     	}
 
-
     	var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7;
 
     	$scope.filterOptions.filterText = filtro;
@@ -301,7 +295,7 @@ function facturacionCtrl($scope, $rootScope, find , loading, $http, checkFolios,
     	$scope.fechafin = '';
     	$scope.lesionado = '';
     	$scope.foliosxarea();
-    
+
     }
 
     $scope.quitaselectos = function(){

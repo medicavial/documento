@@ -527,6 +527,11 @@ app.factory("checkFolios", function($q,$http,find, api){
             });
             
             return promesa.promise;
+        },
+        globales:function(folios){
+            console.log(folios);
+            return $http.post('',folios,{timeout: 10000});
+
         }
     }
 });
@@ -556,7 +561,6 @@ app.factory("carga", function($q,$http,find,api){
                 productos      = find.productos(),
                 escolaridad    = find.escolaridad(),
                 areaOperativa  = find.areaoperativa();
-
             $q.all([cliente,unidades,productos,escolaridad,areaOperativa]).then(function(data) { 
                 
                 var datos = {
@@ -566,7 +570,6 @@ app.factory("carga", function($q,$http,find,api){
                     escolaridad:data[3].data,
                     areaOperativa:data[4].data
                 }
-
                 promesa.resolve(datos);
             });
 

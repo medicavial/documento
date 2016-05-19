@@ -120,7 +120,6 @@ function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loadin
 		}
 
 	}
-
 	$scope.validainfo = function(){
 
 		$scope.mensaje = '';
@@ -881,10 +880,6 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 		});
 	}
 
-
-	
-
-
 	//enlista los clientes
 	$scope.empresas = function(){
 
@@ -940,7 +935,6 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 	//guardamos pero antes verificamos que tengamos documentos seleccionados
 	$scope.entrega = function(){
 
-		
 		if ($scope.selectos.length > 0) {
 			$scope.validainfo();
 
@@ -1760,7 +1754,6 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 		};
 		
 	}
-
 
 	$scope.rechazaEntregas = function(){
 

@@ -1,10 +1,9 @@
 
 
 //Area de pagos
-function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
+function pagosCtrl($scope, $rootScope, find , loading,datos,$filter,$location,$http,checkFolios){
 
     // console.log(datos);
-
     loading.despedida();
 
     $scope.recibidos = datos.recepcion;
@@ -18,8 +17,10 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
         $rootScope.area = 6;
         $scope.tituloR = "Pagos";
         $scope.push = false;
+        $scope.factglobal = [];
 
         $scope.datosPagos = {
+
             fechainiPag : primerdiames,
             fechafinPag : FechaAct,
             unidad:'',
@@ -28,6 +29,7 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
         }
 
         $scope.datosRecepcion = {
+
             fechainiRec : FechaAct,
             fechafinRec : FechaAct,
             unidad:'',
@@ -143,11 +145,11 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
         });
 
     }
-
     //////LLena el grid y toma filtros
 
     ///filtros
     $scope.selectos = [];
+    $scope.selectedRows = [];
 
     $scope.filterOptions = {
         filterText: '',
@@ -166,8 +168,11 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
         enableColumnResize:true,
         enablePinning: true, 
         enableRowSelection:true,
-        multiSelect:false,
-        selectedItems: $scope.selectos, 
+        multiSelect:true,
+        showSelectionCheckbox: true,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: true,
+        selectedItems: $scope.selectedRows, 
         filterOptions: $scope.filterOptions,
         enableCellEdit: true,
         columnDefs: [
@@ -202,18 +207,24 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
                     { field:'Cobrado', width: 80 }
         ],
         showFooter: true,
-        showFilter:false
+        showFilter:false,
+
     };
 
     $scope.$on('ngGridEventRows', function (newFilterText){
 
         var filas = newFilterText.targetScope.renderedRows;
-
         $scope.exportables = [];
+        allChecked = true;
 
         angular.forEach(filas , function(item){
             $scope.exportables.push(item.entity);
         });
+
+        // if (!$scope.gridOptions.$gridScope.checker)
+        // $scope.gridOptions.$gridScope.checker = {};
+
+        // $scope.gridOptions.$gridScope.checker.checked = allChecked;
 
     });
 
@@ -235,7 +246,6 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
             var objeto2 = "Cliente:" + $scope.cliente.nombre + "; ";
             $scope.filtrado.Cliente = $scope.cliente.nombre;
         }
-
 
         if($scope.tipo == 'fax'){
             var objeto3 = "FormaRecep:F; ";
@@ -313,8 +323,6 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
             var objeto11 = "";
             // $scope.filtrado.Pagado = '';
         }
-
-
         var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7 + objeto8 + objeto9 + objeto10 + objeto11;
 
         
@@ -356,7 +364,7 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
         // console.log($scope.buscarXfecha);
 
-        if ($scope.buscarXfecha == 1) {
+        if ($scope.buscarXfecha == 1){
 
             $scope.buscarXfecha = 0;
             $scope.foliosxarea();
@@ -368,10 +376,45 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 
     $scope.exporta = function(){
 
-
         $scope.selectos = $filter('filter')($scope.listado, $scope.filtrado);
-        JSONToCSVConvertor($scope.selectos,'Reporte',true);
-        
+        JSONToCSVConvertor($scope.selectos,'Reporte',true);        
+    }
+
+    $scope.global = function(success){
+
+        $scope.factglobal = [];
+
+        for (var i = 0; i < $scope.selectedRows.length; i++){
+
+             $scope.factglobal.push($scope.selectedRows[i]);
+             
+        };
+        checkFolios.globales($scope.factglobal).success(function (data){
+
+        alert('hola');
+
+        }).error(function (data){
+            $scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+            $scope.tipoalerta = 'alert-error';
+            $('#boton').button('reset');    
+        });
+
+        // if ($scope.selectedRows.length > 0) {
+
+        //     checkFolios.aceptaEntrega($scope.selectedRows)
+        //     .success(function (data){
+
+        //         console.log(data);
+
+        //     })
+        //     .error(function (data){
+        //         $scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+        //         $scope.tipoalerta = 'alert-error';
+        //         $('#boton').button('reset');    
+        //     });
+            
+        // };
+         
     }
 
 };
@@ -728,7 +771,7 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter){
 // };
 
 
-pagosCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading','datos','$filter'];
+pagosCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading','datos','$filter','$location','$http','checkFolios'];
 // flujoPagosCtrl.$inject = ['$scope','$rootScope', 'find','loading', '$http', 'api','datos','$filter'];
 
 app.controller('pagosCtrl',pagosCtrl);

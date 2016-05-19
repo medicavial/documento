@@ -18,8 +18,16 @@
 	        <a href="#/ticketpagos">
 	            <span class="icon-box-add"></span>
 	        </a>
-
 	    </li>
+
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>F.  Globales</h3>
+	        <a href="#/relaciona/globales">
+	            <span class="icon-box-add"></span>
+	        </a>
+	    </li>
+
 		
 		<!-- <li class="rb-span-1" id="color3">
 
@@ -175,8 +183,14 @@
 	<div class="gridStyle" ng-grid="gridOptions"></div>
 	
 	<br>
+
+	<div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
 	
 	<button ng-click="exporta()" data-loading-text="Generando..." id="boton" class="btn btn-success glyphicon glyphicon-download-alt"> Exportar</button>
+
+	<button ng-click="global()" data-loading-text="Cargando..." id="boton" class="btn btn-info glyphicon glyphicon-download-alt"> R Global</button>
+
+	<button ng-click="" data-loading-text="Cargando..." id="boton" class="btn btn-warning glyphicon glyphicon-download-alt"> R Individual</button>
 	<br>
 </div>
 <script type="text/javascript">

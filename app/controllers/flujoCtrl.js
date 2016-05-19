@@ -79,7 +79,6 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
     //guardamos pero antes verificamos que tengamos documentos seleccionados
     $scope.entrega = function(){
 
-        
         $('#boton').button('loading');
 
         if ($scope.selectos.length > 0) {
@@ -409,7 +408,6 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
     //guardamos pero antes verificamos que tengamos documentos seleccionados
     $scope.entrega = function(){
 
-        
         $('#boton').button('loading');
 
         if ($scope.selectos.length > 0) {
