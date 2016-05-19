@@ -41,7 +41,8 @@ app.controller('unidadCtrl', function ($scope, loading, find) {
 	                { field:'localidad', displayName:'Localidad', width: 120 },
 	                { field:'rfc', displayName:'RFC', width: 100, visible: true},
 	                { field:'direccion', displayName:'Direccion', width: 100 },
-	                { displayName:'Estatus' ,cellTemplate:'  <a ng-if="row.entity.estatus == 0" href="" ng-click="elimina(row)">Desactivar</a> <a ng-if="row.entity.estatus == 1" href="" ng-click="elimina(row)">Activar</a>'}
+	                { field:'activa',displayName:'Estatus', cellTemplate:'<div ng-if="row.entity.activa == 0">SI</div> <div ng-if="row.entity.activa == 1">NO</div>', width: 120 },
+	                { displayName:'Accion' ,cellTemplate:'  <a ng-if="row.entity.estatus == 0" href="" ng-click="elimina(row)">Desactivar</a> <a ng-if="row.entity.estatus == 1" href="" ng-click="elimina(row)">Activar</a>'}
 	                // { field:'id', displayName:'Estatus', width: 120 }
 
 				    ],
