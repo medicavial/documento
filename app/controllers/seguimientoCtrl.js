@@ -100,6 +100,37 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
     }
 
 
+    $scope.quitanpc = function(){
+
+        $scope.mensaje = '';
+
+        $('#boton3').button('loading');
+
+        if ($scope.selectos.length > 0) {
+
+            $http.post(api+'eliminanpc',$scope.selectos).success(function (data){
+                
+                $scope.mensaje = data.respuesta;
+                $scope.tipoalerta = 'alert-success';
+                $scope.cargaFlujo();
+                $('#boton3').button('reset');
+                $scope.gridOptions.$gridScope.toggleSelectAll(false);
+
+            }).error( function (data){
+                
+                $scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+                $scope.tipoalerta = 'alert-warning';
+                $('#boton3').button('reset');
+
+            }); 
+
+        }else{
+            alert('No se ha seleccionado ningun documento');
+        }
+
+    }
+
+
 	//enlista los usuarios de cada area 
 	$scope.altausuariosarea = function(area){
 

@@ -122,13 +122,13 @@
 	<div class="row">
 		<form name="formEntrega"  novalidate>
 
-			<div class="col-md-3">
+			<div class="col-md-2">
 				<select class="form-control" id="area" ng-model="areaOp" ng-options="area.calve as area.nombre for area in areas" ng-change="altausuariosarea(areaOp)" required>
 					<option value="">Area Operativa</option>
 				</select>
 			</div>
 			
-			<div class="col-md-3">
+			<div class="col-md-2">
 				<select class="form-control" ng-show="areaOp > 0" id="area" ng-model="user" ng-options="usuario.id as usuario.nombre for usuario in usuarios" required>
 					<option value="">Usuario</option>
 				</select>
@@ -138,14 +138,14 @@
 			</div>
 			<div class="col-md-2" id="estatus">
 				<!-- <input type="text" x-webkit-speech=""> -->
-				<button type="button" id="boton2" ng-disabled="selectos.length == 0" class="btn btn-success icon-flag" ng-click="mandanpc()"> Posible no pago</button>
+				<button type="button" id="boton2" ng-disabled="selectos.length == 0" class="btn btn-success icon-flag" ng-click="mandanpc()"> Posible No Pago</button>
+			</div>
+			<div class="col-md-2" id="estatus">
+				<button type="button" id="boton3" ng-disabled="selectos.length == 0" class="btn btn-danger icon-flag" ng-click="quitanpc()">Quitar Posible NP</button>
 			</div>
 			<div class="col-md-2" id="estatus">
 				<!-- <input type="text" x-webkit-speech=""> -->
 				<button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
-			</div>
-
-			<div class="col-md-2">
 			</div>
 
 		</form>
