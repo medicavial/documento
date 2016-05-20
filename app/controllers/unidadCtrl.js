@@ -17,7 +17,9 @@ app.controller('unidadCtrl', function ($scope, loading, find,operacion) {
 		$scope.consultaUnidad();
 	}
 
-	// $scope.action = function (){
+	// $scope.filtraEstatus = function (){
+	// 	if (activa == 0)
+	// 		$scope.
 
 	// }
 
@@ -65,13 +67,13 @@ app.controller('unidadCtrl', function ($scope, loading, find,operacion) {
 		filterOptions: $scope.filterOptions,
 		columnDefs: [
 
-					{ field:'nombreCorto', displayName:'Nombre corto' , width: 120, pinned:true,},
-	                { field:'nombre', displayName:'Nombre', width: 120, visible:true },
+					{ field:'nombreCorto', displayName:'Nombre corto' , width: 160, pinned:true,},
+	                { field:'nombre', displayName:'Nombre', width: 200, visible:true },
 	                { field:'estado', displayName:'Estado', width: 100 },
 	                { field:'localidad', displayName:'Localidad', width: 120 },
-	                { field:'rfc', displayName:'RFC', width: 100, visible: true},
-	                { field:'direccion', displayName:'Direccion', width: 100 },
-	                { field:'activa',displayName:'Estatus', cellTemplate:'<div ng-if="row.entity.activa == 0">Activo</div> <div ng-if="row.entity.activa == 1">Inactivo</div>', width: 120 },
+	                { field:'rfc', displayName:'RFC', width: 120, visible: true},
+	                { field:'direccion', displayName:'Direccion', width: 200 },
+	                { field:'activa',displayName:'Estatus', cellTemplate:'<div ng-if="row.entity.activa == 0">Activo</div> <div ng-if="row.entity.activa == 1">Inactivo</div>', width: 80 },
 	                //SE GENERAN LOS BOTONES CON LA FUNCIONALIDAD DE ACTIVAR O DESACTIVAR VALOR.
 	                { displayName:'Accion' ,cellTemplate:'  <button  class="btn btn-default" ng-if="row.entity.activa == 1" ng-click="cambio(row.entity.id,0)">Activar</button> <button class="btn btn-default" ng-if="row.entity.activa == 0" ng-click="cambio(row.entity.id,1)">Desactivar</button>' }
 
