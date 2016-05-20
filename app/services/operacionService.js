@@ -6,8 +6,8 @@ app.factory("operacion",function($http, api){
     	guardaUser: function(datos){
     		return $http.post(api+'operacion/usuarios', datos);
     	},
-    	cambioUnidad: function(unidad,bit){
-    		return $http.get(api+'operacion/estatusUnidad/'+ unidad + '/' + bit);
+    	cambioUnidad: function(unidad,bit,usuario){
+    		return $http.get(api+'operacion/estatusUnidad/'+ unidad + '/' + bit + '/' + usuario);
     	}
     }
 });
