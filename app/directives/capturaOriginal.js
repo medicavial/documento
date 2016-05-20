@@ -192,8 +192,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                     //si es propia la subsecuencia
                     if (data.propia == 'S') {
 
-                        console.log(data.unidad)
-
+                        // console.log(data.unidad)
                         $scope.captura.medico = data.medico;
                         $scope.captura.unidad = data.unidad;
                         $scope.captura.fecha = data.fecha;
@@ -208,7 +207,6 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                     }else{
 
                         $scope.muestraEntrega = false;
-                        $scope.consultaSub = false;
                         $scope.original.propia = 0;
                         $scope.original.numentrega = 1; 
                         // alert('La subsecuencia corresponde a una unidad de red verificalo en sistemas');
@@ -220,7 +218,6 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                         $scope.original.numentrega = ''; 
                     }else{
                         $scope.muestraEntrega = false;
-                        $scope.consultaSub = false;
                         $scope.original.propia = 0;
                         $scope.original.numentrega = 1; 
                     }
@@ -230,18 +227,8 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
             }).error(function (data){
 
-                $scope.consultaSub = false;
-                if (data.respuesta && $scope.original.propia == 1) {
-                    $scope.original.numentrega = ''; 
-                    alert(data.respuesta);
-                }else if ($scope.original.propia == 0) {
-                    // console.log('entro aqui');
-                    $scope.muestraEntrega = false;
-                    $scope.consultaSub = false;
-                    $scope.original.numentrega = 1; 
-                }else{
-                    alert('Error en la conexion si el problema persiste ve al area de sistemas');
-                } 
+                alert('Error en la conexion si el problema persiste ve al area de sistemas');
+            
             })
         };
     }
@@ -260,7 +247,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                     //si es propia la subsecuencia
                     if (data.propia == 'S') {
 
-                        console.log(data.unidad)
+                        // console.log(data.unidad)
 
                         $scope.captura.medico = data.rehabilitador;
                         $scope.captura.unidad = data.unidad;
@@ -279,7 +266,6 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                     }else{
 
                         $scope.muestraEntrega = false;
-                        $scope.consultaSub = false;
                         $scope.original.propia = 0;
                         $scope.original.numentrega = 1; 
                         // alert('La subsecuencia corresponde a una unidad de red verificalo en sistemas');
@@ -291,7 +277,6 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                         $scope.original.numentrega = ''; 
                     }else{
                         $scope.muestraEntrega = false;
-                        $scope.consultaSub = false;
                         $scope.original.propia = 0;
                         $scope.original.numentrega = 1; 
                     }
@@ -301,18 +286,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
             }).error(function (data){
 
-                $scope.consultaSub = false;
-                if (data.respuesta && $scope.original.propia == 1) {
-                    $scope.original.numentrega = ''; 
-                    alert(data.respuesta);
-                }else if ($scope.original.propia == 0) {
-                    // console.log('entro aqui');
-                    $scope.muestraEntrega = false;
-                    $scope.consultaSub = false;
-                    $scope.original.numentrega = 1; 
-                }else{
-                    alert('Error en la conexion si el problema persiste ve al area de sistemas');
-                } 
+                alert('Error en la conexion si el problema persiste ve al area de sistemas');
             })
         };
     }
@@ -346,6 +320,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
         //$scope.original.folio = '';
         $scope.original.documento = '';
+        $scope.original.entrega = '';
         $scope.original.internet =  1;
         $scope.original.tipoDoc ='';
         $scope.original.remesa =0;
@@ -368,6 +343,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         $scope.bloqueoUni = false;
         $scope.muestraEsc = false;
         $scope.consultaSub = false;
+        $scope.muestraEntrega = false;
     }
 
     /////////Inicia proceso de guardado 
@@ -386,7 +362,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
 
                 checkFolios.preparaGuardado($scope.original, $scope.esoriginal, $scope.esfax, $scope.esfe)
                 .then(function (data){
-                    // console.log(data);
+                    console.log(data);
                     //actualiza folio (solo original)
                     if (data.agregaOriginal) {
                         var alta = $http.post(api+'altaoriginal',data.info);

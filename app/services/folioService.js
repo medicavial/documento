@@ -243,6 +243,7 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                         //verifica que numero de segunda o tercera atencion es
                         find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
+                            console.log(data);
                             datos.numentrega = Number(data) + 1;
                             //Agregamos un nuevo documento de segunda etapa o tercera
                             promesa.resolve({info:datos,agregaOriginal:1});
