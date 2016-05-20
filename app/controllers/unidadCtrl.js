@@ -17,36 +17,23 @@ app.controller('unidadCtrl', function ($scope, loading, find,operacion) {
 		$scope.consultaUnidad();
 	}
 
-	// $scope.filtraEstatus = function (){
-	// 	if (activa == 0)
-	// 		$scope.
-
-	// }
-
-	 $scope.filtra = function(){
+	$scope.filtra = function(){
 
     	//$scope.filterOptions.filterText = "";
     	//var filtro = "";
-    	// console.log($scope.unidad);
+    	console.log($scope.estatus);
 
-    	if($scope.unidad == undefined || $scope.unidad == 0){
+    	if($scope.estatus == undefined){
     		var objeto1 = "";
     	}else{
-    		var objeto1 = "UNI_propia:" + $scope.unidad + "; ";
+    		var objeto1 = "activa:" + $scope.estatus + "; ";
     	}
 
-        if($scope.digital == undefined || $scope.digital == 0){
-            var objeto2 = "";
-        }else{
-            var objeto2 = "DocumentosDigitales:" + $scope.digital + "; ";
-        }
-
-    	var filtro = objeto1 + objeto2 +  $scope.criterio;
+    	var filtro = objeto1 + $scope.criterio;
 
     	$scope.filterOptions.filterText = filtro;
 
     	// console.log(filtro);
-
     }
 
 
@@ -85,7 +72,7 @@ app.controller('unidadCtrl', function ($scope, loading, find,operacion) {
 
 
 	$scope.cambio = function(unidad,estatus){
-		operacion.cambioUnidad(unidad,estatus).success(function (data){
+		operacion.cambioUnidad(unidad,estatus,$rootScope.id).success(function (data){
 			console.log(data)
             alert("Cambio Exitoso") 
             $scope.consultaUnidad();
