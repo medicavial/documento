@@ -1,6 +1,8 @@
 app.controller('unidadCtrl', function ($scope, loading, find,operacion) {
 
 	$scope.tituloUni = "Unidades";
+	$scope.estatus = '';
+	$scope.criterio = '';
 	
     //*********RECIBO EL JSON DEL SERVICIO GET**********
 	$scope.consultaUnidad = function (){
@@ -21,7 +23,7 @@ app.controller('unidadCtrl', function ($scope, loading, find,operacion) {
 
     	//$scope.filterOptions.filterText = "";
     	//var filtro = "";
-    	console.log($scope.estatus);
+    	// console.log($scope.estatus);
 
     	if($scope.estatus == undefined){
     		var objeto1 = "";
@@ -30,10 +32,10 @@ app.controller('unidadCtrl', function ($scope, loading, find,operacion) {
     	}
 
     	var filtro = objeto1 + $scope.criterio;
+    	// console.log(filtro);
 
     	$scope.filterOptions.filterText = filtro;
 
-    	// console.log(filtro);
     }
 
 
