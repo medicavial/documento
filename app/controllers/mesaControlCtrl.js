@@ -419,6 +419,8 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
     	enablePinning: true, 
     	enableRowSelection:true,
     	multiSelect:true,
+    	showSelectionCheckbox: true,
+        selectWithCheckboxOnly: false,
     	enableCellSelection: true,
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
