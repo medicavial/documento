@@ -126,9 +126,9 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		$('#myModalUser').modal('show');
 		$scope.datos = {
 			nombre:usuario.USU_nombre,
-			password:'',
-			login:'',
-			userweb:'',
+			password:usuario.USU_password,
+			login:usuario.USU_login,
+			userweb:usuario.USU_usuarioWeb,
 			areaOp:'',
 			usuactivo:'1',
 			captura:false,
