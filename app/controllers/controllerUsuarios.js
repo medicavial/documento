@@ -53,11 +53,14 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		useExternalFilter: false
 	};
 
+	var rowTempl = '<div ng-dblClick="editaUsurio(row.entity)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
+
 	$scope.gridOptions = { 
 		data: 'listado', 
 		enableColumnResize:true,	
 		enablePinning: true, 
 		enableRowSelection:false,
+		rowTemplate: rowTempl,
 		selectedItems: $scope.selectos, 
 		filterOptions: $scope.filterOptions,
 		columnDefs: [
@@ -115,6 +118,32 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
             $scope.mensaje = "Ocurrio un error al guardar";
             $scope.tipoalerta = 'alert-warning';
         });
+	}
+
+
+	$scope.editaUsurio =function(usuario){
+		console.log(usuario);
+		$('#myModalUser').modal('show');
+		$scope.datos = {
+			nombre:usuario.USU_nombre,
+			password:'',
+			login:'',
+			userweb:'',
+			areaOp:'',
+			usuactivo:'1',
+			captura:false,
+			controldoc:false,
+			consulindiv:false,
+			tickets:false,
+			flujomanual:false,
+			qualitas:false,
+			reportes:false,
+			flujopagos:false,
+			flujodoc:false,
+			usuarios:false,
+			ticketspagos:false,
+			facexpress:false
+		}
 	}
 
 	$scope.limpiaDatos = function(){
