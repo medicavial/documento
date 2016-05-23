@@ -33,6 +33,25 @@
 	<div class="gridStyle" ng-grid="gridOptions"></div>
 
 	<br>
+	<button ng-json-export-excel data="listado" 
+		report-fields="{
+			PAS_folio:'Folio',
+            FLD_etapa:'Etapa',
+            FLD_numeroEntrega:'Cantidad',
+            EMP_nombrecorto:'Empresa',
+            UNI_nombrecorto:'Unidad',
+            FLD_formaRecep:'FaxOrigianl',
+            FLD_fechaRecep:'FechaRecepcion',
+            EnvFac:'EnvFac',
+            factura:'Factura',
+            Fac_fechapagofactura:'Fecha Factura',
+            Fac_ultimaAplicacion:'Fecha Aplicacion',
+            pagada:'Pagada',
+            FLD_observaciones:'Observaciones'
+		}" 
+		filename =" 'ListadoNPC' " 
+		class="btn btn-success">Exportar</button>
+
 	<div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
 	<div class="row">
 		<div class="col-md-3">

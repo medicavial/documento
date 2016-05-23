@@ -383,6 +383,7 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
 				$scope.tipoalerta = 'alert-success';
 				$scope.cargaEntregas();
 				$('#boton').button('reset');
+				$scope.selectos = [];
 			}).error( function (data){
 				
 				$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
@@ -505,6 +506,10 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
     $scope.quitaselectos = function(){
 
     	$scope.gridOptions.$gridScope.toggleSelectAll(false);
+    }
+
+    $scope.exporta = function(){
+        JSONToXLSConvertor($scope.listado,'Reporte',true);
     }
 
 };
