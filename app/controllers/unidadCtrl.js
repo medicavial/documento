@@ -1,4 +1,4 @@
-app.controller('unidadCtrl', function ($scope, loading, find,operacion) {
+app.controller('unidadCtrl', function ($scope, loading, find,operacion,$rootScope) {
 
 	$scope.tituloUni = "Unidades";
 	$scope.estatus = '';
@@ -58,6 +58,7 @@ app.controller('unidadCtrl', function ($scope, loading, find,operacion) {
 
 					{ field:'nombreCorto', displayName:'Nombre corto' , width: 160, pinned:true,},
 	                { field:'nombre', displayName:'Nombre', width: 200, visible:true },
+	                { field:'referencia', displayName:'Referencia', width: 160, visible:true },
 	                { field:'estado', displayName:'Estado', width: 100 },
 	                { field:'localidad', displayName:'Localidad', width: 120 },
 	                { field:'rfc', displayName:'RFC', width: 120, visible: true},
