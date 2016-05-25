@@ -12,6 +12,24 @@
 	    </li>
 	</ul>
 	<br>
+	<div class="row">
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Filtro</legend>
+				<div class="row">
+					<div class="col-md-8">
+						<div class="input-group">
+							<div class="input-group-addon">
+						        <i class="glyphicon glyphicon-search"></i>
+						    </div>
+							<input type="text" ng-model="busca" ng-change="filtra()" class="form-control" capitalize placeholder="Buscar"/>
+						</div>
+					</div>
+				</div>
+			</fieldset>
+		</div>
+	</div>
+	<br>
 	<div id="copiar" class="gridStyle" ng-grid="gridOptions"></div>
 </div>
 
@@ -54,7 +72,7 @@
 						<div class="col-md-6">
 							<label></label>
 							<select class="form-control" id="area" ng-model="datos.areaOp" ng-options="area.calve as area.nombre for area in areas"required>
-								<option value="">Area Operativa</option>
+								<option >Area Operativa</option>
 							</select>
 						</div>
 						<div class="col-md-4">
@@ -69,66 +87,66 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-								<input type="checkbox" id="captura" ng-model="datos.captura" value="">Captura</label>
+								<input type="checkbox" id="captura" ng-model="datos.captura" ng-true-value="1" ng-false-value="0" >Captura</label>
 						</div>
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-								<input type="checkbox" id="controldoc" ng-model="datos.controldoc" value="">Control de Documentos</label>
+								<input type="checkbox" id="controldoc" ng-model="datos.controldoc" ng-true-value="1" ng-false-value="0" >Control de Documentos</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-								<input type="checkbox" id="consulindiv" ng-model="datos.consulindiv" value="">Consulta Individual</label>
+								<input type="checkbox" id="consulindiv" ng-model="datos.consulindiv" ng-true-value="1" ng-false-value="0" >Consulta Individual</label>
 						</div>
 						<div class="row">
 							<div class="col-md-6">
 								<label class="checkbox-inline">
-									<input type="checkbox" id="tickets" ng-model="datos.tickets" value="">Tickets</label>
+									<input type="checkbox" id="tickets" ng-model="datos.tickets" ng-true-value="1" ng-false-value="0" >Tickets</label>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" id="flujomanu" ng-model="datos.flujomanual" value="">Flujo manual</label>
+									<input type="checkbox" id="flujomanu" ng-model="datos.flujomanual" ng-true-value="1" ng-false-value="0" >Flujo manual</label>
 						</div>
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" id="qualitas" ng-model="datos.qualitas" value="">Qualitas</label>
+									<input type="checkbox" id="qualitas" ng-model="datos.qualitas" ng-true-value="1" ng-false-value="0" >Qualitas</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" id="reportes" ng-model="datos.reportes" value="">Reportes</label>
+									<input type="checkbox" id="reportes" ng-model="datos.reportes" ng-true-value="1" ng-false-value="0" >Reportes</label>
 						</div>
 						<div class="row">
 							<div class="col-md-6">
 								<label class="checkbox-inline">
-									<input type="checkbox" id="flujopagos" ng-model="datos.flujopagos" value="">Flujo de Pagos</label>
+									<input type="checkbox" id="flujopagos" ng-model="datos.flujopagos" ng-true-value="1" ng-false-value="0" >Flujo de Pagos</label>
 							</div>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" id="flujodoc" ng-model="datos.flujodoc" value="">Flujo de Documentos</label>
+									<input type="checkbox" id="flujodoc" ng-model="datos.flujodoc" ng-true-value="1" ng-false-value="0" >Flujo de Documentos</label>
 						</div>
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" id="usuarios" ng-model="datos.usuarios" value="">Usuarios</label>
+									<input type="checkbox" id="usuarios" ng-model="datos.usuarios" ng-true-value="1" ng-false-value="0" >Usuarios</label>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label class="checkbox-inline">
-									<input type="checkbox" id="ticketpagos" ng-model="datos.ticketspagos" value="">Tickets de Pagos</label>
+									<input type="checkbox" id="ticketpagos" ng-model="datos.ticketspagos" ng-true-value="1" ng-false-value="0" >Tickets de Pagos</label>
 						</div>
 						<div class="row">
 							<div class="col-md-6">
 								<label class="checkbox-inline">
-									<input type="checkbox" id="facexpress" ng-model="datos.facexpress" value="">Facturación Express</label>
+									<input type="checkbox" id="facexpress" ng-model="datos.facexpress" ng-true-value="1" ng-false-value="0" >Facturación Express</label>
 							</div>
 						</div>
 						<br><br>
