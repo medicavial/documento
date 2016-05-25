@@ -91,10 +91,6 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		showFilter:false
 	};	
 
-	// $scope. limpiaDatos = function (){
-	// 	$scope.datos = [];
-	// }
-
  //***********ENLISTA LOS USUARIOS DE CADA AREA***********
     $scope.altausuariosarea = function(area){
 
@@ -122,6 +118,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
         });
 	}
 
+	//*******MUESTRA LOS DATOS DEL USUARIO EN EL MODAL**** 
 	$scope.editaUsurio =function(usuario){
 		console.log(usuario);
 		$('#myModalUser').modal('show');
