@@ -29,21 +29,24 @@
 					<div class="row">
 						<div class="col-md-6">
 							<label>Nombre:</label>
-							<input type="text" id="nombre" ng-model="datos.nombre" class="form-control" capitalize required>
+							<input type="text" id="nombre" ng-model="datos.nombre" class="form-control" required>
 						</div>
 						<div class="col-md-6">
 							<label>Password:</label>
-							<input type="password" id="password" ng-model="datos.password" class="form-control" required>
+							<br>
+							<input type="password" ng-show="campoVisible" id="password" ng-model="datos.password" class="form-control" required>
+
+							<button type="submit" class="btn btn-primary" ng-hide="campoVisible" ng-click="cambiaPass()" required>Cambiar Password</button>
 						</div>
 					</div>
 					<div class="row">
 						<div class="col-md-6">
 							<label>Login:</label>
-							<input type="text" id="loginn" ng-model="datos.login" class="form-control" capitalize required>
+							<input type="text" id="loginn" ng-model="datos.login" class="form-control" required>
 						</div>
 						<div class="col-md-6">
 							<label>Usuario Web:</label>
-							<input type="text" id="loginn" ng-model="datos.userweb" class="form-control" capitalize>
+							<input type="text" id="loginn" ng-model="datos.userweb" class="form-control">
 						</div>
 					</div>
 					<br>

@@ -3,6 +3,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 	// inicializa los datos del formulario usuario al abrir el modal
 	$('#myModalUser').on('show.bs.modal', function (e) {
 	 	$scope.nuevoUsuario();
+	 	$scope.campoVisible=true;
 	});
 
 	// limpiamos variables
@@ -65,23 +66,23 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		filterOptions: $scope.filterOptions,
 		columnDefs: [
 
-					{ field:'USU_nombre', displayName:'Nombre' , width: 120, pinned:true,},
+					{ field:'USU_nombre', displayName:'Nombre' , width: 190, pinned:true,},
 	                { field:'USU_password', displayName:'Password', width: 120, visible:false },
-	                { field:'USU_login', displayName:'Login', width: 100 },
-	                { field:'USU_factivo', displayName:'UsuarioActivo', width: 120 },
+	                { field:'USU_login', displayName:'Login', width: 80 },
+	                { field:'USU_factivo', displayName:'UsuarioActivo', width: 100 },
 	                { field:'USU_usuarioWeb', displayName:'UsuarioWeb', width: 100, visible: true},
-	                { field:'USU_fcaptura', displayName:'Captura', width: 100 },
-	                { field:'USU_fcontrolDocumentos', displayName:'ControlDocumentos', width: 120 },
+	                { field:'USU_fcaptura', displayName:'Captura', width: 90 },
+	                { field:'USU_fcontrolDocumentos', displayName:'ControlDocumentos', width: 140 },
 	                { field:'USU_fconsultaIndividual', displayName:'ConsultaIndividual', width: 130 },
 	                { field:'USU_ftickets', displayName:'Tickets', width: 100, visible:false },
 	                { field:'USU_fmanual', displayName:'FlujoManual', width: 100, visible:false },
 	                { field:'USU_fqualitas', displayName:'Qualitas', width: 100, visible:false },
-	                { field:'USU_freportes', displayName:'Reportes', width: 100, visible:true },
+	                { field:'USU_freportes', displayName:'Reportes', width: 70, visible:true },
 	                { field:'USU_fpagos', displayName:'FlujoPagos', width: 100, visible:false },
 	                { field:'USU_fdocumentos', displayName:'FlujoDocumentos', width: 100, visible:false },
 	                { field:'USU_fusuarios', displayName:'Usuarios', width: 100, visible:false },
 	                { field:'USU_fticketPagos', displayName:'TicketPagos', width: 100, visible:true },
-	                { field:'USU_fexpress', displayName:'FacturacionExpress', width: 100, visible:true }
+	                { field:'USU_fexpress', displayName:'FacturacionExpress', width: 120, visible:true }
 
 				    ],
 
@@ -120,7 +121,6 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
         });
 	}
 
-
 	$scope.editaUsurio =function(usuario){
 		console.log(usuario);
 		$('#myModalUser').modal('show');
@@ -144,7 +144,15 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 			ticketspagos:false,
 			facexpress:false
 		}
+
+		$scope.campoVisible=false;
 	}
+
+
+	$scope.cambiaPass=function(){
+		$scope.campoVisible=true;
+		$scope.datos.password='';
+	}	
 
 	$scope.limpiaDatos = function(){
     	$scope.datos = [];
