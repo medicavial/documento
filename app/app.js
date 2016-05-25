@@ -114,9 +114,10 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     loading.cargando('Cargando Informacion');
                     var promesa = $q.defer(),
                         empresas = find.empresasweb(),
-                        triages = find.triages();
+                        triages = find.triages(),
+                        posiciones = find.posiciones();
 
-                    $q.all([empresas,triages]).then(function (data){
+                    $q.all([empresas,triages,posiciones]).then(function (data){
                         // console.log(data);
                         promesa.resolve(data);
                     });

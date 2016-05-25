@@ -88,11 +88,17 @@ app.factory("find", function($http,api){
         listadorechazosarea:function(area){
             return $http.get(api+'flujo/rechazosarea/'+area);
         },
+        medicos:function(unidad){
+            return $http.get(api+'consulta/medicos/'+unidad);
+        },
         muestrahistorico:function(folio,etapa,entrega){
             return $http.get(api + 'consulta/historial/'+folio +"/"+etapa+"/"+entrega);
         },
         pagoUnidades:function(datos){
             return $http.post(api + 'reportes/pago/unidades',datos);
+        },
+        posiciones:function(){
+            return $http.get(api+'consulta/posiciones');
         },
         producto:function(empresa){
             return $http.get(api +'consulta/productos/'+ empresa);

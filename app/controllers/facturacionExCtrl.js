@@ -5,6 +5,8 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
 	$rootScope.tituloFE = 'Facturación Express 2.0';
     $scope.clientes = datos[0].data;
     $scope.triages = datos[1].data;
+    $scope.posiciones = datos[2].data;
+
     loading.despedida();
     var expediente;
 
@@ -49,6 +51,17 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
         }
         
     }
+
+
+    //consulta de medicos segun la unidad 
+    $scope.buscaMedicos = function(unidad){
+        
+        find.medicos(unidad).success(function (data){
+            $scope.medicos = data;
+        });
+
+    }
+
 
     //consulta de ajustadores segun la compañia 
     $scope.buscaAjustadores = function(id){
@@ -196,6 +209,7 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             $scope.rotar = false;
             
             $scope.buscaAjustadores(data.captura.EMPClave);
+            $scope.buscaMedicos(data.captura.UNIClave);
 
             $scope.autorizacion = {
                 usuario:$rootScope.userWeb,
@@ -253,10 +267,24 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             $scope.edicion = true;
             $scope.vistaArchivos = false;
             $scope.captura.triage = String(data.captura.triage);
+            $scope.captura.MedicoMV = String(data.captura.MedicoMV);
+            console.log(data.captura.POSClave);
+            $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);
 
         });
       
     };
+
+    $scope.validafecha = function(){
+
+        var fecha1 = moment($scope.captura.FExpedicion, 'DD/MM/YYYY');
+        var fecha2 = moment($scope.captura.FAtencion, 'DD/MM/YYYY');
+        
+        if(fecha1 > fecha2){
+            $scope.captura.FExpedicion = FechaAct;
+            alert('La fecha no debe ser mayor a la fecha de atencion ' + fecha2);
+        }
+    }
 
     // al dar click selecciona el tipo de documento que quiere ver 
     $scope.muestraArchivos  = function(archivos){

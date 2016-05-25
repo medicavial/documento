@@ -466,6 +466,42 @@
 						<button type="button" class="btn btn-primary" ng-click="nuevoAjustador = !nuevoAjustador">Nuevo Ajustador</button>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<label for="">Médico</label>
+						<select class="form-control"  ng-model="captura.MedicoMV" ng-options="medico.MED_claveint as medico.MED_nombre for medico in medicos" required>
+							<option value="">Médico</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label for="">Posición</label>
+						<select class="form-control"  ng-model="captura.POSClave" ng-options="posicion.POS_clave as posicion.POS_nombre for posicion in posiciones" required>
+							<option value="">Posición</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+						    <label for="sexo">Sexo</label>
+						    <select class="form-control"  ng-model="captura.Sexo" required>
+								<option value="M">M</option>
+								<option value="F">F</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+						    <label for="edad">Edad</label>
+						    <input type="text" class="form-control" ng-model="captura.Edad" id="edad" placeholder="edad">
+						</div>
+					</div>
+					<div class="col-md-6">
+	        			<label for="datepicker4">Fecha Expedición</label>
+	        			<input type="text" class="form-control" ng-model="captura.FExpedicion" ng-change="validafecha()" id="datepickerExpedicion" required>
+	        		</div>
+				</div>
+
 				<div class="row" ng-show="nuevoAjustador">
 					<div class="col-md-9">
 						<label for="">Nombre del Ajustador</label>
@@ -519,5 +555,7 @@
         $( "#datepicker" ).datepicker( "option", "maxDate", selectedDate );
       }
     });
+
+    $( "#datepickerExpedicion" ).datepicker({showButtonPanel: true});
 
 </script>

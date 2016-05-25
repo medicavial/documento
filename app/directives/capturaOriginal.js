@@ -213,14 +213,9 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                     }
                 //si no verificamos que no sea de propia si es de red dejamos seguir
                 }else{
-                    if ($scope.original.propia == 1) {
-                        alert('La subsecuencia no existe verificalo nuevamente');
-                        $scope.original.numentrega = ''; 
-                    }else{
                         $scope.muestraEntrega = false;
                         $scope.original.propia = 0;
-                        $scope.original.numentrega = 1; 
-                    }
+                        $scope.original.numentrega = 1;
                 }
 
                 $scope.consultaSub = false;
