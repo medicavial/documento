@@ -123,7 +123,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 
     	}else{
 
-    		operacion.edicion($scope.datos).success(function (data){
+    		operacion.edicionUser($scope.datos).success(function (data){
     			console.log(data)
 		        $scope.datos = [];
 
@@ -165,7 +165,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		}
 
 		$scope.campoVisible=false;
-		$scope.edicion=false;
+		$scope.guardaUsuario=false;
 	}
 
 
