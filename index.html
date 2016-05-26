@@ -31,12 +31,11 @@
 		<!--panel de usuario -->
 		<div ng-if="username != '' " class="animate-show">
 			<div id="panelusuario">
-				<a href="" ng-click="logout()" class="icon-switch" id="tooltip1" rel="tooltip"  title="Cerrar Sesión"></a>
-				<!-- <a href="" ng-click="doDishes()" class="icon-newspaper" id="tooltip5" rel="tooltip"  title="Buscqueda Global"  genie-wish></a> -->
-				<a href="#/control" class="icon-drawer2" id="tooltip2" rel="tooltip"  title="Control de Documentos"></a>
-				<a href="#/consultaflujo" class="glyphicon glyphicon-search" id="tooltip3" rel="tooltip"  title="Buscar Folio en Flujo"></a>
-				<a href="#/" class="icon-home" id="tooltip4" rel="tooltip"  title="Ir al Inicio"></a>
-				<button type="button" class="panelicon icon-bell" id="notificacion" rel="tooltip"  title="Mis Notificaciones" rel="popover"><span class="badge pull-right">1</span></button>
+				<a href="" ng-click="logout()" class="icon-switch tool" data-toggle="tooltip"  title="Cerrar Sesión"></a>
+				<a href="#/control" class="icon-drawer2 tool" data-toggle="tooltip"  title="Control de Documentos"></a>
+				<a href="#/consultaflujo" class="glyphicon glyphicon-search tool" data-toggle="tooltip"  title="Buscar Folio en Flujo"></a>
+				<a href="#/" class="icon-home tool" data-toggle="tooltip"  title="Ir al Inicio"></a>
+				<button type="button" class="panelicon icon-bell" ng-click="muestraNotificacion()" id="notificacion" rel="tooltip" rel="popover"><span class="badge pull-right">1</span></button>
 				<h2>{{ username }}</h2>
 			</div>
 		</div>

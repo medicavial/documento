@@ -197,7 +197,7 @@ function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loadin
 		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true}
         ],
         showFooter: true,
-        showFilter:false
+        showFilter:true
 
     };
 
@@ -490,7 +490,7 @@ function rechazosAreaCtrl( $scope, $rootScope, $routeParams, $location, find, lo
 		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true}
         ],
         showFooter: true,
-        showFilter:false
+        showFilter:true
 
     };
 
@@ -1146,7 +1146,7 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 		            
         ],
         showFooter: true,
-        showFilter:false
+        showFilter:true
     };
 
     $scope.$on('ngGridEventRows', function (newFilterText){
@@ -1346,7 +1346,7 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
     	enableRowSelection:true,
     	multiSelect:true,
     	showFooter: true,
-        showFilter:false,
+        showFilter:true,
         showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
     	selectedItems: $scope.selectos, 
@@ -1580,7 +1580,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
     	enableRowSelection:true,
     	multiSelect:true,
     	showFooter: true,
-        showFilter:false,
+        showFilter:true,
         showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
     	selectedItems: $scope.selectos, 
@@ -2059,7 +2059,7 @@ function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loadin
     	enableRowSelection:true,
     	multiSelect:true,
     	showFooter: true,
-        showFilter:false,
+        showFilter:true,
         showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
     	selectedItems: $scope.selectos, 

@@ -648,6 +648,7 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
 
     // $rootScope.folioGlobal = '';
 
+
     //generamos al rootscope las variables que tenemos en las cookies para no perder la sesion
     $rootScope.username = webStorage.session.get('username');
     $rootScope.id = webStorage.session.get('id');
@@ -708,35 +709,31 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
 
 
     ///mostramos los tooltip para mostrar los titulos abajo de cada elemento
-    $('#tooltip1').tooltip({placement : 'bottom'});
-    $('#tooltip2').tooltip({placement : 'bottom'});
-    $('#tooltip3').tooltip({placement : 'bottom'});
-    $('#tooltip4').tooltip({placement : 'bottom'});
-    $('#tooltip5').tooltip({placement : 'bottom'});
-
-    $('#busqueda').tooltip({placement : 'bottom'});
-    $('#notificacion').tooltip({placement : 'bottom'});
+    // $('.tool').tooltip({placement : 'bottom'});
+    $('[data-toggle="tooltip"]').tooltip({placement : 'bottom'});
+    // $('.tool').tooltip({placement : 'bottom'});
+    // $('.tool').tooltip({placement : 'bottom'});
+    // $('.tool').tooltip({placement : 'bottom'});
+    // $('.tool').tooltip({placement : 'bottom'});
+    // $('.tool').tooltip({placement : 'bottom'});
+    // $('.tool').tooltip({placement : 'bottom'});
 
     //mostramos las notificaciones en caso de tenerlas en el popover
     $('#notificacion').popover({
         trigger:'focus',
         placement : 'bottom',
-        'html':true,
+        html:true,
         title : 'Notificaciones',
         content :function() {
-                    return $("#contenidonot").html();
-                }
+            return $('#contenidonot').html();
+        }
     });
 
 
-    $('#notificacion').on('click',function(){
-        $('#notificacion').popover('show')
-    });
+    $rootScope.muestraNotificacion = function(){
 
-
-    // $rootScope.cargando=false;
-    // $rootScope.loading=false;
-    // $rootScope.label='Buscando Folios';
+        $('#notificacion').popover('show');
+    };
 
     //verificamos el estatus del usuario en la aplicacion
     $idle.watch();

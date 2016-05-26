@@ -381,7 +381,6 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
 			$http.post(api+'eliminanpc',$scope.selectos).success(function (data){
 				$scope.mensaje = data.respuesta;
 				$scope.tipoalerta = 'alert-success';
-				$scope.selectos = [];
 				$scope.cargaEntregas();
 				$('#boton').button('reset');
 			}).error( function (data){
