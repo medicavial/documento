@@ -140,7 +140,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 
 	//*******MUESTRA LOS DATOS DEL USUARIO EN EL MODAL**** 
 	$scope.editaUsurio =function(usuario){
-		console.log(usuario);
+		// console.log(usuario);
 		$('#myModalUser').modal('show');
 		$scope.datos = {
 			nombre:usuario.USU_nombre,

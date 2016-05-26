@@ -12,10 +12,10 @@ var app = angular.module('app', [
 ]);
 
 //ip prueba
-// app.constant('api','http://172.17.10.52/apimv/public/api/')
+app.constant('api','http://172.17.10.52/apimv/public/api/')
 
 //ip produccion
-app.constant('api','http://172.17.10.15/apimv/public/api/')
+// app.constant('api','http://172.17.10.15/apimv/public/api/')
 app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/')
 
 
