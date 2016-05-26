@@ -3,7 +3,6 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 	// inicializa los datos del formulario usuario al abrir el modal
 	$('#myModalUser').on('show.bs.modal', function (e) {
 	 	$scope.nuevoUsuario();
-	 	$scope.campoVisible=true;
 	});
 
 	// limpiamos variables
@@ -27,7 +26,10 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 			usuarios:false,
 			ticketspagos:false,
 			facexpress:false
+
 		}
+			$scope.campoVisible=true;
+			$scope.edicion=true;
 	}
 
  	//*********RECIBO EL JSON DEL SERVICIO GET**********
@@ -105,17 +107,25 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 
     $scope.guardaUsuario = function (){
 
-        operacion.guardaUser($scope.datos).success(function (data){
-            console.log(data)
-            $scope.datos = [];
+    	if(edicion = true){
 
-            $scope.mensaje = "Se guardo correctamente";
-            $scope.tipoalerta = 'alert-success';
-        })
-        .error (function (data){
-            $scope.mensaje = "Ocurrio un error al guardar";
-            $scope.tipoalerta = 'alert-warning';
-        });
+    		operacion.guardaUser($scope.datos).success(function (data){
+    			console.log(data)
+		        $scope.datos = [];
+
+		        $scope.mensaje = "Se guardo correctamente";
+		        $scope.tipoalerta = 'alert-success';
+		    })
+		    .error (function (data){
+		        $scope.mensaje = "Ocurrio un error al guardar";
+		        $scope.tipoalerta = 'alert-warning';
+		    });
+
+    	}else{
+    		
+    		$scope.editaUsurio();
+    	}
+
 	}
 
 	//*******MUESTRA LOS DATOS DEL USUARIO EN EL MODAL**** 
@@ -144,6 +154,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		}
 
 		$scope.campoVisible=false;
+		$scope.edicion=false;
 	}
 
 
