@@ -29,7 +29,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 
 		}
 			$scope.campoVisible=true;
-			$scope.edicion=true;
+			$scope.guardaUser=true;
 	}
 
  	//*********RECIBO EL JSON DEL SERVICIO GET**********
@@ -107,7 +107,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 
     $scope.guardaUsuario = function (){
 
-    	if($scope.edicion == true){
+    	if($scope.guardaUser == true){
 
     		operacion.guardaUser($scope.datos).success(function (data){
     			console.log(data)
@@ -117,13 +117,23 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		        $scope.tipoalerta = 'alert-success';
 		    })
 		    .error (function (data){
-		        $scope.mensaje = "Ocurrio un error al guardar";
+		        $scope.mensaje = "Ocurrio un error al guardar, intenta nuevamente";
 		        $scope.tipoalerta = 'alert-warning';
 		    });
 
     	}else{
 
-    		$scope.editaUsurio();
+    		operacion.edicion($scope.datos).success(function (data){
+    			console.log(data)
+		        $scope.datos = [];
+
+		        $scope.mensaje = "Edición correcta";
+		        $scope.tipoalerta = 'alert-success';
+		    })
+		    .error (function (data){
+		        $scope.mensaje = "Ocurrio un error al editar, inetnta nuevamente";
+		        $scope.tipoalerta = 'alert-warning';
+		    });
     	}
 
 	}
@@ -138,7 +148,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 			login:usuario.USU_login,
 			userweb:usuario.USU_usuarioWeb,
 			areaOp:usuario.ARO_claveint,
-			usuactivo:'1',
+			usuactivo:String(usuario.USU_factivo),
 			captura:Number(usuario.USU_fcaptura),
 			controldoc:Number(usuario.USU_fcontrolDocumentos),
 			consulindiv:Number(usuario.USU_fconsultaIndividual),
@@ -150,7 +160,8 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 			flujodoc:Number(usuario.USU_fdocumentos),
 			usuarios:Number(usuario.USU_fusuarios),
 			ticketspagos:Number(usuario.USU_fticketPagos),
-			facexpress:Number(usuario.USU_fexpress)
+			facexpress:Number(usuario.USU_fexpress),
+			editaPassword:$scope.campoVisible
 		}
 
 		$scope.campoVisible=false;
