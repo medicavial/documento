@@ -107,7 +107,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 
     $scope.guardaUsuario = function (){
 
-    	if(edicion = true){
+    	if($scope.edicion == true){
 
     		operacion.guardaUser($scope.datos).success(function (data){
     			console.log(data)
@@ -122,7 +122,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		    });
 
     	}else{
-    		
+
     		$scope.editaUsurio();
     	}
 
