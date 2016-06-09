@@ -1118,9 +1118,9 @@ function formatoQualitasRenombrarCtrl($scope, $rootScope, find, loading, qualita
 	};
 
 
-	$scope.generarListado = function(){
+	$scope.generarListadoExcel = function(){
 
-    	JSONToXLSConvertor($scope.listado, "Facturas", true);
+    	JSONToCSVConvertor($scope.detalle, "Facturas", true);
 
     }
 
