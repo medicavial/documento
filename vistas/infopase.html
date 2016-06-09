@@ -20,45 +20,768 @@
             <img ng-show="cargar" class="animate-show" src="images/cargando.gif">
         </div>
 	</div>
-	<br>
+	<!-- <br> -->
   	<div class="panel panel-info">
 	  <div class="panel-heading">
 	    <h3 class="panel-title">Datos Generles</h3>
 	  </div>
 	  <div class="panel-body">
 	  	<div class="row">
-			<div class="col-md-4">
-				
+			<div class="col-md-1">
+				<h5>Folio:</h5>
 			</div>
-			<div class="col-md-4">
-				
+			<div class="col-md-2">
+				<h5></h5>
 			</div>
-			<div class="col-md-4">
-				
+			<div class="col-md-1">
+				<h5>Producto:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-2">
+				<h5><label class="checkbox-inline">
+					<input type="checkbox">ROC</label></h5>
+			</div>
+			<div class="col-md-2">
+				<h5><label class="checkbox-inline">
+					<input type="checkbox">Hospitalario</label></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Etapas:</h5>
+			</div>
+			<div class="col-md-1">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Cliente:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Unidad:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-2">
+				<h5><label class="checkbox-inline">
+					<input type="checkbox">Cancelado</label></h5>
+			</div>
+			<div class="col-md-2">
+				<h5><label class="checkbox-inline">
+					<input type="checkbox">Infacturable</label></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-4 form-group">
+				<!-- <h4>Notas:</h4> -->
+				<textarea class="form-control" id="notas" placeholder="Notas"></textarea>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Lesionado:</h5>
+			</div>
+			<div class="col-md-8">
+				<h5></h5>
+			</div>
+		</div>
+		<!-- <br> -->
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Edad:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Telefono(s):</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Triage:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Inciso:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Póliza:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Aut:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Siniestro:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Reporte:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>No. Orden:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Fol. Electrónico:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Riesgo:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Lesión:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Fecha Atn:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Deducible:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Fecha Exp:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Fecha Cap:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
 			</div>
 		</div>
 	  </div>
 	</div>
 	<br>
-    <ul class="nav nav-tabs" id="myTab">
-	  <li ng-class="{active: i==1}" ng-click="i=1"><a data-target="#general" data-toggle="tab">Control de Documentos</a></li>
-	  <li ng-class="{active: i==2}" ng-click="i=2"><a data-target="#facturacion" data-toggle="tab">Facturacion</a></li>
+	<ul class="nav nav-tabs" id="myTab">
+	  <li ng-class="{active: i==1}" ng-click="i=1"><a data-target="#facActiva" data-toggle="tab">Factura Activa</a></li>
+	  <li ng-class="{active: i==2}" ng-click="i=2"><a data-target="#hisFactura" data-toggle="tab">Histórico Facturación</a></li>
 	  <li ng-class="{active: i==3}" ng-click="i=3"><a data-target="#pagos" data-toggle="tab">Pagos</a></li>
-	  <li ng-class="{active: i==4}" ng-click="i=4"><a data-target="#otros" data-toggle="tab">Notas</a></li>
 	</ul>
-
 	<div class="tab-content">
-	  <div class="tab-pane fade" ng-class="{in: i==1, active: i==1}" id="general">
-			
-	  </div>
-	  <div class="tab-pane fade" ng-class="{in: i==2, active: i==2}" id="facturacion">
-	  		
-	  </div>
-	  <div class="tab-pane fade" ng-class="{in: i==3, active: i==3}" id="pagos">
-	  		
-	  </div>
-	  <div class="tab-pane fade" ng-class="{in: i==4, active: i==4}" id="otros">
-	  		
-	  </div>
+		<div class="tab-pane fade" ng-class="{in: i==1, active: i==1}" id="facActiva">
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Lesión:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Sustituye:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Paquete:</h5>
+			</div>
+			<div class="col-md-2">
+				
+			</div>
+		</div>	
+		<div class="row">
+			<div class="col-md-1">
+				<h5>D.Médica:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>PreFactura:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-2">
+				<h5>Fecha Prefactura:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Factura:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-2">
+				<h5>Fecha Factura:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Importe:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Deducible:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>I.V.A:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Descuento:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-1">
+				<h5>Total:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+			<div class="col-md-1">
+				<h5>Saldo:</h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-md-3">
+				<h5>FechaPago:</h5>
+			</div>
+			<div class="col-md-2">
+	  			<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-appAjustes-modal-lg" disabled>Aplicaciones y Ajustes</button>
+			</div>
+			<div class="col-md-1">
+				<h5></h5>
+			</div>
+			<div class="col-md-2">
+				<h5></h5>
+			</div>
+		</div>	
+		</div>
+		<div class="tab-pane fade" ng-class="{in: i==2, active: i==2}" id="hisFactura">
+			<div class="row">
+				<br>
+				<div class="col-md-1">
+					<button type="button" class="btn btn-info" disabled>Canceladas</button>
+				</div>
+				<div class="col-md-2">
+					<button type="button" class="btn btn-info" disabled>Notas Crédito</button>
+				</div>
+	  			<div class="col-md-1">
+	  				<button type="button" class="btn btn-info" disabled>Incobrables</button>
+	  			</div>
+				<div class="col-md-3">
+					<button type="button" class="btn btn-info" disabled>Manuales  </button>
+				</div>
+	  		</div>
+	  		<br>
+	  		<div class="row">
+	  		</div>
+	  	</div>
+	  	<div class="tab-pane fade" ng-class="{in: i==3, active: i==3}" id="pagos">
+	  		<div id="pagos" class="tab-pane">
+	  			<br>
+	  			<table class="table table-bordered">
+	  				<thead>
+	  					<tr>
+	  						<th></th>
+							<th>TABULADOR</th>
+							<th>PAGADO</th>
+							<th>CHEQUE</th>
+							<th>FECHA</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr >
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="row">
+					<div class="col-md-2">
+						<h5><label class="checkbox-inline">
+				    		<input type="checkbox">No Pagar a Unidad</label></h5>
+				    </div>
+					<div class="col-md-4">
+						<button type="button" class="btn btn-info" data-toggle="modal" data-target=".bs-detalle-modal-lg"><i class="glyphicon glyphicon-search" ></i> Detalle Pagos</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4 form-group">
+						<h4>Motivo:</h4>
+						<textarea class="form-control" id="comment"></textarea>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-8 form-group" role="group">
+						<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-control-modal-lg">Control de Documentos</button>
+  						<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-cuestionario-modal-lg">Cuestionario Atención</button>
+  						<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-safeData-modal-lg">Caja de Safe Data</button>
+					</div>
+				</div>
+			</div>
+	  	</div>
 	</div>
+	<br>
+	<br>
+	<fieldset>
+		<legend></legend>
+	  	<div class="row">
+	  		<div class="col-md-1">
+				<h5>Nombre:</h5>
+			</div>
+			<div class="col-md-3">
+				<input type="text" id="" class="form-control">
+			</div>
+			<div class="col-md-1">
+				<button type="button" class="btn btn-default">Buscar</button>
+			</div>
+	  		<div class="col-md-1">
+				<h5>Siniestro:</h5>
+			</div>
+			<div class="col-md-3">
+				<input type="text" id="" class="form-control">
+			</div>
+			<div class="col-md-1">
+				<button type="button" class="btn btn-default">Buscar</button>
+			</div>
+		</div>
+		<div class="row">
+	  		<div class="col-md-1">
+				<h5>Factura:</h5>
+			</div>
+			<div class="col-md-3">
+				<input type="text" id="" class="form-control">
+			</div>
+			<div class="col-md-1">
+				<button type="button" class="btn btn-default">Buscar</button>
+			</div>
+	  		<div class="col-md-1">
+				<h5>Póliza:</h5>
+			</div>
+			<div class="col-md-3">
+				<input type="text" id="" class="form-control">
+			</div>
+			<div class="col-md-1">
+				<button type="button" class="btn btn-default">Buscar</button>
+			</div>
+		</div>
+		<div class="row">
+	  		<div class="col-md-1">
+				<h5>Reporte:</h5>
+			</div>
+			<div class="col-md-3">
+				<input type="text" id="" class="form-control">
+			</div>
+			<div class="col-md-1">
+				<button type="button" class="btn btn-default">Buscar</button>
+			</div>
+	  		<div class="col-md-1">
+				<h5>Folder:</h5>
+			</div>
+			<div class="col-md-3">
+				<input type="text" id="" class="form-control">
+			</div>
+			<div class="col-md-1">
+				<button type="button" class="btn btn-default">Buscar</button>
+			</div>
+		</div>
+		<br>
+		<div class="row">
+			<table class="table table-bordered">
+				<br>
+				<thead>
+					<tr>
+						<th>Folio</th>
+						<th>Póliza</th>
+						<th>Siniestro</th>
+						<th>Reporte</th>
+						<th>Lesionado</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+		</div>
+	</fieldset>
 </div>
+
+<!--Modal Aplicaciones y Ajustes-->
+<div class="modal fade bs-appAjustes-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<div class="modal-content">
+	    	<div class="modal-header">
+	    		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          		<span aria-hidden="true">&times;</span>
+	        	</button>
+	        	<h4 class="modal-title" id="myModalLabel">Aplicaciones y Ajustes</h4>
+	      	</div>
+	      	<div class="modal-body">
+				<table class="table table-bordered">
+					<br>
+					<thead>
+						<tr>
+							<th>Tipo</th>
+							<th>Clave/Folio</th>
+							<th>Fecha Banco/Emisión</th>
+							<th>Total</th>
+							<th>Fecha Aplicación</th>
+							<th>Usuario Aplicación</th>
+							<th>Fecha Relación</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<h3 class="modal-title" id="gridSystemModalLabel">Ajustes</h3>
+				<fieldset>
+					<legend align=""></legend>
+					<div class="row">
+						<div class="col-md-1">
+							<h5>Total:</h5>
+						</div>
+						<div class="col-md-2">
+							<h5></h5>
+						</div>
+						<div class="col-md-1">
+							<h5>Nota:</h5>
+						</div>
+						<div class="col-md-2">
+							<textarea class="form-control" id="notaApp"></textarea>
+						</div>
+					</div>
+					<div class="row">
+						<div class="col-md-1">
+							<h5>Fecha:</h5>
+						</div>
+						<div class="col-md-3">
+							<h5></h5>
+						</div>
+					</div>
+				</fieldset>
+	      	</div>
+	      	<div class="modal-footer">
+	        	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+	      	</div>
+    	</div>
+  	</div>
+</div>
+
+<!--Modal Detalle de Pagos-->
+<div class="modal fade bs-detalle-modal-lg" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    	<div class="modal-header">
+    		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          		<span aria-hidden="true">&times;</span>
+        	</button>
+        	<h4 class="modal-title" id="myModalLabel">Detalle de Pago a Unidades Por Etapa</h4>
+      	</div>
+      	<div class="modal-body">
+			<table class="table table-bordered">
+    				<br>
+    				<thead>
+    					<tr>
+    						<th>Etapa</th>
+    						<th>Unidad</th>
+    						<th>Pagado</th>
+    						<th>Cheque</th>
+    						<th>Fecha</th>
+    						<th>Relación</th>
+    						<th>Fecha Relación</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal Control de Documentos -->
+<div class="modal fade bs-control-modal-lg" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+    	<div class="modal-content">
+    		<div class="modal-header">
+    			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          			<span aria-hidden="true">&times;</span>
+        		</button>
+        		<h4 class="modal-title" id="myModalLabel">Registro en Control de Documentos</h4>
+      		</div>
+      		<div class="modal-body">
+      			<table class="table table-bordered">
+      				<br>
+      				<thead>
+    					<tr>
+    						<th>Unidad</th>
+    						<th>Etapa</th>
+    						<th>Entrega</th>
+    						<th>F/O</th>
+    						<th>Fecha Recepción</th>
+    						<th>Fecha Registro</th>
+    						<th>Fecha Captura</th>
+    						<th>Factura</th>
+    						<th>Total</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<h3 class="modal-title" id="gridSystemModalLabel">Estatus en Flujo de Documentos</h3>
+				<fieldset>
+					<legend align="center">ACTIVO</legend>
+					<div class="row">
+						<div class="col-md-1">
+							<h5>Usuario:</h5>
+						</div>
+						<div class="col-md-3">
+							<h5></h5>
+						</div>
+						<div class="col-md-1">
+							<h5>Area:</h5>
+						</div>
+						<div class="col-md-2">
+							<h5></h5>
+						</div>
+						<div class="col-md-1">
+							<h5>Fecha:</h5>
+						</div>
+						<div class="col-md-3">
+							<h5></h5>
+						</div>
+					</div>
+				</fieldset>
+				<br>
+				<fieldset>
+					<legend align="center">PENDIENTE DE RECIBIR POR</legend>
+					<div class="row">
+						<div class="col-md-1">
+							<h5>Usuario:</h5>
+						</div>
+						<div class="col-md-3">
+							<h5></h5>
+						</div>
+						<div class="col-md-1">
+							<h5>Area:</h5>
+						</div>
+						<div class="col-md-2">
+							<h5></h5>
+						</div>
+						<div class="col-md-1">
+							<h5>Fecha:</h5>
+						</div>
+						<div class="col-md-3">
+							<h5></h5>
+						</div>
+					</div>	
+				</fieldset>	
+     		</div>
+     		<div class="modal-footer">
+     			<button type="button" class="btn btn-default" data-dismiss="modal">Cancelar</button>
+     		</div>
+    	</div>
+  	</div>
+</div>
+
+<!--Modal Cuestionario de Atención -->
+<div class="modal fade bs-cuestionario-modal-lg" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+    	<div class="modal-content">
+    		<div class="modal-header">
+    			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          			<span aria-hidden="true">&times;</span>
+        		</button>
+        		<h4 class="modal-title" id="myModalLabel">Cuestionario de Atención Médica</h4>
+      		</div>
+      		<div class="modal-body">
+      			<table class="table table-bordered">
+					<br>
+					<thead>
+						<tr>
+							<th>PREGUNTA</th>
+							<th>RESPUESTA</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td></td>
+						</tr>
+					</tbody>
+				</table>
+				<div class="row">
+					<div class="col-md-4">
+						<h5>Fecha en que se respondió el cuestionario:</h5>
+					</div>
+					<div class="col-md-4">
+						<h5></h5>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<h5>Teléfono Contacto:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+				</div>
+     		</div>
+     		<div class="modal-footer">
+     			<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+     		</div>
+    	</div>
+  	</div>
+</div>
+
+<!--Modal Safe Data-->
+<div class="modal fade bs-safeData-modal-lg" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+  <div class="modal-dialog modal-lg">
+    <div class="modal-content">
+    	<div class="modal-header">
+    		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          		<span aria-hidden="true">&times;</span>
+        	</button>
+        	<h4 class="modal-title" id="myModalLabel">Caja Safe Data</h4>
+      	</div>
+      	<div class="modal-body">
+      		<table class="table table-bordered">
+      			<br>
+      			<thead>
+      				<tr>
+      					<th>Etapa</th>
+						<th>Entrega</th>
+						<th>No.Caja</th>
+						<th>Usuario</th>
+						<th>Relación</th>
+						<th>Fecha Relación</th>
+					</tr>
+				</thead>
+				<tbody>
+					<tr>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+						<td></td>
+					</tr>
+				</tbody>
+			</table>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+      </div>
+    </div>
+  </div>
+</div

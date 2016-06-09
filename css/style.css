@@ -9,9 +9,10 @@
   font-style: normal;
 }
 
+
 body{
 
-	font-family: 'SourceSansPro', sans-serif;
+  font-family: 'SourceSansPro', sans-serif;
 }
 
 img {
@@ -21,6 +22,24 @@ img {
 
 blockquote{
     margin: 0 0 2px;
+}
+
+#comment{
+  resize:none;
+  width: 440px;
+}
+
+#notas{
+  resize:none;
+  width: 250px;
+  height: 100px;
+}
+
+#notaApp
+{
+  resize:none;
+  width: 350px;
+  height: 100px;
 }
 
 .red{
