@@ -31,7 +31,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 }
 
                 //Si se envia a Facturación o pagos y no es mesa de control
-                else if(  (areaRecibe == 5 || areaRecibe == 6)  && areaEntrega != 4) {
+                else if(  (areaRecibe == 5 || areaRecibe == 6)  && (areaEntrega != 4 && areaEntrega != 13)) {
                     foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede generar envio tu usuario no tiene permisos'});
                 }
 
