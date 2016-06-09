@@ -8,7 +8,6 @@
 			<h4>Folio {{folio}}</h4>
 		</div>
 	</div>
-	
 	<div class="row" ng-show="buscar">
 		<div class="col-md-5">
 			<input type="text" ng-model="criterio" class="form-control" placeholder="Busqueda" ng-keydown="presionaFolio" capitalize>
@@ -20,309 +19,322 @@
             <img ng-show="cargar" class="animate-show" src="images/cargando.gif">
         </div>
 	</div>
-	<!-- <br> -->
-  	<div class="panel panel-info">
-	  <div class="panel-heading">
-	    <h3 class="panel-title">Datos Generles</h3>
-	  </div>
-	  <div class="panel-body">
-	  	<div class="row">
-			<div class="col-md-1">
-				<h5>Folio:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Producto:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-2">
-				<h5><label class="checkbox-inline">
-					<input type="checkbox">ROC</label></h5>
-			</div>
-			<div class="col-md-2">
-				<h5><label class="checkbox-inline">
-					<input type="checkbox">Hospitalario</label></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Etapas:</h5>
-			</div>
-			<div class="col-md-1">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Cliente:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Unidad:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-2">
-				<h5><label class="checkbox-inline">
-					<input type="checkbox">Cancelado</label></h5>
-			</div>
-			<div class="col-md-2">
-				<h5><label class="checkbox-inline">
-					<input type="checkbox">Infacturable</label></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-4 form-group">
-				<!-- <h4>Notas:</h4> -->
-				<textarea class="form-control" id="notas" placeholder="Notas"></textarea>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Lesionado:</h5>
-			</div>
-			<div class="col-md-8">
-				<h5></h5>
-			</div>
-		</div>
-		<!-- <br> -->
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Edad:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Telefono(s):</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Triage:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Inciso:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Póliza:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Aut:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Siniestro:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Reporte:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>No. Orden:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Fol. Electrónico:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Riesgo:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Lesión:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Fecha Atn:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Deducible:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Fecha Exp:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Fecha Cap:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-	  </div>
-	</div>
 	<br>
-	<ul class="nav nav-tabs" id="myTab">
-	  <li ng-class="{active: i==1}" ng-click="i=1"><a data-target="#facActiva" data-toggle="tab">Factura Activa</a></li>
-	  <li ng-class="{active: i==2}" ng-click="i=2"><a data-target="#hisFactura" data-toggle="tab">Histórico Facturación</a></li>
-	  <li ng-class="{active: i==3}" ng-click="i=3"><a data-target="#pagos" data-toggle="tab">Pagos</a></li>
-	</ul>
-	<div class="tab-content">
-		<div class="tab-pane fade" ng-class="{in: i==1, active: i==1}" id="facActiva">
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Lesión:</h5>
+  	<div class="panel panel-info">
+  		<div class="panel-heading">
+  			<h4 class="panel-title">Datos Generles</h4>
+  		</div>
+  		<div class="panel-body">
+  			<div class="row">
+  				<div class="col-md-9">	
+				</div>
+				<div class="col-md-2">
+					<h5>Etapas Captura:</h5>
+				</div>
+				<div class="col-md-0">
+					<h5>3 - 3</h5>
+				</div>
+  			</div>
+  			<br>
+		  	<div class="row">
+				<div class="col-md-1">
+					<h5>Folio:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Producto:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-3">
+					<h5><label class="checkbox-inline">
+						<input type="checkbox">ROC</label></h5>
+				</div>
+				<div class="col-md-2">
+					<h5><label class="checkbox-inline">
+						<input type="checkbox">Hospitalario</label></h5>
+				</div>
 			</div>
-			<div class="col-md-2">
-				<h5></h5>
+			<br>
+			<div class="row">
+				<div class="col-md-1">
+					<h5>Cliente:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Unidad:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-3">
+					<h5><label class="checkbox-inline">
+						<input type="checkbox">Cancelado</label></h5>
+				</div>
+				<div class="col-md-2">
+					<h5><label class="checkbox-inline">
+						<input type="checkbox">Infacturable</label></h5>
+				</div>
 			</div>
-			<div class="col-md-1">
-				<h5>Sustituye:</h5>
+			<br>
+			<div class="row">
+				<div class="col-md-1">
+					<h5>Lesionado:</h5>
+				</div>
+				<div class="col-md-8">
+					<h5></h5>
+				</div>
 			</div>
-			<div class="col-md-2">
-				<h5></h5>
+			<br>
+			<div class="row">
+				<div class="col-md-1">
+					<h5>Edad:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Telefono(s):</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Triage:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Inciso:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-md-1">
+					<h5>Póliza:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Aut:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Siniestro:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Reporte:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-md-1">
+					<h5>No. Orden:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Fol. Electrónico:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Riesgo:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Lesión:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-md-1">
+					<h5>Fecha Atn:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Fecha Exp:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+				<div class="col-md-1">
+					<h5>Fecha Cap:</h5>
+				</div>
+				<div class="col-md-2">
+					<h5></h5>
+				</div>
+			</div>
+			<br>
+			<div class="row">
+				<div class="col-md-1">
+					<h5>Deducible:</h5>
+				</div>
+				<div class="col-md-7">
+					<h5></h5>
+				</div>
+				<div class="row">
+					<div class="col-md-2 form-group">
+						<textarea class="form-control" id="notas" placeholder="Notas"></textarea>
+					</div>
+				</div>
 			</div>
 		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Paquete:</h5>
+	</div>
+</div>
+<br>
+<div class="panel panel-info">
+	<div class="panel-heading">
+	</div>
+	<div class="panel-body">
+		<ul class="nav nav-tabs" id="myTab">
+			<li ng-class="{active: i==1}" ng-click="i=1"><a data-target="#facActiva" data-toggle="tab">Factura Activa</a></li>
+			<li ng-class="{active: i==2}" ng-click="i=2"><a data-target="#hisFactura" data-toggle="tab">Histórico Facturación</a></li>
+			<li ng-class="{active: i==3}" ng-click="i=3"><a data-target="#pagos" data-toggle="tab">Pagos</a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane fade" ng-class="{in: i==1, active: i==1}" id="facActiva">
+				<div class="row">
+					<div class="col-md-1">
+						<h5>Lesión:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+					<div class="col-md-1">
+						<h5>Sustituye:</h5>
+					</div>
+					<div class="col-md-3">
+						<h5></h5>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-1">
+						<h5>Paquete:</h5>
+					</div>
+					<div class="col-md-8">
+						<h5></h5>
+					</div>
+				</div>	
+				<br>
+				<div class="row">
+					<div class="col-md-1">
+						<h5>D.Médica:</h5>
+					</div>
+					<div class="col-md-8">
+						<h5></h5>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-1">
+						<h5>PreFactura:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+					<div class="col-md-1">
+						<h5>Fecha Prefactura:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+					<div class="col-md-1">
+						<h5>Factura:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+					<div class="col-md-1">
+						<h5>Fecha Factura:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-1">
+						<h5>I.V.A:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+					<div class="col-md-1">
+						<h5>Deducible:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+					<div class="col-md-1">
+						<h5>Importe:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+					<div class="col-md-1">
+						<h5>Descuento:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-1">
+						<h5>Total:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+					<div class="col-md-1">
+						<h5>Saldo:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+					<div class="col-md-1">
+						<h5>FechaPago:</h5>
+					</div>
+					<div class="col-md-2">
+						<h5></h5>
+					</div>
+				</div>
+				<br>
+				<div class="row">
+					<div class="col-md-2">
+			  			<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-appAjustes-modal-lg" disabled>Aplicaciones y Ajustes</button>
+					</div>
+				</div>
 			</div>
-			<div class="col-md-2">
-				
-			</div>
-		</div>	
-		<div class="row">
-			<div class="col-md-1">
-				<h5>D.Médica:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>PreFactura:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-2">
-				<h5>Fecha Prefactura:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Factura:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-2">
-				<h5>Fecha Factura:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Importe:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Deducible:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>I.V.A:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Descuento:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-1">
-				<h5>Total:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-			<div class="col-md-1">
-				<h5>Saldo:</h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>
-		<div class="row">
-			<div class="col-md-3">
-				<h5>FechaPago:</h5>
-			</div>
-			<div class="col-md-2">
-	  			<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-appAjustes-modal-lg" disabled>Aplicaciones y Ajustes</button>
-			</div>
-			<div class="col-md-1">
-				<h5></h5>
-			</div>
-			<div class="col-md-2">
-				<h5></h5>
-			</div>
-		</div>	
 		</div>
 		<div class="tab-pane fade" ng-class="{in: i==2, active: i==2}" id="hisFactura">
 			<div class="row">
@@ -333,24 +345,20 @@
 				<div class="col-md-2">
 					<button type="button" class="btn btn-info" disabled>Notas Crédito</button>
 				</div>
-	  			<div class="col-md-1">
-	  				<button type="button" class="btn btn-info" disabled>Incobrables</button>
-	  			</div>
+  				<div class="col-md-1">
+  					<button type="button" class="btn btn-info" disabled>Incobrables</button>
+  				</div>
 				<div class="col-md-3">
 					<button type="button" class="btn btn-info" disabled>Manuales  </button>
 				</div>
-	  		</div>
-	  		<br>
-	  		<div class="row">
-	  		</div>
-	  	</div>
-	  	<div class="tab-pane fade" ng-class="{in: i==3, active: i==3}" id="pagos">
-	  		<div id="pagos" class="tab-pane">
-	  			<br>
-	  			<table class="table table-bordered">
-	  				<thead>
-	  					<tr>
-	  						<th></th>
+  			</div>
+  		</div>
+  		<div class="tab-pane fade" ng-class="{in: i==3, active: i==3}" id="pagos">
+  			<div id="pagos" class="tab-pane">
+  				<table class="table table-bordered">
+  					<thead>
+  						<tr>
+  							<th></th>
 							<th>TABULADOR</th>
 							<th>PAGADO</th>
 							<th>CHEQUE</th>
@@ -370,8 +378,8 @@
 				<div class="row">
 					<div class="col-md-2">
 						<h5><label class="checkbox-inline">
-				    		<input type="checkbox">No Pagar a Unidad</label></h5>
-				    </div>
+							<input type="checkbox">No Pagar a Unidad</label></h5>
+					</div>
 					<div class="col-md-4">
 						<button type="button" class="btn btn-info" data-toggle="modal" data-target=".bs-detalle-modal-lg"><i class="glyphicon glyphicon-search" ></i> Detalle Pagos</button>
 					</div>
@@ -382,106 +390,115 @@
 						<textarea class="form-control" id="comment"></textarea>
 					</div>
 				</div>
+			</div>
+		</div>
+	</div>
+</div>
+<br>
+<div class="row">
+	<div class="col-md-8 form-group" role="group">
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-control-modal-lg">Control de Documentos</button>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-cuestionario-modal-lg">Cuestionario Atención</button>
+		<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-safeData-modal-lg">Caja de Safe Data</button>
+	</div>
+</div>
+<br>
+
+<div class="panel panel-info">
+	<div class="panel-heading">
+	</div>
+	<div class="panel-body">
+		<div class="tab-content">
+			<div class="panel-body">
 				<div class="row">
-					<div class="col-md-8 form-group" role="group">
-						<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-control-modal-lg">Control de Documentos</button>
-  						<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-cuestionario-modal-lg">Cuestionario Atención</button>
-  						<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-safeData-modal-lg">Caja de Safe Data</button>
+					<div class="col-md-1">
+						<h5>Nombre:</h5>
+					</div>
+					<div class="col-md-3">
+						<input type="text" id="" class="form-control">
+					</div>
+					<div class="col-md-1">
+						<button type="button" class="btn btn-default">Buscar</button>
+					</div>
+			  		<div class="col-md-1">
+						<h5>Siniestro:</h5>
+					</div>
+					<div class="col-md-3">
+						<input type="text" id="" class="form-control">
+					</div>
+					<div class="col-md-1">
+						<button type="button" class="btn btn-default">Buscar</button>
 					</div>
 				</div>
-			</div>
-	  	</div>
-	</div>
-	<br>
-	<br>
-	<fieldset>
-		<legend></legend>
-	  	<div class="row">
-	  		<div class="col-md-1">
-				<h5>Nombre:</h5>
-			</div>
-			<div class="col-md-3">
-				<input type="text" id="" class="form-control">
-			</div>
-			<div class="col-md-1">
-				<button type="button" class="btn btn-default">Buscar</button>
-			</div>
-	  		<div class="col-md-1">
-				<h5>Siniestro:</h5>
-			</div>
-			<div class="col-md-3">
-				<input type="text" id="" class="form-control">
-			</div>
-			<div class="col-md-1">
-				<button type="button" class="btn btn-default">Buscar</button>
-			</div>
-		</div>
-		<div class="row">
-	  		<div class="col-md-1">
-				<h5>Factura:</h5>
-			</div>
-			<div class="col-md-3">
-				<input type="text" id="" class="form-control">
-			</div>
-			<div class="col-md-1">
-				<button type="button" class="btn btn-default">Buscar</button>
-			</div>
-	  		<div class="col-md-1">
-				<h5>Póliza:</h5>
-			</div>
-			<div class="col-md-3">
-				<input type="text" id="" class="form-control">
-			</div>
-			<div class="col-md-1">
-				<button type="button" class="btn btn-default">Buscar</button>
-			</div>
-		</div>
-		<div class="row">
-	  		<div class="col-md-1">
-				<h5>Reporte:</h5>
-			</div>
-			<div class="col-md-3">
-				<input type="text" id="" class="form-control">
-			</div>
-			<div class="col-md-1">
-				<button type="button" class="btn btn-default">Buscar</button>
-			</div>
-	  		<div class="col-md-1">
-				<h5>Folder:</h5>
-			</div>
-			<div class="col-md-3">
-				<input type="text" id="" class="form-control">
-			</div>
-			<div class="col-md-1">
-				<button type="button" class="btn btn-default">Buscar</button>
-			</div>
-		</div>
-		<br>
-		<div class="row">
-			<table class="table table-bordered">
+				<div class="row">
+			  		<div class="col-md-1">
+						<h5>Factura:</h5>
+					</div>
+					<div class="col-md-3">
+						<input type="text" id="" class="form-control">
+					</div>
+					<div class="col-md-1">
+						<button type="button" class="btn btn-default">Buscar</button>
+					</div>
+			  		<div class="col-md-1">
+						<h5>Póliza:</h5>
+					</div>
+					<div class="col-md-3">
+						<input type="text" id="" class="form-control">
+					</div>
+					<div class="col-md-1">
+						<button type="button" class="btn btn-default">Buscar</button>
+					</div>
+				</div>
+				<div class="row">
+			  		<div class="col-md-1">
+						<h5>Reporte:</h5>
+					</div>
+					<div class="col-md-3">
+						<input type="text" id="" class="form-control">
+					</div>
+					<div class="col-md-1">
+						<button type="button" class="btn btn-default">Buscar</button>
+					</div>
+			  		<div class="col-md-1">
+						<h5>Folder:</h5>
+					</div>
+					<div class="col-md-3">
+						<input type="text" id="" class="form-control">
+					</div>
+					<div class="col-md-1">
+						<button type="button" class="btn btn-default">Buscar</button>
+					</div>
+				</div>
 				<br>
-				<thead>
-					<tr>
-						<th>Folio</th>
-						<th>Póliza</th>
-						<th>Siniestro</th>
-						<th>Reporte</th>
-						<th>Lesionado</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
+				<div class="row">
+					<table class="table table-bordered">
+						<br>
+						<thead>
+							<tr>
+								<th>Folio</th>
+								<th>Póliza</th>
+								<th>Siniestro</th>
+								<th>Reporte</th>
+								<th>Lesionado</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+								<td></td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
 		</div>
-	</fieldset>
+	</div>
 </div>
+					
 
 <!--Modal Aplicaciones y Ajustes-->
 <div class="modal fade bs-appAjustes-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
@@ -703,6 +720,7 @@
           			<span aria-hidden="true">&times;</span>
         		</button>
         		<h4 class="modal-title" id="myModalLabel">Cuestionario de Atención Médica</h4>
+
       		</div>
       		<div class="modal-body">
       			<table class="table table-bordered">
@@ -784,4 +802,4 @@
       </div>
     </div>
   </div>
-</div
+</div>
