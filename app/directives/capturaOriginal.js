@@ -170,11 +170,13 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
     }
 
     $scope.validaAtencion = function(){
+
         if ($scope.original.tipoDoc == 2) {
             $scope.validaSubsecuenciaA();
         }else if ($scope.original.tipoDoc == 3) {
             $scope.validaRehabilitacionA();
         }
+
     }
 
     //verificamos la subsecuencia 
@@ -265,16 +267,14 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                         $scope.original.numentrega = 1; 
                         // alert('La subsecuencia corresponde a una unidad de red verificalo en sistemas');
                     }
+
                 //si no verificamos que no sea de propia si es de red dejamos seguir
                 }else{
-                    if ($scope.original.propia == 1) {
-                        alert('La subsecuencia no existe verificalo nuevamente');
-                        $scope.original.numentrega = ''; 
-                    }else{
+
                         $scope.muestraEntrega = false;
                         $scope.original.propia = 0;
-                        $scope.original.numentrega = 1; 
-                    }
+                        $scope.original.numentrega = 1;
+                        
                 }
 
                 $scope.consultaSub = false;
@@ -355,7 +355,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
             checkFolios.verificaInfo($scope.original.cliente, $scope.original.producto, $scope.original.escolaridad, $scope.original.fecha, $scope.original.folio)
             .then(function (data) {
 
-                checkFolios.preparaGuardado($scope.original, $scope.esoriginal, $scope.esfax, $scope.esfe)
+                checkFolios.preparaGuardado($scope.original, $scope.esoriginal, $scope.esfax, $scope.esfe, $scope.muestraEntrega)
                 .then(function (data){
                     console.log(data);
                     //actualiza folio (solo original)

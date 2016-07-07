@@ -123,7 +123,7 @@ app.factory("checkFolios", function($q,$http,find, api){
             // 
             return promesa.promise;
         },
-        preparaGuardado:function(datos, esoriginal, esfax, esfe){
+        preparaGuardado:function(datos, esoriginal, esfax, esfe, sinVerificar){
 
             //preparamos promesa
             var promesa = $q.defer();
@@ -132,7 +132,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 mensaje:'',
                 tipoalerta:''
             }
-            // console.log(datos);
+            console.log(datos);
             
             //verificamos si el folio tiene documento registrado
             if(datos.documento == 0){
@@ -226,7 +226,23 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                     }else{//segunda/tercera atencion agregamos nuevo documento
 
-                       promesa.resolve({info:datos,agregaOriginal:1});
+                        //si no se verifica es que hubo registro en web y se manda como este
+                        if (sinVerificar) {
+
+                            promesa.resolve({info:datos,agregaOriginal:1});
+                            
+                        }else{
+
+                            //verifica que numero de segunda o tercera atencion es
+                            find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
+                                // console.log(data);
+                                datos.numentrega = Number(data) + 1;
+                                //Agregamos un nuevo documento de segunda etapa o tercera
+                                promesa.resolve({info:datos,agregaOriginal:1});
+                            });
+
+                        }
+
                     }
 
 
@@ -235,19 +251,29 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                     //verificamos que no se haya apretado la primera atencion
                     if(datos.tipoDoc == 1){
+
                         error.mensaje = 'No se puede guardar como primera atencion';
                         error.tipoalerta = 'alert-danger';
                         promesa.reject(error);
 
                     }else{
 
-                        //verifica que numero de segunda o tercera atencion es
-                        find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
-                            console.log(data);
-                            datos.numentrega = Number(data) + 1;
-                            //Agregamos un nuevo documento de segunda etapa o tercera
+                        //si no se verifica es que hubo registro en web y se manda como este
+                        if (sinVerificar) {
+
                             promesa.resolve({info:datos,agregaOriginal:1});
-                        });
+                            
+                        }else{
+
+                            //verifica que numero de segunda o tercera atencion es
+                            find.verificaetapaentrega(datos.folio,datos.tipoDoc).success(function (data){
+                                // console.log(data);
+                                datos.numentrega = Number(data) + 1;
+                                //Agregamos un nuevo documento de segunda etapa o tercera
+                                promesa.resolve({info:datos,agregaOriginal:1});
+                            });
+
+                        }
 
                     }
 
