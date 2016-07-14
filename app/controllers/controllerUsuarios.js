@@ -113,7 +113,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
     			console.log(data)
 		        $scope.datos = [];
 
-		        $scope.mensaje = "Se guardo correctamente";
+		        $scope.mensaje = data.respuesta;
 		        $scope.tipoalerta = 'alert-success';
 		    })
 		    .error (function (data){
@@ -123,7 +123,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 
     	}else{
 
-    		operacion.edicionUser($scope.datos).success(function (data){
+    		operacion.edicionUser($scope.datos, $scope.usuarioid).success(function (data){
     			console.log(data)
 		        $scope.datos = [];
 
@@ -131,16 +131,18 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		        $scope.tipoalerta = 'alert-success';
 		    })
 		    .error (function (data){
-		        $scope.mensaje = "Ocurrio un error al editar, inetnta nuevamente";
+		        $scope.mensaje = "Ocurrio un error al editar, intenta nuevamente";
 		        $scope.tipoalerta = 'alert-warning';
 		    });
     	}
 
 	}
 
-	//*******MUESTRA LOS DATOS DEL USUARIO EN EL MODAL**** 
+	//*******MUESTRA LOS DATOS EN UN JSON DEL USUARIO EN EL MODAL**** 
 	$scope.editaUsurio =function(usuario){
-		// console.log(usuario);
+		console.log(usuario);
+
+		$scope.usuarioid = usuario.USU_claveint;
 		$('#myModalUser').modal('show');
 		$scope.datos = {
 			nombre:usuario.USU_nombre,
@@ -165,7 +167,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		}
 
 		$scope.campoVisible=false;
-		$scope.guardaUsuario=false;
+		$scope.guardaUser=false;
 	}
 
 

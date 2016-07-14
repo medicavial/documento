@@ -9,8 +9,8 @@ app.factory("operacion",function($http, api){
         guardaUser: function(datos){
             return $http.post(api+'operacion/usuarios', datos);
         },
-        edicionUser: function(datos){
-            return $http.post(api+'operacion/usuarios', datos);
+        edicionUser: function(datos, id){
+            return $http.put(api+'operacion/usuarios/'+id, datos);
         }
     }
 });
