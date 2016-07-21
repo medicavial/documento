@@ -177,7 +177,7 @@ function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loadin
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
-		            { field:'PAS_folio', displayName:'Folio', width: 120 },
+		            { field:'PAS_folio', displayName:'Folio', width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
 		            { field:'USURechazo', displayName:'UsuarioRechazo', width: 200 },
 		            { field:'FLD_motivoRechazo', displayName:'MotivoRechazo', width: 220 },
 		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
@@ -470,7 +470,7 @@ function rechazosAreaCtrl( $scope, $rootScope, $routeParams, $location, find, lo
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
-		            { field:'PAS_folio', displayName:'Folio', width: 120 },
+		            { field:'PAS_folio', displayName:'Folio', width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
 		            { field:'USURechazo', displayName:'UsuarioRechazo', width: 200 },
 		            { field:'FLD_motivoRechazo', displayName:'MotivoRechazo', width: 220 },
 		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
@@ -814,7 +814,7 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
     	selectedItems: $scope.selectos2, 
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
-                    { field:'Folio', width: 120,  enableCellEdit:true, pinned:true },
+                    { field:'Folio', width: 120,  enableCellEdit:true, pinned:true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
 		            { field:'Etapa', width: 120 },
 		            { field:'Cantidad', width: 100 },
 		            { field:'Empresa', width: 120 },
@@ -1127,7 +1127,7 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
-                    { field:'Folio', width: 120, pinned:true },
+                    { field:'Folio', width: 120, pinned:true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
 		            { field:'Etapa', width: 120 },
 		            { field:'Cantidad', width: 100 },
 		            { field:'Empresa', width: 120 },
@@ -1353,7 +1353,7 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
     				{ field:'PorEntregarA', displayName:'PorEntregarA', width: 120 },
-                    { field:'PAS_folio', displayName:'Folio', width: 120 },
+                    { field:'PAS_folio', displayName:'Folio', width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
 		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
 		            { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
 		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
@@ -1587,7 +1587,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
     				{ field:'PorEntregarA', displayName:'PorEntregarA', width: 120 },
-                    { field:'PAS_folio', displayName:'Folio', width: 120 },
+                    { field:'PAS_folio', displayName:'Folio', width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
 		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
 		            { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
 		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
@@ -1859,7 +1859,7 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
     	filterOptions: $scope.filterOptions, 
     	columnDefs: [
     				{ field:'EntregadoPor', displayName:'EntregadoPor', width: 120, pinned:true},
-                    { field:'PAS_folio', displayName:'Folio', width: 120 },
+                    { field:'PAS_folio', displayName:'Folio', width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
 		            { field:'FLD_etapa', displayName:'Etapa', width: 120 },
 		            { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
 		            { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
