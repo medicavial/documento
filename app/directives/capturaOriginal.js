@@ -214,10 +214,25 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                         // alert('La subsecuencia corresponde a una unidad de red verificalo en sistemas');
                     }
                 //si no verificamos que no sea de propia si es de red dejamos seguir
-                }else{
+                }else{  
+
+                    if ($scope.original.propia == 1) {
+
+                        if(confirm('La subsecuencia presenta inconsistencias y no se guardara la captura ¿deseas continuar?')){
+                            $scope.muestraEntrega = false;
+                            $scope.original.propia = 0;
+                            $scope.original.numentrega = 1;
+                        }else{
+                            $scope.inicio();
+                        }
+
+                    }else{
+                        
                         $scope.muestraEntrega = false;
                         $scope.original.propia = 0;
                         $scope.original.numentrega = 1;
+                    }
+
                 }
 
                 $scope.consultaSub = false;
