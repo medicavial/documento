@@ -20,7 +20,7 @@
         </div>
 	</div>
 	<br>
-  	<div class="panel panel-info">
+  	<div class="panel panel-info" ng-repeat="folio in informacion">
   		<div class="panel-heading">
   			<h4 class="panel-title">Datos Generles</h4>
   		</div>
@@ -31,23 +31,28 @@
 				<div class="col-md-2">
 					<h5>Etapas Captura:</h5>
 				</div>
-				<div class="col-md-0">
-					<h5></h5>
+				<div class="col-md-1">
+					<h4><span class="green">1</span></h4>
+					<h4><span class="green">2</span></h4>
+					<h4><span class="green">3</span></h4>
 				</div>
   			</div>
+  			<div class="row">
+				<div ng-show="mensaje" class="alert alert-danger animate-show">{{mensaje}}</div>
+			</div>
   			<br>
-		  	<div class="row">
+		  	<div class="row"  >
 				<div class="col-md-1">
 					<h5>Folio:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.pas_folio}}</h5>
 				</div>
 				<div class="col-md-1">
 					<h5>Producto:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.PRO_nombre}}</h5>
 				</div>
 				<div class="col-md-3">
 					<h5><label class="checkbox-inline">
@@ -64,13 +69,13 @@
 					<h5>Cliente:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.Emp_nombrecorto}}</h5>
 				</div>
 				<div class="col-md-1">
 					<h5>Unidad:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.Uni_nombre}}</h5>
 				</div>
 				<div class="col-md-3">
 					<h5><label class="checkbox-inline">
@@ -87,7 +92,7 @@
 					<h5>Lesionado:</h5>
 				</div>
 				<div class="col-md-8">
-					<h5></h5>
+					<h5>{{folio.Afe_nombre}}</h5>
 				</div>
 			</div>
 			<br>
@@ -96,25 +101,25 @@
 					<h5>Edad:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.AFE_edad}} años</h5>
 				</div>
 				<div class="col-md-1">
 					<h5>Teléfono:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.Tel}}</h5>
 				</div>
 				<div class="col-md-1">
 					<h5>Póliza:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.das_poliza}}</h5>
 				</div>
 				<div class="col-md-1">
 					<h5>Triage:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.Triage}}</h5>
 				</div>
 			</div>
 			<br>
@@ -123,25 +128,25 @@
 					<h5>Inciso:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.das_inciso}}</h5>
 				</div>
 				<div class="col-md-1">
 					<h5>Aut:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.Atencion}}</h5>
 				</div>
 				<div class="col-md-1">
 					<h5>Siniestro:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.das_siniestro}}</h5>
 				</div>
 				<div class="col-md-1">
 					<h5>No. Orden:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.NoOrden}}</h5>
 				</div>
 			</div>
 			<br>
@@ -150,27 +155,28 @@
 					<h5>Reporte:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.das_reporte}}</h5>
 				</div>
 				<div class="col-md-1">
 					<h5>Fol. Elect.:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.FolioElect}}</h5>
 				</div>
 				<div class="col-md-1">
 					<h5>Riesgo:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.rie_nombre}}</h5>
 				</div>
 				<div class="col-md-1">
 					<h5>Fecha Atn:</h5>
 				</div>
 				<div class="col-md-2">
-					<h5></h5>
+					<h5>{{folio.rep_fechaconsulta}}</h5>
+					
 				</div>
-			</div>
+			</div> 
 			<div class="row">
 				<div class="row">
 					<div class="col-md-6">
@@ -181,13 +187,13 @@
 									<h5>Lesión:</h5>
 								</div>
 								<div class="col-md-4">
-									<h5></h5>
+									<h5>{{folio.les_primaria}}</h5>
 								</div>
 								<div class="col-md-2">
 									<h5>Fech. Exp:</h5>
 								</div>
 								<div class="col-md-4">
-									<h5></h5>
+									<h5>{{folio.pas_fechaexpedicion}}</h5>								
 								</div>
 							</div>
 						</div>
@@ -198,20 +204,20 @@
 									<h5>Deducible:</h5>
 								</div>
 								<div class="col-md-4">
-									<h5></h5>
+									<h5>{{folio.fac_deducible}}</h5>									
 								</div>
 								<div class="col-md-2">
 									<h5>Fecha Cap:</h5>
 								</div>
 								<div class="col-md-4">
-									<h5></h5>
+									<h5>{{folio.pas_fechacaptura}}</h5>
 								</div>
 							</div>
 						</div>
 					</div>
 					<br>
 					<div class="col-md-6 form-group">
-						<textarea class="form-control" id="notas" placeholder="Notas"></textarea>
+						<textarea class="form-control" id="notas" placeholder="Notas" disabled>{{folio.Not_notas}}</textarea>
 					</div>
 				</div>
 			</div>
@@ -219,7 +225,7 @@
 	</div>
 </div>
 <br>
-<div class="panel panel-info">
+<div class="panel panel-info" ng-repeat="folio in informacion">
 	<div class="panel-heading">
 		<h4 class="panel-title">Movimientos</h4>
 	</div>
@@ -232,17 +238,20 @@
 		<div class="tab-content">
 			<div class="tab-pane fade" ng-class="{in: i==1, active: i==1}" id="facActiva">
 				<div class="row">
+					<div ng-show="mensaje" class="alert alert-danger animate-show">{{mensaje}}</div>
+			</div>
+				<div class="row">
 					<div class="col-md-1">
 						<h5>Lesión:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.les_empresa}}</h5>
 					</div>
 					<div class="col-md-1">
 						<h5>Sustituye:</h5>
 					</div>
 					<div class="col-md-3">
-						<h5></h5>
+						<h5>{{folio.Sustituye}}</h5>
 					</div>
 				</div>
 				<br>
@@ -251,7 +260,7 @@
 						<h5>Paquete:</h5>
 					</div>
 					<div class="col-md-8">
-						<h5></h5>
+						<h5>{{folio.Paquete}}</h5>
 					</div>
 				</div>	
 				<br>
@@ -260,7 +269,7 @@
 						<h5>D.Médica:</h5>
 					</div>
 					<div class="col-md-8">
-						<h5></h5>
+						<h5>{{folio.Rep_DescMedica}}</h5>
 					</div>
 				</div>
 				<br>
@@ -269,25 +278,25 @@
 						<h5>PreFactura:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.Prefactura}}</h5>
 					</div>
 					<div class="col-md-1">
 						<h5>Fecha Prefactura:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.FechaPrefactura}}</h5>
 					</div>
 					<div class="col-md-1">
 						<h5>Factura:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.fac_serie}} {{folio.fac_folio}}</h5>
 					</div>
 					<div class="col-md-1">
 						<h5>Fecha Factura:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.fac_fechafactura}}</h5>						
 					</div>
 				</div>
 				<br>
@@ -296,25 +305,25 @@
 						<h5>I.V.A:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.fac_iva}}</h5>						
 					</div>
 					<div class="col-md-1">
 						<h5>Deducible:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.fac_deducible}}</h5>						
 					</div>
 					<div class="col-md-1">
 						<h5>Importe:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.fac_subtotal}}</h5>						
 					</div>
 					<div class="col-md-1">
 						<h5>Descuento:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.fac_descuento}}</h5>						
 					</div>
 				</div>
 				<br>
@@ -323,25 +332,25 @@
 						<h5>Total:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.fac_total}}</h5>						
 					</div>
 					<div class="col-md-1">
 						<h5>Saldo:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.fac_saldo}}</h5>						
 					</div>
 					<div class="col-md-1">
 						<h5>FechaPago:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{folio.fac_fechapagofactura}}</h5>						
 					</div>
 				</div>
 				<br>
 				<div class="row">
 					<div class="col-md-2">
-			  			<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-appAjustes-modal-lg" disabled>Aplicaciones y Ajustes</button>
+			  			<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-appAjustes-modal-lg">Aplicaciones y Ajustes</button>
 					</div>
 				</div>
 			</div>
@@ -375,12 +384,26 @@
 							</tr>
 						</thead>
 						<tbody>
-							<tr >
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
-								<td></td>
+							<tr>
+								<td>Pago Etapa 1</td>
+								<td>{{pagoTab1}}</td>								
+								<td>{{pagoET1}}</td>								
+								<td>{{pagoChE1}}</td>
+								<td>{{pagofechaET1 }}</td>
+							</tr>
+							<tr>
+								<td>Pago Etapa 2</td>
+								<td>{{pagoTab2}}</td>								
+								<td>{{pagoET2}}</td>								
+								<td>{{pagoChE2}}</td>
+								<td>{{pagofechaET2}}</td>
+							</tr>
+							<tr>
+								<td>Pago Etapa 3</td>
+								<td>{{pagoTab3 }}</td>								
+								<td>{{pagoET3 }}</td>								
+								<td>{{pagoChE3}}</td>
+								<td>{{pagofechaET3}}</td>
 							</tr>
 						</tbody>
 					</table>
@@ -406,9 +429,8 @@
 		<br>
 		<div class="row">
 			<div class="col-md-8 form-group" role="group">
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-control-modal-lg">Control de Documentos</button>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-cuestionario-modal-lg">Cuestionario Atención</button>
-				<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-safeData-modal-lg">Caja de Safe Data</button>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-controldoc-modal-lg" ng-model="CtrlDoc" ng-click="modalCtrlDocumentos()">Control de Documentos</button>
+				<button type="button" class="btn btn-primary" data-toggle="modal" data-target=".bs-cuestionario-modal-lg" ng-model="cuestion" ng-click="observaCuestionario()">Cuestionario Atención</button>
 			</div>
 		</div>
 	</div>
@@ -416,7 +438,7 @@
 <br>
 <br>
 
-<div class="panel panel-info">
+<!-- <div class="panel panel-info">
 	<div class="panel-heading">
 		<h4 class="panel-title">Búsqueda</h4>
 	</div>
@@ -510,15 +532,15 @@
 			</div>
 		</div>
 	</div>
-</div>
+</div> -->
 					
 
 <!--Modal Aplicaciones y Ajustes-->
-<div class="modal fade bs-appAjustes-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bs-appAjustes-modal-lg" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
 		<div class="modal-content">
 	    	<div class="modal-header">
-	    		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	    		<button id="modalAppsAjuste" ng-click="" type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          		<span aria-hidden="true">&times;</span>
 	        	</button>
 	        	<h4 class="modal-title" id="myModalLabel">Aplicaciones y Ajustes</h4>
@@ -538,11 +560,11 @@
 						</tr>
 					</thead>
 					<tbody>
-						<tr>
+						<tr ng-repeat="folio in informacion">
 							<td></td>
 							<td></td>
-							<td></td>
-							<td></td>
+							<td>{{folio.fac_fechapagofactura}}</td>
+							<td>{{folio.fac_total}}</td>
 							<td></td>
 							<td></td>
 							<td></td>
@@ -583,52 +605,8 @@
   	</div>
 </div>
 
-<!--Modal Detalle de Pagos-->
-<div class="modal fade bs-detalle-modal-lg" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-    	<div class="modal-header">
-    		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-          		<span aria-hidden="true">&times;</span>
-        	</button>
-        	<h4 class="modal-title" id="myModalLabel">Detalle de Pago a Unidades Por Etapa</h4>
-      	</div>
-      	<div class="modal-body">
-			<table class="table table-bordered">
-    				<br>
-    				<thead>
-    					<tr>
-    						<th>Etapa</th>
-    						<th>Unidad</th>
-    						<th>Pagado</th>
-    						<th>Cheque</th>
-    						<th>Fecha</th>
-    						<th>Relación</th>
-    						<th>Fecha Relación</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-      </div>
-    </div>
-  </div>
-</div>
-
 <!-- Modal Control de Documentos -->
-<div class="modal fade bs-control-modal-lg" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<div class="modal fade bs-controldoc-modal-lg" id="myModal2" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
 	<div class="modal-dialog modal-lg">
     	<div class="modal-content">
     		<div class="modal-header">
@@ -638,37 +616,34 @@
         		<h4 class="modal-title" id="myModalLabel">Registro en Control de Documentos</h4>
       		</div>
       		<div class="modal-body">
-      			<table class="table table-bordered">
-      				<br>
-      				<thead>
-    					<tr>
-    						<th>Unidad</th>
-    						<th>Etapa</th>
-    						<th>Entrega</th>
-    						<th>F/O</th>
-    						<th>Fecha Recepción</th>
-    						<th>Fecha Registro</th>
-    						<th>Fecha Captura</th>
-    						<th>Factura</th>
-    						<th>Total</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
-
-				<h3 class="modal-title" id="gridSystemModalLabel">Estatus en Flujo de Documentos</h3>
+      		<div class="row">
+				<div ng-show="mensaje" class="alert alert-danger animate-show">{{mensaje}}</div>
+			</div>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+					          <th>Usuario</th>
+					          <th>Tipo</th>
+					          <th>Area</th>
+					          <th>Etapa</th>
+					          <th>Entrega</th>
+					          <th>Status</th>
+					        </tr>
+					    </thead>
+					    <tbody>
+					    	<tr ng-repeat="flujo in listado" >
+								<td>{{flujo.Usuario}}</td>
+								<td>{{flujo.tipo}}</td>
+								<td>{{flujo.ARO_nombre}}</td>
+								<td>{{flujo.FLD_etapa}}</td>
+								<td>{{flujo.FLD_numeroentrega}}</td>
+								<td>{{flujo.Status}}</td>
+					        </tr> 
+					    </tbody>
+		    		</table>
+				</div>
+			<h3 class="modal-title" id="gridSystemModalLabel">Estatus en Flujo de Documentos</h3>
 				<fieldset>
 					<legend align="center">ACTIVO</legend>
 					<div class="row">
@@ -676,19 +651,19 @@
 							<h5>Usuario:</h5>
 						</div>
 						<div class="col-md-3">
-							<h5></h5>
+							<h5>{{usuario}}</h5>
 						</div>
 						<div class="col-md-1">
 							<h5>Area:</h5>
 						</div>
 						<div class="col-md-2">
-							<h5></h5>
+							<h5>{{area}}</h5>
 						</div>
 						<div class="col-md-1">
 							<h5>Fecha:</h5>
 						</div>
 						<div class="col-md-3">
-							<h5></h5>
+							<h5>{{fecha}}</h5>
 						</div>
 					</div>
 				</fieldset>
@@ -712,7 +687,7 @@
 							<h5>Fecha:</h5>
 						</div>
 						<div class="col-md-3">
-							<h5></h5>
+							<h5>{{fecha}}</h5>
 						</div>
 					</div>	
 				</fieldset>	
@@ -729,34 +704,37 @@
 	<div class="modal-dialog modal-lg">
     	<div class="modal-content">
     		<div class="modal-header">
-    			<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    			<button id="modalCuestAt" ng-click="" type="button" class="close" data-dismiss="modal" aria-label="Close">
           			<span aria-hidden="true">&times;</span>
         		</button>
         		<h4 class="modal-title" id="myModalLabel">Cuestionario de Atención Médica</h4>
-
       		</div>
+      		<div class="row">
+				<div ng-show="mensaje" class="alert alert-danger animate-show">{{mensaje}}</div>
+			</div>
       		<div class="modal-body">
-      			<table class="table table-bordered">
-					<br>
-					<thead>
-						<tr>
-							<th>PREGUNTA</th>
-							<th>RESPUESTA</th>
-						</tr>
-					</thead>
-					<tbody>
-						<tr>
-							<td></td>
-							<td></td>
-						</tr>
-					</tbody>
-				</table>
+				<div class="table-responsive">
+					<table class="table">
+						<thead>
+							<tr>
+								<th>PREGUNTA</th>
+								<th>RESPUESTA</th>
+					        </tr>
+					    </thead>
+					    <tbody>
+					    	<tr ng-repeat="folio in respuestas" >
+								<td>{{folio.PEG_texto}}</td>
+								<td>{{folio.ResTexto}}</td>
+					        </tr> 
+					    </tbody>
+		    		</table>
+				</div>
 				<div class="row">
 					<div class="col-md-4">
 						<h5>Fecha en que se respondió el cuestionario:</h5>
 					</div>
 					<div class="col-md-4">
-						<h5></h5>
+						<h5>{{fech_resp}}</h5>
 					</div>
 				</div>
 				<div class="row">
@@ -764,7 +742,7 @@
 						<h5>Teléfono Contacto:</h5>
 					</div>
 					<div class="col-md-2">
-						<h5></h5>
+						<h5>{{tel}}</h5>
 					</div>
 				</div>
      		</div>
@@ -775,40 +753,42 @@
   	</div>
 </div>
 
-<!--Modal Safe Data-->
-<div class="modal fade bs-safeData-modal-lg" id="myModal4" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+<!--Modal Detalle de Pagos-->
+<div class="modal fade bs-detalle-modal-lg" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
   <div class="modal-dialog modal-lg">
     <div class="modal-content">
     	<div class="modal-header">
-    		<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    		<button id="modalDetalleP" ng-click="muestraModal()" type="button" class="close" data-dismiss="modal" aria-label="Close">
           		<span aria-hidden="true">&times;</span>
         	</button>
-        	<h4 class="modal-title" id="myModalLabel">Caja Safe Data</h4>
+        	<h4 class="modal-title" id="myModalLabel">Detalle de Pago a Unidades Por Etapa</h4>
       	</div>
       	<div class="modal-body">
-      		<table class="table table-bordered">
-      			<br>
-      			<thead>
-      				<tr>
-      					<th>Etapa</th>
-						<th>Entrega</th>
-						<th>No.Caja</th>
-						<th>Usuario</th>
-						<th>Relación</th>
-						<th>Fecha Relación</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-						<td></td>
-					</tr>
-				</tbody>
-			</table>
+			<table class="table table-bordered">
+    				<br>
+    				<thead>
+    					<tr>
+    						<th>Etapa</th>
+    						<th>Unidad</th>
+    						<th>Pagado</th>
+    						<th>Cheque</th>
+    						<th>Fecha</th>
+    						<th>Relación</th>
+    						<th>Fecha Relación</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr>
+							<td></td>
+							<td>{{unidad}}</td>
+							<td>{{pagoET1}}</td>
+							<td>{{pagoChE1}}</td>
+							<td>{{pagofechaET1}}</td>
+							<td>{{}}</td>
+							<td>{{}}</td>
+						</tr>
+					</tbody>
+				</table>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

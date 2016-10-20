@@ -780,99 +780,6 @@ function controlDocumentosCtrl($scope, $http, loading, find, api, $filter, repor
 
 };
 
-/// detalle de folios
-function infoPaseCtrl($scope, $rootScope, $routeParams){
-
-	$scope.inicio = function(){
-		$scope.tituloIP = "Info Pase";
-		if ($routeParams.folio == undefined) {
-			$scope.buscar = true;
-		}else{
-			$scope.buscar = false;
-			$scope.folio = $routeParams.folio;
-		}
-
-		$scope.i = 1;
-	}
-
-	// presiona Folio
-	$scope.presionaFolio = function(evento){
-
-
-		//contamos la cadena completa
-		var cantidad = $scope.criterio.length;
-
-		//los primero cuatro caracteres NO deben ser numeros
-		if(cantidad < 3){
-			if (evento.keyCode >= 48 && evento.keyCode <= 57 || evento.keyCode >= 96 && evento.keyCode <= 105) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//los ultimos 6 NO deben ser letras
-		if(cantidad > 3 && cantidad < 9){
-			if (evento.keyCode >= 65 && evento.keyCode <= 90) {
-		      	evento.preventDefault();
-		    }
-		}
-
-		//Si son mas de 10 digitos no escribas mas
-		if(cantidad > 9){
-			if (evento.keyCode != 8  && evento.keyCode != 46 ) {
-
-		      	evento.preventDefault();
-		    }      	
-		}
-
-		//Si se da enter o salto de linea ejecuta la funcion verifica folio pasandole que es de tipo fax
-		if (evento.keyCode == 13 || evento.keyCode == 9) {
-
-	      	$scope.verificaFolio();
-
-	    }
-
-
-	}
-
-	$scope.verificaFolio = function(){
-
-		if ($scope.criterio != '') {
-
-			var totalletras = $scope.criterio.length;
-
-			var letras = $scope.criterio.substr(0,4);
-			var numeros = $scope.criterio.substr(4,totalletras);
-
-			if(letras.length < 4 ){
-
-				var faltantes = 4 - letras.length;
-
-				for (var i = 0; i < faltantes; i++) {
-
-					var letra = letras.charAt(i);
-					letras = letras + "0";
-				}
-			}
-
-			if(numeros.length < 6 ){
-
-				var faltantes = 6 - numeros.length;
-
-				for (var i = 0; i < faltantes; i++) {
-					
-					numeros = "0" + numeros;
-				}
-			}
-
-			$scope.criterio = letras + numeros;
-
-			$scope.foliosxfolio();
-		}	
-
-	}
-
-};
-
 //buscar un folio en el flujo
 function busquedaDocumentoCtrl($scope,$rootScope, find){
 
@@ -1059,7 +966,6 @@ consultaCtrl.$inject = ['$scope','$rootScope', 'find'];
 historialCtrl.$inject = ['$scope','$routeParams', '$rootScope', 'datos', 'loading'];
 consultaFlujoCtrl.$inject = ['$scope','$rootScope', 'find'];
 controlDocumentosCtrl.$inject = ['$scope', '$http', 'loading', 'find', 'api', '$filter', 'reportes'];
-infoPaseCtrl.$inject = ['$scope', '$rootScope', '$routeParams'];
 busquedaDocumentoCtrl.$inject = ['$scope','$rootScope', 'find'];
 
 app.controller('loginCtrl',loginCtrl); 
@@ -1069,5 +975,4 @@ app.controller('consultaCtrl', consultaCtrl);
 app.controller('historialCtrl', historialCtrl);
 app.controller('consultaFlujoCtrl',consultaFlujoCtrl);
 app.controller('controlDocumentosCtrl',controlDocumentosCtrl);
-app.controller('infoPaseCtrl',infoPaseCtrl);
 app.controller('busquedaDocumentoCtrl',busquedaDocumentoCtrl);

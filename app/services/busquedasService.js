@@ -58,6 +58,12 @@ app.factory("find", function($http,api){
         foliosFePendientes:function(datos){
             return $http.post(api + 'facturacionExpress/pendientes',datos);
         },
+        infoPase:function(folio){
+            return $http.get(api + 'consulta/infoPase/' + folio);
+        },
+        infoPaseCuestionario:function(folio){
+            return $http.get(api + 'consulta/infoPaseCuestionario/' + folio);
+        },
         lesiones:function(id){
             return $http.get(api + 'consulta/lesiones/'+ id);
         },
