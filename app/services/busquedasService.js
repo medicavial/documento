@@ -124,6 +124,9 @@ app.factory("find", function($http,api){
         riesgos:function(){
             return $http.get(api+'consulta/riesgos');
         },
+        solicitud:function(){
+            return $http.get(api + 'consulta/solicitudes');
+        },
         statuspagos:function(){
             return $http.get(api + 'tickets/pagos/status');
         },

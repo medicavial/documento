@@ -627,6 +627,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'unidadCtrl'
     });
 
+    $routeProvider.when('/cancelaSolicitud',{
+            templateUrl   : 'vistas/cancelaSolicitud.html',
+            controller    : 'cancelaSolCtrl'
+    });
+
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
 
     $routeProvider.otherwise({redirectTo:'/login'});
