@@ -268,7 +268,7 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             $scope.vistaArchivos = false;
             $scope.captura.triage = String(data.captura.triage);
             $scope.captura.MedicoMV = String(data.captura.MedicoMV);
-            console.log(data.captura.POSClave);
+            console.log($scope.datos.cliente);
             $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);
 
         });
