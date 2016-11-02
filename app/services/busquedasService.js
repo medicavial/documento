@@ -34,6 +34,9 @@ app.factory("find", function($http,api){
         detalleFolioWeb:function(folio){
             return $http.get(api + 'facturacionExpress/detalleFolio/'+ folio);
         },
+        detalleFolioSaceco:function(folio,atencion){
+            return $http.get(api + 'saceco/detalleFolio/'+ folio+'/'+atencion);
+        },
         detalleticket:function(folioint,folioweb){
             return $http.get( api + 'tickets/detalle/' + folioint + '/' + folioweb);
         },
@@ -57,6 +60,9 @@ app.factory("find", function($http,api){
         },
         foliosFePendientes:function(datos){
             return $http.post(api + 'facturacionExpress/pendientes',datos);
+        },
+        foliosSacecoPendientes:function(datos){
+            return $http.post(api + 'saceco/pendientes',datos);
         },
         lesiones:function(id){
             return $http.get(api + 'consulta/lesiones/'+ id);
