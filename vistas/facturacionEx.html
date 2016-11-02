@@ -424,7 +424,7 @@
 
 					<div class="col-md-6">
 						<div class="form-group">
-						    <label for="cedula">Cédula Electronica</label>
+						    <label for="cedula">Folio de Autorización</label>
 						    <input type="text" class="form-control" ng-model="captura.cedulaElectronica" id="cedula" ng-required="datos.cliente == 19" placeholder="cedula">
 						</div>
 					</div>
@@ -480,7 +480,7 @@
 				<div class="row">
 					<div class="col-md-4">
 						<label for="">Tipo de Lesion</label>
-						<select class="form-control"  ng-model="captura.tipoLes" ng-change="buscaLesiones(captura.tipoLes)" ng-options="tipoLes.TLEClave as tipoLes.Nombre for tipoLes in tipoLesiones" required>
+						<select class="form-control"  ng-model="captura.tipoLes" ng-change="buscaLesiones(captura.tipoLes)" ng-options="tipoLes.TLEClave as tipoLes.Nombre for tipoLes in tipoLesiones" required ng-disabled="bloqueoLesion">
 							<option value="">Tipo de Lesion</option>
 						</select>
 					</div>

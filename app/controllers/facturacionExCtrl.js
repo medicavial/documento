@@ -88,17 +88,6 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
         });
     }
 
-    //verificamos los campos acorde a compañia
-    $scope.verifica = function(campo){
-
-        if (campo == 'Siniestro' && $scope.datos.cliente == 19) {
-
-            if( $scope.captura.Siniestro.length < 12){
-
-            }
-        };
-    }
-
     //verifica el tabulador 
     $scope.verificaTabulador = function(lesion){
 
@@ -196,6 +185,7 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
     $scope.onDblClickRow = function(row){
         
         $scope.sinCaptura = true;
+        $scope.bloqueoLesion = false;
 
         loading.cargando('Cargando detalle de folio');
         expediente = row.entity.Exp_folio;
@@ -312,6 +302,13 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
                 $scope.FolioElecMax = 100;
 
             }
+
+            if (data.hospitalario.length > 0 && $scope.datos.cliente == 19) {
+                alert('La Atención Tiene Salida de Paquete');
+                $scope.captura.tipoLes = '5';
+                $scope.buscaLesiones('5');
+                $scope.bloqueoLesion = true;
+            };
 
             $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);
 
