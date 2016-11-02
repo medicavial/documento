@@ -8,7 +8,8 @@ var app = angular.module('app', [
     'ngProgress',
     'webStorageModule',
     'uxGenie',
-    'ngJsonExportExcel'
+    'ngJsonExportExcel',
+    'ngMessages'
 ]);
 
 //ip prueba

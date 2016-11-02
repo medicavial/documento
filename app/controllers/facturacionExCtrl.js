@@ -88,6 +88,17 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
         });
     }
 
+    //verificamos los campos acorde a compañia
+    $scope.verifica = function(campo){
+
+        if (campo == 'Siniestro' && $scope.datos.cliente == 19) {
+
+            if( $scope.captura.Siniestro.length < 12){
+
+            }
+        };
+    }
+
     //verifica el tabulador 
     $scope.verificaTabulador = function(lesion){
 
@@ -235,6 +246,7 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
                 }
             }
 
+
             //verificamos las lesiones disponibles segun el tipo
             $scope.buscaTipoLesiones($scope.tipoLes);
 
@@ -269,6 +281,38 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             $scope.captura.triage = String(data.captura.triage);
             $scope.captura.MedicoMV = String(data.captura.MedicoMV);
             console.log($scope.datos.cliente);
+
+            //verificamos cliente para condiciones de texto
+            if ($scope.datos.cliente == 19) {
+
+                $scope.SiniestroMin = 11;
+                $scope.SiniestroMax = 11;
+
+                $scope.PolizaMin = 10;
+                $scope.PolizaMax = 10;
+
+                $scope.ReporteMin = 11;
+                $scope.ReporteMax = 11;
+
+                $scope.FolioElecMin = 12;
+                $scope.FolioElecMax = 12;
+
+            }else{
+
+                $scope.SiniestroMin = '';
+                $scope.SiniestroMax = 100;
+
+                $scope.PolizaMin = '';
+                $scope.PolizaMax = 100;
+
+                $scope.ReporteMin = '';
+                $scope.ReporteMax = 100;
+
+                $scope.FolioElecMin = '';
+                $scope.FolioElecMax = 100;
+
+            }
+
             $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);
 
         });

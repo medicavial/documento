@@ -389,28 +389,55 @@
 					<div class="col-md-4">
 						<div class="form-group">
 						    <label for="siniestro">Siniestro</label>
-						    <input type="text" class="form-control" ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro">
+						    <input type="text" class="form-control" name="siniestro" ng-model="captura.Siniestro" id="siniestro" ng-minlength="SiniestroMin" ng-maxlength="SiniestroMax" placeholder="Siniestro">
+						    <div ng-messages="capturaForm.siniestro.$error" class="text-danger">
+								<div ng-message="required">Campo obligatorio.</div>
+								<div ng-message="maxlength">El campo no puede ser mayor que {{ SiniestroMax }} digitos.</div>
+								<div ng-message="minlength">El campo no puede ser menor que {{ SiniestroMin }} digitos.</div>
+					        </div>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 						    <label for="poliza">Poliza</label>
-						    <input type="text" class="form-control" ng-model="captura.Poliza" id="poliza" placeholder="Poliza">
+						    <input type="text" class="form-control" name="poliza" ng-model="captura.Poliza" id="poliza" ng-minlength="PolizaMin" ng-maxlength="PolizaMax" placeholder="Poliza">
+						    <div ng-messages="capturaForm.poliza.$error" class="text-danger">
+								<div ng-message="required">Campo obligatorio.</div>
+								<div ng-message="maxlength">El campo no puede ser mayor que {{ PolizaMax }} digitos.</div>
+								<div ng-message="minlength">El campo no puede ser menor que {{ PolizaMin }} digitos.</div>
+					        </div>
 						</div>
 					</div>
 					<div class="col-md-4">
 						<div class="form-group">
 						    <label for="reporte">Reporte</label>
-						    <input type="text" class="form-control" ng-model="captura.Reporte" id="Reporte" placeholder="Reporte">
+						    <input type="text" class="form-control" name="reporte" ng-model="captura.Reporte" id="Reporte" ng-minlength="ReporteMin" ng-maxlength="ReporteMax" placeholder="Reporte">
+						    <div ng-messages="capturaForm.reporte.$error" class="text-danger">
+								<div ng-message="required">Campo obligatorio.</div>
+								<div ng-message="maxlength">El campo no puede ser mayor que {{ ReporteMax }} digitos.</div>
+								<div ng-message="minlength">El campo no puede ser menor que {{ ReporteMin }} digitos.</div>
+					        </div>
 						</div>
 					</div>
 				</div>
 				<div class="row" ng-show="datos.cliente == 19">
 
-					<div class="col-md-12">
+					<div class="col-md-6">
 						<div class="form-group">
-						    <label for="reporte">Cédula Electronica</label>
-						    <input type="text" class="form-control" ng-model="captura.cedula" id="Reporte" placeholder="Reporte">
+						    <label for="cedula">Cédula Electronica</label>
+						    <input type="text" class="form-control" ng-model="captura.cedulaElectronica" id="cedula" ng-required="datos.cliente == 19" placeholder="cedula">
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="RegCompania">Folio Electronico</label>
+						    <input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-required="datos.cliente == 19" placeholder="RegCompania">
+						    <div ng-messages="capturaForm.RegCompania.$error" class="text-danger">
+								<div ng-message="required">Campo obligatorio.</div>
+								<div ng-message="maxlength">El campo no puede ser mayor que {{ FolioElecMax }} digitos.</div>
+								<div ng-message="minlength">El campo no puede ser menor que {{ FolioElecMin }} digitos.</div>
+					        </div>
 						</div>
 					</div>
 
