@@ -9,6 +9,7 @@ var app = angular.module('app', [
     'webStorageModule',
     'uxGenie',
     'ngJsonExportExcel',
+    'angular.filter',
     'ngMessages'
 ]);
 
@@ -17,8 +18,10 @@ app.constant('api','http://172.17.10.52/apimv/public/api/')
 app.constant('publicfiles','http://172.17.10.52/apimv/public/exports/')
 
 //ip produccion
+
 // app.constant('api','http://172.17.10.15/apimv/public/api/')
 // app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/')
+
 
 
 //configuramos las rutas y asignamos html y controlador segun la ruta
@@ -111,6 +114,27 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
     $routeProvider.when('/facturacionEx',{
             templateUrl    :'vistas/facturacionEx.html',
             controller     :'facturacionExCtrl',
+            resolve       :{
+                datos:function(find,loading,$q){
+                    loading.cargando('Cargando Informacion');
+                    var promesa = $q.defer(),
+                        empresas = find.empresasweb(),
+                        triages = find.triages(),
+                        posiciones = find.posiciones();
+
+                    $q.all([empresas,triages,posiciones]).then(function (data){
+                        // console.log(data);
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
+                }
+            }
+    });
+
+    $routeProvider.when('/saceco',{
+            templateUrl    :'vistas/saceco.html',
+            controller     :'sacecoCtrl',
             resolve       :{
                 datos:function(find,loading,$q){
                     loading.cargando('Cargando Informacion');

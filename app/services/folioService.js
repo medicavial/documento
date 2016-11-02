@@ -785,6 +785,14 @@ app.factory("facturacionExpress", function($q,$http,find,api){
     }
 });
 
+app.factory("saceco", function($q,$http,find,api){
+    return{      
+        doctosValidados:function(datos){
+            return $http.post(api + 'saceco/doctosValidados', datos,{timeout: 100000});
+        }
+    }
+});
+
 
 app.factory("ticketpagos", function($q,$http,find,api){
     return{
