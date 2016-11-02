@@ -64,6 +64,12 @@ app.factory("find", function($http,api){
         foliosSacecoPendientes:function(datos){
             return $http.post(api + 'saceco/pendientes',datos);
         },
+        infoPase:function(folio){
+            return $http.get(api + 'consulta/infoPase/' + folio);
+        },
+        infoPaseCuestionario:function(folio){
+            return $http.get(api + 'consulta/infoPaseCuestionario/' + folio);
+        },
         lesiones:function(id){
             return $http.get(api + 'consulta/lesiones/'+ id);
         },
@@ -123,6 +129,9 @@ app.factory("find", function($http,api){
         },
         riesgos:function(){
             return $http.get(api+'consulta/riesgos');
+        },
+        solicitud:function(){
+            return $http.get(api + 'consulta/solicitudes');
         },
         statuspagos:function(){
             return $http.get(api + 'tickets/pagos/status');

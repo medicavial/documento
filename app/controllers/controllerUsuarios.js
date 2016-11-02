@@ -38,6 +38,7 @@ app.controller('controllerUsuarios', function ($scope, loading, find, operacion)
 		find.usuarios().success( function (data){
         		$scope.listado = data;
         		loading.despedida();
+        		console.log(data)
 		});
 
 	}

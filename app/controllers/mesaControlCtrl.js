@@ -440,8 +440,9 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
 		            { field:'ARO_activa', displayName:'area', width: 100, visible:false },
 		            { field:'USU_ent', displayName:'USU_ent', width: 100, visible:false },
 		            { field:'factura', displayName:'Factura', width: 100, visible:true },
-		            { field:'Fac_fechapagofactura', displayName:'Fecha Factura', width: 100, visible:true },
-		            { field:'Fac_ultimaAplicacion', displayName:'Fecha Aplicacion', width: 100, visible:true },
+		            { field:'Fac_fechafactura', displayName:'Fecha Factura', width: 100, visible:true },
+		            { field:'Fac_fechapagofactura', displayName:'Fecha Pago Factura', width: 100, visible:true },
+		            { field:'Fac_ultimaAplicacion', displayName:'Fecha Ultima Aplicacion', width: 100, visible:true },
 		            { field:'pagada', displayName:'Pagada', width: 100},
 		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true}
 		            
