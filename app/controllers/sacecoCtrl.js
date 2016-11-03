@@ -241,6 +241,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
     $scope.onDblClickRow = function(row){
         
         $scope.sinCaptura = true;
+        $scope.bloqueoLesion = false;
 
         loading.cargando('Cargando detalle de folio');
         expediente  = row.entity.Exp_folio;
@@ -334,14 +335,54 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             $scope.nomAtencion = data.atencion.TIA_nombre;            
             $scope.vistaArchivos = false;
             $scope.captura.triage = String(data.captura.triage);
-            $scope.captura.MedicoMV = String(data.captura.MedicoMV);            
-            $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);
+            $scope.captura.MedicoMV = String(data.captura.MedicoMV);
+            $scope.datos.cliente=data.captura.cliente;
             $scope.listDocmuento = data.documentos;
             $scope.motRechazo = data.motivoRechazo; 
             $scope.anotaciones= data.anotaciones;           
             $scope.estatusDocto='success';
             $scope.captura.Dx=$scope.dx; 
-            $scope.captura.tipoLes= $scope.tipLesion;             
+            $scope.captura.tipoLes= $scope.tipLesion;          
+
+            //verificamos cliente para condiciones de texto
+            if ($scope.datos.cliente == 19) {
+
+                $scope.SiniestroMin = 11;
+                $scope.SiniestroMax = 11;
+
+                $scope.PolizaMin = 10;
+                $scope.PolizaMax = 10;
+
+                $scope.ReporteMin = 11;
+                $scope.ReporteMax = 11;
+
+                $scope.FolioElecMin = 12;
+                $scope.FolioElecMax = 12;
+
+            }else{
+
+                $scope.SiniestroMin = '';
+                $scope.SiniestroMax = 100;
+
+                $scope.PolizaMin = '';
+                $scope.PolizaMax = 100;
+
+                $scope.ReporteMin = '';
+                $scope.ReporteMax = 100;
+
+                $scope.FolioElecMin = '';
+                $scope.FolioElecMax = 100;
+
+            }
+
+            if (data.hospitalario.length > 0 && $scope.datos.cliente == 19) {
+                alert('La Atención Tiene Salida de Paquete');
+                $scope.captura.tipoLes = '5';
+                $scope.buscaLesiones('5');
+                $scope.bloqueoLesion = true;
+            };
+
+            $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);           
 
         });
       

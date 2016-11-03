@@ -617,7 +617,7 @@
 	</div>
 </div>
 
-<div class="panel panel-primary animate-show" id="derecha-pantalla" ng-show="vistaCaptura">
+<!--<div class="panel panel-primary animate-show" id="derecha-pantalla" ng-show="vistaCaptura">
 
 	<div class="panel-heading">Captura de Pase <button type="button" ng-click="vistaCaptura = !vistaCaptura" class="close" aria-label="Close"><span class="white-text" aria-hidden="true">&times;</span></button> </div>
 	<div>
@@ -788,7 +788,209 @@
 		</form>
 
 	</div>
+</div>-->
+
+<div class="panel panel-primary animate-show" id="derecha-pantalla" ng-show="vistaCaptura">
+
+	<div class="panel-heading">Captura de Pase <button type="button" ng-click="vistaCaptura = !vistaCaptura" class="close" aria-label="Close"><span class="white-text" aria-hidden="true">&times;</span></button> </div>
+	<div>
+		
+		<form ng-submit="capturaFE()" name="capturaForm">
+			<div class="modal-body">
+				<div class="row">
+
+					<div class="col-md-12">
+						<div class="form-group">
+						    <label for="reporte">Lesionado</label>
+						    <input type="text" class="form-control" ng-model="captura.Nombre" id="Reporte" placeholder="Reporte">
+						</div>
+					</div>
+
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label for="siniestro">Siniestro</label>
+						    <input type="text" class="form-control" name="siniestro" ng-model="captura.Siniestro" id="siniestro" ng-minlength="SiniestroMin" ng-maxlength="SiniestroMax" placeholder="Siniestro">
+						    <div ng-messages="capturaForm.siniestro.$error" class="text-danger">
+								<div ng-message="required">Campo obligatorio.</div>
+								<div ng-message="maxlength">El campo no puede ser mayor que {{ SiniestroMax }} digitos.</div>
+								<div ng-message="minlength">El campo no puede ser menor que {{ SiniestroMin }} digitos.</div>
+					        </div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label for="poliza">Poliza</label>
+						    <input type="text" class="form-control" name="poliza" ng-model="captura.Poliza" id="poliza" ng-minlength="PolizaMin" ng-maxlength="PolizaMax" placeholder="Poliza">
+						    <div ng-messages="capturaForm.poliza.$error" class="text-danger">
+								<div ng-message="required">Campo obligatorio.</div>
+								<div ng-message="maxlength">El campo no puede ser mayor que {{ PolizaMax }} digitos.</div>
+								<div ng-message="minlength">El campo no puede ser menor que {{ PolizaMin }} digitos.</div>
+					        </div>
+						</div>
+					</div>
+					<div class="col-md-4">
+						<div class="form-group">
+						    <label for="reporte">Reporte</label>
+						    <input type="text" class="form-control" name="reporte" ng-model="captura.Reporte" id="Reporte" ng-minlength="ReporteMin" ng-maxlength="ReporteMax" placeholder="Reporte">
+						    <div ng-messages="capturaForm.reporte.$error" class="text-danger">
+								<div ng-message="required">Campo obligatorio.</div>
+								<div ng-message="maxlength">El campo no puede ser mayor que {{ ReporteMax }} digitos.</div>
+								<div ng-message="minlength">El campo no puede ser menor que {{ ReporteMin }} digitos.</div>
+					        </div>
+						</div>
+					</div>
+				</div>
+				<div class="row" ng-show="datos.cliente == 19">
+
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="cedula">Folio de Autorización</label>
+						    <input type="text" class="form-control" ng-model="captura.cedulaElectronica" id="cedula" ng-required="datos.cliente == 19" placeholder="cedula">
+						</div>
+					</div>
+
+					<div class="col-md-6">
+						<div class="form-group">
+						    <label for="RegCompania">Folio Electronico</label>
+						    <input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-required="datos.cliente == 19" placeholder="RegCompania">
+						    <div ng-messages="capturaForm.RegCompania.$error" class="text-danger">
+								<div ng-message="required">Campo obligatorio.</div>
+								<div ng-message="maxlength">El campo no puede ser mayor que {{ FolioElecMax }} digitos.</div>
+								<div ng-message="minlength">El campo no puede ser menor que {{ FolioElecMin }} digitos.</div>
+					        </div>
+						</div>
+					</div>
+
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<label for="">Tipo de Pase</label>
+						<select class="form-control" ng-model="captura.Tipo" required>
+							<option value="">Tipo de Pase</option>
+							<option value="Ticket">Ticket</option>
+							<option value="Formato">Formato</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label for="">Triage</label>
+						<select class="form-control"  ng-model="captura.triage"  ng-options="triage.TRI_claveint as triage.TRI_nombre for triage in triages" required>
+							<option value="">Triage</option>
+						</select>
+					</div>
+					<div class="col-md-4 text-center">
+						<label for="">Pago a Unidad</label>
+						<br>
+						<label class="radio-inline">
+					  		<input type="radio" ng-model="captura.pagoUnidad" ng-value="1" name="pagoUnidad" id="inlineRadio1" value="1"> Si
+						</label>
+						<label class="radio-inline">
+					  		<input type="radio" ng-model="captura.pagoUnidad" ng-value="0" name="pagoUnidad" id="inlineRadio2" value="0"> No
+						</label>
+					</div>
+				</div>
+
+				<div class="row">
+					<div class="col-md-12">
+						<div class="form-group">
+						    <label for="motivoNoPago">Motivo No Pago</label>
+						    <input type="text" class="form-control" ng-model="captura.motivoNoPago" id="motivoNoPago" placeholder="motivoNoPago">
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-4">
+						<label for="">Tipo de Lesion</label>
+						<select class="form-control"  ng-model="captura.tipoLes" ng-change="buscaLesiones(captura.tipoLes)" ng-options="tipoLes.TLEClave as tipoLes.Nombre for tipoLes in tipoLesiones" required ng-disabled="bloqueoLesion">
+							<option value="">Tipo de Lesion</option>
+						</select>
+					</div>
+					<div class="col-md-8">
+						<label for="">Lesion</label>
+						<select class="form-control"  ng-model="captura.Lesion" ng-change="verificaTabulador(captura.Lesion)" ng-options="lesion as lesion.LES_nombre for lesion in lesiones" required>
+							<option value="">Lesion</option>
+						</select>
+					</div>
+				</div>
+				<div class="row" ng-hide="nuevoAjustador">
+					<div class="col-md-9">
+						<label for="">Ajustador</label>
+						<select class="form-control"  ng-model="captura.Ajustador" ng-options="ajustador.AJU_claveint as ajustador.AJU_nombre for ajustador in ajustadores">
+							<option value="">Ajustador</option>
+						</select>
+					</div>
+					<div class="col-md-3">
+						<label for=""></label>
+						<button type="button" class="btn btn-primary" ng-click="nuevoAjustador = !nuevoAjustador">Nuevo Ajustador</button>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-6">
+						<label for="">Médico</label>
+						<select class="form-control"  ng-model="captura.MedicoMV" ng-options="medico.MED_claveint as medico.MED_nombre for medico in medicos" required>
+							<option value="">Médico</option>
+						</select>
+					</div>
+					<div class="col-md-4">
+						<label for="">Posición</label>
+						<select class="form-control"  ng-model="captura.POSClave" ng-options="posicion.POS_clave as posicion.POS_nombre for posicion in posiciones" required>
+							<option value="">Posición</option>
+						</select>
+					</div>
+					<div class="col-md-2">
+						<div class="form-group">
+						    <label for="sexo">Sexo</label>
+						    <select class="form-control"  ng-model="captura.Sexo" required>
+								<option value="M">M</option>
+								<option value="F">F</option>
+							</select>
+						</div>
+					</div>
+				</div>
+				<div class="row">
+					<div class="col-md-3">
+						<div class="form-group">
+						    <label for="edad">Edad</label>
+						    <input type="text" class="form-control" ng-model="captura.Edad" id="edad" placeholder="edad">
+						</div>
+					</div>
+					<div class="col-md-6">
+	        			<label for="datepicker4">Fecha Expedición</label>
+	        			<input type="text" class="form-control" ng-model="captura.FExpedicion" ng-change="validafecha()" id="datepickerExpedicion" required>
+	        		</div>
+				</div>
+
+				<div class="row" ng-show="nuevoAjustador">
+					<div class="col-md-9">
+						<label for="">Nombre del Ajustador</label>
+						<input type="text" class="form-control" ng-model="ajustador" id="ajustador" placeholder="Ajustador" ng-disabled="ocultaBotones" capitalize>
+					</div>
+					<div class="col-md-3" ng-hide="ocultaBotones">
+						<br>
+						<button type="button" class="btn btn-default" ng-click="guardaAjustador()"><i class="icon-checkmark-circle"></i></button>
+						<button type="button" class="btn btn-danger" ng-click="nuevoAjustador = !nuevoAjustador"><i class="icon-cancel-circle"></i></button>
+					</div>
+				</div>
+				<div class="row">
+                    <div class="col-md-12">
+						<label>Diagnostico</label>
+						<textarea class="form-control" ng-model="captura.Dx" rows="3" required></textarea>
+						<span ng-if="captura.Dx.length > 224" class="red">Largo de texto no permitido {{ captura.Dx.length }}</span>  
+                    </div>
+				</div>
+				<div ng-show="mensaje" class="alert alert-success animate-show">{{mensaje}}</div>
+				<br>
+				<div class="text-right">
+			        <button type="button" class="btn btn-default" ng-click="vistaCaptura = !vistaCaptura">Cerrar</button>
+			        <button type="submit" id="botonAct" class="btn btn-primary" ng-disabled="verificaDatos()" data-loading-text="Guardando...">Gaurdar Cambios</button>
+			    </div>
+			</div>
+		</form>
+
+	</div>
 </div>
+
 
 
 <script>
