@@ -14,7 +14,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
 	$scope.inicio = function(){
 
         $scope.datos = {
-            cliente:0,
+            cliente:19,
             fechaini:primerdiames,
             fechafin:FechaAct
         }       
@@ -72,7 +72,8 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
     $scope.buscaAjustadores = function(id){
         
         find.ajustadores(id).success(function (data){
-            $scope.ajustadores = data;
+            $scope.ajustadores = data; 
+            console.log($scope.ajustadores);
         });
 
     }
@@ -91,6 +92,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
     $scope.buscaLesiones = function(id){
         find.lesiones(id).success(function (data){
             $scope.lesiones = data;
+            console.log($scope.lesiones);
         });
     }
 
@@ -98,6 +100,19 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
     $scope.verificaTabulador = function(lesion){
 
         find.tabulador(lesion.LES_claveEmp,expediente).success(function (data){
+            console.log(data);
+            $scope.captura.claveTabulador = data.claveTabulador;
+            $scope.captura.importe = data.importe;
+            $scope.tabuladorListo  = true;
+        }).error(function (data){
+            alert('Intenta ingresar la lesion nuevamente por favor');
+        });
+
+    }
+
+    $scope.verificaTabuladorOrigen = function(lesion){
+
+        find.tabulador(lesion,expediente).success(function (data){
             console.log(data);
             $scope.captura.claveTabulador = data.claveTabulador;
             $scope.captura.importe = data.importe;
@@ -190,17 +205,22 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
     $scope.validaEstatus = function(motivo,motivoDoc,cveDoc,arcEstatus,atdEstatus){        
         var listado = $scope.listDocmuento;
         var cont =1;  
-        $scope.verGuardaTicket=0;         
+        $scope.verGuardaTicket=0;
+        $scope.verCaptura=1;         
         for (index = 0; index < listado.length; ++index) {
             value = listado[index].Arc_estatus;             
-            if(value==2){
-                $scope.verGuardaTicket=1;    
+            if(value==2||value==0){
+                $scope.verGuardaTicket=1; 
+                $scope.verCaptura=2;      
             }                 
         }            
         for (index = 0; index < listado.length; ++index) {
             value = listado[index];            
             if(cveDoc==value['TID_clave']){
-                if(value['Arc_estatus']==2||value['Arc_estatus']==0) cont=2;                                                 
+                if(value['Arc_estatus']==2||value['Arc_estatus']==0) {
+                    cont=2;
+                                                                  
+                }
             }                          
         }                
         for (index = 0; index < listado.length; ++index) {
@@ -260,7 +280,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             $scope.datosExpediente = data.expediente;            
             $scope.cveCia=data.expediente.claveEmpresa;
             $scope.tipLesion = data.lesion.TLE_claveint;
-            console.log($scope.tipLesion);
+
             $scope.edicion = false;
             $scope.vistaArchivos = false;
             $scope.vistaCuestionario = false;
@@ -269,7 +289,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             $scope.nuevoAjustador = false;
             $scope.ocultaBotones = false;
             $scope.rotar = false;            
-           for (i = 0; i < data.anotaciones.length; i++) { 
+            for (i = 0; i < data.anotaciones.length; i++) { 
                 if(data.anotaciones[i].REQ_valor =='Diagnostico'){
                     $scope.dx=data.anotaciones[i].ANT_valor;                    
                 }
@@ -342,7 +362,17 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             $scope.anotaciones= data.anotaciones;           
             $scope.estatusDocto='success';
             $scope.captura.Dx=$scope.dx; 
-            $scope.captura.tipoLes= $scope.tipLesion;          
+            if(data.lesion.LesE_clave){
+                $scope.LesMV =data.lesion.lesionCIA;
+                $scope.buscaLesiones($scope.tipLesion);
+                $scope.verificaTabuladorOrigen($scope.LesMV);
+
+            }
+            $scope.captura.tipoLes= String($scope.tipLesion);
+            $scope.captura.Lesion= String($scope.LesMV);
+            //$scope.captura.Ajustador = String(data.expediente.cveAjustador);
+            $scope.nombreAjustador = data.expediente.ajustador;
+            console.log($scope.captura.Ajustador);            
 
             //verificamos cliente para condiciones de texto
             if ($scope.datos.cliente == 19) {

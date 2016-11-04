@@ -306,7 +306,7 @@
 								  		</div>
 									</div>									
 								</div>
-									<div class="row">	
+									<div class="row" ng-show='verCaptura==1'>	
 							<div class="col-md-12">
 								<div class="panel panel-primary">
 									<div class="panel-heading">Operaciones</div>
@@ -341,7 +341,7 @@
 
 								<div class="row">
 									<div class="col-md-12" align="right">
-										<button type="submit" class="btn btn-oval btn-primary btn-lg">Guardar Análisis</button>
+										<button ng-disabled="(verCaptura==1&&sinCaptura)" type="submit" class="btn btn-oval btn-primary btn-lg">Guardar Análisis</button>
 									</div>
 								</div>
 								<div class="row animate-show" ng-show="verRespuesta">
@@ -908,13 +908,14 @@
 					</div>
 					<div class="col-md-8">
 						<label for="">Lesion</label>
-						<select class="form-control"  ng-model="captura.Lesion" ng-change="verificaTabulador(captura.Lesion)" ng-options="lesion as lesion.LES_nombre for lesion in lesiones" required>
+						<select class="form-control"  ng-model="captura.Lesion" ng-change="verificaTabulador(captura.Lesion)" ng-options="lesion.LES_clave as lesion.LES_nombre for lesion in lesiones" required>
 							<option value="">Lesion</option>
 						</select>
 					</div>
 				</div>
 				<div class="row" ng-hide="nuevoAjustador">
 					<div class="col-md-9">
+						<label>El ajustador capturado por la Unidad es: <b>{{nombreAjustador}}</b></label><br>
 						<label for="">Ajustador</label>
 						<select class="form-control"  ng-model="captura.Ajustador" ng-options="ajustador.AJU_claveint as ajustador.AJU_nombre for ajustador in ajustadores">
 							<option value="">Ajustador</option>
