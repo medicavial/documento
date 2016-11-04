@@ -99,7 +99,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
     //verifica el tabulador 
     $scope.verificaTabulador = function(lesion){
 
-        find.tabulador(lesion.LES_claveEmp,expediente).success(function (data){
+        find.tabulador(lesion,expediente).success(function (data){
             console.log(data);
             $scope.captura.claveTabulador = data.claveTabulador;
             $scope.captura.importe = data.importe;
@@ -363,12 +363,12 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             $scope.estatusDocto='success';
             $scope.captura.Dx=$scope.dx; 
             if(data.lesion.LesE_clave){
-                $scope.LesMV =data.lesion.lesionCIA;
-                $scope.buscaLesiones($scope.tipLesion);
+                $scope.LesMV =data.lesion.lesionCIA;                
                 $scope.verificaTabuladorOrigen($scope.LesMV);
 
             }
             $scope.captura.tipoLes= String($scope.tipLesion);
+            $scope.buscaLesiones($scope.captura.tipoLes);
             $scope.captura.Lesion= String($scope.LesMV);
             //$scope.captura.Ajustador = String(data.expediente.cveAjustador);
             $scope.nombreAjustador = data.expediente.ajustador;
