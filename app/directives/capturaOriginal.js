@@ -465,8 +465,10 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         }else if($scope.bloqueo == true && $scope.original.tipoDoc == 1){
 
             $scope.unidadref = $scope.original.unidad;
+            $scope.original.numentrega = 1;
+            $scope.muestraEntrega = false;
             $scope.bloqueoUni = true;
-            $scope.referencia($scope.unidadref);
+            // $scope.referencia($scope.unidadref);
 
         }
     }
