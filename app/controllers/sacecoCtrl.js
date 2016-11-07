@@ -500,6 +500,13 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
 
     }
 
+    $scope.muestraTodosArchivos  = function(){       
+        $scope.vistaTodosArchivos = true;
+        //se crea un delay por que carge la imagen de forma correcta
+       
+
+    }
+
     $scope.verificaEstatus  = function(){       
        
         console.log($scope.check1);

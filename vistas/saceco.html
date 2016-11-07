@@ -314,7 +314,10 @@
 
 								<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
 									<div class="btn-group" role="group">
-									    <button type="button" class="btn btn-default" ng-click="muestraArchivosTodos(detalle.archivos.todos)" ng-disabled="detalle.archivos.todos.length == 0"><i class="glyphicon glyphicon-th"></i>Folio de autorización</button>
+									    <button type="button" class="btn btn-default" ng-click="muestraTodosArchivos()" ng-disabled="detalle.archivos.todos.length == 0"><i class="glyphicon glyphicon-th"></i>Folio de autorización</button>
+									  </div>
+									  <div class="btn-group" role="group">
+									    <button type="button" class="btn btn-default" ng-click="muestraArchivosTodos(detalle.archivos.todos)" ng-disabled="detalle.archivos.todos.length == 0"><i class="glyphicon glyphicon-th"></i>Todos</button>
 									  </div>																				
 										  <div class="btn-group" role="group">
 										    <button type="button" class="btn btn-default" ng-click="vistaCaptura = !vistaCaptura" ng-disabled="!sinCaptura"><i class="glyphicon glyphicon-pencil"></i> Capturar Datos</button>
@@ -618,10 +621,33 @@
 	            
 	</div>
 </div>
-
 <div class="panel panel-primary animate-show" id="izquierda-pantalla" ng-show="vistaArchivosTodos">
-
 	<div class="panel-heading">Vista Previa <button type="button" ng-click="vistaArchivosTodos = !vistaArchivosTodos" class="close" aria-label="Close"><span class="white-text" aria-hidden="true">&times;</span></button> </div>
+	<div class="panel-body">
+
+
+		<div  class="frame-container" ng-repeat="archivo in listDocmuento">
+
+			<div style="border:3px solid #A9D0F5; padding: 5px 5px 5px 5px">
+
+	        <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo.Arc_archivo+'/'+archivo.Arc_clave) }}" target="_blank">Abrir otra ventana</a>
+	        <button class="btn btn-primary" ng-click=" rotar = !rotar ">Girar</button>
+	        <embed ng-if="file(archivo.Arc_archivo+'/'+archivo.Arc_clave)" ng-src="{{ obtenerFrame(archivo.Arc_archivo+'/'+archivo.Arc_clave) }}" width="100%" id="files">
+	        <img ng-if="imagen(archivo.Arc_archivo+'/'+archivo.Arc_clave)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo.Arc_archivo+'/'+archivo.Arc_clave) }}" 
+		        ng-init="zoomWidth = 800;imgStyle = {width:'100%'}" 
+		        ng-style="imgStyle" 
+				ng-mouse-wheel-up="zoomWidth = zoomWidth + 20; imgStyle.width = zoomWidth +'px'; "  
+				ng-mouse-wheel-down="zoomWidth = zoomWidth - 20;imgStyle.width = zoomWidth  +'px'; "
+			/>
+            </div>			
+	    </div>	
+	    <br>
+	            
+	</div>
+</div>
+<div class="panel panel-primary animate-show" id="izquierda-pantalla" ng-show="vistaTodosArchivos">
+
+	<div class="panel-heading">Vista Previa <button type="button" ng-click="vistaTodosArchivos = !vistaTodosArchivos" class="close" aria-label="Close"><span class="white-text" aria-hidden="true">&times;</span></button> </div>
 	<div class="panel-body">
 		
 		<div class="frame-container"  ng-repeat="archivo in archvosTodos | unique">
