@@ -14,7 +14,7 @@ var app = angular.module('app', [
 ]);
 
 //ip prueba
- app.constant('api','http://localhost/apimv/public/api/')
+ app.constant('api','http://172.17.10.15/apimv/public/api/')
 // app.constant('publicfiles','http://localhost/apimv/public/exports/')
 
 //ip produccion
