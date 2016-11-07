@@ -99,7 +99,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
     //verifica el tabulador 
     $scope.verificaTabulador = function(lesion){
 
-        find.tabulador(lesion,expediente).success(function (data){
+        find.tabulador(lesion.LES_claveEmp,expediente).success(function (data){
             console.log(data);
             $scope.captura.claveTabulador = data.claveTabulador;
             $scope.captura.importe = data.importe;
@@ -127,7 +127,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
         //se obtiene la extension del archivo
         var extn = archivo.split(".").pop();
 
-        if (extn == 'jpg' || extn == 'jpeg' || extn == 'png' || extn == 'PNG' ) {
+        if (extn == 'jpg' || extn == 'jpeg' || extn == 'png' || extn == 'PNG' || extn == 'JPG' ) {
             return true;
         }else{
             return false;
@@ -361,16 +361,31 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             $scope.motRechazo = data.motivoRechazo; 
             $scope.anotaciones= data.anotaciones;           
             $scope.estatusDocto='success';
+            $scope.listArchivos = data.archivos;
             $scope.captura.Dx=$scope.dx; 
             if(data.lesion.LesE_clave){
                 $scope.LesMV =data.lesion.lesionCIA;                
                 $scope.verificaTabuladorOrigen($scope.LesMV);
-
+                console.log($scope.LesMV);
             }
             $scope.captura.tipoLes= String($scope.tipLesion);
-            $scope.buscaLesiones($scope.captura.tipoLes);
-            $scope.captura.Lesion= String($scope.LesMV);
+             find.lesiones($scope.captura.tipoLes).success(function (data){
+                $scope.lesiones = data;
+                $scope.milesion = $filter('filter')( $scope.lesiones,{'LES_claveEmp':$scope.LesMV});  
+                $scope.captura.Lesion = $scope.milesion[0];
+                console.log($scope.captura.Lesion);                               
+            });  
+             
+               
+            //$scope.captura.Lesion = $filter('filter')( $scope.lesionesUno,{'LES_claveEmp':'U_ECG1'});            
+            //miArray = $scope.lesionesUno;
+            
+            for (contador in $scope.lesionesUno) {
+                    console.log(contador);
+                }
+            
             //$scope.captura.Ajustador = String(data.expediente.cveAjustador);
+            console.log($scope.captura.Lesion);
             $scope.nombreAjustador = data.expediente.ajustador;
             console.log($scope.captura.Ajustador);            
 
@@ -460,6 +475,27 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             $scope.mostrarArcTipoDoc=tipoDoc;
             //$scope.archivos = archivos;
             $scope.vistaArchivos = true;
+        }, 1000);
+
+    }
+
+    $scope.muestraArchivosTodos  = function(tipoDoc){       
+        result = $scope.listArchivos.todos;
+        console.log(result);
+        archivos=[];
+        /*for(var k in result) {           
+              archivos.push(result);                        
+        }*/
+
+        //console.log(archivos);
+        $scope.archvosTodos = result;
+
+        $scope.vistaArchivosTodos = false;
+        //se crea un delay por que carge la imagen de forma correcta
+        $timeout(function(){
+            $scope.mostrarArcTipoDoc=tipoDoc;
+            //$scope.archivos = archivos;
+            $scope.vistaArchivosTodos = true;
         }, 1000);
 
     }
