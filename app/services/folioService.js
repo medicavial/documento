@@ -707,6 +707,9 @@ app.factory("qualitas", function($q,$http,find,api,publicfiles){
         sinProcesar:function(datos){
             return $http.post(api+'qualitas/sinprocesar', datos);
         },
+        sinProcesarFE:function(datos){
+            return $http.post(api+'qualitas/sinprocesarFE', datos);
+        },
         general:function(datos){
             return $http.post(api+'qualitas/general', datos);
         },
