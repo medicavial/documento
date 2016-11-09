@@ -1,5 +1,5 @@
 //Area de facturacion
-function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFolios,datos,$timeout,facturacionExpress,webStorage){
+function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFolios,datos,$timeout,facturacionExpress,webStorage,operacion){
 
 
 	$rootScope.tituloFE = 'Facturación Express 2.0';
@@ -286,6 +286,7 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
 
                 $scope.FolioElecMin = 12;
                 $scope.FolioElecMax = 12;
+                $scope.textoAutorizacion = 'Generar Factura';
 
             }else{
 
@@ -300,6 +301,8 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
 
                 $scope.FolioElecMin = '';
                 $scope.FolioElecMax = 100;
+
+                $scope.textoAutorizacion = 'Solicitar Autorización';
 
             }
 
@@ -433,6 +436,7 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             $('#botonAut').button('reset');
             $scope.mensajeAut = data.respuesta;
             $scope.consultaPendientes();
+            operacion.guardaImagenes(expediente);
 
         }).error(function (data){
             alert('Surgio un problema intente nuevamente');
@@ -686,7 +690,7 @@ function rechazadosCtrl($scope, $rootScope, datos, loading,facturacionExpress){
     };
 };
 
-facturacionExCtrl.$inject =['$scope', '$rootScope', '$filter', 'find', 'loading', 'checkFolios','datos','$timeout','facturacionExpress','webStorage'];
+facturacionExCtrl.$inject =['$scope', '$rootScope', '$filter', 'find', 'loading', 'checkFolios','datos','$timeout','facturacionExpress','webStorage','operacion'];
 solicitadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 autorizadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 rechazadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];

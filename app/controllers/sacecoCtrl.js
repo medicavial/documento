@@ -1,5 +1,5 @@
 //Area de facturacion
-function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,datos,$timeout,facturacionExpress,webStorage,saceco,$location){
+function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,datos,$timeout,facturacionExpress,webStorage,saceco,$location,operacion){
 
 
 	$rootScope.tituloFE = 'Facturación Express General';
@@ -607,6 +607,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             $('#botonAut').button('reset');
             $scope.mensajeAut = data.respuesta;
             $scope.consultaPendientes();
+            // operacion.guardaImagenes(expediente);
 
         }).error(function (data){
             alert('Surgio un problema intente nuevamente');
@@ -911,7 +912,7 @@ function rechazadosCtrl($scope, $rootScope, datos, loading,facturacionExpress){
 };
 
 
-sacecoCtrl.$inject =['$scope', '$rootScope', '$filter', 'find', 'loading', 'checkFolios','datos','$timeout','facturacionExpress','webStorage','saceco'];
+sacecoCtrl.$inject =['$scope', '$rootScope', '$filter', 'find', 'loading', 'checkFolios','datos','$timeout','facturacionExpress','webStorage','saceco','operacion'];
 solicitadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 autorizadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 rechazadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];

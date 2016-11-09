@@ -11,6 +11,9 @@ app.factory("operacion",function($http, api){
         },
         edicionUser: function(datos, id){
             return $http.put(api+'operacion/usuarios/'+id, datos);
+        },
+        guardaImagenes: function(folio){
+            $http.get(api+'operacion/guardaImagenes/'+ folio);  
         }
     }
 });
