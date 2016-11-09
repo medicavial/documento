@@ -723,15 +723,14 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             doctos      :$scope.listDocmuento,
             user        :$scope.usrWeb,
             expediente  :$scope.datosExpediente
-        };
-        console.log(doctosVal);
+        };        
          loading.cargando('Actualizando Información');
         saceco.doctosValidados(doctosVal).success(function (data){
             if(data.respuesta=='exito'){
                if(data.imgs=='ok'){
-                    
+                 operacion.guardaImagenes(data.fol);   
                }
-                $("#myModal").modal("show");                
+            $("#myModal").modal("show");                
             }
             //$location.path("/saceco");
             loading.despedida();
