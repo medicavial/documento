@@ -728,9 +728,9 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
          loading.cargando('Actualizando Información');
         saceco.doctosValidados(doctosVal).success(function (data){
             if(data.respuesta=='exito'){
-                //$scope.verRespuesta=true;
-                //$timeout( function(){ $scope.callAtTimeout(); }, 3000);
-                //$("#confirm").modal();
+               if(data.imgs=='ok'){
+                    
+               }
                 $("#myModal").modal("show");                
             }
             //$location.path("/saceco");
