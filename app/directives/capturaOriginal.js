@@ -123,7 +123,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         checkFolios.validaFolio(folio, 1)
         .then( function (data){
 
-            // console.log(data);
+            console.log(data);
             //verificamos que sea segunda y que sea de propia 
             if (data.tipoDoc == 2) {
 
@@ -456,7 +456,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         // console.log($scope.original.tipoDoc);
         // console.log($scope.bloqueoUni);
 
-        if(($scope.original.tipoDoc == 2 || $scope.original.tipoDoc == 3) && $scope.bloqueoUni == false){
+        if(($scope.original.tipoDoc == 2 || $scope.original.tipoDoc == 3) && (  ($scope.bloqueoUni == false && $scope.esfe == 0) || ($scope.bloqueoUni == true && $scope.esfe == 1) ) ){
     
             $scope.original.unidad = $scope.unidadref;//asignamos el valor de referencia por si queremos regresar al estado anterior
             $scope.bloqueoUni = false;

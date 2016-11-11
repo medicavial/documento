@@ -314,7 +314,7 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             };
 
             $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);
-
+            $scope.procesado = false;
         });
       
     };
@@ -438,9 +438,17 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             $scope.consultaPendientes();
             operacion.guardaImagenes(expediente);
 
+            $scope.procesado = true;
+
         }).error(function (data){
-            alert('Surgio un problema intente nuevamente');
+
+            if (data.flash != undefined) {
+                alert(data.flash);
+            }else{
+                alert('Surgio un problema intente nuevamente');
+            }
             $('#botonAut').button('reset');
+            $scope.procesado = true;
         });
 
     }

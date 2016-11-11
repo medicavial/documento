@@ -450,8 +450,6 @@ app.factory("checkFolios", function($q,$http,find, api){
                     }else{
 
                         datos.documento = interno.clave;
-                        //primera atencion
-                        datos.tipoDoc = 2;
 
                         //verificamos que sea fax 
                         if(interno.fax == 1){
@@ -462,10 +460,16 @@ app.factory("checkFolios", function($q,$http,find, api){
                         }
 
                         //verificamos que sea factura express
-                        if(interno.fe == 1){
+                        else if(interno.fe == 1){
                             datos.label2 = 'FAC. EXPRESS: ' + interno.fefecha;
                             datos.fechafe = interno.fechafe;
                             datos.esfe = 1;
+                            datos.tipoDoc = 1;
+                        }
+
+                        else{
+                            //primera atencion
+                            datos.tipoDoc = 2;
                         }
 
                         //asignamos bloqueos de campos
