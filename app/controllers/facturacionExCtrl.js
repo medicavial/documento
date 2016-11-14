@@ -465,6 +465,7 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
     	showSelectionCheckbox: false,
         selectWithCheckboxOnly: false,
     	enableCellSelection: true,
+        plugins: [new ngGridCsvExportPlugin()],
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
         rowTemplate: rowTempl,
