@@ -159,10 +159,6 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
 
     }
 
-    ///Busquedas 
-
-
-
     //////LLena el grid y toma filtros
 
     ///filtros

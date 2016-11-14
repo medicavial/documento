@@ -56,17 +56,16 @@ app.controller('cancelaSolCtrl', function ($scope, loading, find, operacion){
         columnDefs: [
 
 					{ field:'Exp_mcancelado', displayName:'Tipo de Cancelación' , width: 220, pinned:true,},
-	                { field:'Exp_motCancel', displayName:'Motivo de Cancelación', width: 180, visible:true },
-	                { field:'Exp_duplicado', displayName:'Folio Sustituto', width: 160 },
-	                { field:'Exp_cm', displayName:'Observaciones', width: 200 },
 	                { field:'Usu_registro', displayName:'Usuario que Canceló', width: 170, visible: true},
-	                { field:'Exp_fcancelado', displayName:'Fecha de Solicitud', width: 208, visible: true} 
+	                { field:'Exp_motCancel', displayName:'Motivo de Cancelación', width: 180, visible:true },
+	                { field:'Exp_duplicado', displayName:'Folio Sustituto', width: 135 },
+	                { field:'Exp_cm', displayName:'Observaciones', width: 200 },
+	                { field:'Exp_fcancelado', displayName:'Fecha de Solicitud', width: 208, visible: true,} 
 	             
 				    ],
         showFooter: true,
         showFilter:true
     };	
-
 
 
 	$scope.limpiaDatos = function(){
@@ -83,6 +82,25 @@ app.controller('cancelaSolCtrl', function ($scope, loading, find, operacion){
     $scope.cancela = function(){
     	$('#boton').button('loading');
 
+    	if ($scope.listado.length > 0) {
+
+                    // console.log(data);
+                    $scope.mensaje = data.respuesta;
+                    $scope.tipoalerta = 'alert-success';
+                    $scope.cargaFlujo();
+                    $('#boton').button('reset');
+                    if (data.listado.length > 0) {
+                        $rootScope.listado = data.listado;
+                    };
+
+                    $scope.gridOptions.$gridScope.toggleSelectAll(false);
+
+                    $('#boton').button('reset');
+                    $scope.mensaje = error;
+                    $scope.tipoalerta = 'alert-warning';
+        }else{
+            alert('No se ha seleccionado ningun documento');
+        }
     }	
 
 });
