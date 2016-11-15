@@ -1,0 +1,145 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/formatoqualitasFacEx" class="icon-arrow-left"></a>
+        <h1>{{tituloFQR}}</h1>
+    </div>
+    <legend>Fecha Captura</legend>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <input type="text" ng-model="fechaini" class="form-control" id="datepicker3" placeholder="inicial" />
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <div class="input-group">
+                <input type="text" ng-model="fechafin" class="form-control" id="datepicker4" placeholder="Final" />
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button" ng-click="buscafacturas()"><i class="glyphicon glyphicon-search"></i></button>
+                </span>
+            </div>
+        </div>
+    </div>
+    <br>
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+    <br>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            Seleccionar los primeros:
+            <div class="btn-toolbar" role="toolbar">
+                <div class="btn-group">
+                    <button type="button"  ng-click="selecciona(10)" class="btn btn-default">10</button>
+                    <button type="button"  ng-click="selecciona(20)" class="btn btn-default">20</button>
+                    <button type="button"  ng-click="selecciona(30)" class="btn btn-default">30</button>
+                    <button type="button"  ng-click="selecciona(40)" class="btn btn-default">40</button>
+                    <button type="button"  ng-click="selecciona(50)" class="btn btn-default">50</button>
+                </div>
+            </div>
+        </div> 
+        <div class="col-sm-3 col-md-3">
+            <br>
+            <button type="button" ng-disabled="selectos.length == 0" class="btn btn-default btn-block" ng-click="quitaselectos()">Quitar Selección</button>
+        </div> 
+    </div> 
+    <br>
+    <div class="row">
+        <div class="col-sm-3 col-md-3">
+            <button type="button" id="boton2" ng-disabled="listado.length == 0" class="btn btn-success btn-block" data-loading-text="Generando Información..." ng-click="generarListadoExcel()">Exportar Listado</button>
+        </div>
+        <!-- <div class="col-sm-3 col-md-3">
+            <button type="button" id="boton2" ng-disabled="listado.length == 0" class="btn btn-success btn-block" data-loading-text="Generando Información..." ng-click="generarListado()">Exportar Listado y Archivos</button>
+        </div>
+        <div class="col-sm-3 col-md-3">
+            <button id="boton" type="button" ng-disabled="selectos.length == 0" data-loading-text="Verificando Información..." class="btn btn-success btn-block" ng-click="generarSelectos()">Generar Archivos Seleccionados</button>
+        </div> -->
+        <div class="col-sm-3 col-md-3">
+            <button id="boton3" type="button" class="btn btn-success btn-block" ng-disabled="selectos.length == 0"  data-loading-text="Mandando..." ng-click="Mandarprincipal()">Mandar a listado principal</button>
+        </div>
+        <div class="col-sm-3 col-md-3">
+           <!--  <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->
+        </div>
+    </div> 
+    <br>
+    <br>
+</div>
+
+
+<!--Ventana para mostrar los folios que se no se generaron-->
+<div class="modal fade" id="modalEx" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h4 class="modal-title" id="myModalLabel">Se generaron {{numerocorrectos}} de {{total}} folios</h4>
+      </div>
+      <div class="modal-body">
+           <div class="row">
+                <div class="col-md-12 text-center">
+                    <div class="alert alert-warning" ng-show="numerocorrectos > compresos" role="alert">
+                        Solo se generararn {{compresos}} folios validos para no sobrepasar el peso maximo permitido por Qualitas
+                    </div>
+                    <br>
+                    <p>¿Deseas Generar el archivo de los folios completos?</p>
+                    <button type="button" class="btn btn-success" ng-click="generaarchivos()">Descargar Archivos</button>
+                </div>
+           </div>    
+           <hr>
+           <div class="text-center">
+                <p>Detalle de archivos no generados por falta de archivo(s)</p>
+           </div>
+           <div id="tablaincorrectos">
+                <table class="table">
+                  <thead>
+                    <tr>
+                      <th>Folio QUA</th>
+                      <th>Folio Sistema</th>
+                      <th>Reporte</th>
+                      <th>Poliza</th>
+                      <th>Lesionado</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr ng-repeat="dato in incorrectos">
+                      <td>{{dato.folioElectronico}}</td>
+                      <td>{{dato.folioSistema}}</td>
+                      <td>{{dato.Reporte}}</td>
+                      <td>{{dato.Poliza}}</td>
+                      <td>{{dato.Lesionado}}</td>
+                    </tr>
+                  </tbody>
+                </table>
+           </div>
+      </div>
+      <div class="modal-footer text-center">
+            <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar Ventana</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 
+  <script>
+      $.datepicker.setDefaults($.datepicker.regional["es"]);
+      $( "#datepicker3" ).datepicker({showButtonPanel: true});
+      $( "#datepicker4" ).datepicker({showButtonPanel: true});
+  </script>
+ -->
+
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    $( "#datepicker3" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker4" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    $( "#datepicker4" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker3" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+
+</script>

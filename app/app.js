@@ -258,9 +258,9 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'formatoQualitasCtrl'   
     });
 
-    $routeProvider.when('/formatoqualitasFE',{
-            templateUrl   : 'vistas/formatoqualitasFE.html',
-            controller    : 'formatoQualitasFECtrl'   
+    $routeProvider.when('/formatoqualitasFacEx',{
+            templateUrl   : 'vistas/formatoqualitasFacEx.html',
+            controller    : 'formatoQualitasFacExCtrl'   
     });
 
     $routeProvider.when('/formatoqualitasconsulta',{
@@ -268,9 +268,19 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'formatoQualitasConsultaCtrl'   
     });
 
+    $routeProvider.when('/formatoqualitasFEconsulta',{
+            templateUrl   : 'vistas/formatoqualitasFEconsulta.html',
+            controller    : 'formatoQualitasFEconsultaCtrl'   
+    });
+
     $routeProvider.when('/formatoqualitasarchivos',{
             templateUrl   : 'vistas/formatoqualitasarchivos.html',
             controller    : 'formatoQualitasArchivosCtrl'   
+    });
+
+    $routeProvider.when('/formatoqualitasFEarchivos',{
+            templateUrl   : 'vistas/formatoqualitasFEarchivos.html',
+            controller    : 'formatoQualitasFEarchivosCtrl'   
     });
 
     $routeProvider.when('/formatoqualitasenviado',{
@@ -278,9 +288,19 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'formatoQualitasEnviadoCtrl'   
     });
 
+    $routeProvider.when('/formatoqualitasFEenviado',{
+            templateUrl   : 'vistas/formatoqualitasFEenviado.html',
+            controller    : 'formatoQualitasFEenviadoCtrl'   
+    });
+
     $routeProvider.when('/formatoqualitasrechazados',{
             templateUrl   : 'vistas/formatoqualitasrechazados.html',
             controller    : 'formatoQualitasRechazadosCtrl'   
+    });
+
+    $routeProvider.when('/formatoqualitasFErechazados',{
+            templateUrl   : 'vistas/formatoqualitasFErechazados.html',
+            controller    : 'formatoQualitasFErechazadosCtrl'   
     });
 
     $routeProvider.when('/formatoqualitasrenombrar',{
@@ -288,9 +308,19 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'formatoQualitasRenombrarCtrl'   
     });
 
+    $routeProvider.when('/formatoqualitasFErenombrar',{
+            templateUrl   : 'vistas/formatoqualitasFErenombrar.html',
+            controller    : 'formatoQualitasFErenombrarCtrl'   
+    });
+
     $routeProvider.when('/formatoqualitasincompletos',{
             templateUrl   : 'vistas/formatoqualitasincompletos.html',
             controller    : 'formatoQualitasIncompletosCtrl'   
+    });
+
+    $routeProvider.when('/formatoqualitasFEincompletos',{
+            templateUrl   : 'vistas/formatoqualitasFEincompletos.html',
+            controller    : 'formatoQualitasFEincompletosCtrl'   
     });
 
     $routeProvider.when('/reportes/facturas',{
