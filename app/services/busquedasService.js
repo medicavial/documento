@@ -25,6 +25,9 @@ app.factory("find", function($http,api){
         consultaFacturaQualitas:function(folio){
             return $http.get(api+'qualitas/consulta/' + folio);
         },
+        consultaFacturaQualitasFE:function(folio){
+            return $http.get(api+'qualitas/consulta/' + folio);
+        },
         consultaRehabilitacion :function(folio,etapa){
             return $http.get(api + 'consulta/rehabilitacion/' + folio + '/' + etapa);
         },
@@ -116,6 +119,9 @@ app.factory("find", function($http,api){
             return $http.get(api +'consulta/productos/'+ empresa);
         },
         productos:function(){
+            return $http.get(api+'consulta/productos');
+        },
+        productosFE:function(){
             return $http.get(api+'consulta/productos');
         },
         recepcionxfolio:function(folio){

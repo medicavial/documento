@@ -20,7 +20,7 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 	//busca productos
 	$scope.productos = function(){
 
-		find.productos().success( function (data) {
+		find.productosFE().success( function (data) {
 			$scope.productosini = data;
 		 });
 	}
@@ -33,7 +33,7 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 		//armamos los datos a enviar segun tipo de consulta (tipo)
 		$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-		qualitas.sinProcesar($scope.datos).success( function (data){
+		qualitas.sinProcesarFacEx($scope.datos).success( function (data){
 			 
 			if(data){
         		$scope.listado = data;
@@ -60,10 +60,10 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 
     	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
 
-		qualitas.procesaEnvio(datos).success(function (data){
+		qualitas.procesaEnvioFE(datos).success(function (data){
 			// console.log(data);
 			JSONToXLSConvertor($scope.listos, "Reporte", true);
-			qualitas.descargaEnvio($scope.ruta);
+			qualitas.descargaEnvioFE($scope.ruta);
 		});
 
     }
@@ -72,7 +72,7 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
     $scope.generarSelectos = function(){
 
     	$('#boton').button('loading');
-    	qualitas.generaEnvio($scope.selectos).success( function (data){
+    	qualitas.generaEnvioFE($scope.selectos).success( function (data){
 			 
 			if (data.correctos.length == 0) {
 
@@ -238,7 +238,7 @@ function formatoQualitasFECtrl($scope, $rootScope,$http, find, loading,api , qua
 	//busca productos
 	$scope.productos = function(){
 
-		find.productos().success( function (data) {
+		find.productosFE().success( function (data) {
 			$scope.productosini = data;
 		 });
 	}
@@ -251,7 +251,7 @@ function formatoQualitasFECtrl($scope, $rootScope,$http, find, loading,api , qua
 		//armamos los datos a enviar segun tipo de consulta (tipo)
 		$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-		qualitas.sinProcesarFE($scope.datos).success( function (data){
+		qualitas.sinProcesarFEfacExp($scope.datos).success( function (data){
 			 
 			if(data){
         		$scope.listado = data;
@@ -278,10 +278,10 @@ function formatoQualitasFECtrl($scope, $rootScope,$http, find, loading,api , qua
 
     	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
 
-		qualitas.procesaEnvio(datos).success(function (data){
+		qualitas.procesaEnvioFE(datos).success(function (data){
 			// console.log(data);
 			JSONToXLSConvertor($scope.listos, "Reporte", true);
-			qualitas.descargaEnvio($scope.ruta);
+			qualitas.descargaEnvioFE($scope.ruta);
 		});
 
     }
@@ -290,7 +290,7 @@ function formatoQualitasFECtrl($scope, $rootScope,$http, find, loading,api , qua
     $scope.generarSelectos = function(){
 
     	$('#boton').button('loading');
-    	qualitas.generaEnvio($scope.selectos).success( function (data){
+    	qualitas.generaEnvioFE($scope.selectos).success( function (data){
 			 
 			if (data.correctos.length == 0) {
 
@@ -461,7 +461,7 @@ function formatoQualitasFEarchivosCtrl($scope, $rootScope, find, loading, qualit
 
 		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-		qualitas.sinArchivo(datos).success( function (data){
+		qualitas.sinArchivoFE(datos).success( function (data){
 			
 			if(data.listado){
         		$scope.listado = data.listado;
@@ -512,10 +512,10 @@ function formatoQualitasFEarchivosCtrl($scope, $rootScope, find, loading, qualit
 
     	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
 
-		qualitas.procesaEnvio(datos).success(function (data){
+		qualitas.procesaEnvioFE(datos).success(function (data){
 			// console.log(data);
 			JSONToXLSConvertor($scope.listos, "Reporte", true);
-			qualitas.descargaEnvio($scope.ruta);
+			qualitas.descargaEnvioFE($scope.ruta);
 		});
 
     }
@@ -524,7 +524,7 @@ function formatoQualitasFEarchivosCtrl($scope, $rootScope, find, loading, qualit
     $scope.generarSelectos = function(){
 
     	$('#boton').button('loading');
-    	qualitas.generaEnvio($scope.selectos).success( function (data){
+    	qualitas.generaEnvioFE($scope.selectos).success( function (data){
 			 
 			if (data.correctos.length == 0) {
 
@@ -635,7 +635,7 @@ function formatoQualitasFEconsultaCtrl($scope,$rootScope, find){
 		$scope.busqueda = false;
 		$scope.cargando = true;
 		
-		find.consultaFacturaQualitas($scope.criterio).success( function (data){
+		find.consultaFacturaQualitasFE($scope.criterio).success( function (data){
         	
         
         	if(data){
@@ -685,7 +685,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 		//armamos los datos a enviar segun tipo de consulta (tipo)
 		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-		qualitas.envios(datos).success(function (data){
+		qualitas.enviosFE(datos).success(function (data){
 			
 			if(data){
         		$scope.envios = data;
@@ -710,7 +710,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 
 		$scope.claveenvio = dato.ENQ_claveint;
 
-		qualitas.detalleEnvio(dato).then(function (data){
+		qualitas.detalleEnvioFE(dato).then(function (data){
 			
 			if (dato.ENQ_procesado == 1) {
     			$scope.procesado = true;
@@ -734,7 +734,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 
 		$('#boton').button('loading');
 
-		qualitas.actualiza($scope.claveenvio,$scope.selectos).success(function (data){
+		qualitas.actualizaFE($scope.claveenvio,$scope.selectos).success(function (data){
 
 			// console.log(data);
         	$scope.mensajeA = data.respuesta;
@@ -770,7 +770,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 		$('#boton2').button('loading');
 
 
-		qualitas.generaEnvio($scope.selectos).success( function (data){
+		qualitas.generaEnvioFE($scope.selectos).success( function (data){
 			 
 			if (data.correctos.length == 0) {
 
@@ -779,7 +779,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 			}else{
 
 				JSONToXLSConvertor(data.comprimidos, "Reporte", true);
-				qualitas.descargaEnvio(data.archivo);
+				qualitas.descargaEnvioFE(data.archivo);
 
 			}
 
@@ -830,7 +830,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 
 		$('#boton3').button('loading');
 
-		qualitas.enviaRechazos($scope.listado2).success( function (data){
+		qualitas.enviaRechazosFE($scope.listado2).success( function (data){
 			
 			$('#boton3').button('reset');
 			$('#modalEx').modal('hide');
@@ -950,7 +950,7 @@ function formatoQualitasFEincompletosCtrl($scope, $rootScope,$http, find, loadin
 
 		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin,producto:$scope.producto};
 		//armamos los datos a enviar segun tipo de consulta (tipo)
-		qualitas.incompletos(datos).success(function (data){
+		qualitas.incompletosFE(datos).success(function (data){
 
 			if(data){
         		$scope.listado = data;
@@ -1059,7 +1059,7 @@ function formatoQualitasFErechazadosCtrl($scope, $rootScope, find, loading, qual
 		//armamos los datos a enviar segun tipo de consulta (tipo)
 		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-		qualitas.invalidos(datos).success(function (data){
+		qualitas.invalidosFE(datos).success(function (data){
 			if(data){
         		$scope.listado = data;
         		$scope.cantidad = data.length -1;
@@ -1081,7 +1081,7 @@ function formatoQualitasFErechazadosCtrl($scope, $rootScope, find, loading, qual
     
     	$('#boton3').button('loading');
 
-    	qualitas.enviaPrincipal($scope.selectos).success(function (data){
+    	qualitas.enviaPrincipalFE($scope.selectos).success(function (data){
 			
 			$scope.quitaselectos();
 	 		$scope.buscafacturas();
@@ -1232,7 +1232,7 @@ function formatoQualitasFErenombrarCtrl($scope, $rootScope, find, loading, quali
 
 		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-		qualitas.general(datos).success( function (data){
+		qualitas.generalFE(datos).success( function (data){
 			
 			if(data){
         		$scope.listado = data;
@@ -1270,7 +1270,7 @@ function formatoQualitasFErenombrarCtrl($scope, $rootScope, find, loading, quali
 		// console.log($scope.selectos);
 	};
 
-
+	
 	$scope.generarListadoExcel = function(){
 
     	JSONToCSVConvertor($scope.detalle, "Facturas", true);
@@ -1282,10 +1282,10 @@ function formatoQualitasFErenombrarCtrl($scope, $rootScope, find, loading, quali
 
     	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
 
-		qualitas.procesaEnvio(datos).success(function (data){
+		qualitas.procesaEnvioFE(datos).success(function (data){
 			// console.log(data);
 			JSONToXLSConvertor($scope.listos, "Reporte", true);
-			qualitas.descargaEnvio($scope.ruta);
+			qualitas.descargaEnvioFE($scope.ruta);
 		});
 
     }
@@ -1294,7 +1294,7 @@ function formatoQualitasFErenombrarCtrl($scope, $rootScope, find, loading, quali
     $scope.renombrarSelectos = function(){
 
     	$('#boton2').button('loading');
-    	qualitas.renombrar($scope.selectos).success( function (data){
+    	qualitas.renombrarFE($scope.selectos).success( function (data){
 			 
 			// console.log(data);
 			alert('Todos los archivos se han renombrado con exito puedes exportar el detalle');
@@ -1312,7 +1312,7 @@ function formatoQualitasFErenombrarCtrl($scope, $rootScope, find, loading, quali
     $scope.generarSelectos = function(){
 
     	$('#boton').button('loading');
-    	qualitas.generaEnvio($scope.selectos).success( function (data){
+    	qualitas.generaEnvioFE($scope.selectos).success( function (data){
 			 
 			if (data.correctos.length == 0) {
 
