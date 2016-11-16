@@ -962,6 +962,26 @@
 						</select>
 					</div>
 				</div>
+				<div class="row">
+					<div class="col-md-5">
+						<label for="">Riesgo</label>
+						<select class="form-control"  ng-model="captura.RIEClave" ng-change="validaCobertura(captura.RIEClave)" ng-options="riesgo.RIE_clave as riesgo.RIE_nombre for riesgo in riesgos" required>
+							<option value="">Riesgo</option>
+						</select>
+					</div>
+
+					<div class="col-md-5" ng-if="datos.cliente == 19">
+						<label for="">Cobertura Qualitas</label>
+						<select class="form-control"  ng-model="cobertura" disabled>
+							<option value="4">04 GM</option>
+							<option value="15">15 RC Pasajero</option>
+							<option value="3">03 RC</option>
+							<option value="18">18 RC Personas</option>
+							<option value="13">13 Ext RC</option>
+						</select>
+					</div>
+					
+				</div>
 				<div class="row" ng-hide="nuevoAjustador">
 					<div class="col-md-9">
 						<label>El ajustador capturado por la Unidad es: <b>{{nombreAjustador}}</b></label><br>

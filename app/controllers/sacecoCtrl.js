@@ -356,6 +356,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             $scope.vistaArchivos = false;
             $scope.captura.triage = String(data.captura.triage);
             $scope.captura.MedicoMV = String(data.captura.MedicoMV);
+            $scope.captura.RIEClave = String(data.captura.RIEClave);
             $scope.datos.cliente=data.captura.cliente;
             $scope.listDocmuento = data.documentos;
             $scope.motRechazo = data.motivoRechazo; 
@@ -403,6 +404,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
 
                 $scope.FolioElecMin = 12;
                 $scope.FolioElecMax = 12;
+                $scope.validaCobertura($scope.captura.RIEClave);
 
             }else{
 
@@ -432,6 +434,23 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
         });
       
     };
+
+    $scope.validaCobertura = function(riesgo){
+        
+        if (riesgo == '1' || riesgo == '5') {
+            $scope.cobertura = '4';
+        }else if (riesgo == '10') {
+            $scope.cobertura = '13';
+        }else if (riesgo == '2') {
+            $scope.cobertura = '15';
+        }else if (riesgo == '8') {
+            $scope.cobertura = '3';
+        }else if (riesgo == '9') {
+            $scope.cobertura = '18';
+        }else{
+            $scope.cobertura = '';
+        }
+    }
 
     $scope.validafecha = function(){
 
