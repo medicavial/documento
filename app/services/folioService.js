@@ -410,6 +410,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 unidadref: '',//referencia para la unidad
                 esfax: 0,
                 esfe: 0,
+                esFeSinCaptura:false,
                 esoriginal: 0,
                 revisado: 0,
                 propia:'',
@@ -463,8 +464,8 @@ app.factory("checkFolios", function($q,$http,find, api){
                         else if(interno.fe == 1){
                             datos.label2 = 'FAC. EXPRESS: ' + interno.fefecha;
                             datos.fechafe = interno.fechafe;
-                            datos.esfe = 1;
                             datos.tipoDoc = 1;
+                            datos.esfe = 1;
                         }
 
                         else{
@@ -509,7 +510,13 @@ app.factory("checkFolios", function($q,$http,find, api){
                             datos.escolaridad = web.Esc_claveMV ? String(web.Esc_claveMV) : web.Esc_claveMV;
                             
                             datos.label2 = 'NO SE RECIBIO FAX';
-                            datos.label3 = 'NO ES FAC. EXPRESS';
+                            if (web.Exp_FE == 1) {
+                                datos.label3Class = 'text-danger';
+                                datos.label3 = 'ES FAC. EXPRESS NO REGISTRAR';
+                                datos.esFeSinCaptura = true;
+                            }else{
+                                datos.label3 = 'NO ES FAC. EXPRESS';                                
+                            }
 
                             datos.tipoDoc = 1;
                             datos.esoriginal = 0;

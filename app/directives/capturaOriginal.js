@@ -89,6 +89,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         $scope.bloqueo = false;
         $scope.bloqueoUni = false;
         $scope.cargar = false;
+        $scope.esFeSinCaptura = false;
 
         $scope.cargaInfo();
 
@@ -151,8 +152,13 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
             $scope.original.escolaridad = data.escolaridad;
             $scope.original.producto = data.producto;
 
+
+            //verificamos que se FE y que no este capturado aqui
+            $scope.esFeSinCaptura = data.esFeSinCaptura;
+
             $scope.label2 = data.label2;
             $scope.label3 = data.label3;
+            $scope.label3Class = data.label3Class;
             $scope.esfax = data.esfax;
             $scope.esfe = data.esfe;
             $scope.escolaridad = data.esoriginal;
