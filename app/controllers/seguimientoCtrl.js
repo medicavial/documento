@@ -291,7 +291,6 @@ function seguimientoCtrl($scope, $rootScope, find , carga, loading, checkFolios,
     		var objeto6 = "";
     	}else{
     		var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
-    		
     	}
 
     	if($scope.etapa == undefined || $scope.etapa == 0){
