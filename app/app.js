@@ -141,9 +141,10 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     var promesa = $q.defer(),
                         empresas = find.empresasweb(),
                         triages = find.triages(),
+                        riesgos = find.riesgos(),
                         posiciones = find.posiciones();
 
-                    $q.all([empresas,triages,posiciones]).then(function (data){
+                    $q.all([empresas,triages,posiciones,riesgos]).then(function (data){
                         // console.log(data);
                         promesa.resolve(data);
                     });

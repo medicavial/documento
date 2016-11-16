@@ -6,6 +6,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
     $scope.clientes = datos[0].data;
     $scope.triages = datos[1].data;
     $scope.posiciones = datos[2].data;    
+    $scope.riesgos = datos[3].data;
     $scope.usrWeb = sessionStorage.getItem("userWeb");    
     $scope.usrMV = sessionStorage.getItem("userWeb");    
     loading.despedida();
