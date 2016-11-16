@@ -1,11 +1,12 @@
 //Area de facturacion
-function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFolios,datos,$timeout,facturacionExpress,webStorage,operacion){
+function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFolios,datos,$timeout,facturacionExpress,webStorage,operacion,tickets){
 
 
 	$rootScope.tituloFE = 'Facturación Express 2.0';
     $scope.clientes = datos[0].data;
     $scope.triages = datos[1].data;
     $scope.posiciones = datos[2].data;
+    $scope.riesgos = datos[3].data;
 
     loading.despedida();
     var expediente;
@@ -26,6 +27,62 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
 
 
 	}
+
+    $scope.nuevoTicket = function(){
+
+        $scope.ticket = {
+            folioweb:expediente,
+            folioIn:'',
+            cliente:'',
+            unidad:'',
+            etapa:'',
+            categoria:'',
+            subcategoria:'',
+            statusa:'',
+            asignado:'',
+            fechaasignado:'',
+            notas:'',
+            comunicacion:'',
+            fechacomunica:'',
+            observaciones:'',
+            diagnostico:false,
+            firma:false,
+            notamedica:false,
+            finiquito:false,
+            refactura:false,
+            pase:false,
+            suministro:false,
+            identificacion:false,
+            verificacion:false,
+            notamedicain:false,
+            informe:false,
+            reverso:false,
+            verificapar:false,
+            nocoincide:false,
+            pasemedico:false,
+            nombrein:false,
+            folioseg:false,
+            sinpase:false,
+            fueravigencia:false,
+            sinpoliza:false,
+            sindeducible:false,
+            cedulaT:false,
+            cedulaI:false,
+            sincuestionario:false,
+            firmamedico:false,
+            cruce:false,
+            usuario:$rootScope.userWeb,
+            usuariomv:$rootScope.id
+        }
+
+        $scope.ultimoTicket();
+    }
+
+    $scope.ultimoTicket = function(){
+        find.ultimoticket().success(function (data){
+            $scope.ticket.folioIn = Number(data) + 1; 
+        });
+    }
 
     $scope.regresar = function(){
         $scope.edicion = false;
@@ -50,6 +107,30 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             alert('Por favor captura primero antes de capturar cuestionario');
         }
         
+    }
+
+    // guardamos ticket generado
+    $scope.guardaTicket = function(){
+
+        $('#botonGuardaTodo').button('loading');
+        $scope.mensaje = '';
+
+        tickets.guardar($scope.ticket).success( function (data){
+
+            $scope.mensajeTicket = 'Folio registrado correctamente con el ticket ' + $scope.ticket.folioIn;
+            $scope.tipoalerta = 'alert-success';
+            $('#botonGuardaTodo').button('reset');            
+            $scope.nuevoTicket();
+
+        }).error( function (data){
+            
+            $scope.original.folio = '';
+            $scope.mensajeTicket = 'Ocurrio un error al guardar el ticket intenta registrarlo de forma independiente';
+            $scope.tipoalerta = 'alert-warning';
+            $('#botonGuardaTodo').button('reset');
+
+        });
+
     }
 
 
@@ -208,6 +289,7 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             $scope.nuevoAjustador = false;
             $scope.ocultaBotones = false;
             $scope.rotar = false;
+            $scope.vistaTicket = false;
             
             $scope.buscaAjustadores(data.captura.EMPClave);
             $scope.buscaMedicos(data.captura.UNIClave);
@@ -270,6 +352,7 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             $scope.vistaArchivos = false;
             $scope.captura.triage = String(data.captura.triage);
             $scope.captura.MedicoMV = String(data.captura.MedicoMV);
+            $scope.captura.RIEClave = String(data.captura.RIEClave);
             console.log($scope.datos.cliente);
 
             //verificamos cliente para condiciones de texto
@@ -287,6 +370,8 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
                 $scope.FolioElecMin = 12;
                 $scope.FolioElecMax = 12;
                 $scope.textoAutorizacion = 'Generar Factura';
+
+                $scope.validaCobertura($scope.captura.RIEClave);
 
             }else{
 
@@ -339,6 +424,24 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
             $scope.archivos = archivos;
             $scope.vistaArchivos = true;
         }, 1000);
+
+    }
+
+    $scope.validaCobertura = function(riesgo){
+        
+        if (riesgo == '1' || riesgo == '5') {
+            $scope.cobertura = '4';
+        }else if (riesgo == '10') {
+            $scope.cobertura = '13';
+        }else if (riesgo == '2') {
+            $scope.cobertura = '15';
+        }else if (riesgo == '8') {
+            $scope.cobertura = '3';
+        }else if (riesgo == '9') {
+            $scope.cobertura = '18';
+        }else{
+            $scope.cobertura = '';
+        }
 
     }
 
@@ -699,7 +802,7 @@ function rechazadosCtrl($scope, $rootScope, datos, loading,facturacionExpress){
     };
 };
 
-facturacionExCtrl.$inject =['$scope', '$rootScope', '$filter', 'find', 'loading', 'checkFolios','datos','$timeout','facturacionExpress','webStorage','operacion'];
+facturacionExCtrl.$inject =['$scope', '$rootScope', '$filter', 'find', 'loading', 'checkFolios','datos','$timeout','facturacionExpress','webStorage','operacion','tickets'];
 solicitadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 autorizadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 rechazadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];

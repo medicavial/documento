@@ -180,14 +180,21 @@
 						  </div>
 
 						</div>
-
 						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
 
 						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-default" ng-click="vistaTicket = !vistaTicket; nuevoTicket()" ng-disabled="!sinCaptura"><i class="icon-ticket"></i> Generar Ticket</button>
+						  </div>
+
+						</div>
+
+						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
+
+						<div class="btn-group" role="group">
 						    <button type="button" class="btn btn-success" id="botonAut" ng-click="solicitaAut()" data-loading-text="Autorizando..." ng-disabled="sinCaptura || procesado"><i class="glyphicon glyphicon-ok"></i> 
 						    	{{ textoAutorizacion }}
 						    </button>
-						  </div>
+						</div>
 
 						</div>
 
@@ -354,6 +361,7 @@
 	</div>
 </div>
 
+<!-- Captura de Expediente -->
 <div class="panel panel-primary animate-show" id="derecha-pantalla" ng-show="vistaCaptura">
 
 	<div class="panel-heading">Captura de Pase <button type="button" ng-click="vistaCaptura = !vistaCaptura" class="close" aria-label="Close"><span class="white-text" aria-hidden="true">&times;</span></button> </div>
@@ -481,7 +489,31 @@
 							<option value="">Lesion</option>
 						</select>
 					</div>
+					
 				</div>
+
+				<div class="row">
+					<div class="col-md-5">
+						<label for="">Riesgo</label>
+						<select class="form-control"  ng-model="captura.RIEClave" ng-change="validaCobertura(captura.RIEClave)" ng-options="riesgo.RIE_clave as riesgo.RIE_nombre for riesgo in riesgos" required>
+							<option value="">Riesgo</option>
+						</select>
+					</div>
+
+					<div class="col-md-5" ng-if="datos.cliente == 19">
+						<label for="">Cobertura Qualitas</label>
+						<select class="form-control"  ng-model="cobertura" disabled>
+							<option value="4">04 GM</option>
+							<option value="15">15 RC Pasajero</option>
+							<option value="3">03 RC</option>
+							<option value="18">18 RC Personas</option>
+							<option value="13">13 Ext RC</option>
+						</select>
+					</div>
+					
+				</div>
+
+					
 				<div class="row" ng-hide="nuevoAjustador">
 					<div class="col-md-9">
 						<label for="">Ajustador</label>
@@ -559,6 +591,196 @@
 
 	</div>
 </div>
+
+
+<!-- Registro de Ticket -->
+<div class="panel panel-primary animate-show" id="derecha-pantalla" ng-show="vistaTicket" ng-init="nuevoTicket()">
+
+	<div class="panel-heading">Registro de Ticket <button type="button" ng-click="vistaTicket = !vistaTicket" class="close" aria-label="Close"><span class="white-text" aria-hidden="true">&times;</span></button> </div>
+	<div>
+		
+		<form name="ticketFE" ng-submit="guardaTicket()" novalidate>
+        <div class="modal-body" id="cantidad">
+            <br>
+            <div class="row">
+                <div class="col-md-4">
+                        <label for="categoria">Categoria</label>
+                        <select class="form-control" id="categoria" ng-change="altasubcategorias(ticket.categoria)" ng-model="ticket.categoria" ng-options="categoria.Clave as categoria.Nombre for categoria in categorias" required>
+                            <option value="">Categoria</option>
+                        </select>
+                </div>
+                <div class="col-md-4">
+                    <label for="subcategoria">Subcategoria</label>
+                    <select id="subcategoria" class="form-control"  ng-model="ticket.subcategoria" ng-options="subcategoria.Clave as subcategoria.Nombre for subcategoria in subcategorias" required>
+                        <option value="">Subcategoria</option>
+                    </select>
+                </div> 
+                
+                <div class="col-md-4">
+                    <label for="status">Status</label>
+                    <select id="status" class="form-control"  ng-model="ticket.statusa" ng-options="statu.Clave as statu.Nombre for statu in status" required>
+                        <option value="">Status</option>
+                    </select>
+                </div> 
+            </div> 
+            <div class="row" ng-show="ticket.statusa == 2">
+                <div class="col-md-6">
+                  <label for="folio">Asignado A:</label>
+                    <input type="text" id="asignado" class="form-control" ng-model="ticket.asignado"  capitalize >
+                </div>
+                <div class="col-md-6">
+                <label>Fecha Asignación</label>
+                    <div class="input-group">
+                        <input type="text" ng-model="ticket.fechaasignado" class="form-control" id="fechaasigna"/>
+                        <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                    </div>
+                </div>
+            </div>
+            <br>
+            <div class="panel-group" id="accordion">
+                <div class="panel panel-default">
+
+                    <div class="panel-heading">
+                      <h4 class="panel-title">
+                        <a data-toggle="collapse" data-parent="#accordion" data-target="#collapseOne">
+                          Observaciones iniciales
+                        </a>
+                      </h4>
+                    </div>
+
+                    <div id="collapseOne" class="panel-collapse collapse in">
+                        
+                        <div class="panel-body">
+                        
+                        
+                            <div class="btn-group" data-toggle="buttons">
+
+                                <label class="btn btn-primary" ng-click="ticket.diagnostico = !ticket.diagnostico">
+                                <input type="checkbox" ng-model="ticket.diagnostico"><i ng-show="ticket.diagnostico" class="glyphicon glyphicon-ok"></i> Diagnóstico
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.firma = !ticket.firma">
+                                <input type="checkbox" ng-model="ticket.firma"><i ng-show="ticket.firma" class="glyphicon glyphicon-ok"></i> Firma de lesionado
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.notamedica = !ticket.notamedica">
+                                <input type="checkbox" ng-model="ticket.notamedica"><i ng-show="ticket.notamedica" class="glyphicon glyphicon-ok"></i> Falta nota médica
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.finiquito = !ticket.finiquito">
+                                <input type="checkbox" ng-model="ticket.finiquito" ><i ng-show="ticket.finiquito" class="glyphicon glyphicon-ok"></i> Sin finiquito
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.refactura = !ticket.refactura">
+                                <input type="checkbox" ng-model="ticket.refactura" ><i ng-show="ticket.refactura" class="glyphicon glyphicon-ok"></i> Refacturación
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.pase = !ticket.pase">
+                                <input type="checkbox" ng-model="ticket.pase"><i ng-show="ticket.pase" class="glyphicon glyphicon-ok"></i> Pase médico alterado
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.suministro = !ticket.suministro">
+                                <input type="checkbox" ng-model="ticket.suministro"><i ng-show="ticket.suministro" class="glyphicon glyphicon-ok"></i> Suministros (Medicamento/ Órtesis)
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.identificacion = !ticket.identificacion">
+                                <input type="checkbox" ng-model="ticket.identificacion" ><i ng-show="ticket.identificacion" class="glyphicon glyphicon-ok"></i> Identificación oficial
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.verificacion = !ticket.verificacion">
+                                <input type="checkbox" ng-model="ticket.verificacion" ><i ng-show="ticket.verificacion" class="glyphicon glyphicon-ok"></i> Verificación de firmas
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.notamedicain = !ticket.notamedicain">
+                                <input type="checkbox" ng-model="ticket.notamedicain"><i ng-show="ticket.notamedicain" class="glyphicon glyphicon-ok"></i> Nota médica incompleta
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.informe = !ticket.informe">
+                                <input type="checkbox" ng-model="ticket.informe"><i ng-show="ticket.informe" class="glyphicon glyphicon-ok"></i> Informe AIG/CHARTIS
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.reverso = !ticket.reverso">
+                                <input type="checkbox" ng-model="ticket.reverso"><i ng-show="ticket.reverso" class="glyphicon glyphicon-ok"></i> Reverso de identificación
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.verificapar = !ticket.verificapar">
+                                <input type="checkbox" ng-model="ticket.verificapar" ><i ng-show="ticket.verificapar" class="glyphicon glyphicon-ok"></i> Verificación de parentesco
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.nocoincide = !ticket.nocoincide">
+                                <input type="checkbox" ng-model="ticket.nocoincide"><i ng-show="ticket.nocoincide" class="glyphicon glyphicon-ok"></i> No coincide con documentación
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.pasemedico = !ticket.pasemedico">
+                                <input type="checkbox" ng-model="ticket.pasemedico"><i ng-show="ticket.pasemedico" class="glyphicon glyphicon-ok"></i> Pase médico en copia
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.nombrein = !ticket.nombrein">
+                                <input type="checkbox" ng-model="ticket.nombrein"><i ng-show="ticket.nombrein" class="glyphicon glyphicon-ok"></i> Nombre incorrecto
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.folioseg = !ticket.folioseg">
+                                <input type="checkbox" ng-model="ticket.folioseg"><i ng-show="ticket.folioseg" class="glyphicon glyphicon-ok"></i> Folio de segmentación
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.sinpase = !ticket.sinpase">
+                                <input type="checkbox" ng-model="ticket.sinpase"><i ng-show="ticket.sinpase" class="glyphicon glyphicon-ok"></i> Sin pase médico
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.fueravigencia = !ticket.fueravigencia">
+                                <input type="checkbox" ng-model="ticket.fueravigencia" ><i ng-show="ticket.fueravigencia" class="glyphicon glyphicon-ok"></i> Fuera de vigencia
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.sinpoliza = !ticket.sinpoliza">
+                                <input type="checkbox" ng-model="ticket.sinpoliza" ><i ng-show="ticket.sinpoliza" class="glyphicon glyphicon-ok"></i> Sin póliza
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.sindeducible = !ticket.sindeducible">
+                                <input type="checkbox" ng-model="ticket.sindeducible"><i ng-show="ticket.sindeducible" class="glyphicon glyphicon-ok"></i> Sin deducible
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.sincuestionario = !ticket.sincuestionario">
+                                <input type="checkbox" ng-model="ticket.sincuestionario" ><i ng-show="ticket.sincuestionario" class="glyphicon glyphicon-ok"></i> Sin cuestionario
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.firmamedico = !ticket.firmamedico">
+                                <input type="checkbox" ng-model="ticket.firmamedico"  ng-true-value="'FIRMA MÉDICO'" ng-false-value="" ><i ng-show="ticket.firmamedico" class="glyphicon glyphicon-ok"></i> Firma Médico
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.cruce = !ticket.cruce">
+                                <input type="checkbox" ng-model="ticket.cruce"><i ng-show="ticket.cruce" class="glyphicon glyphicon-ok"></i> Cruce Zima-MV
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.cadulaT = !ticket.cadulaT">
+                                <input type="checkbox" ng-model="ticket.cadulaT"><i ng-show="ticket.cadulaT" class="glyphicon glyphicon-ok"></i> Cédula en Tramite
+                                </label>
+                                <label class="btn btn-primary" ng-click="ticket.cedulaI = !ticket.cedulaI">
+                                <input type="checkbox" ng-model="ticket.cedulaI"><i ng-show="ticket.cedulaI" class="glyphicon glyphicon-ok"></i> Cédula Invalida
+                                </label>
+
+                            </div>
+
+                        </div>
+
+                    </div>
+
+                </div>
+              
+            </div>
+            <br>
+            <div class="row">
+                <div class="col-md-12">
+                  <label>Notas</label>
+                  <textarea class="form-control" ng-model="ticket.notas" rows="3" capitalize></textarea>
+                </div>
+                <!-- <div class="col-md-4">
+                  <label>Comunicación</label>
+                  <textarea class="form-control" ng-model="ticket.comunicacion" rows="3" capitalize></textarea>
+                </div>
+                <div class="col-md-4">
+                  <label>Fecha Comunicación</label>
+                  <div class="input-group">
+                    <input type="text" ng-model="tiket.fechacomunica" class="form-control" id="fechacomunica"/>
+                    <span class="input-group-addon"><i class="glyphicon glyphicon-calendar"></i></span>
+                  </div>
+                </div> -->
+            </div>
+                
+            <div ng-show="mensajeTicket != '' " ng-class="tipoalerta" class="alert animate-show">{{mensajeTicket}}</div>
+
+            <div class="text-right">
+	        	<button id="botonGuardaTodo" type="submit" ng-disabled="ticketFE.$invalid" data-loading-text="Guardando..." class="btn btn-primary">Guardar</button>
+	        	<button type="button" class="btn btn-success" ng-click="nuevoTicket()">Limpiar</button>
+	          	<button type="button" class="btn btn-default" ng-click="vistaTicket = !vistaTicket">Cerrar</button>
+	        </div>
+
+        </div>
+        
+        </form>
+
+
+	</div>
+</div>
+
+
+
+
 
 
 <script>
