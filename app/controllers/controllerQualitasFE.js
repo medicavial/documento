@@ -20,7 +20,7 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 	//busca productos
 	$scope.productos = function(){
 
-		find.productosFE().success( function (data) {
+		find.productos().success( function (data) {
 			$scope.productosini = data;
 		 });
 	}
@@ -33,7 +33,7 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 		//armamos los datos a enviar segun tipo de consulta (tipo)
 		$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-		qualitas.sinProcesarFacEx($scope.datos).success( function (data){
+		qualitas.sinProcesarFE($scope.datos).success( function (data){
 			 
 			if(data){
         		$scope.listado = data;
@@ -60,10 +60,10 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 
     	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
 
-		qualitas.procesaEnvioFE(datos).success(function (data){
+		qualitas.procesaEnvio(datos).success(function (data){
 			// console.log(data);
 			JSONToXLSConvertor($scope.listos, "Reporte", true);
-			qualitas.descargaEnvioFE($scope.ruta);
+			qualitas.descargaEnvio($scope.ruta);
 		});
 
     }
@@ -72,7 +72,7 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
     $scope.generarSelectos = function(){
 
     	$('#boton').button('loading');
-    	qualitas.generaEnvioFE($scope.selectos).success( function (data){
+    	qualitas.generaEnvio($scope.selectos).success( function (data){
 			 
 			if (data.correctos.length == 0) {
 
@@ -217,221 +217,221 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 };
 
 /// Facturas qualitas
-function formatoQualitasFECtrl($scope, $rootScope,$http, find, loading,api , qualitas){
+// function formatoQualitasFECtrl($scope, $rootScope,$http, find, loading,api , qualitas){
 
-	$scope.inicio = function(){
+// 	$scope.inicio = function(){
 
-		$scope.tituloFE = "Formato de Facturas Qualitas FE";
-		$scope.fechaini = FechaAct;
-		$scope.fechafin = FechaAct;
-		$scope.fe = '';
-		$scope.listado = [];
-		$scope.buscafacturas();
-		$scope.productos();
-		$('#modalEx').on('hidden.bs.modal', function (e) {
-			$scope.gridOptions.$gridScope.toggleSelectAll(false);
-		 	$scope.buscafacturas();
-		});
+// 		$scope.tituloFE = "Formato de Facturas Qualitas FE";
+// 		$scope.fechaini = FechaAct;
+// 		$scope.fechafin = FechaAct;
+// 		$scope.fe = '';
+// 		$scope.listado = [];
+// 		$scope.buscafacturas();
+// 		$scope.productos();
+// 		$('#modalEx').on('hidden.bs.modal', function (e) {
+// 			$scope.gridOptions.$gridScope.toggleSelectAll(false);
+// 		 	$scope.buscafacturas();
+// 		});
 		
-	}
+// 	}
 
-	//busca productos
-	$scope.productos = function(){
+// 	//busca productos
+// 	$scope.productos = function(){
 
-		find.productosFE().success( function (data) {
-			$scope.productosini = data;
-		 });
-	}
+// 		find.productosFE().success( function (data) {
+// 			$scope.productosini = data;
+// 		 });
+// 	}
 
-	//muestra facturas sin procesar
-	$scope.buscafacturas = function(){
+// 	//muestra facturas sin procesar
+// 	$scope.buscafacturas = function(){
 
-		loading.cargando('Buscando Factura(s)');
+// 		loading.cargando('Buscando Factura(s)');
 
-		//armamos los datos a enviar segun tipo de consulta (tipo)
-		$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
+// 		//armamos los datos a enviar segun tipo de consulta (tipo)
+// 		$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-		qualitas.sinProcesarFEfacExp($scope.datos).success( function (data){
+// 		qualitas.sinProcesarFEfacExp($scope.datos).success( function (data){
 			 
-			if(data){
-        		$scope.listado = data;
-        		$scope.cantidad = data.length -1;
-        	}else{
-        		$scope.listado = [];
-        	}
+// 			if(data){
+//         		$scope.listado = data;
+//         		$scope.cantidad = data.length -1;
+//         	}else{
+//         		$scope.listado = [];
+//         	}
     		
-    		loading.despedida();
+//     		loading.despedida();
 			
-		});
+// 		});
 
-	}
+// 	}
 
 
-	$scope.generarListado = function(){
+// 	$scope.generarListado = function(){
 
-    	JSONToXLSConvertor($scope.listado, "Facturas", true);
+//     	JSONToXLSConvertor($scope.listado, "Facturas", true);
 
-    }
+//     }
 
-    //genera el archivo una vez verificados
-    $scope.generaarchivos = function(){
+//     //genera el archivo una vez verificados
+//     $scope.generaarchivos = function(){
 
-    	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
+//     	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
 
-		qualitas.procesaEnvioFE(datos).success(function (data){
-			// console.log(data);
-			JSONToXLSConvertor($scope.listos, "Reporte", true);
-			qualitas.descargaEnvioFE($scope.ruta);
-		});
+// 		qualitas.procesaEnvioFE(datos).success(function (data){
+// 			// console.log(data);
+// 			JSONToXLSConvertor($scope.listos, "Reporte", true);
+// 			qualitas.descargaEnvio($scope.ruta);
+// 		});
 
-    }
+//     }
 
-    //prepara los folios y busca las imagenes para el envio
-    $scope.generarSelectos = function(){
+//     //prepara los folios y busca las imagenes para el envio
+//     $scope.generarSelectos = function(){
 
-    	$('#boton').button('loading');
-    	qualitas.generaEnvioFE($scope.selectos).success( function (data){
+//     	$('#boton').button('loading');
+//     	qualitas.generaEnvioFE($scope.selectos).success( function (data){
 			 
-			if (data.correctos.length == 0) {
+// 			if (data.correctos.length == 0) {
 
-				loading.error('No se encontraron archivos de nungun folio');
+// 				loading.error('No se encontraron archivos de nungun folio');
 
-			}else{
+// 			}else{
 
-				$scope.total = $scope.selectos.length;
-				$scope.numerocorrectos = data.correctos.length;
-				$scope.compresos = data.comprimidos.length;
-				$scope.incorrectos = data.incorrectos;
-				$scope.correctos = data.correctos;
-				$scope.listos = data.comprimidos;
-				$scope.ruta = data.archivo;
-				$('#modalEx').modal({
-					backdrop:'static',
-					keyboard:false
-				});
-			}
+// 				$scope.total = $scope.selectos.length;
+// 				$scope.numerocorrectos = data.correctos.length;
+// 				$scope.compresos = data.comprimidos.length;
+// 				$scope.incorrectos = data.incorrectos;
+// 				$scope.correctos = data.correctos;
+// 				$scope.listos = data.comprimidos;
+// 				$scope.ruta = data.archivo;
+// 				$('#modalEx').modal({
+// 					backdrop:'static',
+// 					keyboard:false
+// 				});
+// 			}
 
-			$('#boton').button('reset');
+// 			$('#boton').button('reset');
 			
-		}).error( function (xhr,status,data){
-			$('#boton').button('reset');
-		});
+// 		}).error( function (xhr,status,data){
+// 			$('#boton').button('reset');
+// 		});
 
-    }
+//     }
 
-	//////LLena el grid y toma filtros
+// 	//////LLena el grid y toma filtros
 
-	///filtros
-	$scope.selectos = [];
+// 	///filtros
+// 	$scope.selectos = [];
 
-	$scope.filterOptions = {
-	    filterText: '',
-	    useExternalFilter: false
-	};
+// 	$scope.filterOptions = {
+// 	    filterText: '',
+// 	    useExternalFilter: false
+// 	};
 
 
-	var csvOpts = { columnOverrides: { obj: function (o) {
-	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
-	    } },
-	    iEUrl: 'downloads/download_as_csv'
-	};
+// 	var csvOpts = { columnOverrides: { obj: function (o) {
+// 	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
+// 	    } },
+// 	    iEUrl: 'downloads/download_as_csv'
+// 	};
 
 		
 
-    ////opciones del grid                 
-    $scope.gridOptions = { 
-    	data: 'listado', 
-    	enableColumnResize:true,
-    	enablePinning: true, 
-    	enableRowSelection:true,
-    	showSelectionCheckbox: true,
-        selectWithCheckboxOnly: false,
-    	multiSelect:true,
-    	pagingOptions: $scope.pagingOptions,
-    	selectedItems: $scope.selectos, 
-    	filterOptions: $scope.filterOptions,
-    	enableCellEdit: true,
-    	columnDefs: [
-                    { field:'folioElectronico',displayName:'FOLIO QUA', width: 120, pinned: true},
-                    { field:'folioAdministradora',displayName:'FOLIO ADMIN', width: 120, pinned: false},
-                    { field:'folioSistema',displayName:'FOLIO SISTEMA', width: 120 },
-                    { field:'claveproovedor',displayName:'PROVEEDOR', width: 120 },
-                    { field:'claveprestador',displayName:'PROV SERV', width: 120 },
-                    { field:'Siniestro',displayName:'SINIESTRO', width: 120 },
-		            { field:'Reporte',displayName:'REPORTE', width: 120 },
-		            { field:'Poliza',displayName:'POLIZA', width: 120 },
-		            { field:'Lesionado',displayName:'LESIONADO', width: 330 },
-		            { field:'Afectado',displayName:'AFECTADO', width: 120},
-		            { field:'Cobertura',displayName:'COBERTURA', width: 120 },
-		            { field:'Subtotal',displayName:'SUBTOTAL', width: 120 },
-		            { field:'iva',displayName:'IVA', width: 120 },
-		            { field:'Descuento',displayName:'DESCUENTO', width: 120 },
-		            { field:'Total',displayName:'TOTAL', width: 120 },
-		            { field:'FechaCaptura',visible:false, width: 120 },
-		            { field:'TipoUnidad',visible:false, width: 120 }
-        ],
-        showFooter: true,
-        showFilter:false
-    };
+//     ////opciones del grid                 
+//     $scope.gridOptions = { 
+//     	data: 'listado', 
+//     	enableColumnResize:true,
+//     	enablePinning: true, 
+//     	enableRowSelection:true,
+//     	showSelectionCheckbox: true,
+//         selectWithCheckboxOnly: false,
+//     	multiSelect:true,
+//     	pagingOptions: $scope.pagingOptions,
+//     	selectedItems: $scope.selectos, 
+//     	filterOptions: $scope.filterOptions,
+//     	enableCellEdit: true,
+//     	columnDefs: [
+//                     { field:'folioElectronico',displayName:'FOLIO QUA', width: 120, pinned: true},
+//                     { field:'folioAdministradora',displayName:'FOLIO ADMIN', width: 120, pinned: false},
+//                     { field:'folioSistema',displayName:'FOLIO SISTEMA', width: 120 },
+//                     { field:'claveproovedor',displayName:'PROVEEDOR', width: 120 },
+//                     { field:'claveprestador',displayName:'PROV SERV', width: 120 },
+//                     { field:'Siniestro',displayName:'SINIESTRO', width: 120 },
+// 		            { field:'Reporte',displayName:'REPORTE', width: 120 },
+// 		            { field:'Poliza',displayName:'POLIZA', width: 120 },
+// 		            { field:'Lesionado',displayName:'LESIONADO', width: 330 },
+// 		            { field:'Afectado',displayName:'AFECTADO', width: 120},
+// 		            { field:'Cobertura',displayName:'COBERTURA', width: 120 },
+// 		            { field:'Subtotal',displayName:'SUBTOTAL', width: 120 },
+// 		            { field:'iva',displayName:'IVA', width: 120 },
+// 		            { field:'Descuento',displayName:'DESCUENTO', width: 120 },
+// 		            { field:'Total',displayName:'TOTAL', width: 120 },
+// 		            { field:'FechaCaptura',visible:false, width: 120 },
+// 		            { field:'TipoUnidad',visible:false, width: 120 }
+//         ],
+//         showFooter: true,
+//         showFilter:false
+//     };
 
 
-    $scope.selecciona = function(limite){
+//     $scope.selecciona = function(limite){
 
-    	$scope.gridOptions.$gridScope.toggleSelectAll(false);
+//     	$scope.gridOptions.$gridScope.toggleSelectAll(false);
 
-    	var numero = Number(limite);
-		angular.forEach($scope.listado, function(item, index){
+//     	var numero = Number(limite);
+// 		angular.forEach($scope.listado, function(item, index){
 			
-			if (index < numero) {
-				//$scope.selectos.push(item);
-				$scope.gridOptions.selectItem(index, true);
-			};
+// 			if (index < numero) {
+// 				//$scope.selectos.push(item);
+// 				$scope.gridOptions.selectItem(index, true);
+// 			};
 
-		});
+// 		});
 
-		// console.log($scope.selectos);
-	};
+// 		// console.log($scope.selectos);
+// 	};
 	
-	$scope.quitaselectos = function(){
+// 	$scope.quitaselectos = function(){
 
-    	$scope.gridOptions.$gridScope.toggleSelectAll(false);
-    }
+//     	$scope.gridOptions.$gridScope.toggleSelectAll(false);
+//     }
 
-    $scope.filtra = function(){
+//     $scope.filtra = function(){
 
-    	console.log($scope.fe);
+//     	console.log($scope.fe);
 
-    	if($scope.fe.length == 0){
-    		var objeto1 = "";
-    	}else{
-    		var objeto1 = "FacturaEx:" + $scope.fe + "; ";	
-    	}
+//     	if($scope.fe.length == 0){
+//     		var objeto1 = "";
+//     	}else{
+//     		var objeto1 = "FacturaEx:" + $scope.fe + "; ";	
+//     	}
 
 
-    	var filtro = objeto1;
+//     	var filtro = objeto1;
 
-    	$scope.filterOptions.filterText = filtro;
+//     	$scope.filterOptions.filterText = filtro;
 
-    	//console.log(filtro);
+//     	//console.log(filtro);
 
-    }
+//     }
 
-    $scope.quitafiltro = function(){
+//     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
+//     	$scope.filterOptions.filterText = ''; 
 
-    	//console.log($scope.buscarXfecha);
+//     	//console.log($scope.buscarXfecha);
 
-    	if ($scope.buscarXfecha == 1) {
+//     	if ($scope.buscarXfecha == 1) {
 
-    		$scope.buscarXfecha = 0;
-    		$scope.foliosxarea();
-    	};
+//     		$scope.buscarXfecha = 0;
+//     		$scope.foliosxarea();
+//     	};
     	
     
-    }
+//     }
 
-};
+// };
 
 // Facturas Qualitas que no tuvieron imagenes disponibles
 function formatoQualitasFEarchivosCtrl($scope, $rootScope, find, loading, qualitas, reportes){
@@ -512,10 +512,10 @@ function formatoQualitasFEarchivosCtrl($scope, $rootScope, find, loading, qualit
 
     	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
 
-		qualitas.procesaEnvioFE(datos).success(function (data){
+		qualitas.procesaEnvio(datos).success(function (data){
 			// console.log(data);
 			JSONToXLSConvertor($scope.listos, "Reporte", true);
-			qualitas.descargaEnvioFE($scope.ruta);
+			qualitas.descargaEnvio($scope.ruta);
 		});
 
     }
@@ -524,7 +524,7 @@ function formatoQualitasFEarchivosCtrl($scope, $rootScope, find, loading, qualit
     $scope.generarSelectos = function(){
 
     	$('#boton').button('loading');
-    	qualitas.generaEnvioFE($scope.selectos).success( function (data){
+    	qualitas.generaEnvio($scope.selectos).success( function (data){
 			 
 			if (data.correctos.length == 0) {
 
@@ -635,7 +635,7 @@ function formatoQualitasFEconsultaCtrl($scope,$rootScope, find){
 		$scope.busqueda = false;
 		$scope.cargando = true;
 		
-		find.consultaFacturaQualitasFE($scope.criterio).success( function (data){
+		find.consultaFacturaQualitas($scope.criterio).success( function (data){
         	
         
         	if(data){
@@ -685,7 +685,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 		//armamos los datos a enviar segun tipo de consulta (tipo)
 		var datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
 
-		qualitas.enviosFE(datos).success(function (data){
+		qualitas.envios(datos).success(function (data){
 			
 			if(data){
         		$scope.envios = data;
@@ -710,7 +710,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 
 		$scope.claveenvio = dato.ENQ_claveint;
 
-		qualitas.detalleEnvioFE(dato).then(function (data){
+		qualitas.detalleEnvio(dato).then(function (data){
 			
 			if (dato.ENQ_procesado == 1) {
     			$scope.procesado = true;
@@ -734,7 +734,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 
 		$('#boton').button('loading');
 
-		qualitas.actualizaFE($scope.claveenvio,$scope.selectos).success(function (data){
+		qualitas.actualiza($scope.claveenvio,$scope.selectos).success(function (data){
 
 			// console.log(data);
         	$scope.mensajeA = data.respuesta;
@@ -770,7 +770,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 		$('#boton2').button('loading');
 
 
-		qualitas.generaEnvioFE($scope.selectos).success( function (data){
+		qualitas.generaEnvio($scope.selectos).success( function (data){
 			 
 			if (data.correctos.length == 0) {
 
@@ -779,7 +779,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 			}else{
 
 				JSONToXLSConvertor(data.comprimidos, "Reporte", true);
-				qualitas.descargaEnvioFE(data.archivo);
+				qualitas.descargaEnvio(data.archivo);
 
 			}
 
@@ -830,7 +830,7 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 
 		$('#boton3').button('loading');
 
-		qualitas.enviaRechazosFE($scope.listado2).success( function (data){
+		qualitas.enviaRechazos($scope.listado2).success( function (data){
 			
 			$('#boton3').button('reset');
 			$('#modalEx').modal('hide');
@@ -1282,10 +1282,10 @@ function formatoQualitasFErenombrarCtrl($scope, $rootScope, find, loading, quali
 
     	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
 
-		qualitas.procesaEnvioFE(datos).success(function (data){
+		qualitas.procesaEnvio(datos).success(function (data){
 			// console.log(data);
 			JSONToXLSConvertor($scope.listos, "Reporte", true);
-			qualitas.descargaEnvioFE($scope.ruta);
+			qualitas.descargaEnvio($scope.ruta);
 		});
 
     }
@@ -1294,7 +1294,7 @@ function formatoQualitasFErenombrarCtrl($scope, $rootScope, find, loading, quali
     $scope.renombrarSelectos = function(){
 
     	$('#boton2').button('loading');
-    	qualitas.renombrarFE($scope.selectos).success( function (data){
+    	qualitas.renombrar($scope.selectos).success( function (data){
 			 
 			// console.log(data);
 			alert('Todos los archivos se han renombrado con exito puedes exportar el detalle');
@@ -1312,7 +1312,7 @@ function formatoQualitasFErenombrarCtrl($scope, $rootScope, find, loading, quali
     $scope.generarSelectos = function(){
 
     	$('#boton').button('loading');
-    	qualitas.generaEnvioFE($scope.selectos).success( function (data){
+    	qualitas.generaEnvio($scope.selectos).success( function (data){
 			 
 			if (data.correctos.length == 0) {
 
@@ -1404,7 +1404,6 @@ function formatoQualitasFErenombrarCtrl($scope, $rootScope, find, loading, quali
 
 
 formatoQualitasFacExCtrl.$inject = ['$scope', '$rootScope','$http', 'find', 'loading', 'api', 'qualitas'];
-formatoQualitasFECtrl.$inject = ['$scope', '$rootScope','$http', 'find', 'loading', 'api', 'qualitas'];
 formatoQualitasFEarchivosCtrl.$inject = ['$scope', '$rootScope', 'find', 'loading', 'qualitas', 'reportes'];
 formatoQualitasFEconsultaCtrl.$inject = ['$scope','$rootScope', 'find'];
 formatoQualitasFEenviadoCtrl.$inject = ['$scope', '$rootScope', 'find', 'loading', 'qualitas'];
@@ -1414,7 +1413,6 @@ formatoQualitasFErenombrarCtrl.$inject = ['$scope', '$rootScope', 'find', 'loadi
 
 
 app.controller('formatoQualitasFacExCtrl',formatoQualitasFacExCtrl);
-app.controller('formatoQualitasFECtrl',formatoQualitasFECtrl);
 app.controller('formatoQualitasFEarchivosCtrl',formatoQualitasFEarchivosCtrl);
 app.controller('formatoQualitasFEconsultaCtrl',formatoQualitasFEconsultaCtrl);
 app.controller('formatoQualitasFEenviadoCtrl',formatoQualitasFEenviadoCtrl);
