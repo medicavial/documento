@@ -896,8 +896,13 @@
 					<div class="col-md-6">
 						<div class="form-group">
 						    <label for="cedula">Folio de Autorización</label>
-						    <input type="text" class="form-control" ng-model="captura.cedulaElectronica" id="cedula" ng-required="datos.cliente == 19" placeholder="cedula">
+						    <input type="text" class="form-control" ng-model="captura.cedulaElectronica" id="cedula" ng-required="datos.cliente == 19" placeholder="cedula" ng-minlength="13" ng-maxlength="13" placeholder="cedula" capitalize>
 						</div>
+						<div ng-messages="capturaForm.cedula.$error" class="text-danger">
+							<div ng-message="required">Campo obligatorio.</div>
+							<div ng-message="maxlength">El campo no puede ser mayor que 13 digitos.</div>
+							<div ng-message="minlength">El campo no puede ser menor que 13 digitos.</div>
+				        </div>
 					</div>
 
 					<div class="col-md-6">
