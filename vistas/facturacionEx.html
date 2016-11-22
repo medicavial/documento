@@ -431,7 +431,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 						    <label for="RegCompania">Folio Electronico</label>
-						    <input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-required="datos.cliente == 19" placeholder="RegCompania">
+						    <input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-required="datos.cliente == 19" placeholder="RegCompania" capitalize>
 						    <div ng-messages="capturaForm.RegCompania.$error" class="text-danger">
 								<div ng-message="required">Campo obligatorio.</div>
 								<div ng-message="maxlength">El campo no puede ser mayor que {{ FolioElecMax }} digitos.</div>
