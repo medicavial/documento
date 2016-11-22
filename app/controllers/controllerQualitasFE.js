@@ -1081,7 +1081,7 @@ function formatoQualitasFErechazadosCtrl($scope, $rootScope, find, loading, qual
     
     	$('#boton3').button('loading');
 
-    	qualitas.enviaPrincipalFE($scope.selectos).success(function (data){
+    	qualitas.enviaPrincipal($scope.selectos).success(function (data){
 			
 			$scope.quitaselectos();
 	 		$scope.buscafacturas();
