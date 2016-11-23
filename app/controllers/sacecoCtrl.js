@@ -366,14 +366,15 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             $scope.listArchivos = data.archivos;
             $scope.captura.Dx=$scope.dx; 
             if(data.lesion.LesE_clave){
-                $scope.LesMV =data.lesion.lesionCIA;                
+                console.log(data.lesion.LES_clave);
+                $scope.LesMV = data.lesion.lesionCIA; 
+                $scope.LESUnidad = data.lesion.LES_clave;              
                 $scope.verificaTabuladorOrigen($scope.LesMV);
-                console.log($scope.LesMV);
             }
             $scope.captura.tipoLes= String($scope.tipLesion);
              find.lesiones($scope.captura.tipoLes).success(function (data){
                 $scope.lesiones = data;
-                $scope.milesion = $filter('filter')( $scope.lesiones,{'LES_claveEmp':$scope.LesMV});  
+                $scope.milesion = $filter('filter')( $scope.lesiones,{'LES_clave': $scope.LESUnidad });  
                 $scope.captura.Lesion = $scope.milesion[0];
                 console.log($scope.captura.Lesion);                               
             });  
@@ -627,7 +628,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
             $('#botonAut').button('reset');
             $scope.mensajeAut = data.respuesta;
             $scope.consultaPendientes();
-            // operacion.guardaImagenes(expediente);
+            operacion.guardaImagenes(expediente);
 
         }).error(function (data){
             alert('Surgio un problema intente nuevamente');

@@ -19,7 +19,7 @@ var app = angular.module('app', [
 
 //ip produccion
 app.constant('api','http://172.17.10.15/apimv/public/api/')
-app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/')
+app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/');
 
 
 
