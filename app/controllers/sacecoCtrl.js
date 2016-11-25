@@ -657,6 +657,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
                     { field:'Exp_completo', displayName:'Lesionado', width: 250, pinned:false },
                     /*{ field:'Exp_fecreg', displayName:'Fecha Atención', width: 120, pinned:false },*/
                     { field:'ATN_fecreg', displayName:'Fecha Expedición', width: 120, pinned:false },
+                    { field:'FECHA_CAPTURA', displayName:'Fecha Captura', width: 120, pinned:false },
                     { field:'Cia_nombrecorto', displayName:'Compañia', width: 120, pinned:false },
                     { field:'UNI_nombreMV', displayName:'Unidad', width: 180, pinned:false },                    
                     { field:'TIA_nombre', displayName:'Tipo de Atención', width: 180, pinned:false },                    
