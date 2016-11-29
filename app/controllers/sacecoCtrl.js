@@ -818,6 +818,21 @@ function solicitadosCtrl($scope, $rootScope, datos, loading){
         showFooter: true,
         showFilter:false
     };
+
+    //////LLena el grid y toma filtros
+
+    ///filtros
+
+    $scope.selectos = [];
+
+    $scope.filterOptions = {
+        filterText: '',
+        useExternalFilter: false
+    };
+
+   
+
+
 };
 
 function autorizadosCtrl($scope, $rootScope, datos, loading){
@@ -927,9 +942,6 @@ function rechazadosCtrl($scope, $rootScope, datos, loading,facturacionExpress){
         showFooter: true,
         showFilter:false
     };
-
-
-
 };
 
 
@@ -940,6 +952,7 @@ rechazadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionE
 
 
 app.controller('sacecoCtrl',sacecoCtrl);
+
 app.controller('solicitadosCtrl',solicitadosCtrl);
 app.controller('autorizadosCtrl',autorizadosCtrl);
 app.controller('rechazadosCtrl',rechazadosCtrl);

@@ -154,6 +154,27 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             }
     });
 
+    $routeProvider.when('/saceco/autorizadosSC',{
+            templateUrl    :'vistas/autorizadosSC.html',
+            controller     :'autorizadosSCCtrl',
+             resolve       :{
+                datos:function(find,loading,$q){
+                    loading.cargando('Cargando Informacion');
+                    var promesa = $q.defer(),
+                        empresas = find.empresasweb(),
+                        triages = find.triages(),
+                        riesgos = find.riesgos(),
+                        posiciones = find.posiciones();
+
+                    $q.all([empresas,triages,posiciones,riesgos]).then(function (data){
+                        // console.log(data);
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
+                }
+            }
+    });
 
     $routeProvider.when('/facturacionEx/autorizados',{
             templateUrl    :'vistas/autorizados.html',

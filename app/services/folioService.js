@@ -815,7 +815,11 @@ app.factory("saceco", function($q,$http,find,api){
     return{      
         doctosValidados:function(datos){
             return $http.post(api + 'saceco/doctosValidados', datos,{timeout: 100000});
+        },
+        autorizadosSinCaptura:function(datos){
+            return $http.post(api + 'saceco/autorizadosSinCaptura', datos,{timeout: 10000});
         }
+
     }
 });
 

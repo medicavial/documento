@@ -2,159 +2,29 @@
 	<div class="titulos">
 		<a ng-if="!edicion" href="#/" class="icon-arrow-left"></a>
 		<a ng-if="edicion" href="" class="icon-arrow-left" ng-click="regresar()"></a>
-		<h1>SACE-CO</h1>
+		<h1>SACE CO - Autorizados sin captura</h1>
 	</div>
-	<ul id="rb-grid-small" class="rb-grid-small clearfix">
-
-	    <li class="rb-span-1" id="color3">
-	        <h3>Sin captura <span ng-show=" solicitados > 0 " class="push">{{solicitados}}</span></h3>
-	        <a href="#/saceco/autorizadosSC">
-	            <span class="icon-box-add"></span>
-	        </a>
-	    </li>
-<!--
-	    <li class="rb-span-1" id="color3">
-
-	        <h3>Rechazos<span ng-show=" rechazados > 0 " class="push">{{rechazados}}</span></h3>
-	        <a href="#/facturacionEx/rechazados">
-	            <span class=" icon-cancel-circle"></span>
-	        </a>
-	        
-	    </li>
-
-	    <li class="rb-span-1" id="color3">
-
-	        <h3>Autorizados<span ng-show=" autorizados > 0 " class="push">{{autorizados}}</span></h3>
-	        <a href="#/facturacionEx/autorizados">
-	            <span class=" icon-folder-open"></span>
-	        </a>
-
-	    </li>-->
-	</ul>
-	
 
 	<section ng-hide="edicion">
-		
-		<h2>Folios a Autorizar</h2>
-		
-		<div class="row">
-			<div class="col-md-12">
-				<fieldset>
-					<legend>Selecciona Parametros</legend>
-					<form ng-submit="consultaPendientes()">
-						<div class="row">
-							<div class="col-md-2">
-								<select class="form-control"  ng-model="datos.cliente" ng-options="cliente.Clave as cliente.Nombre for cliente in clientes" required>
-									<option value="">Cliente</option>
-								</select>
-							</div>
-							<div class="col-md-10">
-								<div class="row">
-							        <div class="col-sm-4 col-md-4">
-							            <input type="text" ng-model="datos.fechaini" class="form-control" id="datepicker" placeholder="inicial" required/>
-							        </div>
-							        <div class="col-sm-4 col-md-4">
-							            <div class="input-group">
-							                <input type="text" ng-model="datos.fechafin" class="form-control" id="datepicker2" placeholder="Final" required/>
-							                <span class="input-group-btn">
-							                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
-							                </span>
-							            </div>
-							        </div>
-							    </div>
-							</div>
-						</div>
-					</form>
-				</fieldset>
-			</div>
-		</div>
-
-		<div class="row">
-			<div class="col-md-12">
-				<fieldset>
-					<legend>Filtros</legend>
-					<div class="row">
-						<!-- <div class="col-md-2">
-							<select class="form-control"  ng-model="unidad" ng-change="filtra()">
-								<option value=""> Tipo Unidad</option>
-								<option value="S"> Propia</option>
-								<option value="N"> Red</option>
-							</select>
-						</div>
-						<div class="col-md-2">
-							<select class="form-control"  ng-model="digital" ng-change="filtra()">
-								<option value=""> Documentos</option>
-								<option value="SIN DIGITALIZAR"> Sin Digitalizar</option>
-								<option value="DIGITALIZADO"> Digitalizado</option>
-							</select>
-						</div> -->
-						<div class="col-md-8">
-							<div class="input-group">
-								<div class="input-group-addon">
-							        <i class="glyphicon glyphicon-search"></i>
-							    </div>
-								<input type="text" ng-model="criterio" class="form-control" capitalize ng-change="filtra()" placeholder="Otro"/>
-							</div>
-						</div>
-					</div>
-				</fieldset>
-			</div>
-		</div>
 		
 		<div class="gridStyle" ng-grid="gridOptions"></div>
 		<br>
 
-		<!-- <fieldset>
-			<legend>Datos para solicitar</legend>
-		</fieldset>
-		<div class="row">
-			<form name="formEntrega"  novalidate>
-
-				<div class="col-md-3">
-					<button type="button" id="boton" ng-disabled="formEntrega.$invalid" ng-click="entrega()" class="btn btn-primary btn-block icon-export" data-loading-text="Entregando..."> Solicitar Autorización </button>
-				</div>
-				<div class="col-md-3" id="estatus">
-					<input type="text" x-webkit-speech="">
-					<button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
-				</div>
-
-				<div class="col-md-2">
-				</div>
-
-			</form>
-		</div> -->
-		<br>
-		<!-- <div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert alert-success animate-show">{{mensaje}}</div> -->
-		<br>
-		<br>
-
 	</section>
+	
 
-
-	<section ng-show="edicion" class="slide">
+	<div>
+		<section ng-show="edicion" class="slide">
 		
 		<h2>Folio: {{ detalle.expediente.folio }}</h2>
 		<h2>Atención: {{ nomAtencion }}</h2>
 		<br>
-		<div class="row">
+			<!--<div class="row" ng-show="autorizacionFolio">
 			<div class="col-md-12">
 				<div class="panel panel-primary">
 					<div class="panel-heading">Documentos Digitalizados</div>
 						<div class="panel-body" style="background:#f2f2f2">
-							<!--<div class="row">
-							  	<div class="col-md-3">						  		
-							  		<button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.pase)" ng-disabled="detalle.archivos.pase.length == 0"><i class="glyphicon glyphicon-file"></i> Pase</button>
-							  	</div>
-							  	<div class="col-md-3">
-							  		<button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.notaMedica)" ng-disabled="detalle.archivos.notaMedica.length == 0"><i class="glyphicon glyphicon-list-alt"></i> Nota Médica</button>
-							  	</div>
-							  	<div class="col-md-3">
-							  		<button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.identificacion)" ng-disabled="detalle.archivos.identificacion.length == 0"><i class="glyphicon glyphicon-user"></i> Identificación</button>
-							  	</div>
-							  	<div class="col-md-3">
-							  		 <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.cuestionario)" ng-disabled="detalle.archivos.cuestionario.length == 0"><i class="glyphicon glyphicon-book"></i> Cuestionario</button>
-							  	</div>						  		
-							  	</div>-->							
+												
 							<div class="row" ng-show='anotaciones.length>0'>
 								<div class="col-md-12">
 									<div class="panel panel-primary">
@@ -219,12 +89,12 @@
 											</div>
 											<div class="panel-body" ng-show="docs.Arc_clave">
 												<!-- Bar chart-->
-												<div class="row">
-													<div class="col-md-12">
+												<div class="row" ng-show="autorizacionFolio">
+													<!--<div class="col-md-12">
 														<div data-bar-color="primary" data-height="30" data-bar-width="6" data-bar-spacing="6" class="inlinesparkline inline"> 
 															<button type="button" class="btn btn-default" ng-click="muestraArchivos(docs.TID_clave)" ><i class="glyphicon glyphicon-file"></i>	Analizar documento</button>
 														</div>
-													</div>
+													</div>-->
 												</div>
 												<div class="row" ng-show="docs.ATD_requerido">
 													<br>
@@ -304,7 +174,7 @@
 								  		</div>
 									</div>									
 								</div>
-									<div class="row" ng-show='verCaptura==1'>	
+									<div class="row" ng-show="edicion">	
 							<div class="col-md-12">
 								<div class="panel panel-primary">
 									<div class="panel-heading">Operaciones</div>
@@ -320,32 +190,36 @@
 										  <div class="btn-group" role="group">
 										    <button type="button" class="btn btn-default" ng-click="vistaCaptura = !vistaCaptura" ng-disabled="!sinCaptura"><i class="glyphicon glyphicon-pencil"></i> Capturar Datos</button>
 										  </div>
-										  <!--<div class="btn-group" role="group">
-										    <button type="button" class="btn btn-default" ng-click="vistaCuestionario = !vistaCuestionario" ng-disabled="sinCuestionario"><i class="glyphicon glyphicon-pencil"></i> Captura Cuestionario</button>
-										  </div>-->
+							
 
 										</div>
 
 										<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
 
-										  <!--<div class="btn-group" role="group">
-										    <button type="button" class="btn btn-success" id="botonAut" ng-click="solicitaAut()" data-loading-text="Autorizando..." ng-disabled="sinCaptura"><i class="glyphicon glyphicon-ok"></i> Solicitar Autorización</button>
-										  </div>-->
-
 										</div>
+										<br>
+										<div align="right">
+										<div class="btn-group" role="group">
+										    <button type="button" class="btn btn-success" id="botonAut" ng-click="solicitaAut()" data-loading-text="Autorizando..." ng-disabled="sinCaptura || procesado"><i class="glyphicon glyphicon-ok"></i> 
+										    	{{ textoAutorizacion }}
+										    </button>
+										</div>
+								</div>
 
 									</div>
 								</div>
 								</div>
+
 								<div ng-show="mensajeAut" class="alert alert-success animate-show">{{mensajeAut}}</div>
 
 							</div>
 
 
-								<div class="row">
+								<div class="row" ng-show="autorizacionFolio">
 									<div class="col-md-12" align="right">
 										<!--<button ng-disabled="(verCaptura==1&&sinCaptura)" type="submit" class="btn btn-oval btn-primary btn-lg">Guardar Análisis</button>-->
-										<button type="submit" class="btn btn-oval btn-primary btn-lg">Guardar Análisis</button>
+										<!--<button type="submit" class="btn btn-oval btn-primary btn-lg">Guardar Análisis <button> -->
+
 									</div>
 								</div>
 								<div class="row animate-show" ng-show="verRespuesta">
@@ -366,58 +240,28 @@
 							      </div>
 							    </div>
 							  </div>
-							</div>						
+							</div>
+							<div class="modal fade" id="capturadoPN" role="dialog" aria-labelledby="myModalLabel" data-backdrop="static" data-keyboard="false">
+							  <div class="modal-dialog" role="document">
+							    <div class="modal-content">							      
+							      <div class="modal-body" align="center">
+							       <h2>El documento está capturado por proceso normal.</h2>
+							       Favor de consultar el proceso.
+							      </div>
+							      <div class="modal-footer">
+							        <button type="button" ng-click="recargarPagina()" class="btn btn-default" data-dismiss="modal">Cerrar</button>						        
+							      </div>
+							    </div>
+							  </div>
+							</div>
+							</div>
+						
 						</div>						
 					</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<!--<div class="row">
-			<div class="col-md-6">
-				<div class="panel panel-primary">
-					<div class="panel-heading">Documentos Digitalizados</div>
-					<div class="panel-body">
-						
-						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
-						  <div class="btn-group" role="group">
-						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.todos)" ng-disabled="detalle.archivos.todos.length == 0"><i class="glyphicon glyphicon-th"></i> Ver todos</button>
-						  </div>
-						  <div class="btn-group" role="group">
-						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.pase)" ng-disabled="detalle.archivos.pase.length == 0"><i class="glyphicon glyphicon-file"></i> Pase</button>
-						  </div>
-						</div>
-
-						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
-						  <div class="btn-group" role="group">
-						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.notaMedica)" ng-disabled="detalle.archivos.notaMedica.length == 0"><i class="glyphicon glyphicon-list-alt"></i> Nota Médica</button>
-						  </div>
-						  <div class="btn-group" role="group">
-						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.identificacion)" ng-disabled="detalle.archivos.identificacion.length == 0"><i class="glyphicon glyphicon-user"></i> Identificación</button>
-						  </div>
-						</div>
-						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
-						  <div class="btn-group" role="group">
-						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.cuestionario)" ng-disabled="detalle.archivos.cuestionario.length == 0"><i class="glyphicon glyphicon-book"></i> Cuestionario</button>
-						  </div>
-						  <div class="btn-group" role="group">
-						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.hisotriaClinica)" ng-disabled="detalle.archivos.hisotriaClinica.length == 0"><i class="glyphicon glyphicon-list-alt"></i> Historia Clinica</button>
-						  </div>
-						  
-						</div>
-
-						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
-						  <div class="btn-group" role="group">
-						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.otros)" ng-disabled="detalle.archivos.otros.length == 0"><i class="glyphicon glyphicon-duplicate"></i> Otros</button>
-						  </div>
-						  
-						</div>
-
-					</div>
-				</div>
-			</div>
-			
-		</div>-->
 
 		<div class="panel panel-primary" ng-show="vistaCuestionario">
 
@@ -434,126 +278,6 @@
 
 </div>
 
-<!-- <div class="modal fade" id="DatosModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-	<div class="modal-dialog">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h4 class="modal-title" id="myModalLabel">Captura de datos</h4>
-			</div>
-			<form ng-submit="capturaFE()" name="capturaForm">
-				<div class="modal-body">
-					<div class="row">
-
-						<div class="col-md-12">
-							<div class="form-group">
-							    <label for="reporte">Lesionado</label>
-							    <input type="text" class="form-control" ng-model="captura.Nombre" id="Reporte" placeholder="Reporte">
-							</div>
-						</div>
-
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<div class="form-group">
-							    <label for="siniestro">Siniestro</label>
-							    <input type="text" class="form-control" ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro">
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-							    <label for="poliza">Poliza</label>
-							    <input type="text" class="form-control" ng-model="captura.Poliza" id="poliza" placeholder="Poliza">
-							</div>
-						</div>
-						<div class="col-md-4">
-							<div class="form-group">
-							    <label for="reporte">Reporte</label>
-							    <input type="text" class="form-control" ng-model="captura.Reporte" id="Reporte" placeholder="Reporte">
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<label for="">Tipo de Pase</label>
-							<select class="form-control" ng-model="captura.Tipo" required>
-								<option value="">Tipo de Pase</option>
-								<option value="Ticket">Ticket</option>
-								<option value="Formato">Formato</option>
-							</select>
-						</div>
-						<div class="col-md-4">
-							<label for="">Triage</label>
-							<select class="form-control"  ng-model="captura.triage"  ng-options="triage.TRI_claveint as triage.TRI_nombre for triage in triages" required>
-								<option value="">Triage</option>
-							</select>
-						</div>
-						<div class="col-md-4 text-center">
-							<label for="">Pago a Unidad</label>
-							<br>
-							<label class="radio-inline">
-						  		<input type="radio" ng-model="captura.pagoUnidad" ng-value="1" name="pagoUnidad" id="inlineRadio1" value="1"> Si
-							</label>
-							<label class="radio-inline">
-						  		<input type="radio" ng-model="captura.pagoUnidad" ng-value="0" name="pagoUnidad" id="inlineRadio2" value="0"> No
-							</label>
-						</div>
-					</div>
-
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-							    <label for="motivoNoPago">Motivo No Pago</label>
-							    <input type="text" class="form-control" ng-model="captura.motivoNoPago" id="motivoNoPago" placeholder="motivoNoPago">
-							</div>
-						</div>
-					</div>
-					<div class="row">
-						<div class="col-md-4">
-							<label for="">Tipo de Lesion</label>
-							<select class="form-control"  ng-model="captura.tipoLes" ng-change="buscaLesiones(captura.tipoLes)" ng-options="tipoLes.TLEClave as tipoLes.Nombre for tipoLes in tipoLesiones" required>
-								<option value="">Tipo de Lesion</option>
-							</select>
-						</div>
-						<div class="col-md-8">
-							<label for="">Lesion</label>
-							<select class="form-control"  ng-model="captura.Lesion" ng-change="verificaTabulador(captura.Lesion)" ng-options="lesion as lesion.LES_nombre for lesion in lesiones" required>
-								<option value="">Lesion</option>
-							</select>
-						</div>
-					</div>
-					<div class="row" ng-hide="nuevoAjustador">
-						<div class="col-md-9">
-							<label for="">Ajustador</label>
-							<select class="form-control"  ng-model="captura.Ajustador" ng-options="ajustador.AJU_claveint as ajustador.AJU_nombre for ajustador in ajustadores">
-								<option value="">Ajustador</option>
-							</select>
-						</div>
-						<div class="col-md-3">
-							<label for=""></label>
-							<button type="button" class="btn btn-primary" ng-click="nuevoAjustador = !nuevoAjustador">Nuevo Ajustador</button>
-						</div>
-					</div>
-					<div class="row" ng-show="nuevoAjustador">
-						<div class="col-md-9">
-							<label for="">Nombre del Ajustador</label>
-							<input type="text" class="form-control" ng-model="ajustador" id="ajustador" placeholder="Ajustador" ng-disabled="ocultaBotones" capitalize>
-						</div>
-						<div class="col-md-3" ng-hide="ocultaBotones">
-							<br>
-							<button type="button" class="btn btn-default" ng-click="guardaAjustador()"><i class="icon-checkmark-circle"></i></button>
-							<button type="button" class="btn btn-danger" ng-click="nuevoAjustador = !nuevoAjustador"><i class="icon-cancel-circle"></i></button>
-						</div>
-					</div>
-				</div>
-				<div ng-show="mensaje" class="alert alert-success animate-show">{{mensaje}}</div>
-				<div class="modal-footer">
-			        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
-			        <button type="submit" id="botonAct" class="btn btn-primary" ng-disabled="verificaDatos()" data-loading-text="Guardando...">Gaurdar Cambios</button>
-			    </div>
-			</form>
-		</div>
-	</div>
-</div> -->
 
 <div class="panel panel-primary animate-show" id="izquierda-pantalla" ng-show="vistaArchivos">
 	<div class="panel-heading">Vista Previa <button type="button" ng-click="vistaArchivos = !vistaArchivos" class="close" aria-label="Close"><span class="white-text" aria-hidden="true">&times;</span></button> </div>
@@ -1062,7 +786,8 @@
 		</form>
 
 	</div>
-</div>
+
+
 
 
 
@@ -1092,3 +817,4 @@
     $( "#datepickerExpedicion" ).datepicker({showButtonPanel: true});
 
 </script>
+
