@@ -1,0 +1,144 @@
+<div ng-init="inicio()" id="contenedor">
+	
+	<div class="titulos">
+		<a ng-if="!edicion" href="#/" class="icon-arrow-left"></a>
+		<a ng-if="edicion" href="" class="icon-arrow-left" ng-click="regresar()"></a>
+		<h1>{{tituloFEBeta}}</h1>
+	</div>
+
+	
+
+	<section ng-hide="edicion">
+		
+		
+	</section>
+
+
+	<section ng-show="edicion" class="slide">
+		
+		<h2>Folio: {{ detalle.expediente.folio }}</h2>
+		<br>
+		<div class="row">
+			<div class="col-md-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Documentos Digitalizados</div>
+					<div class="panel-body">
+						
+						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.todos)" ng-disabled="detalle.archivos.todos.length == 0"><i class="glyphicon glyphicon-th"></i> Ver todos</button>
+						  </div>
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.pase)" ng-disabled="detalle.archivos.pase.length == 0"><i class="glyphicon glyphicon-file"></i> Pase</button>
+						  </div>
+						</div>
+
+						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.notaMedica)" ng-disabled="detalle.archivos.notaMedica.length == 0"><i class="glyphicon glyphicon-list-alt"></i> Nota Médica</button>
+						  </div>
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.identificacion)" ng-disabled="detalle.archivos.identificacion.length == 0"><i class="glyphicon glyphicon-user"></i> Identificación</button>
+						  </div>
+						</div>
+						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.cuestionario)" ng-disabled="detalle.archivos.cuestionario.length == 0"><i class="glyphicon glyphicon-book"></i> Cuestionario</button>
+						  </div>
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.hisotriaClinica)" ng-disabled="detalle.archivos.hisotriaClinica.length == 0"><i class="glyphicon glyphicon-list-alt"></i> Historia Clinica</button>
+						  </div>
+						  
+						</div>
+
+						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.otros)" ng-disabled="detalle.archivos.otros.length == 0"><i class="glyphicon glyphicon-duplicate"></i> Otros</button>
+						  </div>
+						  
+						</div>
+
+					</div>
+				</div>
+			</div>
+			<div class="col-md-6">
+				<div class="panel panel-primary">
+					<div class="panel-heading">Operaciones</div>
+					<div class="panel-body">
+						
+						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
+
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-default" ng-click="vistaCaptura = !vistaCaptura" ng-disabled="!sinCaptura"><i class="glyphicon glyphicon-pencil"></i> Capturar Datos</button>
+						  </div>
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-default" ng-click="vistaCuestionario = !vistaCuestionario" ng-disabled="sinCuestionario"><i class="glyphicon glyphicon-pencil"></i> Captura Cuestionario</button>
+						  </div>
+
+						</div>
+						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
+
+						  <div class="btn-group" role="group">
+						    <button type="button" class="btn btn-default" ng-click="vistaTicket = !vistaTicket; nuevoTicket()" ng-disabled="!sinCaptura"><i class="icon-ticket"></i> Generar Ticket</button>
+						  </div>
+
+						</div>
+
+						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
+
+						<div class="btn-group" role="group">
+						    <button type="button" class="btn btn-success" id="botonAut" ng-click="solicitaAut()" data-loading-text="Autorizando..." ng-disabled="sinCaptura || procesado"><i class="glyphicon glyphicon-ok"></i> 
+						    	{{ textoAutorizacion }}
+						    </button>
+						</div>
+
+						</div>
+
+					</div>
+				</div>
+
+				<div ng-show="mensajeAut" class="alert alert-success animate-show">{{mensajeAut}}</div>
+
+			</div>
+		</div>
+
+		<div class="panel panel-primary" ng-show="vistaCuestionario">
+
+			<div class="panel-heading">Captura Cuestionario</div>
+			<div class="panel-body">
+				
+				<div ng-include="'vistas/capturaCuestionario.html'"></div>
+
+			</div>
+		</div>
+		
+	</section>
+
+</div>
+
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    // $( "#datepicker" ).datepicker({showButtonPanel: true});
+    // $( "#datepicker2" ).datepicker({showButtonPanel: true});
+    $( "#datepicker" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker2" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    $( "#datepicker2" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+
+    $( "#datepickerExpedicion" ).datepicker({showButtonPanel: true});
+
+</script>
