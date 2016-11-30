@@ -1,0 +1,35 @@
+{
+  "name": "geniejs",
+  "version": "0.4.0",
+  "description": "A JavaScript library committed to improving user experience by empowering users to interact with web apps using the keyboard (better than cryptic shortcuts).",
+  "main": "dist/genie.js",
+  "homepage": "https://github.com/kentcdodds/genie",
+  "authors": [
+    "Kent C. Dodds <kent@doddsfamily.us>"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "other"
+  ],
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "keywords": [
+    "geniejs",
+    "genie",
+    "alfred",
+    "ux"
+  ],
+  "_release": "0.4.0",
+  "_resolution": {
+    "type": "version",
+    "tag": "0.4.0",
+    "commit": "2653660c990e93cabc4f4e621711f773eefed46d"
+  },
+  "_source": "https://github.com/kentcdodds/genie.git",
+  "_target": "^0.4.0",
+  "_originalSource": "geniejs",
+  "_direct": true
+}

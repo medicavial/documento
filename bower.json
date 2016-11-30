@@ -1,0 +1,25 @@
+{
+  "name": "app",
+  "version": "0.0.1",
+  "authors": [
+    "Sergio Alcala"
+  ],
+  "description": "librerias necesarias para la app",
+  "license": "MIT",
+  "dependencies": {
+    "angular": "^1.5.9",
+    "jquery-ui": "^1.12.1",
+    "bootstrap": "^3.3.7",
+    "geniejs": "^0.4.0",
+    "moment": "^2.13.0",
+    "amcharts-angular": "*",
+    "angular-ui-grid": "ng-grid#^2.0.13",
+    "angular-route": "^1.5.9",
+    "angular-messages": "^1.5.9",
+    "ng-idle": "^1.3.1",
+    "angular-animate": "^1.5.9",
+    "angular-webstorage": "^0.14.0",
+    "ngprogress": "^1.1.3",
+    "ng-file-upload": "^12.2.13"
+  }
+}

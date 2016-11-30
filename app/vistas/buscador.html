@@ -1,0 +1,70 @@
+<div ux-lamp lamp-visible="genieVisible" rub-class="visible" >
+	<div ng-show="tipo == 'lesionado'">
+		<input type="text"  ng-model="consulta" ng-keypress="verifica($event,consulta,tipo)" class="lamp-input input form-control" capitalize />
+	</div>
+	<div ng-show="tipo == 'folio'">
+		<input type="text"  ng-model="consulta" ng-keypress="verifica($event,consulta,tipo)" class="lamp-input input form-control" folio />
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="radio-inline">
+			  <label>
+			    <input type="radio" name="optionsRadios" id="optionsRadios2"  ng-model="tipo" value="lesionado">
+			    Busqueda X Lesionado
+			  </label>
+			</div>
+			<div class="radio-inline">
+			  <label>
+			    <input type="radio" name="optionsRadios" id="optionsRadios1" ng-model="tipo" value="folio" checked>
+			    Busqueda X Folio
+			  </label>
+			</div>
+		</div>
+	</div>
+	<!-- Puede ir cualquier contenido informativo -->
+
+	<div  class="lamp-wishes-container" ng-show="accion == false">
+		<div class="lamp-wish" ng-repeat="dato in resultados"  ng-click="preparaFolio(dato.folio)">
+			<div class="wish-display resultado">
+				Folio: {{ dato.folio }}
+			</div>
+			<div class="wish-display resultado">
+				Lesionado: {{dato.lesionado}}
+			</div>
+			<div class="wish-display resultado">
+				Cliente: {{ dato.cliente }}
+			</div>
+			<div class="wish-display resultado">
+				Etapa:{{ dato.etapa }} //  Entrega:{{ dato.entrega }} //  Tipo:{{ dato.formaRecep }}
+			</div>
+			<div class="wish-display resultado">
+				Area Activa: {{ dato.area }} // Usuario Activo: {{ dato.usuario }}
+			</div>
+			<div class="wish-display resultado">
+				Estatus: {{ dato.Status }}
+			</div>
+
+		</div>
+	</div>
+	<div ng-show="accion" class="lamp-wishes-container">
+		<div class="lamp-wish" ng-click="generaAccion('registra')" ng-if="Captura == 1">
+		  <span class="wish-icon">
+		    <i class="wish-i-icon icon-book"></i>
+		  </span>
+		  <span class="wish-display">Registrar segunda/tercera</span>
+		</div>
+		<!-- <div class="lamp-wish" ng-click="generaAccion('ticket')">
+		  <span class="wish-icon">
+		    <i class="wish-i-icon icon-ticket"></i>
+		  </span>
+		  <span class="wish-display">Aperturar Ticket</span>
+		</div>
+		<div class="lamp-wish" ng-click="generaAccion('siguiemiento')">
+		  <span class="wish-icon">
+		    <i class="wish-i-icon glyphicon glyphicon-th-large"></i>
+		  </span>
+		  <span class="wish-display">Todo en 1</span>
+		</div> -->
+	</div>
+</div>

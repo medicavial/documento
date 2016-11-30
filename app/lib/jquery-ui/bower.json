@@ -1,0 +1,16 @@
+{
+  "name": "jquery-ui",
+  "version": "1.12.1",
+  "main": [
+    "themes/cupertino/jquery-ui.css",
+    "jquery-ui.js",
+    "ui/widgets/datepicker.js",
+    "ui/i18n/datepicker-es.js"
+  ],
+  "ignore": [
+  ],
+  "license": "MIT",
+  "dependencies": {
+    "jquery": ">=1.6"
+  }
+}

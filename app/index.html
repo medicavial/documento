@@ -1,0 +1,219 @@
+<!doctype html>
+<html id="ng-app" ng-app="app" lang="es">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<title>Sistema integral médicavial 1.0</title>
+
+		
+		<!-- build:css css/style.min.css -->
+
+		<!-- bower:css -->
+		<link rel="stylesheet" href="lib/jquery-ui/themes/cupertino/jquery-ui.css" />
+		<link rel="stylesheet" href="lib/bootstrap/dist/css/bootstrap.css" />
+		<link rel="stylesheet" href="lib/angular-ui-grid/ng-grid.css" />
+		<link rel="stylesheet" href="lib/ngprogress/ngProgress.css" />
+		<!-- endbower -->  
+		
+		<!-- inject:css -->    
+		<link rel="stylesheet" href="/stylesheets/animacion.css">    
+		<link rel="stylesheet" href="/stylesheets/app.css">    
+		<link rel="stylesheet" href="/stylesheets/iconos.css">    
+		<link rel="stylesheet" href="/stylesheets/loading.min.css">    
+		<link rel="stylesheet" href="/stylesheets/radio.css">    
+		<link rel="stylesheet" href="/stylesheets/style.css">    
+		<!-- endinject --> 
+
+		<!-- endbuild -->
+
+		<link rel="shortcut icon" href="favicon.ico" type="image/vnd.microsoft.icon" />
+		<!--[if lt IE 9]>
+		    <script>
+		        location.href="navegadorviejo.html";
+		    </script>
+		<![endif]-->
+	</head>
+	<body class="ng-cloak">
+		
+		<!--panel de usuario -->
+		<div ng-if="username != '' " class="animate-show">
+			<div id="panelusuario">
+				<a href="" ng-click="logout()" class="icon-switch tool" data-toggle="tooltip"  title="Cerrar Sesión"></a>
+				<a href="#/control" class="icon-drawer2 tool" data-toggle="tooltip"  title="Control de Documentos"></a>
+				<a href="#/consultaflujo" class="glyphicon glyphicon-search tool" data-toggle="tooltip"  title="Buscar Folio en Flujo"></a>
+				<a href="#/" class="icon-home tool" data-toggle="tooltip"  title="Ir al Inicio"></a>
+				<button type="button" class="panelicon icon-bell" ng-click="muestraNotificacion()" id="notificacion" rel="tooltip" rel="popover"><span class="badge pull-right">1</span></button>
+				<h2>{{ username }}</h2>
+			</div>
+		</div>
+		<br>
+		<br>
+		<!--contenedor de las vistas de todo la app -->
+		<div class="container">
+			<div class="ng-view view-animate" ng-hide="pagina"></div>
+			<br>
+		</div>
+		
+		<buscador></buscador>
+
+		<!--imagen para cuando este cargando folio o contenido que el usuario busca-->
+		<div ng-show="cargando" class='centrar animate-show'>
+			<br>
+			<div ng-show="loading" class="progress progress-striped active">
+			  <div class="progress-bar"  role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+			    <span class="sr-only">100% Complete</span>
+			  </div>
+			</div>
+			<h3 class="animate-show">{{label}}</h3>
+		</div>
+
+
+		<!--imagen para cuando este cargando folio o contenido que el usuario busca-->
+		<div ng-show="error" class='centrarerror animate-show'>
+			<button type="button" class="close" ng-click="error=false">&times;</button>
+			<h3 class="animate-show">{{label}}</h3>
+		</div>
+		
+
+		<!--Ventana para mostrar al usuario sus notificaciones pendientes solo funciona cuando inicia sesion-->
+		<div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		  <div class="modal-dialog">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		        <h4 class="modal-title" id="myModalLabel">Notificaciones Pendientes</h4>
+		      </div>
+		      <div class="modal-body">
+		        	<div id="contenidonot">
+		        		<!-- <div ng-show="push == 0" class="list-group">
+		        			<a href="" class="list-group-item">
+		        				<h3 class="list-group-item-heading"></h3>
+		        				<span class="list-group-item-text">Sin Notificaciones</span>
+		        			</a>
+		        		</div> -->
+
+		        		<div class="list-group padding">
+		        			
+		        			<p>Si ves un folio como este en tus folios activos o flujo de pagos: </p>
+		        			<p><div class="text-danger"><i class="glyphicon glyphicon-warning-sign"></i> ROMV000000</div></p>
+		        			<p>Significa que el folio tiene una penalización</p>
+		        			<!-- <a href="#" ng-show="hover" class="glyphicon glyphicon-trash"> LOL</a> -->
+		        		</div>
+		        	</div>
+		        	<br>
+		        	<button type="button" class="btn btn-success" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+		
+		<!-- modal para captura de documentos originales -->
+		<div class="modal fade" id="myModal10" tabindex="-1" role="dialog" aria-labelledby="Captura de pases originales" aria-hidden="true">
+			<captura-Original></captura-Original>
+		</div>
+
+
+		<!-- modal para captura de documentos originales y tickets en un solo movimiento -->
+		<div class="modal fade" id="myModal20" tabindex="-1" role="dialog" aria-labelledby="Captura de pases originales" aria-hidden="true">
+			<captura-Todo></captura-Todo>
+		</div>
+
+
+		<!-- Muestra Caja con errores-->
+		<div class="modal fade" id="myModal3" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		    <div class="modal-dialog">
+		        <div class="modal-content">
+		            <div class="modal-header">
+		              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+		              <h4 class="modal-title">Se encontraron folios que no se pudieron enviar</h4>
+		            </div>
+		            <form name="formFax"  novalidate>
+		            <div class="modal-body" id="cantidad">
+		                <ul class="list-group">
+						  <li class="list-group-item" ng-repeat="rechazo in rechazos">{{ rechazo.msg}}</li>
+						</ul>
+		            </div>
+		            <div class="modal-footer">
+		              	<button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+		            </div>
+
+		        </div><!-- /.modal-content -->
+		        </form>
+		    </div><!-- /.modal-dialog -->
+		</div><!-- /.modal -->
+
+
+		<!-- build:js js/vendor.min.js -->
+		<!-- bower:js -->
+		<script src="lib/jquery/dist/jquery.js"></script>
+		<script src="lib/angular/angular.js"></script>
+		<script src="lib/jquery-ui/jquery-ui.js"></script>
+		<script src="lib/jquery-ui/ui/widgets/datepicker.js"></script>
+		<script src="lib/jquery-ui/ui/i18n/datepicker-es.js"></script>
+		<script src="lib/bootstrap/dist/js/bootstrap.js"></script>
+		<script src="lib/geniejs/dist/genie.js"></script>
+		<script src="lib/moment/moment.js"></script>
+		<script src="lib/amcharts/dist/amcharts/amcharts.js"></script>
+		<script src="lib/amcharts-angular/dist/amChartsDirective.js"></script>
+		<script src="lib/angular-ui-grid/build/ng-grid.js"></script>
+		<script src="lib/angular-route/angular-route.js"></script>
+		<script src="lib/angular-messages/angular-messages.js"></script>
+		<script src="lib/ng-idle/angular-idle.js"></script>
+		<script src="lib/angular-animate/angular-animate.js"></script>
+		<script src="lib/angular-webstorage/angular-webstorage.js"></script>
+		<script src="lib/ngprogress/build/ngprogress.min.js"></script>
+		<script src="lib/ng-file-upload/ng-file-upload.js"></script>
+		<!-- endbower --> 
+		<!-- endbuild -->
+		
+		<!-- build:js js/app.min.js -->
+		<!-- inject:js -->            
+		<script src="/scripts/app.js"></script>            
+		<script src="/scripts/config.js"></script>            
+		<script src="/scripts/run.js"></script>            
+		<script src="/scripts/templates.js"></script>            
+		<script src="/scripts/controllers/autorizadosSCCtrl.js"></script>            
+		<script src="/scripts/controllers/cancelaSolCtrl.js"></script>            
+		<script src="/scripts/controllers/capturasCtrl.js"></script>            
+		<script src="/scripts/controllers/controller.js"></script>            
+		<script src="/scripts/controllers/controllerQualitas.js"></script>            
+		<script src="/scripts/controllers/controllerQualitasFE.js"></script>            
+		<script src="/scripts/controllers/controllerRechazos.js"></script>            
+		<script src="/scripts/controllers/controllerTicketsPagos.js"></script>            
+		<script src="/scripts/controllers/controllerUsuarios.js"></script>            
+		<script src="/scripts/controllers/edicionDatosCtrl.js"></script>            
+		<script src="/scripts/controllers/facturaFtpCtrl.js"></script>            
+		<script src="/scripts/controllers/facturacionCtrl.js"></script>            
+		<script src="/scripts/controllers/facturacionExBetaCtrl.js"></script>            
+		<script src="/scripts/controllers/facturacionExCtrl.js"></script>            
+		<script src="/scripts/controllers/flujoCtrl.js"></script>            
+		<script src="/scripts/controllers/globalesCtrl.js"></script>            
+		<script src="/scripts/controllers/infoPaseCtrl.js"></script>            
+		<script src="/scripts/controllers/listadosCtrl.js"></script>            
+		<script src="/scripts/controllers/mesaControlCtrl.js"></script>            
+		<script src="/scripts/controllers/pagosCtrl.js"></script>            
+		<script src="/scripts/controllers/recepcionCtrl.js"></script>            
+		<script src="/scripts/controllers/reportesCtrl.js"></script>            
+		<script src="/scripts/controllers/sacecoCtrl.js"></script>            
+		<script src="/scripts/controllers/seguimientoCtrl.js"></script>            
+		<script src="/scripts/controllers/ticketCtrl.js"></script>            
+		<script src="/scripts/controllers/ticketFECtrl.js"></script>            
+		<script src="/scripts/controllers/unidadCtrl.js"></script>            
+		<script src="/scripts/directives/buscador.js"></script>            
+		<script src="/scripts/directives/capturaOriginal.js"></script>            
+		<script src="/scripts/directives/capturaTodo.js"></script>            
+		<script src="/scripts/directives/cuestionario.js"></script>            
+		<script src="/scripts/directives/directivasMv.js"></script>            
+		<script src="/scripts/directives/imagenes.js"></script>            
+		<script src="/scripts/modules/uxGenie.min.js"></script>            
+		<script src="/scripts/services/busquedasService.js"></script>            
+		<script src="/scripts/services/folioService.js"></script>            
+		<script src="/scripts/services/loginService.js"></script>            
+		<script src="/scripts/services/operacionService.js"></script>            
+		<script src="/scripts/services/reportService.js"></script>            
+		<script src="/scripts/services/textService.js"></script>            
+		<!-- endinject -->
+		<!-- endbuild -->
+	</body>
+</html>	
