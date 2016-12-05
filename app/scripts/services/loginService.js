@@ -11,24 +11,24 @@ app.factory("auth", function($location, $rootScope, $http, webStorage, api){
                 
                 $('#boton').button('reset');
                 //creamos la cookie con el nombre que nos han pasado
-                webStorage.session.add('username', datos.USU_nombre);
-                webStorage.session.add('id', datos.USU_claveint);
-                webStorage.session.add('areaUsuario', datos.area);
-                webStorage.session.add('user', datos.USU_login);
-                webStorage.session.add('userWeb', datos.USU_usuarioWeb);
+                webStorage.session.set('username', datos.USU_nombre);
+                webStorage.session.set('id', datos.USU_claveint);
+                webStorage.session.set('areaUsuario', datos.area);
+                webStorage.session.set('user', datos.USU_login);
+                webStorage.session.set('userWeb', datos.USU_usuarioWeb);
 
-                webStorage.session.add('FacturacionExpress', datos.USU_fexpress);
-                webStorage.session.add('FlujoDocumentos', datos.USU_fdocumentos);
-                webStorage.session.add('FlujoManual', datos.USU_fmanual);
-                webStorage.session.add('FlujoPagos', datos.USU_fpagos);
-                webStorage.session.add('FormatoQualitas', datos.USU_fqualitas);
-                webStorage.session.add('Reportes', datos.USU_freportes);
-                webStorage.session.add('Tickets', datos.USU_ftickets);
-                webStorage.session.add('TicketsPagos', datos.USU_fticketPagos);
-                webStorage.session.add('ControlDocumentos', datos.USU_fcontrolDocumentos);
-                webStorage.session.add('ConsultaIndividual', datos.USU_fconsultaIndividual);
-                webStorage.session.add('Captura', datos.USU_fcaptura);
-                webStorage.session.add('Usuarios', datos.USU_fusuarios);
+                webStorage.session.set('FacturacionExpress', datos.USU_fexpress);
+                webStorage.session.set('FlujoDocumentos', datos.USU_fdocumentos);
+                webStorage.session.set('FlujoManual', datos.USU_fmanual);
+                webStorage.session.set('FlujoPagos', datos.USU_fpagos);
+                webStorage.session.set('FormatoQualitas', datos.USU_fqualitas);
+                webStorage.session.set('Reportes', datos.USU_freportes);
+                webStorage.session.set('Tickets', datos.USU_ftickets);
+                webStorage.session.set('TicketsPagos', datos.USU_fticketPagos);
+                webStorage.session.set('ControlDocumentos', datos.USU_fcontrolDocumentos);
+                webStorage.session.set('ConsultaIndividual', datos.USU_fconsultaIndividual);
+                webStorage.session.set('Captura', datos.USU_fcaptura);
+                webStorage.session.set('Usuarios', datos.USU_fusuarios);
 
                 $rootScope.username = datos.USU_nombre;
                 $rootScope.id = datos.USU_claveint;

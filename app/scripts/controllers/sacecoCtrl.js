@@ -162,7 +162,7 @@ function sacecoCtrl($scope, $rootScope, $filter, find , loading, checkFolios,dat
 
         loading.cargando('Cargando Información');
 
-        webStorage.local.add('facturacionExpressData', JSON.stringify($scope.datos));
+        webStorage.local.set('facturacionExpressData', JSON.stringify($scope.datos));
         
         find.foliosSacecoPendientes($scope.datos).success(function (data){
             // console.log(data);

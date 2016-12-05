@@ -573,7 +573,8 @@
 				ng-mouse-wheel-up="zoomWidth = zoomWidth + 20; imgStyle.width = zoomWidth +'px'; "  
 				ng-mouse-wheel-down="zoomWidth = zoomWidth - 20;imgStyle.width = zoomWidth  +'px'; "
 			/><br>
-			<form id="{{archivo.Arc_clave}}" name="{{archivo.Arc_clave}}" ng-submit="cerrarVentana()">
+
+			<form id="archivo" name="{{ $index }}" ng-submit="cerrarVentana()">
 				<div class="form-group">
 					<div class="row" style="width:100%; padding: .5em 0 0 0; background:" >
 						<label class="col-sm-1 control-label" align="center">Estatus:</label>
@@ -608,11 +609,12 @@
 					</div>
 					<div class="row">
 						<div class="col-md-12" align="right">
-							<input type="submit" form="{{archivo.Arc_clave}}" class="btn btn-oval btn-primary btn-lg" value="Guardar">
+							<input type="submit"  class="btn btn-oval btn-primary btn-lg" value="Guardar">
 						</div>
 					</div>	
 				</div>				
 			</form>
+
             <br>
             </div>			
 	    </div>	

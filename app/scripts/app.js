@@ -8,9 +8,9 @@ var app = angular.module('app', [
     'webStorageModule',
     'uxGenie',
     'ngMessages',
+    'angular.filter',
     'ui.bootstrap'
 ]);
-    // 'angular.filter',
     
 //ip prueba
 app.constant('api','http://localhost/apimv/public/api/')
