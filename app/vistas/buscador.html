@@ -1,4 +1,4 @@
-<div ux-lamp lamp-visible="genieVisible" rub-class="visible" >
+<div ux-lamp="lamp" lamp-visible="genieVisible" rub-class="visible" >
 	
 	<div ng-show="tipo == 'lesionado'">
 		<input type="text"  ng-model="consulta" ng-keypress="verifica($event,consulta,tipo)" class="lamp-input input form-control" capitalize />
@@ -6,18 +6,17 @@
 	<div ng-show="tipo == 'folio'">
 		<input type="text"  ng-model="consulta" ng-keypress="verifica($event,consulta,tipo)" class="lamp-input input form-control" folio />
 	</div>
-	<br>
 	<div class="row">
 		<div class="col-md-12">
 			<div class="radio-inline">
 			  <label>
-			    <input type="radio" name="optionsRadios" id="optionsRadios2"  ng-model="tipo" value="lesionado">
+			    <input type="radio" name="optionsRadios" id="optionsRadios2"  ng-model="tipo" value="lesionado" autofocus>
 			    Busqueda X Lesionado
 			  </label>
 			</div>
 			<div class="radio-inline">
 			  <label>
-			    <input type="radio" name="optionsRadios" id="optionsRadios1" ng-model="tipo" value="folio" checked>
+			    <input type="radio" name="optionsRadios" id="optionsRadios1" ng-model="tipo" value="folio" checked autofocus>
 			    Busqueda X Folio
 			  </label>
 			</div>

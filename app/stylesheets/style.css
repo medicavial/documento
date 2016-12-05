@@ -369,6 +369,7 @@ blockquote{
     background: linear-gradient(to bottom,  #3f4c6b 0%,#3f4c6b 100%); /* W3C */
     filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#3f4c6b', endColorstr='#3f4c6b',GradientType=0 ); /* IE6-8 */
     padding: 0.5em 1em;
+    margin: 0;
     position: fixed; top: 0; 
     text-align: right;
     width: 100%;

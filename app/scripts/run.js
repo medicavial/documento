@@ -60,33 +60,6 @@ app.run(function ($rootScope , Idle, $location, webStorage, auth, barra, webStor
     $rootScope.push = $rootScope.notificaciones.length;
 
 
-    ///mostramos los tooltip para mostrar los titulos abajo de cada elemento
-    // $('.tool').tooltip({placement : 'bottom'});
-    $('[data-toggle="tooltip"]').tooltip({placement : 'bottom'});
-    // $('.tool').tooltip({placement : 'bottom'});
-    // $('.tool').tooltip({placement : 'bottom'});
-    // $('.tool').tooltip({placement : 'bottom'});
-    // $('.tool').tooltip({placement : 'bottom'});
-    // $('.tool').tooltip({placement : 'bottom'});
-    // $('.tool').tooltip({placement : 'bottom'});
-
-    //mostramos las notificaciones en caso de tenerlas en el popover
-    $('#notificacion').popover({
-        trigger:'focus',
-        placement : 'bottom',
-        html:true,
-        title : 'Notificaciones',
-        content :function() {
-            return $('#contenidonot').html();
-        }
-    });
-
-
-    $rootScope.muestraNotificacion = function(){
-
-        $('#notificacion').popover('show');
-    };
-
     //verificamos el estatus del usuario en la aplicacion
     Idle.watch();
 
@@ -144,10 +117,6 @@ app.run(function ($rootScope , Idle, $location, webStorage, auth, barra, webStor
         }
 
     });
-
-    // $rootScope.logout = function(){
-    //     auth.logout();
-    // }
 
 
 });

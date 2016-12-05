@@ -479,9 +479,6 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
                 alert('Este ajustador ya se encuentra registrado consultalo en la lista');
             }
 
-
-            // console.log(encontrados);
-
         }
 
     }
@@ -556,8 +553,6 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
 
     }
 
-
-
     ////opciones del grid                 
     $scope.gridOptions = { 
     	data: 'listado', 
@@ -568,7 +563,6 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
     	showSelectionCheckbox: false,
         selectWithCheckboxOnly: false,
     	enableCellSelection: true,
-        plugins: [new ngGridCsvExportPlugin()],
     	selectedItems: $scope.selectos, 
     	filterOptions: $scope.filterOptions,
         rowTemplate: rowTempl,
