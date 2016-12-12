@@ -47,8 +47,8 @@
         <div class="col-sm-3 col-md-3">
             <button id="boton" type="button" ng-disabled="selectos.length == 0" data-loading-text="Verificando Información..." class="btn btn-success btn-block" ng-click="generarSelectos()">Generar Archivos Seleccionados</button>
         </div>
-        <div class="col-sm-3 col-md-3">
-            <!-- <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->
+        <div class="col-sm-3 col-md-3" >
+            <button type="button" class="btn btn-success btn-block" ng-disabled="selectos.length == 0" ng-click="descargar()">Descargar Archivos</button>
         </div>
         <div class="col-sm-3 col-md-3">
            <!--  <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->

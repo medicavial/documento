@@ -1,5 +1,5 @@
 //configuramos las rutas y asignamos html y controlador segun la ruta
-app.config(function($routeProvider, IdleProvider, KeepaliveProvider, $sceDelegateProvider){
+app.config(function($routeProvider, IdleProvider, KeepaliveProvider, $sceDelegateProvider, $locationProvider){
 
     //configuramos ruta valida o de confinaza
     $sceDelegateProvider.resourceUrlWhitelist([
@@ -714,7 +714,9 @@ app.config(function($routeProvider, IdleProvider, KeepaliveProvider, $sceDelegat
 
     $routeProvider.otherwise({redirectTo:'/login'});
 
-    IdleProvider.idle(2700); // tiempo en activarse el modo en reposo
+    $locationProvider.html5Mode(false);
+
+    IdleProvider.idle(2700); // tiempo en activarse el modo en reposo 2700
     IdleProvider.timeout(10); // tiempo que dura la alerta de sesion cerrada
     KeepaliveProvider.interval(10); //
 

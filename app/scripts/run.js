@@ -77,7 +77,7 @@ app.run(function ($rootScope , Idle, $location, webStorage, auth, barra, webStor
         // you can change the title or display a warning dialog from here.
         // you can let them resume their session by calling $idle.watch()
         if($location.path() != "/login"){
-            //console.log('Cuidado se va a bloquear');
+            // console.log('Cuidado se va a bloquear');
         }
 
     });
@@ -86,16 +86,11 @@ app.run(function ($rootScope , Idle, $location, webStorage, auth, barra, webStor
        //Entra en el estado de reposo cerramos session guardamos la ultima ruta en la que se encontraba
        //ademas de verificar si no estaban en la pagina del login ni en la de bloqueo
         if($location.path() != "/login"){
-
+            
             if ($location.path() != "/bloqueo") {
 
-                $('#myModal').modal('hide');
-                $('#myModal2').modal('hide');
-                $('#myModal3').modal('hide');
-                $('#myModal4').modal('hide');
-                $('#myModal10').modal('hide');
-                $rootScope.ruta = $location.path(); //Guardamos
-                $location.path('/bloqueo');
+                auth.block();
+
             };
 
         }
@@ -106,14 +101,14 @@ app.run(function ($rootScope , Idle, $location, webStorage, auth, barra, webStor
         // the user has come back from AFK and is doing stuff. if you are warning them, you can use this to hide the dialog
 
         if($location.path() != "/login"){
-            //console.log('llegaste bienvenido');
+            // console.log('llegaste bienvenido');
         }
     });
 
     $rootScope.$on('Keepalive', function() {
         // do something to keep the user's session alive
         if($location.path() != "/login"){
-            //console.log('Activo en el sitio');
+            // console.log('Activo en el sitio');
         }
 
     });

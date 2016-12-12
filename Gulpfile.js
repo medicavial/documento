@@ -93,7 +93,13 @@ gulp.task('templates', function() {
 		.pipe(templateCache({
 			root:'vistas/',
 			module: 'app.templates',
-			standalone: true
+			standalone: true,
+			base:function(file){				
+				var ruta = file.relative;
+				var fic = ruta.replace(/^.*[\\\/]/,'').split('/');
+				var fileOnly = fic[fic.length - 1];
+				return fileOnly;
+			}
 	}))
     .pipe(gulp.dest('./app/scripts'));
 });

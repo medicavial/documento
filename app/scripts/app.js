@@ -9,7 +9,8 @@ var app = angular.module('app', [
     'uxGenie',
     'ngMessages',
     'angular.filter',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'app.templates'
 ]);
     
 //ip prueba

@@ -17,6 +17,20 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 		
 	}
 
+	//descarga los archivos 
+    $scope.descargar = function(){
+
+		// loading.cargando('Buscando Factura(s)');
+    	
+    	qualitas.descargarArchivos($scope.selectos);
+  //   	.success( function (data){
+			
+		// }).error( function (xhr,status,data){
+		// 	loading.error('Ocurrio un error intenta de nuevo');
+		// });
+
+    }
+
 	//busca productos
 	$scope.productos = function(){
 
@@ -100,6 +114,8 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 		});
 
     }
+
+
 
 	//////LLena el grid y toma filtros
 

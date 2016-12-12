@@ -67,18 +67,6 @@ app.factory("auth", function($location, $rootScope, $http, webStorage, api){
                     }
 
                 }
-
-                // if (navigator.geolocation) {
-
-                //     navigator.geolocation.getCurrentPosition(function (posicion){
-
-                //         $rootScope.localidad = posicion;
-                //         console.log($rootScope.localidad);
-
-                //     });
-
-                // };
-
           
             }).error( function (error){
 
@@ -122,6 +110,17 @@ app.factory("auth", function($location, $rootScope, $http, webStorage, api){
             {
                 $location.path("/");
             }
+        },
+        block : function()
+        {
+            $location.path('/bloqueo');
+            $rootScope.ruta = $location.path(); //Guardamos
+
+            $('#myModal').modal('hide');
+            $('#myModal2').modal('hide');
+            $('#myModal3').modal('hide');
+            $('#myModal4').modal('hide');
+            $('#myModal10').modal('hide');
         }
     }
 });
