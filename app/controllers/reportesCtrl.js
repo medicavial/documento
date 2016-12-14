@@ -208,20 +208,27 @@ function pagoUnidadesCtrl($scope, $rootScope, find , loading){
 
         $scope.datos = {
             fechaini:FechaAct,
-            fechafin:FechaAct
+            fechafin:FechaAct,
+            unidad:''
         };
 
     }
 
     $scope.buscaPagos = function(){
 
-        loading.cargando('Buscando Factura(s)');
 
-        find.pagoUnidades($scope.datos).success(function (data){
-            console.log(data);
-            $scope.listado = data;
-            loading.despedida();
-        })
+        if ($scope.datos.unidad) {
+            loading.cargando('Buscando Factura(s)');
+
+            find.pagoUnidades($scope.datos).success(function (data){
+                console.log(data);
+                $scope.listado = data;
+                loading.despedida();
+            });
+
+        }else{
+            alert('Debes Seleccionar Unidad');
+        }
     }
 
     $scope.selectos = [];

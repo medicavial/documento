@@ -18,11 +18,11 @@
           </span>
         </div>
       </div>
-      <!-- <div class="col-sm-3 col-md-3">
-        <select class="form-control"  ng-model="nombre">
-          <option value="">Unidades</option>
+      <div class="col-sm-3 col-md-3">
+        <select class="form-control"  ng-model="datos.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades">
+          <option value="">Unidad</option>
         </select>
-      </div> -->
+      </div>
     </div>
     <br><br>
     <div class="gridStyle" ng-grid="gridOptions"></div>
