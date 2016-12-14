@@ -1,6 +1,6 @@
 //servicio de chekeo de folios para las cargar busquedas por bloque y carga informacion del flujo
 //por usuario
-app.factory("qualitas", function($q,$http,find,api,publicfiles){
+app.factory("qualitas", function($q,$http,find,api,publicfiles,operacion){
     return{
         actualiza:function(envio,datos){
             // console.log(datos);
@@ -17,8 +17,11 @@ app.factory("qualitas", function($q,$http,find,api,publicfiles){
         },
         descargaArchivos:function(folios){
             
-            angular.forEach(folios,function(folio){
-            	console.log(folio);
+            angular.forEach(folios,function(dato){
+            	console.log(dato.folioSistema);
+
+                operacion.guardaImagenes(dato.folioSistema);
+
             });
             
         },

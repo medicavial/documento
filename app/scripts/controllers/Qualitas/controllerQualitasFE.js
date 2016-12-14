@@ -18,17 +18,8 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 	}
 
 	//descarga los archivos 
-    $scope.descargar = function(){
-
-		// loading.cargando('Buscando Factura(s)');
-    	
-    	qualitas.descargarArchivos($scope.selectos);
-  //   	.success( function (data){
-			
-		// }).error( function (xhr,status,data){
-		// 	loading.error('Ocurrio un error intenta de nuevo');
-		// });
-
+    $scope.descargar = function(datos){
+    	qualitas.descargaArchivos(datos);
     }
 
 	//busca productos
