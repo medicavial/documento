@@ -32,6 +32,7 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
     $scope.inicio = function(){
 
         $scope.muestraEsc = false;
+        $scope.tramite = false;
         $scope.original = {
             folio:'',
             documento:0,

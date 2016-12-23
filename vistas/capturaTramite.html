@@ -1,0 +1,73 @@
+<div class="modal-dialog modal-lg" ng-init="inicio()">
+    <form name="Cap" novalidate>
+        <div class="modal-content">
+            <div class="modal-header">
+                <h4 class="modal-title">Captura de tramite</h4>
+            </div>
+            <div class="modal-body">
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <label for="paciente"> Lesionado</label>
+                        <input type="text" class="form-control" ng-model="datos.lesionado" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="Hospital">Hospital</label>
+                        <input type="text" class="form-control" ng-model="datos.hospital" required>
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="folio">Fecha Recepcion</label>
+                        <input type="text" class="form-control" ng-model="datos.fechaRecep" data-date-format="YYYY-MM-DD" id="fechaRecepcion" required>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="col-md-4">
+                        <label for="tel">Tel Hospital</label>
+                        <input type="text" class="form-control" ng-model="datos.telHospital">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="folio">Folio Zima</label>
+                        <input type="text" class="form-control" ng-model="datos.folioZima">
+                    </div>
+
+                    <div class="col-md-4">
+                        <label for="folio">Pre-factura Zima</label>
+                        <input type="text" class="form-control" ng-model="datos.prefacturaZima">
+                    </div>
+                        
+                    
+                </div>
+
+                <div class="row">
+                    
+                    <div class="col-md-12">
+                    
+                        <label for="contenido">Contenido</label>
+                        <textarea name="contenido" id="contenido" class="form-control " ng-model="datos.contenido" rows="5" mayusculas required></textarea>
+                        
+                    </div>
+
+                </div>
+
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" ng-click="inicio()" data-dismiss="modal">Limpiar</button>
+                    <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+                    <button type="button" ng-disabled="Cap.$invalid" class="btn btn-primary" ng-click="guardaTramite()">Guardar</button>
+                </div>
+            </div>
+            <br>
+
+        </div>
+    </form>
+</div>
+
+<script type="text/javascript">
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    $( "#fechaRecepcion" ).datepicker({showButtonPanel: true});
+</script>

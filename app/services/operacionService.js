@@ -14,6 +14,9 @@ app.factory("operacion",function($http, api){
         },
         guardaImagenes: function(folio){
             $http.get(api+'operacion/guardaImagenes/'+ folio);  
+        },
+        guardaTramite: function(datos){
+            $http.post(api+'operacion/guardaTramite/',datos);  
         }
     }
 });

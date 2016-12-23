@@ -90,6 +90,13 @@ app.run(function ($rootScope , auth , $idle, $location, barra, webStorage){
         $('#notificacion').popover('show');
     };
 
+
+    $rootScope.capturaTramite = function(){
+
+        $('#capturaTramite').modal();
+        
+    };
+
     //verificamos el estatus del usuario en la aplicacion
     $idle.watch();
 
