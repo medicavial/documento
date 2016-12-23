@@ -185,7 +185,6 @@
 		<script src="/scripts/directives/cuestionario.js"></script>            
 		<script src="/scripts/directives/directivasMv.js"></script>            
 		<script src="/scripts/directives/imagenes.js"></script>            
-		<script src="/scripts/modules/uxGenie.min.js"></script>            
 		<script src="/scripts/services/busquedasService.js"></script>            
 		<script src="/scripts/services/folioService.js"></script>            
 		<script src="/scripts/services/loginService.js"></script>            
@@ -193,8 +192,7 @@
 		<script src="/scripts/services/qualitas.js"></script>            
 		<script src="/scripts/services/reportService.js"></script>            
 		<script src="/scripts/services/textService.js"></script>            
-		<script src="/scripts/controllers/Qualitas/controllerQualitas.js"></script>            
-		<script src="/scripts/controllers/Qualitas/controllerQualitasFE.js"></script>            
+		<script src="/scripts/modules/uxGenie.min.js"></script>            
 		<script src="/scripts/controllers/Tickets/ticketCtrl.js"></script>            
 		<script src="/scripts/controllers/Tickets/ticketFECtrl.js"></script>            
 		<script src="/scripts/controllers/areas/capturasCtrl.js"></script>            
@@ -203,12 +201,28 @@
 		<script src="/scripts/controllers/areas/pagosCtrl.js"></script>            
 		<script src="/scripts/controllers/areas/recepcionCtrl.js"></script>            
 		<script src="/scripts/controllers/areas/seguimientoCtrl.js"></script>            
+		<script src="/scripts/controllers/Qualitas/controllerQualitas.js"></script>            
+		<script src="/scripts/controllers/Qualitas/controllerQualitasFE.js"></script>            
+		<script src="/scripts/controllers/flujoDocumentos/flujoCtrl.js"></script>            
+		<script src="/scripts/controllers/flujoDocumentos/listadosCtrl.js"></script>            
 		<script src="/scripts/controllers/facturacionExpress/facturacionExBetaCtrl.js"></script>            
 		<script src="/scripts/controllers/facturacionExpress/facturacionExCtrl.js"></script>            
 		<script src="/scripts/controllers/facturacionExpress/sacecoCtrl.js"></script>            
-		<script src="/scripts/controllers/flujoDocumentos/flujoCtrl.js"></script>            
-		<script src="/scripts/controllers/flujoDocumentos/listadosCtrl.js"></script>            
 		<!-- endinject -->
 		<!-- endbuild -->
+
+		<script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
+		<script>
+		  // Initialize Firebase
+		  var config = {
+		    apiKey: "AIzaSyCGjkShUCHaITCmU38Nfzd82nEH6ZF3x0I",
+		    authDomain: "tabuladores-c6acd.firebaseapp.com",
+		    databaseURL: "https://tabuladores-c6acd.firebaseio.com",
+		    storageBucket: "tabuladores-c6acd.appspot.com",
+		    messagingSenderId: "145086284041"
+		  };
+		  firebase.initializeApp(config);
+		</script>
+
 	</body>
 </html>	

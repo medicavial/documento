@@ -50,7 +50,7 @@
             <button type="button" class="btn btn-success btn-block" ng-disabled="listado.length == 0" ng-click="exporta()">Ver Lista detalle</button>
         </div>
         <div class="col-sm-3 col-md-3">
-           <!--  <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->
+           <button type="button" class="btn btn-success btn-block" ng-disabled="selectos.length == 0" ng-click="descargar(selectos)">Descargar Archivos</button>
         </div>
     </div> 
     <br>
@@ -106,6 +106,7 @@
            </div>
       </div>
       <div class="modal-footer text-center">
+            <button type="button" class="btn btn-success" ng-click="descargar(incorrectos)">Descargar Archivos</button>
             <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar Ventana</button>
       </div>
     </div>

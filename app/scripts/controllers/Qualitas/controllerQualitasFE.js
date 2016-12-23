@@ -458,6 +458,11 @@ function formatoQualitasFEarchivosCtrl($scope, $rootScope, find, loading, qualit
 
 	}
 
+	//descarga los archivos 
+    $scope.descargar = function(datos){
+    	qualitas.descargaArchivos(datos);
+    }
+
 	$scope.buscafacturas = function(){
 
 		$scope.gridOptions.$gridScope.toggleSelectAll(false);
