@@ -57,6 +57,7 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
                     { field:'Exp_fecreg', displayName:'Fecha Atención', width: 120, pinned:false },
                     // { field:'FExpedicion', displayName:'Fecha Expedición', width: 120, pinned:false },
                     { field:'UNI_nombreMV', displayName:'Unidad', width: 180, pinned:false },
+                    { field:'Cia_nombrecorto', displayName:'Compañia', width: 180, pinned:false },
                     // { field:'DocumentosDigitales', displayName:'Digitalizado', width: 120, pinned:false },
                     { field:'EXP_fechaCaptura', displayName:'Fecha Captura', width: 120, pinned:false },
                     { field:'Exp_poliza', displayName:'Poliza', width: 120, pinned:false },
