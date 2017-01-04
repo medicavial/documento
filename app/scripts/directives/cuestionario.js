@@ -13,7 +13,7 @@ function capturaCuestionario() {
 
 }
 
-capturaCueCtrl.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api'];;
+capturaCueCtrl.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api'];
 
 function capturaCueCtrl($scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api) {
 
