@@ -19,6 +19,9 @@ app.factory("find", function($http,api){
         categoriaspagos:function(){
             return $http.get(api+'tickets/pagos/categorias');
         },
+        conceptotramite:function(){
+            return $http.get(api+'consulta/concepto');
+        },
         consultaFlujo:function(usuario){
             return $http.get(api+'flujo/consulta/' + usuario);
         },
@@ -231,6 +234,15 @@ app.factory("find", function($http,api){
         },
         ticketspagosxfoliointerno:function(folio){
             return $http.get(api + 'tickets/pagos/foliointerno/'+ folio);
-        }
+        },
+        tipotramite:function(){
+            return $http.get(api+'consulta/tipotramite');
+        },
+        borratemporales:function(usuario){
+            return $http.get(api+'RelacionPagos/borratemporales/' + usuario);
+        },
+        buscaxProveedor:function(id){
+            return $http.post(api+'RelacionPagos/buscaxProveedor/'+ id);
+        },
     }
 })

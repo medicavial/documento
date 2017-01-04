@@ -1,0 +1,270 @@
+<div ng-init="inicio()" id="contenedor">
+
+<div ng-show="iniciorelacion">
+	<div class="titulos">
+		<a href="#/" class="icon-arrow-left"></a>
+		<h1>{{tituloR}}</h1>
+	</div>
+
+	<h2>Folios activos en el area</h2>
+	<div class="row">
+
+		<div class="col-md-2">
+			<label>Unidad</label>
+			<select class="form-control"  ng-model="norelacion.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades" ng-change="buscaxProveedor(norelacion.unidad)" >
+				<option value="">----</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<label></label>
+			<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros
+			</button>
+		</div>
+
+		<div class="col-md-2">
+		</div>
+
+	</div>
+	<br>
+	<br>
+	<div class="gridStyle" ng-grid="gridOptions"></div>
+	
+	<br>	
+	<button ng-show="activaboton" ng-click="exporta()" data-loading-text="Generando..." id="boton" class="btn btn-success glyphicon glyphicon-download-alt"> Exportar</button>
+	<button  ng-click="relacionaFolios()" ng-disabled="selectedRows.length == 0" id="boton1" class="btn btn-warning glyphicon glyphicon-random"> R Folios</button>
+
+
+</div>
+
+<div ng-show="finrelacion">
+
+  <div class="titulos">
+	  <h1>{{tituloFinRelacion}}</h1><br>
+	  <strong><h3>{{ referencia }}_{{numreferencia}}</h3></strong>
+
+  </div>
+  <div class="row">
+
+      <div class="col-md-4">
+           <div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
+      </div>
+  	
+
+  </div>
+  <br>
+  <div class="row">
+
+      <div class="col-md-4">
+        <label>Relación:</label>
+          <input type="text" class="form-control" id="consecutivo" ng-model="numreferencia" ng-blur="verificaReferencia()"ng-disabled="editafactura">
+      </div>
+
+	  <div class="col-md-6">
+		<label for="folio">Fecha</label>
+		<input type="text" class="form-control" ng-model="tramite.fecha" data-date-format="YYYY-MM-DD" id="fechaMov" disabled>
+	  </div>
+
+<!-- 	  <div class="col-md-4">
+		<label for="folio">Fecha</label>
+		<input type="text" class="form-control" ng-model="tramite.fecha" data-date-format="YYYY-MM-DD" id="fechaMov" disabled>
+	  </div> -->
+
+  </div><br><br>
+  <div class="col-lg-12">
+
+     <div class="table-responsive">
+      <table id="datatable2"  class="table table-striped table-hover" 
+                style="
+			    max-height: auto;
+			    overflow-y: auto; 
+			    overflow-x: auto;
+			    width: 120vw; background: #edebeb ">
+         <thead>
+            <tr>
+               <th ng-show="subefactura">Examinar</th>
+               <th ng-show="subefactura">Elimina</th>
+               <th ng-show="subefactura">Folio Fiscal</th>
+               <th ng-show="subefactura">Importe Factura</th>
+               <th>Proveedor</th>
+               <th>Folio</th>
+               <th>Etapa</th>
+               <th>Entrega</th>
+               <th>Lesionado</th>
+               <th>Fecha Recepcion</th>
+               <th>Tipo</th> 
+               <th>Reserva</th>
+               <th>Tabulador</th> 
+               <th>Tipo Tramite</th> 
+               <th>Concepto</th>
+
+            </tr>
+         </thead>
+         <tbody>
+
+            <tr ng-repeat="detalle in detalles">
+
+              <td ng-show="subefactura"><label class="btn btn-primary">
+                Sube Factura <input type="file" style="display: none;" ng-disabled="factguardada" ng-file-select="subeXML($index,$files)">
+                  </label>
+              </td>
+              <td ng-show="subefactura"><label class="btn btn-danger glyphicon glyphicon-trash" ng-click="eliminaxmlInd($index)" ng-disabled="detalle.btn_edit"></label></td>
+              <td ng-show="subefactura">{{ detalle.foliofiscal}}</td>
+              <td ng-show="subefactura">{{ detalle.importe}}</td>
+              <td>{{detalle.Unidad}}</td>
+              <td>{{detalle.Folio}}</td>
+              <td>{{detalle.Etapa}}</td>
+              <td>{{detalle.Entrega}}</td>
+              <td>{{detalle.Lesionado}}</td>
+              <td>{{detalle.fechaRecepcion}}</td> 
+              <td>{{detalle.Tipo}}</td> 
+              <td>{{detalle.Reserva}}</td> 
+              <td><input  ng-disabled="editafactura" type="text" class="form-control" ng-model="detalle.Tabulador" ng-change="suma()"></td>
+              <td><select  class="form-control" ng-model="detalle.tipotramite" ng-options="tipotramite.id as tipotramite.tipo for tipotramite in tipostramites" ng-disabled="editafactura" required>
+			            <option value=""> Tipo Tramite </option>
+			      </select>
+			  </td>
+              <td><select class="form-control" ng-model="detalle.concepto" ng-options="concepto.id as concepto.nombre for concepto in conceptost" ng-disabled="editafactura" required>
+						<option value=""> Concepto </option>
+				  </select>
+			  </td>  
+            </tr>
+            <tr>
+               <td ng-show="subefactura"></td>	
+               <td ng-show="subefactura"></td>
+               <td ng-show="subefactura"><h3><strong>Importe</h3></strong></td>
+               <td ng-show="subefactura"><h3><strong>{{ totalimporte | currency }}</h3></strong></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td><h3><strong>Subtotal</h3></strong></td> 
+               <td><h3><strong>{{ resultado | currency }} </strong></h3></td>
+               <td><h3><strong>{{ totales  | currency }} </strong></h3></td>
+               <td></td>
+			   <td></td> 
+            </tr>
+<!--             <tr ng-repeat="retencion in retenciones">
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td>
+                <select class="form-control"  ng-model="retencion.impuest" ng-options="impuesto.id as impuesto.nombre for impuesto in impuestos" ng-change="calculaImpuesto($index,retencion.impuest)">
+                   <option value="">Impuesto</option>  
+                </select>
+                </td> 
+               <td><h3><strong>{{ retencion.totaliva  | currency }} </strong></h3></td>
+              <td><h3><strong>{{ retencion.totalivamanual  | currency }} </strong></h3></td>
+            </tr> -->  
+           
+         </tbody>
+      </table> 
+
+      <div ng-show="global">
+
+		  <div class="row">
+		    <div class="col-md-12">
+		      <table style="max-height: auto;
+						    overflow-y: auto; 
+						    overflow-x: auto;
+						    width: 120vw; background: #edebeb ">
+		        <tr style="background-color:#E9E9E9;">
+		          <th colspan="12" class="text-center"><h4>Datos de la Factura</h4></th>
+		          <th class="full-left">
+		            <button ng-show="agregafact" type="button" id="newimpuesto" ng-click="addRow2()" class="btn btn-success margen-abajo glyphicon glyphicon-usd" data-toggle="tooltip" data-placement="top" title="Calcula Otra Retención"> Factura</button>
+		          </th>
+		        </tr>
+		        <tr style="background-color:#F0FFFF">
+		          <!-- <th width="3%">PDF</th> -->
+		          <th></th>
+		          <th>Folio Fiscal</th>
+		          <th>Importe</th>
+		          <th>IVA</th>
+		          <th>Descuento</th>
+		          <th>Total</th>
+		          <th>Fecha Emisión</th>
+		          <th></th>
+		        </tr>
+		        <tr>
+		<!--                        <td ng-show="nopagopdf">
+		            <div><img src="imgs/blocked.PNG">
+		        </div>
+		    </td>
+		          <td ng-show="pagopdf"><div  data-toggle="tooltip" data-placement="right" title="Vista previa del PDF"><a ng-href="../red/Complementos/{{ folio }}/pago/pdf/{{ pagoArchivopdf }}" target="_blank"><img src="imgs/file-pdf.PNG"></a></div>
+		    </td> -->
+		          <td>
+		          	<label class="btn btn-primary">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXML($index,$files)">
+                    </label>
+                  </td>
+		          <td>{{ factura.foliofiscal }}</td>
+		          <td>{{ factura.importe }}</td>
+		          <td>{{ factura.iva }}</td>
+		          <td>{{ factura.descuento }}</td>
+		          <td>{{ factura.total }}</td>
+		          <td>{{ factura.fechaemision }}</td>
+		          <td ng-show="btndelete"><button ng-click="eliminaxml()" class="btn btn-small btn-danger" type="button">Eliminar</button></td>
+		        </tr>
+		      </table>
+		      </div>
+		 </div>
+
+	</div>
+    </div>
+
+  </div>
+
+	<div class="row">
+
+		<div class="col-md-4">
+			<div class="form-group">
+			<label for="unidad">Tipo Factura</label>
+			<select class="form-control" id="tipodoc" ng-change="filtra()" ng-model="tipofactura" ng-disabled="editafactura">
+				<option value="">Tipo Factura</option>
+				<option value="0">Individual</option>
+				<option value="1">Global</option>
+			</select> 
+		    </div>
+		</div>
+
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-12">
+		
+			<label for="descripcion">Observación</label>
+			<textarea name="descripcion" id="descripcion" class="form-control " ng-model="observaciones" rows="5" ng-disabled="editafactura" mayusculas required></textarea>
+			
+		</div>
+	</div>
+	<br><br>
+
+	<div class="row">
+		<button type="button" class="btn btn-lg btn-primary" ng-click="siguiente()" ng-disabled="btnsiguiente">Siguiente</button>
+
+	   <div ng-show="subefactura" class="col-md-4">
+			<label></label>
+		   <button type="button" class="btn btn-lg btn-primary" ng-click="guardaRelacionInd()" ng-disabled="factguardada">Guardar</button>
+	   </div>
+
+	  <div ng-show="subefacturaglo" class="col-md-4">
+			<label></label>
+		   <button type="button" class="btn btn-lg btn-primary" ng-click="guardaRelacionGlo()">Guardar</button>
+	  </div>
+	</div>
+
+
+
+</div>
+
+
+<script type="text/javascript">
+	$.datepicker.setDefaults($.datepicker.regional["es"]);
+	$( "#fechainiEnt" ).datepicker({showButtonPanel: true});
+	$( "#fechafinEnt" ).datepicker({showButtonPanel: true});
+	$( "#fechaRecIni" ).datepicker({showButtonPanel: true});
+	$( "#fechaRecFin" ).datepicker({showButtonPanel: true});
+</script>

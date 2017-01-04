@@ -766,7 +766,6 @@ app.factory("qualitas", function($q,$http,find,api,publicfiles){
     }
 });
 
-
 app.factory("tickets", function($q,$http,find,api){
     return{
         guardar:function(datos){
@@ -832,6 +831,25 @@ app.factory("ticketpagos", function($q,$http,find,api){
             return $http.put(api + 'tickets/pagos', datos);
         }
     }
+});
+
+app.factory("relaciones", function($q,$http,find,api){
+
+    return{
+        buscaRelacion:function(datos){
+            return $http.post(api + 'RelacionPagos/buscaRelacion', datos);
+        },
+        consultaFolioFiscal:function(foliofiscal){
+            return $http.post(api + 'RelacionPagos/consultaFolioFiscal/'+foliofiscal);
+        },
+        borrarxArchivo:function(usuario,archivo){
+            return $http.post(api + 'RelacionPagos/borrarxArchivo/', +usuario+'/',+archivo);
+        },
+        validaUnidad:function(rfc){
+            return $http.post(api + 'RelacionPagos/validaUnidad/'+rfc);
+        }
+    }
+
 });
 
 app.factory("FacturaUnidades", function($q,$http,find,api){

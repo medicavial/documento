@@ -576,10 +576,10 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
             observacion : $scope.observaciones
         }
 
-        console.log($scope.detalles);
         for (var i = 0; i < $scope.detalles.length; i++){
 
             if ($scope.detalles[i].tipotramite == undefined){ 
+                console.log($scope.detalles[i].tipotramite);
 
                 $scope.detalles[i].tipotramite = 0;
             }
@@ -592,13 +592,15 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
         webStorage.local.add('relacionesData', JSON.stringify($scope.relaciones));
 
-            console.log($scope.detalles.tipotramite);
+            console.log($scope.detalles);
 
             if ($scope.detalles.tipotramite == 0 || $scope.detalles.concepto == 0) {
 
                 swal("Upss","Revisa que todos los campos esten llenos","error");
 
             }else{
+
+                console.log($scope.relaciones.tipofactura);
 
                 if($scope.relaciones.tipofactura == 1){
 
@@ -749,7 +751,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                         relaciones.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){     
                             if (data[0].count != 0){
 
-                                swal('Upss','Ya existe una Factura con ese Folio Fiscal','Error');
+                                swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
                                 $scope.factura.importe = '';
                                 $scope.factura.total = '';
                                 $scope.factura.foliofiscal = '';
@@ -784,7 +786,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                                   
                                 }else{
 
-                                    swal('Upss','Tu Factura no coincide con el Emisor','Error');
+                                    swal('Upss','Tu Factura no coincide con el Emisor','error');
 
                                     // var archivo = $scope.datos.leexml;
                                     // $scope.elimina_ahora(archivo);
@@ -846,7 +848,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                            relaciones.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){                  
                                   if (data[0].count != 0){
 
-                                    swal('Upss','Ya existe una Factura con ese Folio Fiscal','Error');
+                                    swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
                                     $scope.detalles[idx].importe =  '';
                                     $scope.detalles[idx].total = '';
                                     $scope.detalles[idx].foliofiscal = '';
@@ -884,7 +886,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                                   
                                 }else{
 
-                                    swal('Upss','Tu Factura no coincide con el Emisor','Error');
+                                    swal('Upss','Tu Factura no coincide con el Emisor','error');
 
                                     // var archivo = $scope.datos.leexml;
                                     // $scope.elimina_ahora(archivo);
@@ -899,7 +901,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                                     $scope.btndelete = false;
 
                                 }
-
 
                       });
                    }
