@@ -819,7 +819,6 @@ app.factory("saceco", function($q,$http,find,api){
         autorizadosSinCaptura:function(datos){
             return $http.post(api + 'saceco/autorizadosSinCaptura', datos,{timeout: 10000});
         }
-
     }
 });
 
@@ -835,3 +834,48 @@ app.factory("ticketpagos", function($q,$http,find,api){
     }
 });
 
+app.factory("FacturaUnidades", function($q,$http,find,api){
+
+    return{
+        buscaFolios:function(datos){
+            return $http.post(api + 'FacturaUnidades/buscaFolios', datos);
+        },
+        enviaFolios:function(datos,usuario){
+            return $http.post(api + 'FacturaUnidades/enviaFolios/'+ usuario, datos);
+        },
+        buscalistado:function(val){
+            return $http.post(api + 'FacturaUnidades/listadoFactura', val);
+        },
+        buscaxUnidad:function(id){
+            return $http.post(api + 'FacturaUnidades/buscaxUnidad/'+id);
+        },
+        unidades:function(){
+            return $http.post(api+'FacturaUnidades/unidades');
+        }
+    }
+
+});
+
+app.factory("DetalleFacturas", function($q,$http,find,api){
+
+    return{
+        imprimeDatos:function(folio){
+            return $http.post(api + 'DetalleFacturas/imprimeDatos/'+ folio);
+        },
+        rechazaFactura:function(datos){
+            return $http.post(api + 'DetalleFacturas/rechazaFactura', datos);
+        }
+    }
+
+});
+
+app.factory("FacturaZima", function($q,$http,find,api){
+
+    return{
+        unidades:function(){
+            return $http.post(api+'FacturaZima/unidades');
+        }
+
+    }
+
+});

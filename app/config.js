@@ -712,6 +712,83 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'cancelaSolCtrl'
     });
 
+
+    ////////  codigo pagos ////
+    ///
+    $routeProvider.when('/detalleAtencion/:folio',{
+            templateUrl   : 'vistas/detalleFactura.html',
+            controller    : 'detalleFacturaCtrl'
+    });
+
+    $routeProvider.when('/controlFacturas',{
+            templateUrl   : 'vistas/controlFacturas.html',
+            controller    : 'controlFacturasCtrl'
+    });
+
+    $routeProvider.when('/controlFacturasZima',{
+            templateUrl   : 'vistas/controlFacturasZima.html',
+            controller    : 'controlFacturasZimaCtrl'
+    });
+
+
+    
+    $routeProvider.when('/relaciona',{
+            templateUrl   : 'vistas/relacion.html',
+            controller    : 'relacionCtrl',
+            resolve       :{
+                datos:function($q,find,loading){
+
+                    loading.cargando('Cargando Folios');
+
+                    var datos = {
+                        fechaini:FechaAct,
+                        fechafin:FechaAct
+                    }
+                    var promesa = $q.defer(),
+                        clientes = find.empresasweb(),
+                        status = find.statuspagos(),
+                        unidades = find.unidadesweb(),
+                        usuarios = find.usuariosweb(),
+                        tickets = find.ticketspagosxfecha(datos);
+
+                    $q.all([clientes,status,unidades,usuarios,tickets]).then(function (data){
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
+                }
+            }
+    });
+
+    $routeProvider.when('/relacionNP',{
+        templateUrl   : 'vistas/relacionNoPagada.html',
+        controller    : 'relacionNoPagadaCtrl',
+        resolve       :{
+            datos:function($q,find,loading){
+
+                loading.cargando('Cargando Folios');
+
+                var datos = {
+                    fechaini:FechaAct,
+                    fechafin:FechaAct
+                }
+                var promesa = $q.defer(),
+                    clientes = find.empresasweb(),
+                    status = find.statuspagos(),
+                    unidades = find.unidadesweb(),
+                    usuarios = find.usuariosweb(),
+                    tickets = find.ticketspagosxfecha(datos);
+
+                $q.all([clientes,status,unidades,usuarios,tickets]).then(function (data){
+                    promesa.resolve(data);
+                });
+
+                return promesa.promise;
+            }
+        }
+    });
+
+
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
 
     $routeProvider.otherwise({redirectTo:'/login'});

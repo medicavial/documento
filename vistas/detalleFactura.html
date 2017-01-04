@@ -1,0 +1,97 @@
+<div ng-init="inicio()" style="width: 100%; background-color:#E9E9E9">
+	<div class="titulos">
+		<a href="#/controlFacturas" class="icon-arrow-left"></a>
+		<h1>{{titulo}}</h1>
+	</div><br><br>
+
+  	<div class="container tour-step.tour-step-one" style="width:70%; padding:10px 6px 6px 6px; border-radius: 10px 10px 10px 10px;
+	-moz-border-radius: 10px 10px 10px 10px;
+	-webkit-border-radius: 10px 10px 10px 10px;
+	border: 2px solid #0173C7; background-color:#FFF">
+
+	  	<div class="row">
+		  	<div class="col-md-4 text-center">
+		  		<img ng-src="http://www.medicavial.net/registro/logos regmv/{{ruta}}"  title="ASEGURADORA">
+		  	</div>
+	  	</div><br><br>
+  
+	  	<div class="row">
+		  	<div class="col-md-12">
+		  		<table id="TablaAlergias" align="center"  width="100%" style='font-size:15px'>
+					<tr>          
+					   <td width=\"33%\"><b>Folio: <strong></b>{{folio}}</strong></td>
+					   <td width=\"33%\"><b>Compañia: <strong></b>{{cia}}</strong></td>
+					   <td width=\"33%\"><b>Unidad Médica: <strong></b>{{uniMed}}</strong></td>         					   
+					</tr>
+					<tr>          
+					   <td width=\"33%\"><b>Póliza: <strong></b>{{poliza}}</strong></td>
+					   <td width=\"33%\"><b>Siniestro: <strong></b>{{sinicestro}}</strong></td>
+					   <td width=\"33%\"><b>Reporte: <strong></b>{{reporte}}</strong></td>         					   
+					</tr>
+					<tr>          
+					   <td width=\"33%\"><b>Lesionado: <strong></b>{{lesionado}}</strong></td>					   	   			
+					</tr>
+				</table>
+		  	</div>
+	  	</div>
+	</div>
+
+	<div class="titulos">
+		<h1>{{titulo2}}</h1>
+	</div><br>
+
+    <div class="row center-text">
+    	<div class="col-md-3"></div>
+	    <div class="col-md-3" ng-show="xml == '1'">
+	        <a href="http://www.medicavial.net/registro/{{directorio}}/{{filexml}}" target="_blank"><img src="images/xml.png" class="drop-box1"></a>
+	    </div>
+	    <div class="col-md-3" ng-show="pdf == '1'">
+	        <a href="http://www.medicavial.net/registro/{{directorio}}/{{filepdf}}" target="_blank"><img src="images/pdf(2).png" class="drop-box1"></a>
+
+	    </div>
+	    <div class="col-md-3"></div>
+    </div><br>
+    <div class="titulos">
+		<h1>{{titulo3}}</h1>
+	</div><br><br>
+	
+    <div class="loading-container" ng-show="cargando">
+	    <div class="loading"></div>
+	    <div id="loading-text">Cargando</div>
+	</div>
+	<div class="row center-text">
+
+		<div class="col-md-2" ng-repeat="archivo in archivos">   
+		   	<a href="http://www.medicavial.net/registro/{{directorio}}/{{archivo}}" target="_blank">
+		   	<img src="images/jpg.png" class="drop-box1">{{archivo}}</a>
+		</div>   
+
+    </div><br><br>
+    <div class="row center-text">
+        <div class="col-md-4">
+			<button type="button" ng-hide="edicion" ng-click="revision()"  class="btn btn-success btn-lg btn-block glyphicon glyphicon-ok"> Mandar a Revisión </button>
+			<br>
+		</div>
+
+		<div class="col-md-4">
+			<button type="button" ng-hide="edicion" ng-click="rechaza = 1"  class="btn btn-danger btn-lg btn-block glyphicon glyphicon-remove"> Rechaza Factura </button>
+			<br>
+		</div>
+		<div class="col-md-4"></div>
+
+    </div>
+    <div class="row center-text" ng-show="rechaza == '1'">
+
+	    <div class="col-md-8">
+		
+			<label for="descripcion">Motivo de Rechazo</label>
+			<textarea name="descripcion" id="descripcion" class="form-control " ng-model="motivo" rows="5" mayusculas required></textarea>
+			
+		</div>
+		<div class="col-md-4">
+		    <label for="descripcion"></label>
+			<button type="button" ng-hide="edicion" ng-click="rechazaFactura()"  class="btn btn-primary btn-lg btn-block glyphicon glyphicon-file"> Envia </button>
+		</div>
+
+    </div>
+</div>
