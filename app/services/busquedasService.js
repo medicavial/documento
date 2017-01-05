@@ -244,5 +244,8 @@ app.factory("find", function($http,api){
         buscaxProveedor:function(id){
             return $http.post(api+'RelacionPagos/buscaxProveedor/'+ id);
         },
+        listaRelacionReg:function(datos){
+            return $http.post(api+'RelacionNP/fechaRegistro',datos);
+        }
     }
 })

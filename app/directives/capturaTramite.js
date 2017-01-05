@@ -14,7 +14,7 @@ function capturaTramite() {
 
 }
 
-tramiteCtrl.$inject = ['$scope', '$rootScope', 'oeracion'];;
+tramiteCtrl.$inject = ['$scope', '$rootScope', 'operacion'];
 
 function tramiteCtrl($scope, $rootScope, operacion) {
 
