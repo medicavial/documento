@@ -659,7 +659,7 @@ app.factory("carga", function($q,$http,find,api){
 
 //servicio de chekeo de folios para las cargar busquedas por bloque y carga informacion del flujo
 //por usuario
-app.factory("qualitas", function($q,$http,find,api,publicfiles){
+app.factory("qualitas", function($q,$http,find,api,publicfiles,operacion){
     return{
         actualiza:function(envio,datos){
             // console.log(datos);
@@ -673,6 +673,18 @@ app.factory("qualitas", function($q,$http,find,api,publicfiles){
         },
         enviaRechazos:function(datos){
             return $http.post(api+'qualitas/rechazos', datos);
+        },
+        descargaArchivos:function(folios){
+            
+            console.log(folios);
+            
+            angular.forEach(folios,function(dato){
+
+                // console.log(dato.folioSistema)
+                operacion.guardaImagenes(dato.folioSistema);
+
+            });
+            
         },
         detalleEnvio:function(dato){
             var promesa = $q.defer(),

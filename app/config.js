@@ -120,7 +120,6 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                         posiciones = find.posiciones();
 
                     $q.all([empresas,triages,posiciones,riesgos]).then(function (data){
-                        // console.log(data);
                         promesa.resolve(data);
                     });
 

@@ -48,6 +48,13 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 
 	}
 
+	//descarga los archivos 
+	$scope.descargar = function(datos){
+		console.log(datos);
+		qualitas.descargaArchivos(datos);
+	}
+
+
 
 	$scope.generarListado = function(){
 
@@ -216,222 +223,6 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 
 };
 
-/// Facturas qualitas
-// function formatoQualitasFECtrl($scope, $rootScope,$http, find, loading,api , qualitas){
-
-// 	$scope.inicio = function(){
-
-// 		$scope.tituloFE = "Formato de Facturas Qualitas FE";
-// 		$scope.fechaini = FechaAct;
-// 		$scope.fechafin = FechaAct;
-// 		$scope.fe = '';
-// 		$scope.listado = [];
-// 		$scope.buscafacturas();
-// 		$scope.productos();
-// 		$('#modalEx').on('hidden.bs.modal', function (e) {
-// 			$scope.gridOptions.$gridScope.toggleSelectAll(false);
-// 		 	$scope.buscafacturas();
-// 		});
-		
-// 	}
-
-// 	//busca productos
-// 	$scope.productos = function(){
-
-// 		find.productosFE().success( function (data) {
-// 			$scope.productosini = data;
-// 		 });
-// 	}
-
-// 	//muestra facturas sin procesar
-// 	$scope.buscafacturas = function(){
-
-// 		loading.cargando('Buscando Factura(s)');
-
-// 		//armamos los datos a enviar segun tipo de consulta (tipo)
-// 		$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
-
-// 		qualitas.sinProcesarFEfacExp($scope.datos).success( function (data){
-			 
-// 			if(data){
-//         		$scope.listado = data;
-//         		$scope.cantidad = data.length -1;
-//         	}else{
-//         		$scope.listado = [];
-//         	}
-    		
-//     		loading.despedida();
-			
-// 		});
-
-// 	}
-
-
-// 	$scope.generarListado = function(){
-
-//     	JSONToXLSConvertor($scope.listado, "Facturas", true);
-
-//     }
-
-//     //genera el archivo una vez verificados
-//     $scope.generaarchivos = function(){
-
-//     	var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
-
-// 		qualitas.procesaEnvioFE(datos).success(function (data){
-// 			// console.log(data);
-// 			JSONToXLSConvertor($scope.listos, "Reporte", true);
-// 			qualitas.descargaEnvio($scope.ruta);
-// 		});
-
-//     }
-
-//     //prepara los folios y busca las imagenes para el envio
-//     $scope.generarSelectos = function(){
-
-//     	$('#boton').button('loading');
-//     	qualitas.generaEnvioFE($scope.selectos).success( function (data){
-			 
-// 			if (data.correctos.length == 0) {
-
-// 				loading.error('No se encontraron archivos de nungun folio');
-
-// 			}else{
-
-// 				$scope.total = $scope.selectos.length;
-// 				$scope.numerocorrectos = data.correctos.length;
-// 				$scope.compresos = data.comprimidos.length;
-// 				$scope.incorrectos = data.incorrectos;
-// 				$scope.correctos = data.correctos;
-// 				$scope.listos = data.comprimidos;
-// 				$scope.ruta = data.archivo;
-// 				$('#modalEx').modal({
-// 					backdrop:'static',
-// 					keyboard:false
-// 				});
-// 			}
-
-// 			$('#boton').button('reset');
-			
-// 		}).error( function (xhr,status,data){
-// 			$('#boton').button('reset');
-// 		});
-
-//     }
-
-// 	//////LLena el grid y toma filtros
-
-// 	///filtros
-// 	$scope.selectos = [];
-
-// 	$scope.filterOptions = {
-// 	    filterText: '',
-// 	    useExternalFilter: false
-// 	};
-
-
-// 	var csvOpts = { columnOverrides: { obj: function (o) {
-// 	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
-// 	    } },
-// 	    iEUrl: 'downloads/download_as_csv'
-// 	};
-
-		
-
-//     ////opciones del grid                 
-//     $scope.gridOptions = { 
-//     	data: 'listado', 
-//     	enableColumnResize:true,
-//     	enablePinning: true, 
-//     	enableRowSelection:true,
-//     	showSelectionCheckbox: true,
-//         selectWithCheckboxOnly: false,
-//     	multiSelect:true,
-//     	pagingOptions: $scope.pagingOptions,
-//     	selectedItems: $scope.selectos, 
-//     	filterOptions: $scope.filterOptions,
-//     	enableCellEdit: true,
-//     	columnDefs: [
-//                     { field:'folioElectronico',displayName:'FOLIO QUA', width: 120, pinned: true},
-//                     { field:'folioAdministradora',displayName:'FOLIO ADMIN', width: 120, pinned: false},
-//                     { field:'folioSistema',displayName:'FOLIO SISTEMA', width: 120 },
-//                     { field:'claveproovedor',displayName:'PROVEEDOR', width: 120 },
-//                     { field:'claveprestador',displayName:'PROV SERV', width: 120 },
-//                     { field:'Siniestro',displayName:'SINIESTRO', width: 120 },
-// 		            { field:'Reporte',displayName:'REPORTE', width: 120 },
-// 		            { field:'Poliza',displayName:'POLIZA', width: 120 },
-// 		            { field:'Lesionado',displayName:'LESIONADO', width: 330 },
-// 		            { field:'Afectado',displayName:'AFECTADO', width: 120},
-// 		            { field:'Cobertura',displayName:'COBERTURA', width: 120 },
-// 		            { field:'Subtotal',displayName:'SUBTOTAL', width: 120 },
-// 		            { field:'iva',displayName:'IVA', width: 120 },
-// 		            { field:'Descuento',displayName:'DESCUENTO', width: 120 },
-// 		            { field:'Total',displayName:'TOTAL', width: 120 },
-// 		            { field:'FechaCaptura',visible:false, width: 120 },
-// 		            { field:'TipoUnidad',visible:false, width: 120 }
-//         ],
-//         showFooter: true,
-//         showFilter:false
-//     };
-
-
-//     $scope.selecciona = function(limite){
-
-//     	$scope.gridOptions.$gridScope.toggleSelectAll(false);
-
-//     	var numero = Number(limite);
-// 		angular.forEach($scope.listado, function(item, index){
-			
-// 			if (index < numero) {
-// 				//$scope.selectos.push(item);
-// 				$scope.gridOptions.selectItem(index, true);
-// 			};
-
-// 		});
-
-// 		// console.log($scope.selectos);
-// 	};
-	
-// 	$scope.quitaselectos = function(){
-
-//     	$scope.gridOptions.$gridScope.toggleSelectAll(false);
-//     }
-
-//     $scope.filtra = function(){
-
-//     	console.log($scope.fe);
-
-//     	if($scope.fe.length == 0){
-//     		var objeto1 = "";
-//     	}else{
-//     		var objeto1 = "FacturaEx:" + $scope.fe + "; ";	
-//     	}
-
-
-//     	var filtro = objeto1;
-
-//     	$scope.filterOptions.filterText = filtro;
-
-//     	//console.log(filtro);
-
-//     }
-
-//     $scope.quitafiltro = function(){
-
-//     	$scope.filterOptions.filterText = ''; 
-
-//     	//console.log($scope.buscarXfecha);
-
-//     	if ($scope.buscarXfecha == 1) {
-
-//     		$scope.buscarXfecha = 0;
-//     		$scope.foliosxarea();
-//     	};
-    	
-    
-//     }
-
-// };
 
 // Facturas Qualitas que no tuvieron imagenes disponibles
 function formatoQualitasFEarchivosCtrl($scope, $rootScope, find, loading, qualitas, reportes){
@@ -499,6 +290,11 @@ function formatoQualitasFEarchivosCtrl($scope, $rootScope, find, loading, qualit
 
 		// console.log($scope.selectos);
 	};
+
+	//descarga los archivos 
+	$scope.descargar = function(datos){
+		qualitas.descargaArchivos(datos);
+	}
 
 
 	$scope.generarListado = function(){

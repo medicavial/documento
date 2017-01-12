@@ -239,9 +239,6 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
         
     }
 
-
-
-
     //////LLena el grid y toma filtros
 
     ///filtros

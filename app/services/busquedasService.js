@@ -67,6 +67,9 @@ app.factory("find", function($http,api){
         foliosFePendientes:function(datos){
             return $http.post(api + 'facturacionExpress/pendientes',datos);
         },
+        foliosFeBetaPendientes:function(datos){
+            return $http.post(api + 'facturacionExpressBeta/pendientes',datos);
+        },
         foliosSacecoPendientes:function(datos){
             return $http.post(api + 'saceco/pendientes',datos);
         },
