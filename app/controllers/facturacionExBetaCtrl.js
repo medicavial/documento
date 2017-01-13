@@ -1,5 +1,5 @@
 //Area de facturacion Express Fusion normal y nuevo
-function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, checkFolios,datos,$timeout,facturacionExpress,webStorage,operacion,tickets){
+function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, checkFolios,datos,$timeout,facturacionExpress,webStorage,operacion,tickets,saceco){
 
     $scope.tituloFEBeta = 'Facturacion Express 3.0';
     $scope.clientes = datos[0].data;
@@ -968,11 +968,12 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
 
     $scope.recargarPagina = function(){
         
-        // location.reload(true);
+        $scope.consultaPendientes();
+        
     }
 
 };
 
-facturacionExBetaCtrl.$inject = ['$scope', '$rootScope', '$filter', 'find', 'loading', 'checkFolios','datos','$timeout','facturacionExpress','webStorage','operacion','tickets'];
+facturacionExBetaCtrl.$inject = ['$scope', '$rootScope', '$filter', 'find', 'loading', 'checkFolios','datos','$timeout','facturacionExpress','webStorage','operacion','tickets','saceco'];
 
 app.controller('facturacionExBetaCtrl',facturacionExBetaCtrl);
