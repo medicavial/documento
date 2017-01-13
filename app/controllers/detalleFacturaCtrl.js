@@ -198,7 +198,8 @@ function detalleFacturaCtrl($scope, $rootScope,$http, find, loading,api , Detall
 
             xml:  $scope.filexml,
             pdf: $scope.filepdf,
-            ruta: $scope.directorio
+            ruta: $scope.directorio,
+            folio: $routeParams.folio
         }
 
         $http.post(api+'DetalleFacturas/revisa', $scope.files).success(function (data){
@@ -214,7 +215,6 @@ function detalleFacturaCtrl($scope, $rootScope,$http, find, loading,api , Detall
         });
 
     }
-
 
 };
 

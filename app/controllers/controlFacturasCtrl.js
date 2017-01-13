@@ -57,12 +57,14 @@ function controlFacturasCtrl($scope, $rootScope,$http, find, loading,api , Factu
     var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
 
     $scope.onDblClickRow = function(row){
-        alert('hola');
 
       $scope.dfolios = [];
 
       $scope.dfolios = row.entity.Folio;
       $location.path('/detalleAtencion/'+row.entity.Folio);
+      console.log(row.entity);
+
+
 
     };
 
@@ -81,6 +83,7 @@ function controlFacturasCtrl($scope, $rootScope,$http, find, loading,api , Factu
         enableCellEdit: false,
         rowTemplate: rowTempl,
         columnDefs: [
+                    { field:'revisado',displayName:'Revisado', width: 120, pinned: true,  cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.bitrevisado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.bitrevisado ==  \'1\'" class="glyphicon glyphicon-tags"></i> {{row.getProperty(col.field)}}</div>'},
                     { field:'Unidad',displayName:'Proveedor', width: 120, pinned: true},
                     { field:'Folio', displayName:'Folio' , width: 120 , pinned: true},
                     { field:'Lesionado', width: 330, pinned: true },

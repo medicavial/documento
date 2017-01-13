@@ -874,23 +874,21 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                                     $scope.detalles[idx].elimina = true;
                                     $scope.btndelete = true;
 
-                                    // for (var i = 0; i < $scope.detalles.length; i++){
+                                    for (var i = 0; i < $scope.detalles.length; i++){
 
-                                    var valor1 = $scope.detalles[idx].importe;
+                                    var valor1 = $scope.detalles[i].total;
                                     var numero1 = valor1.replace(",",'');
                                     suma1 += parseFloat(numero1);
                                     var sumas1 = suma1.toFixed(2);
                                     $scope.totalimporte= sumas1;
 
-                                    // }
-                                  
+                                    }
                                 }else{
 
                                     swal('Upss','Tu Factura no coincide con el Emisor','error');
 
                                     // var archivo = $scope.datos.leexml;
                                     // $scope.elimina_ahora(archivo);
-
                                     $scope.detalles[idx].importe =  '';
                                     $scope.detalles[idx].total = '';
                                     $scope.detalles[idx].foliofiscal = '';
@@ -970,7 +968,8 @@ $scope.guardaRelacionInd = function(success){
         observacion : $scope.observaciones,
         archivos : $scope.archivos,
         usucarpeta: $rootScope.user,
-        unidad: $scope.datos.claveunidad
+        unidad: $scope.datos.claveunidad,
+        total:  $scope.totalimporte
 
     }
 
