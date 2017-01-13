@@ -720,7 +720,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
     }
 
     //guarda captura
-    $scope.captura = function(){
+    $scope.capturaDatos = function(){
 
         $('#botonAct').button('loading');
 
@@ -735,7 +735,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
             suministros:$scope.suministros,
             usuario:$rootScope.id
         };
-
+        console.log(datos);
 
         //actualizamos datos en web para verificar que la informacion este actualizada
         facturacionExpress.actualizaFolio($scope.detalle.expediente).success(function (data){
