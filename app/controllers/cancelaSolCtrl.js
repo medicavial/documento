@@ -54,8 +54,8 @@ app.controller('cancelaSolCtrl', function ($scope, loading, find, operacion){
         selectedItems: $scope.listado, 
         filterOptions: $scope.filterOptions,
         columnDefs: [
-
-					{ field:'Exp_mcancelado', displayName:'Tipo de Cancelación' , width: 220, pinned:true,},
+                    { field:'Exp_folio', displayName:'Folio' , width: 120, pinned:true,},
+					{ field:'Exp_mcancelado', displayName:'Tipo de Cancelación' , width: 220},
 	                { field:'Usu_registro', displayName:'Usuario que Canceló', width: 170, visible: true},
 	                { field:'Exp_motCancel', displayName:'Motivo de Cancelación', width: 180, visible:true },
 	                { field:'Exp_duplicado', displayName:'Folio Sustituto', width: 135 },
