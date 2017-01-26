@@ -9,6 +9,10 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
     $scope.usrWeb = sessionStorage.getItem("userWeb");    
     $scope.usrMV = sessionStorage.getItem("userWeb");
     $scope.verRespuesta=false;
+    $scope.cedulaValida=false;
+    $scope.cargador = false;
+    $scope.sinCedula = true;
+    $scope.msjAlerta = '';
 
     loading.despedida();
 
@@ -356,13 +360,10 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
             });
 
         }else{
-
             $scope.edicionFE = true;
-
             find.detalleFolioWeb(expediente).success(function (data){
-
+                console.log(data);
                 loading.despedida();
-
                 $scope.edicionFE = true;
                 $scope.vistaArchivos = false;
                 $scope.vistaCuestionario = false;
@@ -520,36 +521,25 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
     //captura de ajustador nuevo
 
     $scope.guardaAjustador = function(){
-
         if ($scope.ajustador == '') {
-
             alert('Debes ingresar ajustador')
         }else{
-
             //validamos que realmente no exista el ajustador haciendo filtro en la lista que tenemos
             var encontrados = $filter('filter')($scope.ajustadores, $scope.ajustador);
-
             if (encontrados.length == 0) {
-
                 var info = {
                     nombre:$scope.ajustador,
                     cliente:$scope.captura.EMPClave
                 }
-
                 facturacionExpress.capturaAjustador(info).success(function (data){
                     $scope.captura.Ajustador = data;
                     $scope.ocultaBotones = true;
                 });
-
             }else{
                 alert('Este ajustador ya se encuentra registrado consultalo en la lista');
             }
-
-
             // console.log(encontrados);
-
         }
-
     }
 
     //consulta tipos de lesion existentes
@@ -969,6 +959,70 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
     $scope.recargarPagina = function(){
         
         $scope.consultaPendientes();
+        
+    }
+
+    $scope.validaFolioAutorizacion = function(){  
+        $scope.cargador=true; 
+        $scope.msjAlerta = '';             
+        if($scope.captura.cedulaElectronica!=undefined){
+                            
+            if($scope.captura.cedulaElectronica.length==13){
+               
+                console.log($scope.cargador);
+                find.consultaCedula($scope.captura.cedulaElectronica,$scope.captura.Nombre).success(function (data){
+                    console.log(data); 
+                    if(data==0){
+                        $scope.captura.RegCompania='';
+                        //$scope.captura.Nombre = '';
+                        $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
+                        $scope.captura.Poliza = $scope.detalle.expediente.poliza;
+                        $scope.captura.Reporte = $scope.detalle.expediente.reporte; 
+                        $scope.captura.RegCompania = '';                                               
+                        $scope.cargador=false;
+                        $scope.msjAlerta = 'NO SE ENCONTRO LA CÉDULA';
+                    }else if(data==1){
+                        $scope.captura.RegCompania='';
+                        //$scope.captura.Nombre = '';
+                        $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
+                        $scope.captura.Poliza = $scope.detalle.expediente.poliza;
+                        $scope.captura.Reporte = $scope.detalle.expediente.reporte;                         
+                        $scope.msjAlerta = 'EXISTEN CÉDULAS DUPLICADAS';
+                        $scope.cargador=false;
+                    }else if(data==2){                        
+                        //$scope.captura.Nombre = '';
+                        $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
+                        $scope.captura.Poliza = $scope.detalle.expediente.poliza;
+                        $scope.captura.Reporte = $scope.detalle.expediente.reporte;     
+                        $scope.captura.RegCompania = '';
+                        $scope.msjAlerta = 'EL NOMBRE NO COINCIDE';
+                        $scope.cargador=false;
+                    }                   
+                    else{
+                        $scope.captura.RegCompania=data.CQ_folioelectronico;
+                        $scope.captura.Nombre = data.CQ_paciente;
+                        $scope.captura.Siniestro = data.CQ_siniestro;
+                        $scope.captura.Poliza = data.CQ_poliza;
+                        $scope.captura.Reporte = data.CQ_reporte;
+                        $scope.cargador=false;
+                    }
+                });
+                
+            }
+        }
+    }
+
+    $scope.validaSinCedula = function(){
+        if($scope.sinCedula==false){
+            $scope.msjAlerta='';
+            $scope.captura.cedulaElectronica=''; 
+            $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
+            $scope.captura.Poliza = $scope.detalle.expediente.poliza;
+            $scope.captura.Reporte = $scope.detalle.expediente.reporte; 
+            //$scope.captura.RegCompania = $scope.detalle.expediente.poliza;
+            $scope.cargador=false;      
+        }
+        
         
     }
 

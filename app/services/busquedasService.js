@@ -22,6 +22,9 @@ app.factory("find", function($http,api){
         conceptotramite:function(){
             return $http.get(api+'consulta/concepto');
         },
+        consultaCedula :function(cedula,nombre){
+            return $http.get(api + 'facturacionExpress/consultaCedula/'+ cedula+'/'+nombre);
+        },
         consultaFlujo:function(usuario){
             return $http.get(api+'flujo/consulta/' + usuario);
         },
