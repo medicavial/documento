@@ -881,6 +881,15 @@ app.factory("FacturaUnidades", function($q,$http,find,api){
         },
         unidades:function(){
             return $http.post(api+'FacturaUnidades/unidades');
+        },
+        borratemporales:function(){
+            return $http.post(api+'FacturaUnidades/borratemporales');
+        },
+        listadofacturas:function(){
+            return $http.post(api+'FacturaUnidades/listadofacturas');
+        },
+        listadofacturasxfecha:function(datos){
+            return $http.post(api+'FacturaUnidades/listadofacturasxfecha', datos);
         }
     }
 
@@ -904,6 +913,20 @@ app.factory("FacturaZima", function($q,$http,find,api){
     return{
         unidades:function(){
             return $http.post(api+'FacturaZima/unidades');
+        }
+
+    }
+
+});
+
+app.factory("Ordenes", function($q,$http,find,api){
+
+    return{
+        listadoOrdenPago:function(){
+            return $http.post(api+'OrdenesPago/listadoOrdenPago');
+        },
+        aceptaOrden:function(datos){
+            return $http.post(api + 'OrdenesPago/aceptaOrden', datos);
         }
 
     }

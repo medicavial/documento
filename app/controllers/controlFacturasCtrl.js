@@ -1,20 +1,70 @@
 /// Facturas qualitas
-function controlFacturasCtrl($scope, $rootScope,$http, find, loading,api , FacturaUnidades, $location){
+function controlFacturasCtrl($scope, $rootScope,$http, find, loading,api , FacturaUnidades, $location,leexml){
 
 	$scope.inicio = function(){
 
+        $scope.datos = {
+
+            fechaini: FechaAct,
+            fechafin: FechaAct
+        }
+
 		$scope.tituloFQ = "Factura x Atención";
-		$scope.fechaini = FechaAct;
-		$scope.fechafin = FechaAct;
+		$scope.datos.fechaini = FechaAct;
+		$scope.datos.fechafin = FechaAct;
 		$scope.listado = [];
         $scope.Altaunidades();
-		// $scope.buscafacturas();
+        $scope.listadofacturas();
+
 
 		$('#modalEx').on('hidden.bs.modal', function (e){
 			$scope.gridOptions.$gridScope.toggleSelectAll(false);
 		 	// $scope.buscafacturas();
 		});
 	}
+
+    $scope.borratemporales = function(){
+
+      FacturaUnidades.borratemporales().success(function (data){
+
+      });
+
+    }
+
+    $scope.listadofacturasxfecha = function(){
+
+        loading.cargando('Buscando Folios(s)');
+
+        FacturaUnidades.listadofacturasxfecha($scope.datos).then(function (data){ 
+            if(data){
+
+                $scope.listado = data.data;
+                $scope.cantidad = data.length -1;
+
+            }else{
+                $scope.listado = [];
+            }       
+            loading.despedida();
+        });
+    }
+
+    $scope.listadofacturas = function(){
+
+        loading.cargando('Buscando Folios(s)');
+
+        FacturaUnidades.listadofacturas().then(function (data){ 
+            if(data){
+
+                $scope.listado = data.data;
+                $scope.cantidad = data.length -1;
+
+            }else{
+                $scope.listado = [];
+            }       
+            loading.despedida();
+        });
+    }
+
 	//muestra facturas sin procesar
 	$scope.buscafacturas = function(){
 
@@ -34,7 +84,6 @@ function controlFacturasCtrl($scope, $rootScope,$http, find, loading,api , Factu
         	}		
     		loading.despedida();
 		});
-
 	}
 
 	//////LLena el grid y toma filtros
@@ -116,47 +165,81 @@ $scope.enviaFolios = function(){
 
     $('#boton').button('loading');
 
-    // console.log($scope.selectedRows);
+        var areaRecibe = 6;
+        var areaEntrega = 6;
+        var usuarioRecibe = 78;
+
+        var ruta = api+'FacturaUnidades/actualiza';  
+        var ruta2 = api+'FacturaUnidades/ordenPago';  
+        var folios=[];
+        var fol;
+        var archivo =[]; 
+        var i;
+
+        $scope.xml = {
+
+            total: '',
+            foliofiscal: '',
+            fechaemision:'',
+            descuento: '',
+            emisor:'',
+            usuarioentrega:'',
+            areaentrega:'',
+            usuariorecibe:'',
+            arearecibe:''
+
+
+        }
 
     if ($scope.selectedRows.length > 0){
-        FacturaUnidades.enviaFolios($scope.selectedRows, $rootScope.userWeb).success(function (data){
 
-            var areaRecibe = 6;
-            var areaEntrega = 13;
-            var usuarioRecibe = 78;
+        for (a = 0; a < $scope.selectedRows.length; a++){
 
-            var ruta = api+'FacturaUnidades/actualiza';  
-            var folios = [];
-            for (var i = 0; i < $scope.selectedRows.length; i++){
+            FacturaUnidades.enviaFolios({folio: $scope.selectedRows[a].Folio}, $rootScope.userWeb).success(function (data){
 
-                folios.push($scope.selectedRows[i].Folio); 
+                console.log(data);
 
-            };
-            var datos = {
+                leexml.getxmlFE(data.Nombre).success(function(datos){
+                courses  = x2js.xml_str2json(datos);
 
-                folios:{folio:folios},//este el el conjunto de folios validos de nuestra primer promesa devuelta
-                usuarioentrega:Number($rootScope.id),
-                areaentrega:Number(areaEntrega),
-                usuariorecibe:Number(usuarioRecibe),
-                arearecibe:Number(areaRecibe)
-            };
+                $scope.xml.total = courses.Comprobante._total;
+                $scope.xml.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
+                $scope.xml.fechaemision = courses.Comprobante._fecha;
+                $scope.xml.descuento = courses.Comprobante._descuento;
+                $scope.xml.emisor = courses.Comprobante.Emisor._nombre;
+                $scope.xml.rfc_emisor = courses.Comprobante.Emisor._rfc;
+                $scope.xml.usuarioentrega =Number($rootScope.id);
+                $scope.xml.areaentrega =Number(areaEntrega);
+                $scope.xml.usuariorecibe =Number(usuarioRecibe);
+                $scope.xml.arearecibe =Number(areaRecibe);
+                $scope.xml.folio = data.Folios;
+                $scope.xml.tipoorden = 1;
 
-            $http.post(ruta,datos,{timeout: 10000})
-            .success( function (data){
+        
+                $http.post(ruta,$scope.xml).success(function (data){
 
-                // alert('hola');
-                $scope.listadoFact();
-                $('#boton').button('reset');
+                }).error( function (data){
 
-            }).error( function (data){
+                    alert('Error, Intentalo de Nuevo');
 
-                $('#boton').button('reset');
-                alert('Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas')
+                }); 
 
-            });
-                  
+                $http.post(ruta2,$scope.xml).success(function (data){
 
-            });
+                        // $scope.listadoFact();
+                        $scope.borratemporales();
+                        $scope.listadofacturas();
+
+                    }).error( function (data){
+
+                        alert('Error, Intentalo de Nuevo');
+
+                    }); 
+
+                                 
+           });
+        });
+        }
 
 
     }else{
@@ -208,9 +291,35 @@ $scope.buscaxUnidad = function(id){
 
 }
 
+// $scope.filterOptions = {
+// filterText: ''
+// };
+
+// $scope.gridOptions = {
+// data: 'listado',
+// filterOptions: $scope.filterOptions
+// };
+
+$scope.filtrarx = function() {
+
+var filterText = 'revisado:' + $scope.estatus;
+if (filterText !== 'revisado:') {
+  $scope.filterOptions.filterText = filterText;
+} else {
+  $scope.filterOptions.filterText = '';
+}
+
+}
+
+$scope.tipoxOrden = function(){
+
+    FacturaUnidades.tipoxOrden().success( function (data) {
+        $scope.ordenes = data;
+        
+     });
+}
+
 };
 
-controlFacturasCtrl.$inject = ['$scope', '$rootScope','$http', 'find', 'loading', 'api', 'FacturaUnidades', '$location'];
-
-
+controlFacturasCtrl.$inject = ['$scope', '$rootScope','$http', 'find', 'loading', 'api', 'FacturaUnidades', '$location','leexml'];
 app.controller('controlFacturasCtrl',controlFacturasCtrl);

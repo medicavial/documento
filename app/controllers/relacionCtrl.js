@@ -15,7 +15,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
     $scope.inicio = function(){
 
         $rootScope.area = 6;
-        $scope.tituloR = "Folios sin Relación";
+        $scope.tituloR = "Ordenes Para Relacionar";
         $scope.push = false;
         $scope.factglobal = [];
         $scope.iniciorelacion = true;
@@ -265,6 +265,11 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                     { field:'Etapa', width: 120, pinned: true },
                     { field:'Entrega', width: 80 , pinned: true},
                     { field:'Lesionado', width: 330, pinned: true },
+                    { field:'nombreOrden', width: 120 },
+                    { field:'foliofiscal', width: 120 },
+                    { field:'nombreEmisor', width: 120 },
+                    { field:'rfcemisor', width: 120 },
+                    { field:'Total', width: 120 },
                     { field:'Producto', width: 120 },
                     { field:'Triage', width: 120 },
                     { field:'Cliente', width: 100 },
@@ -288,7 +293,8 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                     { field:'FacDoc', width: 80 },
                     { field:'RelP', width: 80 },
                     { field:'Pagado', width: 80 },
-                    { field:'Cobrado', width: 80 }
+                    { field:'Cobrado', width: 80 },
+                    { field:'nombreOrden', width: 80 }
         ],
         showFooter: true,
         showFilter:false,
@@ -576,6 +582,8 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
             observacion : $scope.observaciones
         }
 
+        var suma2 = 0
+
         for (var i = 0; i < $scope.detalles.length; i++){
 
             if ($scope.detalles[i].tipotramite == undefined){ 
@@ -588,6 +596,30 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
                 $scope.detalles[i].concepto = 0;
             }
+
+            if ($scope.detalles[i].foliofiscal != '') {
+
+                $scope.factura.importe = '';
+                $scope.factura.total = $scope.detalles[i].total;
+                $scope.factura.foliofiscal = $scope.detalles[i].foliofiscal;
+                $scope.factura.fechaemision = '';
+                $scope.factura.descuento = '';
+                $scope.factura.emisor = $scope.detalles[i].nombreEmisor;
+                $scope.factura.rfcemisor = $scope.detalles[i].rfcemisor;
+                $scope.factura.descuento = '';
+
+
+            };
+
+                if ($scope.detalles[i].total == '') {
+                    var valor2 = $scope.detalles[i].total;
+                    var numero2 = valor2.replace(",",'');
+                    suma2 += parseFloat(numero2);
+                    var sumas2 = suma2.toFixed(2);
+                    $scope.totalimporte= sumas2;
+                    console.log(valor2);
+                }
+
         }
 
         webStorage.local.add('relacionesData', JSON.stringify($scope.relaciones));
@@ -621,7 +653,16 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                         swal("Factura Global", "Folios Relacionado" + $scope.numreferencia, "success");   
                         $scope.editafactura = true;
                         $scope.subefactura = false;
-                        $scope.global = true;
+                        console.log($scope.detalles[0]);
+                        if($scope.detalles[0].foliofiscal == null){
+
+                            $scope.global = true;
+
+                        }else{
+
+                            $scope.global = false;
+
+                        }
                         $scope.subefacturaglo = true;
                         $scope.btnsiguiente = true;
 
@@ -881,6 +922,8 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                                     suma1 += parseFloat(numero1);
                                     var sumas1 = suma1.toFixed(2);
                                     $scope.totalimporte= sumas1;
+
+                                    console.log($scope.totalimporte);
 
                                     }
                                 }else{

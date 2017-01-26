@@ -6,12 +6,17 @@
 		<h1>{{tituloR}}</h1>
 	</div>
 
-	<h2>Folios activos en el area</h2>
 	<div class="row">
 
 		<div class="col-md-2">
 			<label>Unidad</label>
 			<select class="form-control"  ng-model="norelacion.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades" ng-change="buscaxProveedor(norelacion.unidad)" >
+				<option value="">----</option>
+			</select>
+		</div>
+		<div class="col-md-2">
+			<label>Tipo Facturación</label>
+			<select class="form-control"  ng-model="tipoOrden" ng-options="orden.id as orden.nombre for orden in ordenes" ng-change="tipoxOrden(tipoOrden)">
 				<option value="">----</option>
 			</select>
 		</div>

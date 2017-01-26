@@ -96,7 +96,6 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter,$location,$h
          });
     }
 
-
     $scope.recepcionPagos = function(){
 
         loading.cargando('Buscando Folio');

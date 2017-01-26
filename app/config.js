@@ -711,7 +711,6 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'cancelaSolCtrl'
     });
 
-
     ////////  codigo pagos ////
     ///
     $routeProvider.when('/detalleAtencion/:folio',{
@@ -729,8 +728,16 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'controlFacturasZimaCtrl'
     });
 
+    $routeProvider.when('/pagoManual',{
+            templateUrl   : 'vistas/pagoManual.html',
+            controller    : 'pagoManualCtrl'
+    });
 
-    
+    $routeProvider.when('/ordenPago',{
+            templateUrl   : 'vistas/ordenPago.html',
+            controller    : 'ordenPagosCtrl'
+    });
+
     $routeProvider.when('/relaciona',{
             templateUrl   : 'vistas/relacion.html',
             controller    : 'relacionCtrl',

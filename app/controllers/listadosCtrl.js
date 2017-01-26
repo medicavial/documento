@@ -1719,7 +1719,6 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 
 		 });
 	}
-
 	//Enlista las unidades
 	$scope.altaunidades = function(){
 
@@ -1736,6 +1735,7 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 		$('#boton').button('loading');
 
 		if ($scope.selectos.length > 0) {
+			console.log($scope.selectos);
 
 			checkFolios.aceptaEntrega($scope.selectos)
 			.success(function (data){

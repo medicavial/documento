@@ -170,8 +170,8 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
                     { field:'tiporelacion',displayName:'Tipo Relacion', width: 120 },
                     { field:'total',displayName:'Importe', width: 120 },
                     { field:'unidad',displayName:'Unidad', width: 120 },
-                    { field:'completa',displayName:'Relacion Completa', width: 100 },
-                    { field:'aplicada',displayName:'Relacion Aplicada', width: 220 },
+                    // { field:'completa',displayName:'Relacion Completa', width: 100 },
+                    // { field:'aplicada',displayName:'Relacion Aplicada', width: 220 },
                     { field:'creada',displayName:'Fecha Creada', width: 120 },
                     { field:'nombre',displayName:'Usuario Creo', width: 150 }
 

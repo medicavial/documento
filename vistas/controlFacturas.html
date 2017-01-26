@@ -16,13 +16,13 @@
     <legend>Fecha Atención</legend>
     <div class="row">
         <div class="col-sm-3 col-md-3">
-            <input type="text" ng-model="fechaini" class="form-control" id="datepicker" placeholder="inicial" />
+            <input type="text" ng-model="datos.fechaini" class="form-control" id="datepicker" placeholder="inicial" />
         </div>
         <div class="col-sm-3 col-md-3">
             <div class="input-group">
-                <input type="text" ng-model="fechafin" class="form-control" id="datepicker2" placeholder="Final" />
+                <input type="text" ng-model="datos.fechafin" class="form-control" id="datepicker2" placeholder="Final" />
                 <span class="input-group-btn">
-                    <button class="btn btn-default" type="button" ng-click="buscafacturas()"><i class="glyphicon glyphicon-search"></i></button>
+                    <button class="btn btn-default" type="button" ng-click="listadofacturasxfecha()"><i class="glyphicon glyphicon-search"></i></button>
                 </span>
             </div>
         </div>
@@ -32,6 +32,13 @@
               <option value="">Unidad</option>
             </select>
           </div>
+        </div>
+        <div class="col-sm-2 col-md-2">
+              <select class="form-control m-b" ng-model="estatus" ng-change="filtrarx()" required>
+                  <option value=""> Filtra x </option>
+                  <option value="no autorizado"> No Autorizado </option>
+                  <option value="autorizado"> Autorizado </option>
+              </select>
         </div>
     </div>
     <br>
