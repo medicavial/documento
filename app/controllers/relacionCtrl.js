@@ -611,7 +611,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
             };
 
-                if ($scope.detalles[i].total == '') {
+                if ($scope.detalles[0].total != '') {
                     var valor2 = $scope.detalles[i].total;
                     var numero2 = valor2.replace(",",'');
                     suma2 += parseFloat(numero2);
