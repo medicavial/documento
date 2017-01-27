@@ -228,7 +228,9 @@ $scope.enviaFolios = function(){
 
                         // $scope.listadoFact();
                         $scope.borratemporales();
-                        $scope.listadofacturas();
+                        swal("ok","Tus folios se enviaron","success");
+
+                        // $scope.listadofacturas();
 
                     }).error( function (data){
 
