@@ -19,8 +19,8 @@ app.factory("find", function($http,api){
         categoriaspagos:function(){
             return $http.get(api+'tickets/pagos/categorias');
         },
-        conceptotramite:function(){
-            return $http.get(api+'consulta/concepto');
+        conceptotramite:function(tipoTramite){
+            return $http.get(api+'consulta/concepto/'+ tipoTramite);
         },
         consultaCedula :function(cedula,nombre){
             return $http.get(api + 'facturacionExpress/consultaCedula/'+ cedula+'/'+nombre);

@@ -52,7 +52,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         $scope.empresas();
         $scope.Altaunidades();
         $scope.productos();
-        $scope.conceptoTramite();
         $scope.tipoTramite(); 
         $scope.borratemporales();
 
@@ -132,14 +131,16 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
     //busca unidades
     $scope.Altaunidades = function(){
 
-        find.unidades().success( function (data) {
+        find.unidades().success( function (data){
+
             $scope.unidades = data;
             
          });
     }
 
-    $scope.conceptoTramite = function(){
-        find.conceptotramite().success( function (data) {
+    $scope.subtipotramite = function(idx,tipotramite){
+
+        find.conceptotramite(tipotramite).success( function (data){
 
             $scope.conceptost = data;
 
@@ -269,7 +270,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                     { field:'foliofiscal', width: 120 },
                     { field:'nombreEmisor', width: 120 },
                     { field:'rfcemisor', width: 120 },
-                    { field:'Total', width: 120 },
+                    { field:'total', width: 120 },
                     { field:'Producto', width: 120 },
                     { field:'Triage', width: 120 },
                     { field:'Cliente', width: 100 },
@@ -462,6 +463,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         
     }
 
+
     $scope.exporta = function(){
 
         $scope.selectos = $filter('filter')($scope.listado, $scope.filtrado);
@@ -498,6 +500,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
             var suma = 0;
             var suma1 = 0;
+            var suma2 = 0;
             for (var i = 0; i < $scope.detalles.length; i++){
 
 
@@ -513,6 +516,14 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                 suma1 += parseFloat(numero1);
                 var sumas1 = suma1.toFixed(2);
                 $scope.totales = sumas1;
+
+                if ($scope.detalles[0].total != '') {
+                    var valor2 = $scope.detalles[i].total;
+                    var numero2 = valor2.replace(",",'');
+                    suma2 += parseFloat(numero2);
+                    var sumas2 = suma2.toFixed(2);
+                    $scope.totalimporte= sumas2;
+                }
 
             }
 
@@ -572,141 +583,139 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
       }
     }
 
-    $scope.siguiente = function(){
+//     $scope.siguiente = function(){
 
-        $scope.relaciones = {
+//         $scope.relaciones = {
 
-            seleccionados : $scope.detalles,
-            numrelacion : $scope.referencia +'_'+$scope.numreferencia,
-            tipofactura : $scope.tipofactura,
-            observacion : $scope.observaciones
-        }
+//             seleccionados : $scope.detalles,
+//             numrelacion : $scope.referencia +'_'+$scope.numreferencia,
+//             tipofactura : $scope.tipofactura,
+//             observacion : $scope.observaciones
+//         }
+//         var suma2 = 0
 
-        var suma2 = 0
+//         for (var i = 0; i < $scope.detalles.length; i++){
 
-        for (var i = 0; i < $scope.detalles.length; i++){
+//             if ($scope.detalles[i].tipotramite == undefined){ 
+//                 console.log($scope.detalles[i].tipotramite);
 
-            if ($scope.detalles[i].tipotramite == undefined){ 
-                console.log($scope.detalles[i].tipotramite);
+//                 $scope.detalles[i].tipotramite = 0;
+//             }
 
-                $scope.detalles[i].tipotramite = 0;
-            }
+//             if ($scope.detalles[i].concepto == undefined){ 
 
-            if ($scope.detalles[i].concepto == undefined){ 
+//                 $scope.detalles[i].concepto = 0;
+//             }
 
-                $scope.detalles[i].concepto = 0;
-            }
+//             if ($scope.detalles[i].foliofiscal != '') {
 
-            if ($scope.detalles[i].foliofiscal != '') {
-
-                $scope.factura.importe = '';
-                $scope.factura.total = $scope.detalles[i].total;
-                $scope.factura.foliofiscal = $scope.detalles[i].foliofiscal;
-                $scope.factura.fechaemision = '';
-                $scope.factura.descuento = '';
-                $scope.factura.emisor = $scope.detalles[i].nombreEmisor;
-                $scope.factura.rfcemisor = $scope.detalles[i].rfcemisor;
-                $scope.factura.descuento = '';
+//                 $scope.factura.importe = '';
+//                 $scope.factura.total = $scope.detalles[i].total;
+//                 $scope.factura.foliofiscal = $scope.detalles[i].foliofiscal;
+//                 $scope.factura.fechaemision = '';
+//                 $scope.factura.emisor = $scope.detalles[i].nombreEmisor;
+//                 $scope.factura.rfcemisor = $scope.detalles[i].rfcemisor;
+//                 $scope.factura.descuento = '';
 
 
-            };
+//             };
 
-                if ($scope.detalles[0].total != '') {
-                    var valor2 = $scope.detalles[i].total;
-                    var numero2 = valor2.replace(",",'');
-                    suma2 += parseFloat(numero2);
-                    var sumas2 = suma2.toFixed(2);
-                    $scope.totalimporte= sumas2;
-                    console.log(valor2);
-                }
+//                 if ($scope.detalles[0].total != '') {
+//                     var valor2 = $scope.detalles[i].total;
+//                     var numero2 = valor2.replace(",",'');
+//                     suma2 += parseFloat(numero2);
+//                     var sumas2 = suma2.toFixed(2);
+//                     $scope.totalimporte= sumas2;
+//                     console.log(valor2);
+//                 }
 
-        }
+//         }
 
-        webStorage.local.add('relacionesData', JSON.stringify($scope.relaciones));
+//         webStorage.local.add('relacionesData', JSON.stringify($scope.relaciones));
 
-            console.log($scope.detalles);
+//             console.log($scope.detalles);
 
-            if ($scope.detalles.tipotramite == 0 || $scope.detalles.concepto == 0) {
+//             if ($scope.detalles.tipotramite == 0 || $scope.detalles.concepto == 0) {
 
-                swal("Upss","Revisa que todos los campos esten llenos","error");
+//                 swal("Upss","Revisa que todos los campos esten llenos","error");
 
-            }else{
+//             }else{
 
-                console.log($scope.relaciones.tipofactura);
+//                 console.log($scope.relaciones.tipofactura);
 
-                if($scope.relaciones.tipofactura == 1){
+//                 if($scope.relaciones.tipofactura == 1){
 
-                 // $scope.subefacturaglobal = true;
-                 swal({   
-                    title: "¿Sera Factura Global?",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Si",   
-                    cancelButtonText: "No, Cancelar",   
-                    closeOnConfirm: false,   
-                    closeOnCancel: false 
-                }, 
-                function(isConfirm){  
+//                  // $scope.subefacturaglobal = true;
+//                  swal({   
+//                     title: "¿Sera Factura Global?",   
+//                     type: "warning",   
+//                     showCancelButton: true,   
+//                     confirmButtonColor: "#DD6B55",   
+//                     confirmButtonText: "Si",   
+//                     cancelButtonText: "No, Cancelar",   
+//                     closeOnConfirm: false,   
+//                     closeOnCancel: false 
+//                 }, 
+//                 function(isConfirm){  
 
-                    if (isConfirm) {     
-                        swal("Factura Global", "Folios Relacionado" + $scope.numreferencia, "success");   
-                        $scope.editafactura = true;
-                        $scope.subefactura = false;
-                        console.log($scope.detalles[0]);
-                        if($scope.detalles[0].foliofiscal == null){
+//                     if (isConfirm) {     
+//                         swal("Factura Global", "Folios Relacionado" + $scope.numreferencia, "success");   
+//                         $scope.editafactura = true;
+//                         $scope.subefactura = false;
+//                         console.log($scope.detalles[0]);
+//                         if($scope.detalles[0].foliofiscal == null){
 
-                            $scope.global = true;
+//                             $scope.global = true;
 
-                        }else{
+//                         }else{
 
-                            $scope.global = false;
+//                             $scope.global = false;
 
-                        }
-                        $scope.subefacturaglo = true;
-                        $scope.btnsiguiente = true;
+//                         }
+//                         $scope.subefacturaglo = true;
+//                         $scope.btnsiguiente = true;
 
 
-                    } else {    
+//                     } else {    
 
-                        swal("Cancela", "Relación Cancelada", "error"); 
-                        $scope.editafactura = false;
-                        $scope.subefactura = false;  
-                        $scope.global = false;
-                    } 
-                });
+//                         swal("Cancela", "Relación Cancelada", "error"); 
+//                         $scope.editafactura = false;
+//                         $scope.subefactura = false;  
+//                         $scope.global = false;
+//                     } 
+//                 });
         
         
-                }else{
+//                 }else{
 
-            // $scope.subefacturaglobal = true;
+//             // $scope.subefacturaglobal = true;
 
-                 swal({   
-                    title: "¿Sera Factura Individual?",   
-                    type: "warning",   
-                    showCancelButton: true,   
-                    confirmButtonColor: "#DD6B55",   
-                    confirmButtonText: "Si",   
-                    cancelButtonText: "No, Cancelar",   
-                    closeOnConfirm: false,   
-                    closeOnCancel: false 
-                }, 
-                function(isConfirm){   
-                    if (isConfirm) {     
-                        swal("Factura Individual", "Folios Relacionado" + $scope.numreferencia, "success");   
-                        $scope.editafactura = true;
-                        $scope.subefactura = true;
-                        $scope.btnsiguiente = true;
-                    } else {     
-                        swal("Cancela", "Relación Cancelada", "error"); 
-                        $scope.editafactura = false; 
-                        $scope.subefactura = false; 
-                    } 
-                });
-            }
-        }
+//                  swal({   
+//                     title: "¿Sera Factura Individual?",   
+//                     type: "warning",   
+//                     showCancelButton: true,   
+//                     confirmButtonColor: "#DD6B55",   
+//                     confirmButtonText: "Si",   
+//                     cancelButtonText: "No, Cancelar",   
+//                     closeOnConfirm: false,   
+//                     closeOnCancel: false 
+//                 }, 
+//                 function(isConfirm){   
+//                     if (isConfirm) {     
+//                         swal("Factura Individual", "Folios Relacionado" + $scope.numreferencia, "success");   
+//                         $scope.editafactura = true;
+//                         $scope.subefactura = true;
+//                         $scope.btnsiguiente = true;
+//                     } else {     
+//                         swal("Cancela", "Relación Cancelada", "error"); 
+//                         $scope.editafactura = false; 
+//                         $scope.subefactura = false; 
+//                     } 
+//                 });
+//             }
+//         }
     
-}
+// }
 
     $scope.relacionaFactura = function(success){
         $scope.divglobal = true;
@@ -745,8 +754,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                                 $scope.factura.tipofactura = 0;
 
                         } }); 
-
-
 
             }).error( function (data){
                 
@@ -960,8 +967,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                   // return false;
 
                 }
-
-
     }
 }
 
@@ -1001,13 +1006,13 @@ $scope.eliminaxmlInd = function(idx){
     });
 }
 
-$scope.guardaRelacionInd = function(success){
+$scope.guardaRelacion = function(success){
 
     $scope.relaciones = {
 
         seleccionados : $scope.detalles,
         numrelacion : $scope.referencia +'_'+$scope.numreferencia,
-        tipofactura : $scope.relaciones.tipofactura,
+        // tipofactura : $scope.relaciones.tipofactura,
         observacion : $scope.observaciones,
         archivos : $scope.archivos,
         usucarpeta: $rootScope.user,

@@ -167,13 +167,10 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
         rowTemplate: rowTempl,
         columnDefs: [
                     { field:'relacion',displayName:'Relación', width: 120, pinned: true},
-                    { field:'tiporelacion',displayName:'Tipo Relacion', width: 120 },
+                    { field:'subtotal',displayName:'Subtotal', width: 120 },
                     { field:'total',displayName:'Importe', width: 120 },
-                    { field:'unidad',displayName:'Unidad', width: 120 },
-                    // { field:'completa',displayName:'Relacion Completa', width: 100 },
-                    // { field:'aplicada',displayName:'Relacion Aplicada', width: 220 },
-                    { field:'creada',displayName:'Fecha Creada', width: 120 },
-                    { field:'nombre',displayName:'Usuario Creo', width: 150 }
+                    { field:'unidad',displayName:'Unidad', width: 160 },
+                    { field:'fecha',displayName:'Fecha Registro', width: 150 },
 
         ],
         showFooter: true,
@@ -368,7 +365,6 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
               function(inputValue){   
                 if (inputValue === false) return false;      
                 if (inputValue === ""){ 
-
                 inputValue = 0;    
                   // swal.showInputError("Ocurrio un Error!!");     
                   // return false  
@@ -405,7 +401,6 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
 
             $scope.mensajetramite = 'Error, Intenta otra vez';
             $scope.tipoalerta = 'alert-success';
-
 
         }); 
 
@@ -539,6 +534,18 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
 
     });
  }
+
+$scope.generaReporte = function(success){
+
+    $http.post(api+'RelacionNP/generaReporte', $scope.listado).success(function (data){
+        
+    }).error( function (data){
+
+        $scope.mensajetramite = 'Error, Intenta otra vez';
+        $scope.tipoalerta = 'alert-danger';
+
+    }); 
+}
 
 };
 

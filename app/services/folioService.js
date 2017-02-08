@@ -932,3 +932,36 @@ app.factory("Ordenes", function($q,$http,find,api){
     }
 
 });
+
+app.factory("DetalleRelacion", function($q,$http,find,api,publicfiles){
+
+    return{
+        listadetalleRelacion:function(relacion){
+            return $http.post(api+'DetalleRelacion/listadetalleRelacion/'+ relacion);
+        },
+        descargaExcel : function(listado)
+        {
+            return $http.post(api + 'DetalleRelacion/generaReporte', listado).success(function (archivo){
+                // console.log(archivo);
+                var link = document.createElement("a");    
+                link.href = publicfiles  + archivo.file;
+                
+                //set the visibility hidden so it will not effect on your web-layout
+                link.style = "visibility:hidden";
+                link.download = publicfiles  + archivo.file;
+                
+                //this part will append the anchor tag and remove it after automatic click
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+
+            }).error(function (data){
+                mensajes.alerta('Error al generar el reporte intentalo nuevamente','error','top right','alert');
+            });
+        }
+
+
+
+    }
+
+});

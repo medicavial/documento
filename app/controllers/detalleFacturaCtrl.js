@@ -25,6 +25,7 @@ function detalleFacturaCtrl($scope, $rootScope,$http, find, loading,api , Detall
         $scope.usuario=data.respuesta[0].Usu_registro;
         $scope.registro=data.respuesta[0].Exp_fecreg; 
         $scope.directorio = data.respuesta[0].ruta;
+        $scope.claveunidad = data.respuesta[0].claveunidad;
         $scope.folio = $routeParams.folio;
 
         cveCia=$scope.cia_clave;
@@ -199,9 +200,9 @@ function detalleFacturaCtrl($scope, $rootScope,$http, find, loading,api , Detall
             xml:  $scope.filexml,
             pdf: $scope.filepdf,
             ruta: $scope.directorio,
-            folio: $routeParams.folio
+            folio: $routeParams.folio,
+            unidad: $scope.claveunidad
         }
-
         $http.post(api+'DetalleFacturas/revisa', $scope.files).success(function (data){
             $('#boton').button('reset');
             $scope.cargando = false;

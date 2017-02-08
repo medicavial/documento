@@ -83,13 +83,14 @@
 			    max-height: auto;
 			    overflow-y: auto; 
 			    overflow-x: auto;
-			    width: 120vw; background: #edebeb ">
+			    width: 150vw; background: #edebeb ">
          <thead>
             <tr>
-               <th ng-show="subefactura">Examinar</th>
-               <th ng-show="subefactura">Elimina</th>
-               <th ng-show="subefactura">Folio Fiscal</th>
-               <th ng-show="subefactura">Importe Factura</th>
+<!--                <th ng-show="subefactura">Examinar</th>
+               <th ng-show="subefactura">Elimina</th> -->
+               <th>Factura</th>
+               <th>Folio Fiscal</th>
+               <th>Importe Factura</th>
                <th>Proveedor</th>
                <th>Folio</th>
                <th>Etapa</th>
@@ -100,7 +101,7 @@
                <th>Reserva</th>
                <th>Tabulador</th> 
                <th>Tipo Tramite</th> 
-               <th>Concepto</th>
+               <th>Subtipo Tramite</th>
 
             </tr>
          </thead>
@@ -108,13 +109,14 @@
 
             <tr ng-repeat="detalle in detalles">
 
-              <td ng-show="subefactura"><label class="btn btn-primary">
+<!--               <td ng-show="subefactura"><label class="btn btn-primary">
                 Sube Factura <input type="file" style="display: none;" ng-disabled="factguardada" ng-file-select="subeXML($index,$files)">
                   </label>
               </td>
-              <td ng-show="subefactura"><label class="btn btn-danger glyphicon glyphicon-trash" ng-click="eliminaxmlInd($index)" ng-disabled="detalle.btn_edit"></label></td>
-              <td ng-show="subefactura">{{ detalle.foliofiscal}}</td>
-              <td ng-show="subefactura">{{ detalle.total}}</td>
+              <td ng-show="subefactura"><label class="btn btn-danger glyphicon glyphicon-trash" ng-click="eliminaxmlInd($index)" ng-disabled="detalle.btn_edit"></label></td> -->
+              <td>{{detalle.foliointerno}}</td>
+              <td>{{detalle.foliofiscal}}</td>
+              <td>{{detalle.total}}</td>
               <td>{{detalle.Unidad}}</td>
               <td>{{detalle.Folio}}</td>
               <td>{{detalle.Etapa}}</td>
@@ -124,30 +126,30 @@
               <td>{{detalle.Tipo}}</td> 
               <td>{{detalle.Reserva}}</td> 
               <td><input  ng-disabled="editafactura" type="text" class="form-control" ng-model="detalle.Tabulador" ng-change="suma()"></td>
-              <td><select  class="form-control" ng-model="detalle.tipotramite" ng-options="tipotramite.id as tipotramite.tipo for tipotramite in tipostramites" ng-disabled="editafactura" required>
+              <td><select  class="form-control"  id="$index" ng-model="detalle.tipotramite" ng-options="tipotramite.id as tipotramite.tipo for tipotramite in tipostramites" ng-disabled="editafactura"  ng-change="subtipotramite($index, detalle.tipotramite)" required>
 			            <option value=""> Tipo Tramite </option>
 			      </select>
 			  </td>
-              <td><select class="form-control" ng-model="detalle.concepto" ng-options="concepto.id as concepto.nombre for concepto in conceptost" ng-disabled="editafactura" required>
-						<option value=""> Concepto </option>
+              <td><select class="form-control" id="$index" ng-model="detalle.concepto" ng-options="concepto.id as concepto.nombre for concepto in conceptost" ng-disabled="editafactura" required>
+						<option value=""> Subtipo Tramite </option>
 				  </select>
 			  </td>  
             </tr>
             <tr>
-               <td ng-show="subefactura"></td>	
-               <td ng-show="subefactura"></td>
-               <td ng-show="subefactura"><h3><strong>Importe</h3></strong></td>
-               <td ng-show="subefactura"><h3><strong>{{ totalimporte | currency }}</h3></strong></td>
+<!--                <td ng-show="subefactura"></td>	
+               <td ng-show="subefactura"></td> -->
+               <td></td>
+               <td><h3><strong>Importe</h3></strong></td>
+               <td><h3><strong>{{ totalimporte | currency }}</h3></strong></td>
                <td></td>
                <td></td>
                <td></td>
                <td></td>
                <td></td>
-               <td></td>
-               <td><h3><strong>Subtotal</h3></strong></td> 
+               <td></td> 
+               <td><h3><strong>Subtotal</h3></strong></td>
                <td><h3><strong>{{ resultado | currency }} </strong></h3></td>
                <td><h3><strong>{{ totales  | currency }} </strong></h3></td>
-               <td></td>
 			   <td></td> 
             </tr>
 <!--             <tr ng-repeat="retencion in retenciones">
@@ -169,7 +171,7 @@
          </tbody>
       </table> 
 
-      <div ng-show="global">
+<!--       <div ng-show="global">
 
 		  <div class="row">
 		    <div class="col-md-12">
@@ -184,7 +186,6 @@
 		          </th>
 		        </tr>
 		        <tr style="background-color:#F0FFFF">
-		          <!-- <th width="3%">PDF</th> -->
 		          <th></th>
 		          <th>Folio Fiscal</th>
 		          <th>Importe</th>
@@ -195,12 +196,12 @@
 		          <th></th>
 		        </tr>
 		        <tr>
-		<!--                        <td ng-show="nopagopdf">
+		                       <td ng-show="nopagopdf">
 		            <div><img src="imgs/blocked.PNG">
 		        </div>
 		    </td>
 		          <td ng-show="pagopdf"><div  data-toggle="tooltip" data-placement="right" title="Vista previa del PDF"><a ng-href="../red/Complementos/{{ folio }}/pago/pdf/{{ pagoArchivopdf }}" target="_blank"><img src="imgs/file-pdf.PNG"></a></div>
-		    </td> -->
+		    </td>
 		          <td>
 		          	<label class="btn btn-primary">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXML($index,$files)">
                     </label>
@@ -217,12 +218,12 @@
 		      </div>
 		 </div>
 
-	</div>
+	</div> -->
     </div>
 
   </div>
 
-	<div class="row">
+<!-- 	<div class="row">
 
 		<div class="col-md-4">
 			<div class="form-group">
@@ -235,7 +236,7 @@
 		    </div>
 		</div>
 
-	</div>
+	</div> -->
 	<br>
 	<div class="row">
 		<div class="col-md-12">
@@ -248,17 +249,17 @@
 	<br><br>
 
 	<div class="row">
-		<button type="button" class="btn btn-lg btn-primary" ng-click="siguiente()" ng-disabled="btnsiguiente">Siguiente</button>
+<!-- 		<button type="button" class="btn btn-lg btn-primary" ng-click="siguiente()" ng-disabled="btnsiguiente">Siguiente</button> -->
 
-	   <div ng-show="subefactura" class="col-md-4">
+	   <div class="col-md-4">
 			<label></label>
-		   <button type="button" class="btn btn-lg btn-primary" ng-click="guardaRelacionInd()" ng-disabled="factguardada">Guardar</button>
+		   <button type="button" class="btn btn-lg btn-primary" ng-click="guardaRelacion()" ng-disabled="factguardada">Guardar Relación</button>
 	   </div>
 
-	  <div ng-show="subefacturaglo" class="col-md-4">
+<!-- 	  <div ng-show="subefacturaglo" class="col-md-4">
 			<label></label>
 		   <button type="button" class="btn btn-lg btn-primary" ng-click="guardaRelacionGlo()">Guardar</button>
-	  </div>
+	  </div> -->
 	</div>
 
 

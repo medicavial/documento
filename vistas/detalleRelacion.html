@@ -1,0 +1,37 @@
+<div class="row" ng-init="inicio()">
+        <div class="titulos">
+          <a href="#/pagos" class="icon-arrow-left"></a>
+          <h1>{{tituloR}}</h1>
+        </div>
+        <div class="row">
+          <legend></legend>
+          <div class="row">
+
+            <div class="col-md-12">
+
+               <div class="gridStyle" ng-grid="gridOptions"></div>
+
+            </div>
+
+          </div>
+        </div>
+
+        <div class="row">
+
+          <div class="col-md-2">
+              <label for="descripcion"></label>
+            <button type="button" ng-hide="edicion" ng-click="ExportaReporte()"  class="btn btn-primary btn-lg btn-block glyphicon glyphicon-file"> Genera Reporte </button>
+          </div>
+          
+        </div>
+      <legend></legend>
+
+
+<script type="text/javascript">
+
+  $.datepicker.setDefaults($.datepicker.regional["es"]);
+  $( "#fechaRecIni" ).datepicker({showButtonPanel: true});
+  $( "#fechaRecFin" ).datepicker({showButtonPanel: true});
+
+
+</script>

@@ -186,8 +186,9 @@ $scope.enviaFolios = function(){
             usuarioentrega:'',
             areaentrega:'',
             usuariorecibe:'',
-            arearecibe:''
-
+            arearecibe:'',
+            serie: '',
+            foliointerno: ''
 
         }
 
@@ -197,25 +198,30 @@ $scope.enviaFolios = function(){
 
             FacturaUnidades.enviaFolios({folio: $scope.selectedRows[a].Folio}, $rootScope.userWeb).success(function (data){
 
-                console.log(data);
-
                 leexml.getxmlFE(data.Nombre).success(function(datos){
                 courses  = x2js.xml_str2json(datos);
 
+                console.log(courses);
+
+
+                $scope.xml.serie = courses.Comprobante._serie;
+                $scope.xml.foliointerno = courses.Comprobante._folio;
+                $scope.xml.subtotal = courses.Comprobante._subtotal;
                 $scope.xml.total = courses.Comprobante._total;
                 $scope.xml.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
                 $scope.xml.fechaemision = courses.Comprobante._fecha;
                 $scope.xml.descuento = courses.Comprobante._descuento;
                 $scope.xml.emisor = courses.Comprobante.Emisor._nombre;
                 $scope.xml.rfc_emisor = courses.Comprobante.Emisor._rfc;
-                $scope.xml.usuarioentrega =Number($rootScope.id);
+                $scope.xml.usuarioentrega = Number($rootScope.id);
                 $scope.xml.areaentrega =Number(areaEntrega);
                 $scope.xml.usuariorecibe =Number(usuarioRecibe);
                 $scope.xml.arearecibe =Number(areaRecibe);
                 $scope.xml.folio = data.Folios;
                 $scope.xml.tipoorden = 1;
 
-        
+                console.log($scope.xml);
+
                 $http.post(ruta,$scope.xml).success(function (data){
 
                 }).error( function (data){

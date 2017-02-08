@@ -77,8 +77,10 @@
 	<div class="gridStyle" ng-grid="gridOptions"></div>
 	
 	<br>	
-	<button ng-click="exporta()" data-loading-text="Generando..." id="boton" class="btn btn-success glyphicon glyphicon-download-alt"> Exportar</button>
-
+    <div class="col-md-2">
+		<button type="button" class="btn btn-primary" ng-click="generaReporte()"> Genera Reporte 
+		</button>
+    </div>
 	<br><br><br>
 
     <div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>

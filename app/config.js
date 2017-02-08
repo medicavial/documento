@@ -738,6 +738,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'ordenPagosCtrl'
     });
 
+    $routeProvider.when('/detallerelacion/:relacion',{
+            templateUrl   : 'vistas/detallerelacion.html',
+            controller    : 'detalleRelacionCtrl'
+    });
+
     $routeProvider.when('/relaciona',{
             templateUrl   : 'vistas/relacion.html',
             controller    : 'relacionCtrl',

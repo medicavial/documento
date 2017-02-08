@@ -390,8 +390,6 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter,$location,$h
         };
         checkFolios.globales($scope.factglobal).success(function (data){
 
-        alert('hola');
-
         }).error(function (data){
             $scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
             $scope.tipoalerta = 'alert-error';
