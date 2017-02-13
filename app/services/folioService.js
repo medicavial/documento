@@ -115,7 +115,6 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                     resultado.respuesta = 'No se generó ninguna entrega';
                     promesa.resolve(resultado);
-
                 }
 
             });

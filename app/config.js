@@ -209,6 +209,18 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             }
     });
 
+    $routeProvider.when('/facturacionEx/cartas',{
+            templateUrl    :'vistas/cartas.html',
+            controller     :'cartasCtrl',
+            resolve       :{
+                datos:function(facturacionExpress,loading,webStorage){
+                    loading.cargando('Cargando Informacion');
+                    var datos = JSON.parse( webStorage.local.get('facturacionExpressData') );
+                    return facturacionExpress.solicitados(datos);
+                }
+            }
+    });
+
     $routeProvider.when('/edicionDatos',{
             templateUrl   : 'vistas/edicionDatos.html',
             controller    : 'edicionDatosCtrl',  

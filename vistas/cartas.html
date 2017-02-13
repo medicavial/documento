@@ -1,0 +1,90 @@
+<div ng-init="inicio()" id="contenedor">
+	<div class="titulos">
+		<a href="#/facturacionExBeta" class="icon-arrow-left"></a>
+		<h1>{{tituloFES}}</h1>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Selecciona día</legend>
+				<form ng-submit="consultaCartas()">
+					<div class="row">
+						<div class="col-md-2">
+							<h4></h4>
+						</div>
+						<div class="col-md-7">
+							<div class="row">						       
+						        <div class="col-sm-12 col-md-12">
+						            <div class="input-group">
+						                <input type="text" ng-model="fecha" class="form-control" id="datepicker2" placeholder="DIA" required/>
+						                <span class="input-group-btn">
+						                    <button class="btn btn-default" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+						                </span>
+						            </div>
+						        </div>
+						    </div>
+						</div>
+					</div>
+				</form>
+			</fieldset>
+		</div>
+	</div>
+
+	<section>
+		
+		<div class="gridStyle" ng-grid="gridOptions"></div>
+		<br>
+
+		<div id="myModal" class="modal fade" role="dialog">
+		  <div class="modal-dialog modal-lg">
+
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title">Pase médico</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<div ng-show="archivo" >		        
+		        <embed ng-if="file(archivo)" ng-src="{{ obtenerFrame(archivo) }}" width="100%" id="files">
+		        <img ng-if="imagen(archivo)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo) }}" 
+			        ng-init="zoomWidth = 800;imgStyle = {width:'100%'}" 
+			        ng-style="imgStyle" 
+					ng-mouse-wheel-up="zoomWidth = zoomWidth + 20; imgStyle.width = zoomWidth +'px'; "  
+					ng-mouse-wheel-down="zoomWidth = zoomWidth - 20;imgStyle.width = zoomWidth  +'px'; "
+				/>
+				</div>
+				<div ng-hide="archivo">
+					<div class="alert alert-warning">
+					  	<strong>Sin pase médico digitalizado</strong>
+					</div>
+				</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+
+		  </div>
+		</div>
+
+	</section>
+</div>
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    // $( "#datepicker" ).datepicker({showButtonPanel: true});
+    // $( "#datepicker2" ).datepicker({showButtonPanel: true});    
+    
+    $( "#datepicker2" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+
+    $( "#datepickerExpedicion" ).datepicker({showButtonPanel: true});
+
+</script>

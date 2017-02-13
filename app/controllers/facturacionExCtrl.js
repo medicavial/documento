@@ -269,6 +269,7 @@ function facturacionExCtrl($scope, $rootScope, $filter, find , loading, checkFol
         expediente = row.entity.Exp_folio;
 
         find.recepcionxfolio(expediente).success(function (data){
+            console.log(data);
             if (data.length > 0) {
                 $scope.sinCaptura = false;
             };
@@ -690,6 +691,136 @@ function solicitadosCtrl($scope, $rootScope, datos, loading){
     };
 };
 
+function cartasCtrl($scope, $rootScope, datos, loading,facturacionExpress,find){
+
+    // console.log(datos);
+
+    $scope.archivo='';
+    var fecha=new Date();
+    var ayer=new Date(fecha.getTime() - 24*60*60*1000);
+    var mes='';
+    if(ayer.getMonth()+1<10){
+        mes='0'+parseInt(ayer.getMonth()+1);
+    }
+    $scope.fecha = ayer.getDate()+"/"+mes+"/"+ayer.getFullYear();    
+
+    find.cartas($scope.fecha).success( function (data){           
+            $scope.listado =data;
+            $scope.tipoalerta = 'alert-success';
+            $scope.mensaje = data.respuesta;
+            $('#boton').button('reset');
+        }).error(function (data){
+            $scope.tipoalerta = 'alert-warning';
+            $scope.mensaje = 'Algo salio mal intentalo nuevamente';
+            $('#boton').button('reset');
+        })
+
+    $rootScope.tituloFES = 'Cartas Qualitas';
+    loading.despedida();
+
+    var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
+    
+
+    $scope.gridOptions = { 
+        data: 'listado', 
+        enableColumnResize:true,
+        enablePinning: true, 
+        enableRowSelection:false,
+        multiSelect:false,
+        showSelectionCheckbox: false,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: true,
+        selectedItems: $scope.selectos, 
+        filterOptions: $scope.filterOptions,
+        rowTemplate: rowTempl,
+        // rowTemplate: rowTempl,
+        columnDefs: [
+                    { field:'FOLIO', displayName:'Folio', width: 120, pinned:true, enableCellEdit: false },                    
+                    { field:'NOMBRE', displayName:'Lesionado', width: 220, pinned:false },
+                    { field:'UNI_nombreMV', displayName:'Unidad', width: 190, pinned:false },
+                    { field:'Exp_fecreg', displayName:'Fecha Atención', width: 180, pinned:false },
+                    // { field:'DocumentosDigitales', displayName:'Digitalizado', width: 120, pinned:false },                        
+                    { field:'Folio_electronico', displayName:'Folio Electrónico', width: 140, pinned:false },
+                    { field:'CEDULA', displayName:'Cedula Electrónica', width: 140, pinned:false },                    
+                    { field:'Cont', displayName:'Pase Digitalizado', width: 130, pinned:false },                    
+        ],
+        showFooter: true,
+        showFilter:false
+    };
+
+    $scope.onDblClickRow = function(row){
+        //if(row.UNI_clave);        
+        $('#myModal').modal();
+
+        info = row.entity;
+        if(info.UNI_clave==232||info.UNI_clave==249||info.UNI_clave==125||info.UNI_clave==110||info.UNI_clave==266||info.UNI_clave==65){
+            if(info.Arc_archivo!=null){
+                $scope.archivo=info.Arc_archivo+'/'+info.Arc_clave;
+            }else{
+                $scope.archivo=null;
+            }
+        }else{
+            $scope.archivo=info.Arc_archivo;    
+        }
+        console.log(info.Cont);        
+    }
+    $scope.obtenerFrame = function(src) {
+        return 'http://medicavial.net/registro/' + src;
+    };
+     $scope.imagen = function(archivo){
+        //se obtiene la extension del archivo
+        if(archivo!=null){
+            var extn = archivo.split(".").pop();
+
+            if (extn == 'jpg' || extn == 'jpeg' || extn == 'png' || extn == 'PNG' || extn == 'JPG' ) {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return null;
+        }
+    }
+
+    $scope.file = function(archivo){
+        //se obtiene la extension del archivo
+        if(archivo!=null){
+            var extn = archivo.split(".").pop();
+            if (extn == 'pdf' || extn == 'PDF') {
+                return true;
+            }else{
+                return false;
+            }
+        }else{
+            return null;
+        }
+    }
+
+    //consultamos lo que tenemos pendiente de mandar de axa 
+    $scope.consultaCartas = function(){
+
+        loading.cargando('Cargando Información');
+
+       find.cartas($scope.fecha).success( function (data){           
+            $scope.listado =data;
+            $scope.tipoalerta = 'alert-success';
+            $scope.mensaje = data.respuesta;
+            $('#boton').button('reset');
+            loading.despedida();
+        }).error(function (data){
+            $scope.tipoalerta = 'alert-warning';
+            $scope.mensaje = 'Algo salio mal intentalo nuevamente';
+            $('#boton').button('reset');
+            loading.despedida();
+        })
+
+        
+    }
+
+};
+
+
+
 function autorizadosCtrl($scope, $rootScope, datos, loading){
 
     // console.log(datos);
@@ -802,6 +933,7 @@ function rechazadosCtrl($scope, $rootScope, datos, loading,facturacionExpress){
 facturacionExCtrl.$inject =['$scope', '$rootScope', '$filter', 'find', 'loading', 'checkFolios','datos','$timeout','facturacionExpress','webStorage','operacion','tickets'];
 solicitadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 autorizadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
+cartasCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress','find'];
 rechazadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
 
 
@@ -809,3 +941,4 @@ app.controller('facturacionExCtrl',facturacionExCtrl);
 app.controller('solicitadosCtrl',solicitadosCtrl);
 app.controller('autorizadosCtrl',autorizadosCtrl);
 app.controller('rechazadosCtrl',rechazadosCtrl);
+app.controller('cartasCtrl',cartasCtrl);
