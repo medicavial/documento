@@ -181,14 +181,17 @@ $scope.enviaFolios = function(){
             total: '',
             foliofiscal: '',
             fechaemision:'',
-            descuento: '',
+            descuento: 0.00,
             emisor:'',
             usuarioentrega:'',
             areaentrega:'',
             usuariorecibe:'',
             arearecibe:'',
             serie: '',
-            foliointerno: ''
+            foliointerno: '',
+            subtotal: '',
+            impuesto: '',
+            tasa: 0.00
 
         }
 
@@ -203,16 +206,17 @@ $scope.enviaFolios = function(){
 
                 console.log(courses);
 
-
                 $scope.xml.serie = courses.Comprobante._serie;
                 $scope.xml.foliointerno = courses.Comprobante._folio;
-                $scope.xml.subtotal = courses.Comprobante._subtotal;
+                $scope.xml.subtotal = courses.Comprobante._subTotal;
                 $scope.xml.total = courses.Comprobante._total;
                 $scope.xml.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
                 $scope.xml.fechaemision = courses.Comprobante._fecha;
                 $scope.xml.descuento = courses.Comprobante._descuento;
                 $scope.xml.emisor = courses.Comprobante.Emisor._nombre;
                 $scope.xml.rfc_emisor = courses.Comprobante.Emisor._rfc;
+                $scope.xml.impuesto = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                $scope.xml.tasa = courses.Comprobante.Impuestos.Traslados.Traslado._tasa;
                 $scope.xml.usuarioentrega = Number($rootScope.id);
                 $scope.xml.areaentrega =Number(areaEntrega);
                 $scope.xml.usuariorecibe =Number(usuarioRecibe);

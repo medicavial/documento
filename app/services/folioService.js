@@ -941,16 +941,16 @@ app.factory("DetalleRelacion", function($q,$http,find,api,publicfiles){
         listadetalleRelacion:function(relacion){
             return $http.post(api+'DetalleRelacion/listadetalleRelacion/'+ relacion);
         },
-        descargaExcel : function(listado)
+        descargaExcel : function(relacion)
         {
-            return $http.post(api + 'DetalleRelacion/generaReporte', listado).success(function (archivo){
+            return $http.post(api + 'DetalleRelacion/generaReporte2/'+ relacion).success(function (archivo){
                 // console.log(archivo);
                 var link = document.createElement("a");    
-                link.href = publicfiles  + archivo.file;
+                link.href = publicfiles  + 'Reporte.xls';
                 
                 //set the visibility hidden so it will not effect on your web-layout
                 link.style = "visibility:hidden";
-                link.download = publicfiles  + archivo.file;
+                link.download = publicfiles  + 'Reporte.xls';
                 
                 //this part will append the anchor tag and remove it after automatic click
                 document.body.appendChild(link);

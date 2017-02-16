@@ -65,13 +65,17 @@ function detalleRelacionCtrl($scope, $rootScope, find,loading,$filter,$location,
                     { field:'Aseguradora', displayName:'Aseguradora' , width: 120 , pinned: true, cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
                     { field:'FolioFiscal', displayName:'Folio Fiscal', width: 190, pinned: true },
                     { field:'Factura', displayName:'Factura', width: 120, pinned: true },
-                    { field:'Importe',displayName:'Importe Factura', width: 120 },
+                    { field:'Subtotal',displayName:'Subtotal', width: 120 },
+                    { field:'IVA',displayName:'IVA', width: 120 },
+                    { field:'Total',displayName:'Total', width: 120 },
                     { field:'FechaCaptura',displayName:'Fecha Captura', width: 120 },
                     { field:'TipoLesion',displayName:'Tipo Lesion', width: 90 },
                     { field:'Diagnostico',displayName:'Diagnostico', width: 120 },
                     { field:'Etapa',displayName:'ET', width: 90 },
                     { field:'Entrega',displayName:'#', width: 90 },
-                    { field:'Total',displayName:'Pagar', width: 120 },
+                    { field:'SubtotalP',displayName:'Subtotal Pagar', width: 120 },
+                    { field:'IVAP',displayName:'Paga Pagar', width: 120 },
+                    { field:'TotalP',displayName:'Total Pagar', width: 120 },
                     { field:'Lesionado',displayName:'Nombre Lesionado', width: 120 },
 
 // 'Ref','Aseguradora','N°','Factura', 'Folio Fiscal','Importe Factura','Total','Fecha Captura','Tipo Lesion','Diagnostico','ET','Pagar','Nombre Lesionado'
@@ -99,7 +103,7 @@ function detalleRelacionCtrl($scope, $rootScope, find,loading,$filter,$location,
 
     $scope.ExportaReporte = function(success){
 
-    DetalleRelacion.descargaExcel($scope.listado).success(function (data){
+    DetalleRelacion.descargaExcel($routeParams.relacion).success(function (data){
 
     }).error( function (data){
 
@@ -107,6 +111,23 @@ function detalleRelacionCtrl($scope, $rootScope, find,loading,$filter,$location,
         $scope.tipoalerta = 'alert-danger';
 
     }); 
+    // 
+    // $http.post(api+'DetalleRelacion/generaReporte2',$routeParams.relacion).success(function (data){
+        
+    //     // $scope.mensaje = data.respuesta;
+    //     // $scope.tipoalerta = 'alert-success';
+    //     // $scope.cargaFlujo();
+    //     // $('#boton2').button('reset');
+    //     // $scope.gridOptions.$gridScope.toggleSelectAll(false);
+
+    // }).error( function (data){
+        
+    //     $scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
+    //     $scope.tipoalerta = 'alert-warning';
+    //     $('#boton2').button('reset');
+
+    // }); 
+
 }
 
 
