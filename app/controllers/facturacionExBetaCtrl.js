@@ -93,6 +93,8 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
         rowTemplate: rowTempl,
     	columnDefs: [
                     { field:'Exp_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: false },
+                    { field:'Exp_completo', displayName:'Lesionado', width: 250, pinned:false },
+                    { field:'EXP_fechaCaptura', displayName:'Fecha Captura', width: 120, pinned:false },
                     { field:'Exp_fecreg', displayName:'Fecha Atención', width: 120, pinned:false },
                     { field:'UNI_nombreMV', displayName:'Unidad', width: 180, pinned:false },
                     { field:'DocumentosDigitales', displayName:'Digitalizado', width: 120, pinned:false },
@@ -100,12 +102,10 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                     { field:'EstatusSACE', displayName:'EstatusSACE', width: 120, pinned:false },
                     { field:'Exp_poliza', displayName:'Poliza', width: 120, pinned:false },
                     { field:'Exp_siniestro', displayName:'Siniestro', width: 120, pinned:false },
-                    { field:'Exp_reporte', displayName:'Reporte', width: 120, pinned:false },
-                    { field:'Exp_completo', displayName:'Lesionado', width: 250, pinned:false },
+                    { field:'Exp_reporte', displayName:'Reporte', width: 120, pinned:false },                    
                     { field:'RIE_nombre', displayName:'Riesgo', width: 120, pinned:false },
                     { field:'Triage_nombre', displayName:'Triage', width: 120, pinned:false },
-                    { field:'FExpedicion', displayName:'Fecha Expedición', width: 120, pinned:false },
-                    { field:'EXP_fechaCaptura', displayName:'Fecha Captura', width: 120, pinned:false },
+                    { field:'FExpedicion', displayName:'Fecha Expedición', width: 120, pinned:false },                    
                     { field:'EXP_costoEmpresa', displayName:'Costo', width: 120, pinned:false },
                     { field:'UNI_propia', width: 120,visible:false}
         ],
@@ -195,13 +195,31 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
             };
         });
 
+        $scope.detalle = '';
+        $scope.captura = '';
+        $scope.suministros = '';
+        $scope.edicion = true;
+        $scope.nomAtencion = '';            
+        $scope.vistaArchivos = false;
+        $scope.captura.triage = '';
+        $scope.captura.MedicoMV = '';
+        $scope.captura.RIEClave = '';
+        $scope.datos.cliente=0;
+        $scope.listDocmuento = '';
+        $scope.motRechazo = ''; 
+        $scope.anotaciones= '';           
+        $scope.estatusDocto='';
+        $scope.listArchivos ='';
+        $scope.captura.Dx=''; 
+
         //verificamos si es proveniente de sistema SACE
         if (info.SACE == 'SACE') {
-            $scope.edicionSACE = true;
+        
+            if(atencion!=null){
 
-            find.detalleFolioSaceco(expediente, atencion).success(function (data){            
-                loading.despedida();
-                console.log(data);
+            $scope.edicionSACE = true;
+            find.detalleFolioSaceco(expediente, atencion).success(function (data){ 
+                loading.despedida();                                           
                 $scope.datosExpediente = data.expediente;            
                 $scope.cveCia=data.expediente.claveEmpresa;
                 $scope.tipLesion = data.lesion.TLE_claveint;
@@ -356,9 +374,12 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                 };
 
                 $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);           
-
+                loading.despedida();
             });
-
+            }else{
+                $("#sinAtencion").modal();
+                loading.despedida();
+            }
         }else{
             $scope.edicionFE = true;
             find.detalleFolioWeb(expediente).success(function (data){
@@ -436,6 +457,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                 $scope.captura.triage = String(data.captura.triage);
                 $scope.captura.MedicoMV = String(data.captura.MedicoMV);
                 $scope.captura.RIEClave = String(data.captura.RIEClave);
+                $scope.datos.cliente = data.expediente.claveEmpresa;
                 console.log($scope.datos.cliente);
 
                 //verificamos cliente para condiciones de texto
@@ -551,6 +573,33 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
         });
 
     }
+
+
+    //Aprobar documentos desde fuera sin ver la imagenes
+    $scope.apruebaDocumento = function(tipoDocumento){                        
+        var lista = $scope.listDocmuento;
+        for (var i = lista.length - 1; i >= 0; i--) {            
+            if(lista[i].TID_clave==tipoDocumento){
+                lista[i].Arc_estatus=1;
+                lista[i].ATD_estatus=1;
+            }
+        }
+        $scope.listDocmuento=lista;
+    }
+
+    $scope.resetRadio = function(tipoDocumento){                        
+        var lista = $scope.listDocmuento;
+        for (var i = lista.length - 1; i >= 0; i--) {            
+            if(lista[i].TID_clave==tipoDocumento){
+                lista[i].Arc_estatus=0;
+                lista[i].ATD_estatus=0;
+            }
+        }
+        $scope.listDocmuento=lista;
+
+    }
+
+
 
     // busca la lesion segun el tipo de lesion 
     $scope.buscaLesiones = function(id){
@@ -881,8 +930,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
             value = listado[index];            
             if(cveDoc==value['TID_clave']){
                 if(value['Arc_estatus']==2||value['Arc_estatus']==0) {
-                    cont=2;
-                                                                  
+                    cont=2;                                                                  
                 }
             }                          
         }                
@@ -1006,8 +1054,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                         $scope.captura.Reporte = data.CQ_reporte;
                         $scope.cargador=false;
                     }
-                });
-                
+                });                
             }
         }
     }

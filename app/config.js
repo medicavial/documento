@@ -209,6 +209,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             }
     });
 
+    $routeProvider.when('/facturacionEx/cancelacion',{
+            templateUrl    :'vistas/cancelacion.html',
+            controller     :'cancelacionCtrl'
+    });
+
     $routeProvider.when('/facturacionEx/cartas',{
             templateUrl    :'vistas/cartas.html',
             controller     :'cartasCtrl',

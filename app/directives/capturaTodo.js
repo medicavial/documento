@@ -230,7 +230,7 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
                 $scope.unidadref = data.unidadref;
                 
                 find.folioweb(folio).success( function (data){
-
+                    console.log(data);
                     $scope.ticket.cliente = data[0].Cia_clave;
                     $scope.ticket.unidad = data[0].Uni_clave;
                     $scope.ticket.statusa = 1;

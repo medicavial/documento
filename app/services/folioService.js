@@ -817,6 +817,9 @@ app.factory("facturacionExpress", function($q,$http,find,api){
         },
         solicitados:function(datos){
             return $http.post(api + 'facturacionExpress/solicitados', datos,{timeout: 10000});
+        },
+        cancelaFolio:function(datos){
+            return $http.post(api + 'facturacionExpress/cancelaFolio', datos,{timeout: 10000});
         }
     }
 });

@@ -691,7 +691,7 @@ function solicitadosCtrl($scope, $rootScope, datos, loading){
     };
 };
 
-function cartasCtrl($scope, $rootScope, datos, loading,facturacionExpress,find){
+function cartasCtrl($scope, $rootScope, datos, loading,facturacionExpress,find,$filter){
 
     // console.log(datos);
 
@@ -699,12 +699,17 @@ function cartasCtrl($scope, $rootScope, datos, loading,facturacionExpress,find){
     var fecha=new Date();
     var ayer=new Date(fecha.getTime() - 24*60*60*1000);
     var mes='';
+    $scope.criterio='';
+    $scope.unidad='';
+    $scope.digital='';
+    $scope.origen='';
     if(ayer.getMonth()+1<10){
         mes='0'+parseInt(ayer.getMonth()+1);
     }
-    $scope.fecha = ayer.getDate()+"/"+mes+"/"+ayer.getFullYear();    
+    $scope.fecha = ayer.getDate()+"/"+mes+"/"+ayer.getFullYear();
+    $scope.fecha1 = ayer.getDate()+"/"+mes+"/"+ayer.getFullYear();    
 
-    find.cartas($scope.fecha).success( function (data){           
+    find.cartas($scope.fecha,$scope.fecha1).success( function (data){           
             $scope.listado =data;
             $scope.tipoalerta = 'alert-success';
             $scope.mensaje = data.respuesta;
@@ -717,6 +722,11 @@ function cartasCtrl($scope, $rootScope, datos, loading,facturacionExpress,find){
 
     $rootScope.tituloFES = 'Cartas Qualitas';
     loading.despedida();
+
+    $scope.filterOptions = {
+        filterText: '',
+        useExternalFilter: false
+    };
 
     var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
     
@@ -801,7 +811,7 @@ function cartasCtrl($scope, $rootScope, datos, loading,facturacionExpress,find){
 
         loading.cargando('Cargando Información');
 
-       find.cartas($scope.fecha).success( function (data){           
+       find.cartas($scope.fecha, $scope.fecha1).success( function (data){           
             $scope.listado =data;
             $scope.tipoalerta = 'alert-success';
             $scope.mensaje = data.respuesta;
@@ -812,9 +822,133 @@ function cartasCtrl($scope, $rootScope, datos, loading,facturacionExpress,find){
             $scope.mensaje = 'Algo salio mal intentalo nuevamente';
             $('#boton').button('reset');
             loading.despedida();
-        })
+        })   
+    }
 
+    $scope.$on('ngGridEventRows', function (newFilterText){
+
+        var filas = newFilterText.targetScope.renderedRows;
+
+        $scope.exportables = [];
+
+        angular.forEach(filas , function(item){
+            $scope.exportables.push(item.entity);
+        });
+
+    });
+
+    $scope.filtra = function(){
+
+        //$scope.filterOptions.filterText = "";
+        //var filtro = "";
+        // console.log($scope.unidad);
+
+        if($scope.unidad == undefined || $scope.unidad == 0){
+            var objeto1 = "";
+        }else{
+            var objeto1 = "UNI_propia:" + $scope.unidad + "; ";
+        }
+
+        if($scope.digital == undefined || $scope.digital == 0){
+            var objeto2 = "";
+        }else{
+            var objeto2 = "DocumentosDigitales:" + $scope.digital + "; ";
+        }
+
+        if($scope.origen == undefined || $scope.origen == 0){
+            var objeto3 = "";
+        }else{
+            var objeto3 = "SACE:" + $scope.origen + "; ";
+        }
+
+        var filtro = objeto1 + objeto2 + objeto3 + $scope.criterio;
+
+        $scope.filterOptions.filterText = filtro;
+
+        // console.log(filtro);
+
+    }
+
+
+};
+
+function cancelacionCtrl($scope, $rootScope, loading,facturacionExpress,find,webStorage){
+    $scope.folio='';
+    $scope.nombre='';
+    $scope.validacion= false;  
+    $scope.usr = webStorage.session.get('userWeb');  
+    $scope.datos={
+        folioCancelar:'',
+        motivoCat:'',
+        motivo:'',
+        folioSustituto:'',
+        observaciciones:'',
+        usr_login:$scope.usr
+    }
+
+    $scope.consultaFolio = function(){        
+        $scope.datos ={'folio':$scope.folio,'nombre':$scope.nombre};
+        loading.cargando('Cargando Información');
+        if($scope.folio!='' || $scope.nombre!=''){
+            find.folioDetalleCancel($scope.datos).success( function (data){           
+                 $scope.listado =data;
+                 loading.despedida();             
+             }).error(function (data){
+                 $scope.tipoalerta = 'alert-warning';
+                 $scope.mensaje = 'Algo salio mal intentalo nuevamente';
+                 $('#boton').button('reset');
+                 loading.despedida();
+             })   
+            $scope.validacion= false;
+        }else{
+            $scope.validacion= true;
+            loading.despedida();
+        }        
+    }
+
+    var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
+
+    $scope.gridOptions = { 
+        data: 'listado', 
+        enableColumnResize:true,
+        enablePinning: true, 
+        enableRowSelection:false,
+        multiSelect:false,
+        showSelectionCheckbox: false,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: true,
+        selectedItems: $scope.selectos, 
+        filterOptions: $scope.filterOptions,
+        rowTemplate: rowTempl,
+        columnDefs: [
+                    { field:'FOLIO', displayName:'Folio', width: 120, pinned:true, enableCellEdit: false },
+                    { field:'FECHA_REGISTRO', displayName:'Fecha Atención', width: 120, pinned:false },
+                    // { field:'FExpedicion', displayName:'Fecha Expedición', width: 120, pinned:false },
+                    { field:'NOMBRE', displayName:'Nombre', width: 180, pinned:false },
+                    // { field:'DocumentosDigitales', displayName:'Digitalizado', width: 120, pinned:false },
+                    { field:'UNIDAD', displayName:'Unidad', width: 120, pinned:false },
+                    { field:'COMPANIA', displayName:'Compañia', width: 120, pinned:false },
+                    { field:'ESTATUS', displayName:'Estatus', width: 120, pinned:false },
+                    { field:'MOTIVO_CANCELACION', displayName:'Motivo de cancelación', width: 120, pinned:false },
+                    { field:'SOLICITUD_CANCELACION', displayName:'Solicitud de Cancelación', width: 250, pinned:false },
+                    { field:'OBSERVACIONES', displayName:'Observaciones', width: 120, pinned:false },                   
+        ],
+        showFooter: true,
+        showFilter:false
+    };
+
+    $scope.onDblClickRow = function(row){        
+        $scope.datos.folioCancelar=row.entity.FOLIO;       
+        $('#modalCancelacion').modal();
         
+    }
+
+    $scope.enviaDatosCancelacion = function(){  
+        loading.cargando('Cargando Información');      
+        facturacionExpress.cancelaFolio($scope.datos).success( function (data){
+             loading.despedida();         
+             console.log('Se canceló correctamente');    
+        });    
     }
 
 };
@@ -934,6 +1068,7 @@ facturacionExCtrl.$inject =['$scope', '$rootScope', '$filter', 'find', 'loading'
 solicitadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 autorizadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 cartasCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress','find'];
+cancelacionCtrl.$inject =['$scope', '$rootScope','loading','facturacionExpress','find','webStorage'];
 rechazadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
 
 
@@ -942,3 +1077,4 @@ app.controller('solicitadosCtrl',solicitadosCtrl);
 app.controller('autorizadosCtrl',autorizadosCtrl);
 app.controller('rechazadosCtrl',rechazadosCtrl);
 app.controller('cartasCtrl',cartasCtrl);
+app.controller('cancelacionCtrl',cancelacionCtrl);

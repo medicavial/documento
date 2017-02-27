@@ -32,9 +32,9 @@ function formatoQualitasFacExCtrl($scope, $rootScope,$http, find, loading,api , 
 
 		//armamos los datos a enviar segun tipo de consulta (tipo)
 		$scope.datos = {fechaini:$scope.fechaini,fechafin:$scope.fechafin};
-
+		console.log($scope.datos); 
 		qualitas.sinProcesarFE($scope.datos).success( function (data){
-			 
+			
 			if(data){
         		$scope.listado = data;
         		$scope.cantidad = data.length -1;
@@ -564,10 +564,9 @@ function formatoQualitasFEenviadoCtrl($scope, $rootScope, find, loading, qualita
 	$scope.generarArchivos = function(){
 
 		$('#boton2').button('loading');
-
-
+		
 		qualitas.generaEnvio($scope.selectos).success( function (data){
-			 
+			
 			if (data.correctos.length == 0) {
 
 				loading.error('No se encontraron archivos de nungun folio');

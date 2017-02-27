@@ -1,0 +1,146 @@
+<div ng-init="inicio()" id="contenedor">
+	<div class="titulos">
+		<a href="#/facturacionExBeta" class="icon-arrow-left"></a>
+		<h1>Cancelación</h1>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Selecciona día</legend>
+				<form ng-submit="consultaFolio()">
+					<div class="row">												      
+				        <div class="col-sm-4 col-md-4">
+				            <div class="input-group" style="width: 100%">
+				                <input type="text" ng-model="folio" class="form-control" id="datepicker1" placeholder="FOLIO" folio/>
+				                
+				            </div>
+				        </div>
+				        <div class="col-sm-4 col-md-4" >
+				            <div class="input-group" style="width: 100%">
+				                <input type="text" ng-model="nombre" class="form-control" id="datepicker2" placeholder="NOMBRE"/>
+				               
+				            </div>
+				        </div>
+				        <div class="col-sm-4 col-md-4">
+				            <div class="input-group" style="width: 100%">
+				                 <span class="input-group-btn">
+				                    <button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+				                </span>						                
+				            </div>
+				        </div>						  
+					</div>
+					<br>
+					<div class="row mianimacion" ng-show="validacion">
+						<div class="col-md-12" align="center">
+							<label class="alert alert-danger" style="width: 100%">Debes de poner por lo menos un parámetro</label>
+						</div>
+					</div>
+				</form>
+			</fieldset>
+		</div>
+	</div>
+
+	<section>
+		
+		<div class="gridStyle" ng-grid="gridOptions"></div>
+		<br>
+
+		<div class="modal fade" id="modalCancelacion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+					  <div class="modal-dialog">
+					    <div class="modal-content">
+					      <div class="modal-header">
+					        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+					        <h4 class="modal-title" id="myModalLabel">Cancelación del folio: <b>{{datos.folioCancelar}}</b></h4>
+					      </div>
+					      <div class="modal-body">
+					        <div class="container" style="width:100%;" id="verFormato">
+									<div class="panel panel-primary">    								      
+								      <div class="panel-body">
+								      
+									<form name="enviaSolCancelacion" id="enviaSolCancelacion" ng-submit="enviaDatosCancelacion()">												
+										<br>
+										<div class="row" id="campoFol">
+											<div class="col-md-12" align="left">
+												<div class="input-group">
+								              <span class="input-group-addon">Motivo de cancelaci&oacute;n: (catálogo)</span> 
+								               <select name="catCancel" id="catCancel" class= "form-control" ng-model="datos.motivoCat">
+								               		<option value=""> *Seleccione </option> 
+								               		<option value="1"> Duplicado </option> 
+								               		<option value="2"> Subsecuencia </option> 
+								               		<option value="3"> No se dió atención </option> 
+								               		<option value="4"> Cobro directo </option> 
+								               		<option value="5"> Otro </option> 
+								               		<option value="6"> Error en datos </option> 
+								               </select>
+
+								            </div>
+											</div>				            
+										</div>		
+										<br>
+										<div class="row" id="campoFol">
+											<div class="col-md-12" align="left">
+												<div class="input-group">
+								              <span class="input-group-addon">Motivo de cancelaci&oacute;n:</span> 
+								               <input type="text" class="form-control" name="motivo" ng-model="datos.motivo" id="motivo" required mayusculas>        
+								            </div>
+											</div>				            
+										</div>
+										<br>
+										
+										<div class="row" id="campoFol">
+											<div class="col-md-12" align="left">
+												<div class="input-group">
+								              <span class="input-group-addon">Folio sustituto:</span> 
+								               <input type="text" class="form-control" name="folioSus" ng-model="datos.folioSustituto" id="folioSus" mayusculas>        
+								            </div>
+											</div>				            
+										</div>
+										<br>
+										<div class="row" id="campoObs">
+											<div class="col-md-12" align="left">
+												<div class="input-group">
+								              <span class="input-group-addon">Observaciones:</span> 
+								               <input type="text" class="form-control" name="Obs" ng-model="datos.observaciciones" id="Obs" mayusculas>        
+								            </div>
+											</div>				            
+										</div>
+										<br>
+										
+										<div class="row" ng-show="cargador2">
+											<div class="col-md-12">
+							                    <div  align="center">
+							                            <img ng-src="imgs/cargador.gif">
+							                    </div>
+							                </div>
+							            </div>
+										<div class="row" ng-show="verMensaje">
+											<div class="col-md-12" align="center">
+												<div class="alert alert-success">Cancelado con éxito.</div>
+											</div>				            
+										</div>
+										
+										<div class="row" id="campoObs">
+											<div class="col-md-12" align="left">
+												<div id="resultado">
+													
+												</div>
+											</div>				            
+										</div>										
+									</form>
+									</div>
+								</div>
+					        </div>
+					      
+					      <div class="modal-footer">
+					        <button type="button" class="btn btn-default" data-dismiss="modal" >Cerrar</button>
+					        <input ng-disabled="bloqueoboton" form="enviaSolCancelacion" type="Submit" class="btn btn-primary" id="botonEnvio"  value="Cancelar folio" />
+					      </div>
+					    </div>
+					  </div>
+					</div>
+					<!--    fin del modal   -->
+				</div>
+
+	</section>
+</div>
+

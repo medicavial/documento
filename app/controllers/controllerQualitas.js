@@ -765,6 +765,19 @@ function formatoQualitasEnviadoCtrl($scope, $rootScope, find, loading, qualitas)
 
     }
 
+     //genera el archivo una vez verificados
+    $scope.generaarchivos = function(){
+
+    	/*var datos = {correctos:$scope.listos,incorrectos:$scope.incorrectos};
+
+		qualitas.procesaEnvio(datos).success(function (data){
+			// console.log(data);
+			JSONToXLSConvertor($scope.listos, "Reporte", true);
+			qualitas.descargaEnvio($scope.ruta);
+		});*/
+
+    }
+
 	$scope.generarArchivos = function(){
 
 		$('#boton2').button('loading');
@@ -788,7 +801,6 @@ function formatoQualitasEnviadoCtrl($scope, $rootScope, find, loading, qualitas)
 		}).error( function (xhr,status,data){
 			$('#boton2').button('reset');
 		});
-
 	}
 
 	$scope.error = function(causa){
@@ -909,6 +921,12 @@ function formatoQualitasEnviadoCtrl($scope, $rootScope, find, loading, qualitas)
     	};
 
     }
+
+    //descarga los archivos 
+	$scope.descargar = function(datos){
+		console.log(datos);
+		qualitas.descargaArchivos(datos);
+	}
 
     $scope.gridOptions2 = { 
     	data: 'listado2', 

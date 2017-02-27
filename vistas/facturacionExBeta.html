@@ -64,9 +64,17 @@
 	    </li>
 	    <li class="rb-span-1" id="color3">
 
-	        <h3>Cartas<span ng-show=" autorizados > 0 " class="push"></span></h3>
+	        <h3>Cartas</h3>
 	        <a href="#/facturacionEx/cartas">
 	            <span class=" icon-folder-open"></span>
+	        </a>
+
+	    </li>
+	     <li class="rb-span-1" id="color3">
+
+	        <h3>Cancelación</h3>
+	        <a href="#/facturacionEx/cancelacion">
+	            <span class="glyphicon glyphicon-remove"></span>
 	        </a>
 
 	    </li>
@@ -108,6 +116,19 @@
 				</fieldset>
 			</div>
 		</div>
+
+		<div class="modal fade" id="sinAtencion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">							      
+		      <div class="modal-body">
+		       <h2> No existen atenciones para este folio.</h2>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>		        
+		      </div>
+		    </div>
+		  </div>
+		</div>		
 
 		<div class="row">
 			<div class="col-md-12">
@@ -348,12 +369,12 @@
 														<div class="form-group">					               
 															<div class="radio c-radio">
 																<label>
-																<input type="radio"  name="{{docs.TID_nombre}}" value="1" ng-required="docs.ATD_requerido&&docs.Arc_clave" ng-model="docs.ATD_estatus" onclick='this.checked = false;'>
+																<input type="radio"  name="{{docs.TID_nombre}}" value="1" ng-required="docs.ATD_requerido&&docs.Arc_clave" ng-model="docs.ATD_estatus" ng-click="apruebaDocumento(docs.TID_clave)">
 																<span class="glyphicon glyphicon-ok" ></span>Aprobado</label>
 															</div>
 															<div class="radio c-radio">
 																<label>
-																<input type="radio" name="{{docs.TID_nombre}}" value="2" ng-required="docs.ATD_requerido&&docs.Arc_clave" ng-model="docs.ATD_estatus"  onclick='this.checked = false;'>
+																<input type="radio" name="{{docs.TID_nombre}}" value="2" ng-required="docs.ATD_requerido&&docs.Arc_clave" ng-model="docs.ATD_estatus" ng-click="resetRadio(docs.TID_clave)"  onclick='this.checked = false;'>
 																<span class="glyphicon glyphicon-remove" ></span>Rechazado</label>
 															</div>
 														</div>
@@ -577,7 +598,7 @@
 
 <!-- muestra Archivos SACE -->
 <div class="panel panel-primary animate-show" id="izquierda-pantalla" ng-show="vistaArchivosSACE">
-	<div class="panel-heading">Vista Previa <button type="button" ng-click="vistaArchivos = !vistaArchivos" class="close" aria-label="Close"><span class="white-text" aria-hidden="true">&times;</span></button> </div>
+	<div class="panel-heading">Vista Previa <button type="button" ng-click="vistaArchivosSACE = !vistaArchivosSACE" class="close" aria-label="Close"><span class="white-text" aria-hidden="true">&times;</span></button> </div>
 	<div class="panel-body">
 
 

@@ -253,10 +253,13 @@ app.factory("find", function($http,api){
         listaRelacionReg:function(datos){
             return $http.post(api+'RelacionNP/fechaRegistro',datos);
         },
-        cartas:function(fecha){ 
-            fecha = fecha.replace(/\//g,'-');   
-                       
-            return $http.get(api+'facturacionExpress/cartas/'+fecha);
+        cartas:function(fecha,fecha1){ 
+            fecha = fecha.replace(/\//g,'-');
+            fecha1 = fecha1.replace(/\//g,'-');                          
+            return $http.get(api+'facturacionExpress/cartas/'+fecha+'/'+fecha1);
+        },
+        folioDetalleCancel:function(datos){                                     
+            return $http.post(api+'facturacionExpress/folioDetalleCancelacion',datos);
         }
     }
 })
