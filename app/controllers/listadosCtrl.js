@@ -1678,7 +1678,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
 };
 
 //muestra los folios por recibir
-function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios,datos){
+function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios,datos,$location){
 	
     $scope.listadoRecepcion = datos.data;
     loading.despedida();
@@ -1693,6 +1693,11 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 		$scope.selectosAc = [];
 		$scope.empresas();
 		$scope.altaunidades();
+		$scope.recibe = true;
+		$scope.subeFactGlo = false;
+		$scope.subeFactInd = false;
+
+
 		
 	}
 
@@ -1751,8 +1756,7 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 				$('#boton').button('reset');	
 			});
 			
-		};
-		
+		};		
 	}
 
 	$scope.rechazaEntregas = function(){
@@ -1893,6 +1897,23 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 
     });
 
+    $scope.IngresaFacturaGlo = function(){
+
+    	$scope.recibe = false;
+		$scope.subeFactGlo = true;
+
+    }
+
+    $scope.IngresaFacturaInd = function(){
+
+    	$scope.recibe = false;
+		$scope.subeFactInd = true;
+
+		$scope.detalles = $scope.selectos;
+		console.log($scope.detalles);
+
+    }
+
 };
 
 //muestra los folios por recibir
@@ -1911,7 +1932,7 @@ function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loadin
 		$scope.selectosAc = [];
 		$scope.empresas();
 		$scope.altaunidades();
-		
+
 	}
 
 	//Carga la lista de archivos a Recibir de otras areas 
@@ -2099,6 +2120,7 @@ function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loadin
 
     });
 
+
 };
 
 rechazosCtrl.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'find', 'loading', 'checkFolios','datos'];
@@ -2107,7 +2129,7 @@ traspasosCtrl.$inject = ['$scope', '$rootScope', '$routeParams','$http', 'find',
 entregasCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading', '$http'];
 listadoEntregasCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading', 'checkFolios','datos','$filter'];
 listadoEntregasAreaCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading', 'checkFolios','datos','$filter'];
-listadoRecepcionCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios','datos'];
+listadoRecepcionCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios','datos','$location'];
 listadoRecepcionAreaCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios','datos'];
 
 app.controller('rechazosCtrl',rechazosCtrl);

@@ -1,4 +1,7 @@
 <div ng-init="inicio()">
+
+<div ng-show="recibe">
+
 	<div class="titulos">
 		<a href="#/{{area}}" class="icon-arrow-left"></a>
 		<h1>{{tituloLR}}</h1>
@@ -47,10 +50,169 @@
 		<div class="col-md-3">
 			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="rechazaEntregas()" class="btn btn-warning icon-cancel-circle"> Rechazar Entrega</button>
 		</div>
-		<!-- <div class="col-md-3">
-			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="rechazaEntregas()" class="btn btn-warning icon-cancel-circle"> Reasignar</button>
-		</div> -->
+		<div class="col-md-3">
+			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaGlo()" class="btn btn-success icon-cancel-circle"> Factura Global
+			</button>
+		</div>
+
+		<div class="col-md-3">
+			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaInd()" class="btn btn-info icon-cancel-circle"> Factura Individual
+			</button>
+		</div>
 	</div>
 	<br>
 	<br>
+</div>
+
+<div ng-show="subeFactGlo">
+
+<div class="titulos">
+	<a href="#/{{area}}" class="icon-arrow-left"></a>
+	<h1>Ingresa tus Facturas</h1>
+</div>
+<legend>XML</legend>
+
+  <div class="row">
+    <div class="col-md-12">
+      <table style="max-height: auto;
+				    overflow-y: auto; 
+				    overflow-x: auto;
+				    width: 100%; background: #edebeb ">
+        <tr style="background-color:#E9E9E9;">
+          <th colspan="12" class="text-center"><h4>Datos de la Factura</h4></th>
+          <th class="full-left">
+            <button  type="button" id="newimpuesto" ng-click="addRow2()" class="btn btn-success margen-abajo glyphicon glyphicon-usd" data-toggle="tooltip" data-placement="top" title="Calcula Otra Retención"> Factura</button>
+          </th>
+        </tr>
+        <tr style="background-color:#F0FFFF">
+          <th></th>
+          <th>Folio Fiscal</th>
+          <th>Importe</th>
+          <th>IVA</th>
+          <th>Descuento</th>
+          <th>Total</th>
+          <th>Fecha Emisión</th>
+          <th></th>
+        </tr>
+        <tr>
+
+          <td>
+          	<label class="btn btn-primary">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXML($index,$files)">
+            </label>
+          </td>
+          <td>{{ factura.foliofiscal }}</td>
+          <td>{{ factura.importe }}</td>
+          <td>{{ factura.iva }}</td>
+          <td>{{ factura.descuento }}</td>
+          <td>{{ factura.total }}</td>
+          <td>{{ factura.fechaemision }}</td>
+
+        </tr>
+      </table>
+      </div>
+ </div>
+
+</div>
+
+<div ng-show="subeFactInd">
+
+	<div class="titulos">
+		<a href="#/{{area}}" class="icon-arrow-left"></a>
+		<h1>Ingresa tus Facturas</h1>
+	</div>
+    <legend>XML</legend>
+	
+	  <div class="col-lg-12">
+
+     <div class="table-responsive">
+      <table id="datatable2"  class="table table-striped table-hover" 
+                style="
+			    max-height: auto;
+			    overflow-y: auto; 
+			    overflow-x: auto;
+			    width: 100%; background: #edebeb ">
+         <thead>
+            <tr>
+<!--                <th ng-show="subefactura">Examinar</th>
+               <th ng-show="subefactura">Elimina</th> -->
+               <th>Factura</th>
+               <th>Folio Fiscal</th>
+               <th>Importe Factura</th>
+               <th>Unidad</th>
+               <th>Folio</th>
+               <th>Etapa</th>
+               <th>Entrega</th>
+               <th>Fecha Recepcion</th> 
+               <th>Tipo Tramite</th> 
+               <th>Subtipo Tramite</th>
+
+            </tr>
+         </thead>
+         <tbody>
+
+            <tr ng-repeat="detalle in detalles">
+
+<!--               <td ng-show="subefactura"><label class="btn btn-primary">
+                Sube Factura <input type="file" style="display: none;" ng-disabled="factguardada" ng-file-select="subeXML($index,$files)">
+                  </label>
+              </td>
+              <td ng-show="subefactura"><label class="btn btn-danger glyphicon glyphicon-trash" ng-click="eliminaxmlInd($index)" ng-disabled="detalle.btn_edit"></label></td> -->
+              <td>{{detalle.foliointerno}}</td>
+              <td>{{detalle.folio}}</td>
+              <td>{{detalle.total}}</td>
+              <td>{{detalle.UNI_nombrecorto}}</td>
+              <td>{{detalle.PAS_folio}}</td>
+              <td>{{detalle.FLD_etapa}}</td>
+              <td>{{detalle.FLD_numeroEntrega}}</td>
+              <td>{{detalle.fechaRecepcion}}</td> 
+              <td><select  class="form-control"  id="$index" ng-model="detalle.tipotramite" ng-options="tipotramite.id as tipotramite.tipo for tipotramite in tipostramites" ng-disabled="editafactura"  ng-change="subtipotramite($index, detalle.tipotramite)" required>
+			            <option value=""> Tipo Tramite </option>
+			      </select>
+			  </td>
+              <td><select class="form-control" id="$index" ng-model="detalle.concepto" ng-options="concepto.id as concepto.nombre for concepto in conceptost" ng-disabled="editafactura" required>
+						<option value=""> Subtipo Tramite </option>
+				  </select>
+			  </td>  
+            </tr>
+            <tr>
+<!--                <td ng-show="subefactura"></td>	
+               <td ng-show="subefactura"></td> -->
+               <td></td>
+               <td><h3><strong>Importe</h3></strong></td>
+               <td><h3><strong>{{ totalimporte | currency }}</h3></strong></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td> 
+               <td><h3><strong>Subtotal</h3></strong></td>
+               <td><h3><strong>{{ resultado | currency }} </strong></h3></td>
+               <td><h3><strong>{{ totales  | currency }} </strong></h3></td>
+			   <td></td>
+			   <td></td> 
+            </tr>
+<!--             <tr ng-repeat="retencion in retenciones">
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td></td>
+               <td>
+                <select class="form-control"  ng-model="retencion.impuest" ng-options="impuesto.id as impuesto.nombre for impuesto in impuestos" ng-change="calculaImpuesto($index,retencion.impuest)">
+                   <option value="">Impuesto</option>  
+                </select>
+                </td> 
+               <td><h3><strong>{{ retencion.totaliva  | currency }} </strong></h3></td>
+              <td><h3><strong>{{ retencion.totalivamanual  | currency }} </strong></h3></td>
+            </tr> -->  
+           
+         </tbody>
+      </table> 
+
+</div>
+
+
+
 </div>

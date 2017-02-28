@@ -95,6 +95,7 @@ function detalleRelacionCtrl($scope, $rootScope, find,loading,$filter,$location,
         angular.forEach(filas , function(item){
             $scope.exportables.push(item.entity);
         });
+
         // if (!$scope.gridOptions.$gridScope.checker)
         // $scope.gridOptions.$gridScope.checker = {};
         // $scope.gridOptions.$gridScope.checker.checked = allChecked;
@@ -111,7 +112,7 @@ function detalleRelacionCtrl($scope, $rootScope, find,loading,$filter,$location,
         $scope.tipoalerta = 'alert-danger';
 
     }); 
-    // 
+
     // $http.post(api+'DetalleRelacion/generaReporte2',$routeParams.relacion).success(function (data){
         
     //     // $scope.mensaje = data.respuesta;

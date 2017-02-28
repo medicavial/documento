@@ -513,6 +513,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     info  = $http.get(api+'flujo/consulta/'+ $rootScope.id);
 
                     $q.all([info]).then(function (data){
+                        
                         var respuesta = {
                             activos:pagos,
                             rechazos:data[0].data.rechazos,
@@ -735,6 +736,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'detalleFacturaCtrl'
     });
 
+    $routeProvider.when('/detalleAtencionZima/:folio',{
+            templateUrl   : 'vistas/detalleFacturaZima.html',
+            controller    : 'detalleFacturaZimaCtrl'
+    });
+
     $routeProvider.when('/controlFacturas',{
             templateUrl   : 'vistas/controlFacturas.html',
             controller    : 'controlFacturasCtrl'
@@ -758,6 +764,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
     $routeProvider.when('/detallerelacion/:relacion',{
             templateUrl   : 'vistas/detallerelacion.html',
             controller    : 'detalleRelacionCtrl'
+    });
+
+    $routeProvider.when('/subeFactura',{
+            templateUrl   : 'vistas/subeFactura.html',
+            controller    : 'subeFacturaCtrl'
     });
 
     $routeProvider.when('/relaciona',{

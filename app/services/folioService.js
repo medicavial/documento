@@ -910,11 +910,28 @@ app.factory("DetalleFacturas", function($q,$http,find,api){
 
 });
 
+app.factory("DetalleFacturasZima", function($q,$http,find,api){
+
+    return{
+        imprimeDatos:function(folio){
+            return $http.post(api + 'DetalleFacturasZima/imprimeDatos/'+ folio);
+        },
+        rechazaFactura:function(datos){
+            return $http.post(api + 'DetalleFacturasZima/rechazaFactura', datos);
+        }
+    }
+
+});
+
+
 app.factory("FacturaZima", function($q,$http,find,api){
 
     return{
         unidades:function(){
             return $http.post(api+'FacturaZima/unidades');
+        },
+        listadoFactura:function(){
+            return $http.post(api+'FacturaZima/listadofacturas');
         }
 
     }
@@ -962,8 +979,23 @@ app.factory("DetalleRelacion", function($q,$http,find,api,publicfiles){
             });
         }
 
+    }
 
+});
+   
+app.factory("PagoManual", function($q,$http,find,api){
 
+    return{
+
+        consultaFolioFiscal:function(foliofiscal){
+            return $http.post(api + 'PagoManual/consultaFolioFiscal/'+foliofiscal);
+        },
+        validaUnidad:function(rfc){
+            return $http.post(api + 'PagoManual/validaUnidad/'+rfc);
+        },
+        proveedores:function(){
+            return $http.post(api + 'PagoManual/proveedor');
+        }
     }
 
 });

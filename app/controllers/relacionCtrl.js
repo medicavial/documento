@@ -97,7 +97,9 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                 emisor: '',
                 elimina : '',
                 tipotramite: '',
-                concepto: ''
+                concepto: '',
+                tasa: '',
+                subtotal: ''
         }
 
         $scope.datos = {
@@ -501,8 +503,11 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
             var suma = 0;
             var suma1 = 0;
             var suma2 = 0;
+            var suma3 = 0;
+            var suma4 = 0;
             for (var i = 0; i < $scope.detalles.length; i++){
 
+                console.log($scope.detalles);
 
                 var valor = $scope.detalles[i].Reserva;
                 var numero = valor.replace(",",'');
@@ -517,7 +522,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                 var sumas1 = suma1.toFixed(2);
                 $scope.totales = sumas1;
 
-                if ($scope.detalles[0].total != '') {
+                if ($scope.detalles[0].total != ''){
                     var valor2 = $scope.detalles[i].total;
                     var numero2 = valor2.replace(",",'');
                     suma2 += parseFloat(numero2);
@@ -525,10 +530,26 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                     $scope.totalimporte= sumas2;
                 }
 
+                if ($scope.detalles[0].subtotal!= ''){
+                    var valor3 = $scope.detalles[i].subtotal;
+                    var numero3 = valor3.replace(",",'');
+                    suma3 += parseFloat(numero3);
+                    var sumas3 = suma3.toFixed(2);
+                    $scope.totalsubtotal= sumas3;
+                }
+
+                if ($scope.detalles[0].tasa!= ''){
+                    var valor4 = $scope.detalles[i].tasa;
+                    var numero4 = valor4.replace(",",'');
+                    suma4 += parseFloat(numero4);
+                    var sumas4 = suma4.toFixed(2);
+                    $scope.totaltasa= sumas4;
+                }
+
             }
 
 
-            // console.log($scope.relacionesFol);
+            // console.log($scope.detalles[1].tasa);
 
         //   swal({   
         //       title: "",   
@@ -854,8 +875,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
                         $scope.archivos = data.ruta;
 
-                        console.log(data.ruta);
-
 
 
                 }).error( function (xhr,status,data){
@@ -1017,7 +1036,9 @@ $scope.guardaRelacion = function(success){
         archivos : $scope.archivos,
         usucarpeta: $rootScope.user,
         unidad: $scope.datos.claveunidad,
-        total:  $scope.totalimporte
+        total:  $scope.totalimporte,
+        tasa:  $scope.totaltasa,
+        subtotal:  $scope.totalsubtotal
 
     }
 

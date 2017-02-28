@@ -9,8 +9,6 @@ app.factory('leexml',function($http,xml,xmlFE){
       factory.getxmlFE = function(archivo, folios){
 
       		return $http.get(xmlFE+archivo);
-
-
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  l 
       }
       return factory;

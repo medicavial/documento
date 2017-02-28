@@ -1,6 +1,4 @@
 
-
-//Area de pagos
 function pagosCtrl($scope, $rootScope, find , loading,datos,$filter,$location,$http,checkFolios){
 
     // console.log(datos);
@@ -69,7 +67,7 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter,$location,$h
     //busca clientes
     $scope.empresas = function(){
 
-        find.empresas().success( function (data) {
+        find.empresas().success( function (data){
 
             $scope.clientes = data;
 

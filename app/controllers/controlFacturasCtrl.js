@@ -238,6 +238,7 @@ $scope.enviaFolios = function(){
 
                         // $scope.listadoFact();
                         $scope.borratemporales();
+                        $scope.gridOptions.$gridScope.toggleSelectAll(false);
                         swal("ok","Tus folios se enviaron","success");
 
                         // $scope.listadofacturas();
