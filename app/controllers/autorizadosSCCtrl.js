@@ -1,27 +1,33 @@
-function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webStorage,$filter,$timeout,facturacionExpress){
-    
+function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webStorage,$filter,$timeout,facturacionExpress,$http){
+
     $rootScope.tituloFES = 'Folios Solicitados a Autorizar';
 
     $scope.clientes = datos[0].data;
     $scope.triages = datos[1].data;
-    $scope.posiciones = datos[2].data;    
+    $scope.posiciones = datos[2].data;
     $scope.riesgos = datos[3].data;
-    $scope.usrWeb = sessionStorage.getItem("userWeb");    
-    $scope.usrMV = sessionStorage.getItem("userWeb");    
+    $scope.usrWeb = sessionStorage.getItem("userWeb");
+    $scope.usrMV = sessionStorage.getItem("userWeb");
     loading.despedida();
-    $scope.cargador=false; 
+    $scope.cargador=false;
+    $scope.cargador1= false;
     $scope.sinCedula = true;
+    $scope.sinFactura= 0;
+    $scope.msjReporte=false;
+    $scope.cedula='';
     var expediente;
-    
+
     $scope.datos = {
             cliente:19,
             fechaini:primerdiames,
             fechafin:FechaAct
-        } 
+        }
 
     $scope.regresar = function(){
         $scope.edicion = false;
     }
+
+
 
 
     /*resolve       :{
@@ -33,27 +39,27 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
             }*/
     //$scope.data  =  saceco.autorizadosSinCaptura(datos);
     webStorage.local.add('facturacionExpressData', JSON.stringify($scope.datos));
-    saceco.autorizadosSinCaptura(datos).success(function (data){            
-            loading.despedida();            
+    saceco.autorizadosSinCaptura(datos).success(function (data){
+            loading.despedida();
             $scope.listado=data;
             console.log($scope.listado);
         }).error(function (data){
             alert('Surgio un problema intente nuevamente');
             $('#botonAut').button('reset');
         });
-    
-    var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';   
 
-    $scope.gridOptions = { 
-        data: 'listado', 
+    var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
+
+    $scope.gridOptions = {
+        data: 'listado',
         enableColumnResize:true,
-        enablePinning: true, 
+        enablePinning: true,
         enableRowSelection:false,
         multiSelect:false,
         showSelectionCheckbox: false,
         selectWithCheckboxOnly: false,
         enableCellSelection: true,
-        selectedItems: $scope.selectos, 
+        selectedItems: $scope.selectos,
         filterOptions: $scope.filterOptions,
         rowTemplate: rowTempl,
         columnDefs: [
@@ -81,12 +87,12 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
 
     ///filtros
 
-    
+
 
 
     //aqui cargamos el detalle del folio e inicializamos valores
     $scope.onDblClickRow = function(row){
-                
+
         $scope.sinCaptura = true;
         $scope.bloqueoLesion = false;
 
@@ -94,18 +100,18 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
         expediente  = row.entity.Exp_folio;
         atencion    = row.entity.ATN_clave;
 
-        find.recepcionxfolio(expediente).success(function (data){            
-        $scope.cont = data.length; 
-            if ($scope.cont > 0) {               
+        find.recepcionxfolio(expediente).success(function (data){
+        $scope.cont = data.length;
+            if ($scope.cont > 0) {
                 $scope.sinCaptura = false;
                 loading.despedida();
-                $("#capturadoPN").modal("show");  
+                $("#capturadoPN").modal("show");
             }
             else{
-        find.detalleFolioSaceco(expediente, atencion).success(function (data){            
+        find.detalleFolioSaceco(expediente, atencion).success(function (data){
             loading.despedida();
-            
-            $scope.datosExpediente = data.expediente;            
+
+            $scope.datosExpediente = data.expediente;
             $scope.cveCia=data.expediente.claveEmpresa;
             $scope.tipLesion = data.lesion.TLE_claveint;
             $scope.autorizacionFolio = true;
@@ -115,14 +121,17 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
             $scope.sinCuestionario = true;
             $scope.tabuladorListo  = false;
             $scope.nuevoAjustador = false;
+            $scope.nuevoMedico = false;
             $scope.ocultaBotones = false;
-            $scope.rotar = false;            
-            for (i = 0; i < data.anotaciones.length; i++) { 
+            $scope.ocultaBotonesMed = false;
+            $scope.rotar = false;
+            $scope.sinFactura= 0;
+            for (i = 0; i < data.anotaciones.length; i++) {
                 if(data.anotaciones[i].REQ_valor =='Diagnostico'){
-                    $scope.dx=data.anotaciones[i].ANT_valor;                    
+                    $scope.dx=data.anotaciones[i].ANT_valor;
                 }
-            }       
-            
+            }
+
             $scope.buscaAjustadores(data.captura.EMPClave);
             $scope.buscaMedicos(data.captura.UNIClave);
 
@@ -131,7 +140,7 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
                 folio:expediente
             }
 
-            //verificamos el tipo lesion segun cliente producto y localidad segun sea el caso 
+            //verificamos el tipo lesion segun cliente producto y localidad segun sea el caso
             if ( (data.captura.EMPClave == 43) || (data.captura.EMPClave == 44) ){
                 $scope.tipoLes = 1;
             }else if ( data.captura.EMPClave == 20 && data.captura.PROClave == 9){
@@ -153,8 +162,8 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
             //verificamos las lesiones disponibles segun el tipo
             $scope.buscaTipoLesiones($scope.tipoLes);
 
-            
-            $scope.cuestionario = { 
+
+            $scope.cuestionario = {
 
                 tipoCuestionario:6,
                 pregunta38:'',
@@ -180,48 +189,48 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
             $scope.captura = data.captura;
             $scope.suministros = data.suministros;
             $scope.edicion = true;
-            $scope.nomAtencion = data.atencion.TIA_nombre;            
+            $scope.nomAtencion = data.atencion.TIA_nombre;
             $scope.vistaArchivos = false;
             $scope.captura.triage = String(data.captura.triage);
             $scope.captura.MedicoMV = String(data.captura.MedicoMV);
             $scope.captura.RIEClave = String(data.captura.RIEClave);
             $scope.datos.cliente=data.captura.cliente;
             $scope.listDocmuento = data.documentos;
-            $scope.motRechazo = data.motivoRechazo; 
-            $scope.anotaciones= data.anotaciones;           
+            $scope.motRechazo = data.motivoRechazo;
+            $scope.anotaciones= data.anotaciones;
             $scope.estatusDocto='success';
             $scope.listArchivos = data.archivos;
-            $scope.captura.Dx=$scope.dx; 
+            $scope.captura.Dx=$scope.dx;
             if(data.lesion.LesE_clave){
                 console.log(data.lesion.LES_clave);
-                $scope.LesMV = data.lesion.lesionCIA; 
-                $scope.LESUnidad = data.lesion.LES_clave;              
+                $scope.LesMV = data.lesion.lesionCIA;
+                $scope.LESUnidad = data.lesion.LES_clave;
                 $scope.verificaTabuladorOrigen($scope.LesMV);
             }
             $scope.captura.tipoLes= String($scope.tipLesion);
              find.lesiones($scope.captura.tipoLes).success(function (data){
                 $scope.lesiones = data;
-                $scope.milesion = $filter('filter')( $scope.lesiones,{'LES_clave': $scope.LESUnidad });  
+                $scope.milesion = $filter('filter')( $scope.lesiones,{'LES_clave': $scope.LESUnidad });
                 $scope.captura.Lesion = $scope.milesion[0];
-                console.log($scope.captura.Lesion);                               
-            });  
-             
-               
-            //$scope.captura.Lesion = $filter('filter')( $scope.lesionesUno,{'LES_claveEmp':'U_ECG1'});            
+                console.log($scope.captura.Lesion);
+            });
+
+
+            //$scope.captura.Lesion = $filter('filter')( $scope.lesionesUno,{'LES_claveEmp':'U_ECG1'});
             //miArray = $scope.lesionesUno;
-            
+
             for (contador in $scope.lesionesUno) {
                     console.log(contador);
                 }
-            
+
             //$scope.captura.Ajustador = String(data.expediente.cveAjustador);
             console.log($scope.captura.Lesion);
             $scope.nombreAjustador = data.expediente.ajustador;
-            console.log($scope.captura.Ajustador);            
+            console.log($scope.captura.Ajustador);
 
             //verificamos cliente para condiciones de texto
-            if ($scope.datos.cliente == 19) {
-
+            if ($scope.datos.cliente == 19 && $scope.sinCedula==true) {
+                console.log($scope.sinCedula);
                 $scope.SiniestroMin = 11;
                 $scope.SiniestroMax = 11;
 
@@ -259,18 +268,18 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
                 $scope.bloqueoLesion = true;
             };
 
-            $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);           
+            $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);
 
         });
     }
         });
-        
-        
-      
+
+
+
     }
-    //consulta de medicos segun la unidad 
+    //consulta de medicos segun la unidad
     $scope.buscaMedicos = function(unidad){
-        
+
         find.medicos(unidad).success(function (data){
             $scope.medicos = data;
         });
@@ -278,18 +287,18 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
     }
 
 
-    //consulta de ajustadores segun la compañia 
+    //consulta de ajustadores segun la compañia
     $scope.buscaAjustadores = function(id){
-        
+
         find.ajustadores(id).success(function (data){
-            $scope.ajustadores = data; 
+            $scope.ajustadores = data;
             console.log($scope.ajustadores);
         });
 
     }
 
      $scope.buscaTipoLesiones = function(id){
-        
+
         find.tiposLesion(id).success(function (data){
             console.log(data);
             $scope.tipoLesiones = data;
@@ -297,7 +306,7 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
 
     }
 
-    // busca la lesion segun el tipo de lesion 
+    // busca la lesion segun el tipo de lesion
     $scope.buscaLesiones = function(id){
         find.lesiones(id).success(function (data){
             $scope.lesiones = data;
@@ -305,7 +314,7 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
         });
     }
 
-    //verifica el tabulador 
+    //verifica el tabulador
     $scope.verificaTabulador = function(lesion){
 
         find.tabulador(lesion.LES_claveEmp,expediente).success(function (data){
@@ -364,7 +373,7 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
 
     }
     $scope.validaCobertura = function(riesgo){
-        
+
         if (riesgo == '1' || riesgo == '5') {
             $scope.cobertura = '4';
         }else if (riesgo == '10') {
@@ -384,7 +393,7 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
 
         var fecha1 = moment($scope.captura.FExpedicion, 'DD/MM/YYYY');
         var fecha2 = moment($scope.captura.FAtencion, 'DD/MM/YYYY');
-        
+
         if(fecha1 > fecha2){
             $scope.captura.FExpedicion = FechaAct;
             alert('La fecha no debe ser mayor a la fecha de atencion ' + fecha2);
@@ -393,23 +402,23 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
 
     $scope.validarEstatus = function(){
 
-        var listado = $scope.listDocmuento; 
-        $scope.verGuardaTicket=0;         
+        var listado = $scope.listDocmuento;
+        $scope.verGuardaTicket=0;
         for (index = 0; index < listado.length; ++index) {
-            value = listado[index].Arc_estatus; 
+            value = listado[index].Arc_estatus;
             console.log(value);
             if(value==2){
-                $scope.verGuardaTicket=1;    
-            }                 
-        }        
+                $scope.verGuardaTicket=1;
+            }
+        }
     }
 
-    $scope.muestraArchivosTodos  = function(tipoDoc){       
+    $scope.muestraArchivosTodos  = function(tipoDoc){
         result = $scope.listArchivos.todos;
         console.log(result);
         archivos=[];
-        /*for(var k in result) {           
-              archivos.push(result);                        
+        /*for(var k in result) {
+              archivos.push(result);
         }*/
 
         //console.log(archivos);
@@ -425,14 +434,14 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
 
     }
 
-    $scope.muestraTodosArchivos  = function(){       
+    $scope.muestraTodosArchivos  = function(){
         $scope.vistaTodosArchivos = true;
         //se crea un delay por que carge la imagen de forma correcta
-       
+
 
     }
     $scope.validaCobertura = function(riesgo){
-        
+
         if (riesgo == '1' || riesgo == '5') {
             $scope.cobertura = '4';
         }else if (riesgo == '10') {
@@ -452,7 +461,7 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
 
         var fecha1 = moment($scope.captura.FExpedicion, 'DD/MM/YYYY');
         var fecha2 = moment($scope.captura.FAtencion, 'DD/MM/YYYY');
-        
+
         if(fecha1 > fecha2){
             $scope.captura.FExpedicion = FechaAct;
             alert('La fecha no debe ser mayor a la fecha de atencion ' + fecha2);
@@ -461,18 +470,18 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
 
     $scope.validarEstatus = function(){
 
-        var listado = $scope.listDocmuento; 
-        $scope.verGuardaTicket=0;         
+        var listado = $scope.listDocmuento;
+        $scope.verGuardaTicket=0;
         for (index = 0; index < listado.length; ++index) {
-            value = listado[index].Arc_estatus; 
+            value = listado[index].Arc_estatus;
             console.log(value);
             if(value==2){
-                $scope.verGuardaTicket=1;    
-            }                 
-        }        
+                $scope.verGuardaTicket=1;
+            }
+        }
     }
-$scope.verificaEstatus  = function(){       
-       
+$scope.verificaEstatus  = function(){
+
         console.log($scope.check1);
         $scope.verMotivos=true;
     }
@@ -518,6 +527,30 @@ $scope.verificaEstatus  = function(){
 
     }
 
+    $scope.guardaMedico = function(){
+        if ($scope.medico == '') {
+            alert('Debes ingresar Médico')
+        }else{
+            //validamos que realmente no exista el ajustador haciendo filtro en la lista que tenemos
+            var encontrados = $filter('filter')($scope.medicos, $scope.medico);
+            if (encontrados.length == 0) {
+                var info = {
+                    nombre:$scope.medico,
+                    cedula:$scope.cedula,
+                    unidad:$scope.captura.UNIClave,
+                    localidad:$scope.captura.Localidad
+                }
+                facturacionExpress.capturaMedico(info).success(function (data){
+                    $scope.captura.MedicoMV = data;
+                    $scope.ocultaBotonesMed = true;
+                });
+            }else{
+                alert('Este ajustador ya se encuentra registrado consultalo en la lista');
+            }
+            // console.log(encontrados);
+        }
+    }
+
 
     //guarda captura
     $scope.capturaFE = function(){
@@ -542,11 +575,11 @@ $scope.verificaEstatus  = function(){
 
             //despues de que todo salio bien en web guardamos en proceso interno la captura de FE
             facturacionExpress.captura(datos).success(function (data){
-                
+
                 $('#botonAct').button('reset');
                 $scope.mensaje = data.respuesta;
                 $scope.cuestionario.pase = data.clavePase;
-                //quitamos el true de sinCaptura por que ya esta capturado XD 
+                //quitamos el true de sinCaptura por que ya esta capturado XD
                 $scope.sinCaptura = false;
                 // $('#DatosModal').modal('hide');
 
@@ -565,7 +598,7 @@ $scope.verificaEstatus  = function(){
     $scope.solicitaAut = function(){
 
         $('#botonAut').button('loading');
-
+        $scope.autorizacion.sinFactura=$scope.sinFactura;
         facturacionExpress.solicitarAutorizacion($scope.autorizacion).success(function (data){
 
             $('#botonAut').button('reset');
@@ -580,22 +613,22 @@ $scope.verificaEstatus  = function(){
 
     }
 
-    $scope.validaFolioAutorizacion = function(){  
-        $scope.cargador=true; 
-        $scope.msjAlerta = '';             
+    $scope.validaFolioAutorizacion = function(){
+        $scope.cargador=true;
+        $scope.msjAlerta = '';
         if($scope.captura.cedulaElectronica!=undefined){
-                            
+
             if($scope.captura.cedulaElectronica.length==13){
-                               
+
                 find.consultaCedula($scope.captura.cedulaElectronica,$scope.captura.Nombre).success(function (data){
-                    console.log(data); 
+                    console.log(data);
                     if(data==0){
                         $scope.captura.RegCompania='';
                         //$scope.captura.Nombre = '';
                         $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
                         $scope.captura.Poliza = $scope.detalle.expediente.poliza;
-                        $scope.captura.Reporte = $scope.detalle.expediente.reporte; 
-                        $scope.captura.RegCompania = '';                                               
+                        $scope.captura.Reporte = $scope.detalle.expediente.reporte;
+                        $scope.captura.RegCompania = '';
                         $scope.cargador=false;
                         $scope.msjAlerta = 'NO SE ENCONTRO LA CÉDULA';
                     }else if(data==1){
@@ -603,18 +636,18 @@ $scope.verificaEstatus  = function(){
                         //$scope.captura.Nombre = '';
                         $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
                         $scope.captura.Poliza = $scope.detalle.expediente.poliza;
-                        $scope.captura.Reporte = $scope.detalle.expediente.reporte;                         
+                        $scope.captura.Reporte = $scope.detalle.expediente.reporte;
                         $scope.msjAlerta = 'EXISTEN CÉDULAS DUPLICADAS';
                         $scope.cargador=false;
-                    }else if(data==2){                        
+                    }else if(data==2){
                         //$scope.captura.Nombre = '';
                         $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
                         $scope.captura.Poliza = $scope.detalle.expediente.poliza;
-                        $scope.captura.Reporte = $scope.detalle.expediente.reporte;     
+                        $scope.captura.Reporte = $scope.detalle.expediente.reporte;
                         $scope.captura.RegCompania = '';
                         $scope.msjAlerta = 'EL NOMBRE NO COINCIDE';
                         $scope.cargador=false;
-                    }                   
+                    }
                     else{
                         $scope.captura.RegCompania=data.CQ_folioelectronico;
                         $scope.captura.Nombre = data.CQ_paciente;
@@ -624,12 +657,137 @@ $scope.verificaEstatus  = function(){
                         $scope.cargador=false;
                     }
                 });
-                
+
             }
         }
     }
 
+    $scope.validaReporte = function(){
+
+        $scope.msjAlerta = '';
+        console.log('entra');
+
+
+        if($scope.sinCedula==false){
+            $scope.cargador1=true;
+            if($scope.captura.Reporte!=undefined){
+                if($scope.captura.Reporte.length==11){
+                    $http.get('http://172.17.10.15/apimv/public/api/qualitas/reporte/' + $scope.captura.Reporte).success(function (data){
+                        if (data.siniestro) {
+                            $scope.captura.Siniestro = data.siniestro;
+                            $scope.captura.Poliza = data.poliza;
+                            $scope.msjReporte=false;
+                            $scope.cargador1=false;
+                        }else{
+                            $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
+                            $scope.captura.Poliza = $scope.detalle.expediente.poliza;
+                            $scope.msjReporte=true;
+                            $scope.cargador1=false;
+                        }
+                    });
+
+                    // find.consultaCedula($scope.captura.cedulaElectronica,$scope.captura.Nombre).success(function (data){
+                    //     console.log(data);
+                    //     if(data==0){
+                    //         $scope.captura.RegCompania='';
+                    //         //$scope.captura.Nombre = '';
+                    //         $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
+                    //         $scope.captura.Poliza = $scope.detalle.expediente.poliza;
+                    //         $scope.captura.Reporte = $scope.detalle.expediente.reporte;
+                    //         $scope.captura.RegCompania = '';
+                    //         $scope.cargador=false;
+                    //         $scope.msjAlerta = 'NO SE ENCONTRO LA CÉDULA';
+                    //     }else if(data==1){
+                    //         $scope.captura.RegCompania='';
+                    //         //$scope.captura.Nombre = '';
+                    //         $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
+                    //         $scope.captura.Poliza = $scope.detalle.expediente.poliza;
+                    //         $scope.captura.Reporte = $scope.detalle.expediente.reporte;
+                    //         $scope.msjAlerta = 'EXISTEN CÉDULAS DUPLICADAS';
+                    //         $scope.cargador=false;
+                    //     }else if(data==2){
+                    //         //$scope.captura.Nombre = '';
+                    //         $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
+                    //         $scope.captura.Poliza = $scope.detalle.expediente.poliza;
+                    //         $scope.captura.Reporte = $scope.detalle.expediente.reporte;
+                    //         $scope.captura.RegCompania = '';
+                    //         $scope.msjAlerta = 'EL NOMBRE NO COINCIDE';
+                    //         $scope.cargador=false;
+                    //     }
+                    //     else{
+                    //         $scope.captura.RegCompania=data.CQ_folioelectronico;
+                    //         $scope.captura.Nombre = data.CQ_paciente;
+                    //         $scope.captura.Siniestro = data.CQ_siniestro;
+                    //         $scope.captura.Poliza = data.CQ_poliza;
+                    //         $scope.captura.Reporte = data.CQ_reporte;
+                    //         $scope.cargador=false;
+                    //     }
+                    // });
+                }
+            }
+        }
+    }
+
+     $scope.validaSinCedula = function(){
+        if($scope.sinCedula==false){
+
+            $scope.msjAlerta='';
+            $scope.captura.cedulaElectronica='';
+            $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
+            $scope.captura.Poliza = $scope.detalle.expediente.poliza;
+            $scope.captura.Reporte = $scope.detalle.expediente.reporte;
+
+            if($scope.captura.Reporte.length==11){
+                $scope.cargador1=true;
+                $http.get('http://172.17.10.15/apimv/public/api/qualitas/reporte/' + $scope.captura.Reporte).success(function (data){
+                    console.log(data);
+                    if (data.siniestro) {
+                        $scope.captura.Siniestro = data.siniestro;
+                        $scope.captura.Poliza = data.poliza;
+                        $scope.msjReporte=false;
+                    }else{
+                        $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
+                        $scope.captura.Poliza = $scope.detalle.expediente.poliza;
+                        $scope.msjReporte=true;
+                    }
+                    $scope.cargador1=false;
+                });
+            }
+            //$scope.captura.RegCompania = $scope.detalle.expediente.poliza;
+            $scope.cargador=false;
+
+                $scope.SiniestroMin = '';
+                $scope.SiniestroMax = 100;
+
+                $scope.PolizaMin = '';
+                $scope.PolizaMax = 100;
+
+                $scope.ReporteMin = '';
+                $scope.ReporteMax = 100;
+
+                $scope.FolioElecMin = '';
+                $scope.FolioElecMax = 100;
+
+
+        }else{
+                console.log($scope.sinCedula);
+                $scope.SiniestroMin = 11;
+                $scope.SiniestroMax = 11;
+
+                $scope.PolizaMin = 10;
+                $scope.PolizaMax = 10;
+
+                $scope.ReporteMin = 11;
+                $scope.ReporteMax = 11;
+
+                $scope.FolioElecMin = 12;
+                $scope.FolioElecMax = 12;
+                $scope.validaCobertura($scope.captura.RIEClave);
+        }
+
+
+    }
 
 }
-autorizadosSCCtrl.$inject =['$scope', '$rootScope', 'datos','loading','find','saceco','webStorage','$filter','$timeout','facturacionExpress'];
+autorizadosSCCtrl.$inject =['$scope', '$rootScope', 'datos','loading','find','saceco','webStorage','$filter','$timeout','facturacionExpress','$http'];
 app.controller('autorizadosSCCtrl',autorizadosSCCtrl);

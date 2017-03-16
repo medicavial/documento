@@ -31,7 +31,7 @@
 			</div>
 		</div>
 	</fieldset>
-		
+
 	<div class="row">
 		<div class="col-md-12">
 		</div>
@@ -51,12 +51,12 @@
 			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="rechazaEntregas()" class="btn btn-warning icon-cancel-circle"> Rechazar Entrega</button>
 		</div>
 		<div class="col-md-3">
-			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaGlo()" class="btn btn-success icon-cancel-circle"> Factura Global
+			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaGlo()" class="btn btn-success icon-cancel-circle" ng-class="['inactivo':area!='pagos']"> Factura Global
 			</button>
 		</div>
 
 		<div class="col-md-3">
-			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaInd()" class="btn btn-info icon-cancel-circle"> Factura Individual
+			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaInd()" class="btn btn-info icon-cancel-circle" ng-class="['inactivo':area!='pagos']"> Factura Individual
 			</button>
 		</div>
 	</div>
@@ -75,7 +75,7 @@
   <div class="row">
     <div class="col-md-12">
       <table style="max-height: auto;
-				    overflow-y: auto; 
+				    overflow-y: auto;
 				    overflow-x: auto;
 				    width: 100%; background: #edebeb ">
         <tr style="background-color:#E9E9E9;">
@@ -121,14 +121,14 @@
 		<h1>Ingresa tus Facturas</h1>
 	</div>
     <legend>XML</legend>
-	
+
 	  <div class="col-lg-12">
 
      <div class="table-responsive">
-      <table id="datatable2"  class="table table-striped table-hover" 
+      <table id="datatable2"  class="table table-striped table-hover"
                 style="
 			    max-height: auto;
-			    overflow-y: auto; 
+			    overflow-y: auto;
 			    overflow-x: auto;
 			    width: 100%; background: #edebeb ">
          <thead>
@@ -142,8 +142,8 @@
                <th>Folio</th>
                <th>Etapa</th>
                <th>Entrega</th>
-               <th>Fecha Recepcion</th> 
-               <th>Tipo Tramite</th> 
+               <th>Fecha Recepcion</th>
+               <th>Tipo Tramite</th>
                <th>Subtipo Tramite</th>
 
             </tr>
@@ -164,7 +164,7 @@
               <td>{{detalle.PAS_folio}}</td>
               <td>{{detalle.FLD_etapa}}</td>
               <td>{{detalle.FLD_numeroEntrega}}</td>
-              <td>{{detalle.fechaRecepcion}}</td> 
+              <td>{{detalle.fechaRecepcion}}</td>
               <td><select  class="form-control"  id="$index" ng-model="detalle.tipotramite" ng-options="tipotramite.id as tipotramite.tipo for tipotramite in tipostramites" ng-disabled="editafactura"  ng-change="subtipotramite($index, detalle.tipotramite)" required>
 			            <option value=""> Tipo Tramite </option>
 			      </select>
@@ -172,10 +172,10 @@
               <td><select class="form-control" id="$index" ng-model="detalle.concepto" ng-options="concepto.id as concepto.nombre for concepto in conceptost" ng-disabled="editafactura" required>
 						<option value=""> Subtipo Tramite </option>
 				  </select>
-			  </td>  
+			  </td>
             </tr>
             <tr>
-<!--                <td ng-show="subefactura"></td>	
+<!--                <td ng-show="subefactura"></td>
                <td ng-show="subefactura"></td> -->
                <td></td>
                <td><h3><strong>Importe</h3></strong></td>
@@ -185,12 +185,12 @@
                <td></td>
                <td></td>
                <td></td>
-               <td></td> 
+               <td></td>
                <td><h3><strong>Subtotal</h3></strong></td>
                <td><h3><strong>{{ resultado | currency }} </strong></h3></td>
                <td><h3><strong>{{ totales  | currency }} </strong></h3></td>
 			   <td></td>
-			   <td></td> 
+			   <td></td>
             </tr>
 <!--             <tr ng-repeat="retencion in retenciones">
                <td></td>
@@ -201,15 +201,15 @@
                <td></td>
                <td>
                 <select class="form-control"  ng-model="retencion.impuest" ng-options="impuesto.id as impuesto.nombre for impuesto in impuestos" ng-change="calculaImpuesto($index,retencion.impuest)">
-                   <option value="">Impuesto</option>  
+                   <option value="">Impuesto</option>
                 </select>
-                </td> 
+                </td>
                <td><h3><strong>{{ retencion.totaliva  | currency }} </strong></h3></td>
               <td><h3><strong>{{ retencion.totalivamanual  | currency }} </strong></h3></td>
-            </tr> -->  
-           
+            </tr> -->
+
          </tbody>
-      </table> 
+      </table>
 
 </div>
 
