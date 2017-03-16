@@ -1,15 +1,15 @@
-//servicio de chekeo de folios para las entregas verifica cada condicion 
+//servicio de chekeo de folios para las entregas verifica cada condicion
 app.factory("checkFolios", function($q,$http,find, api){
     return{
         enviaFolios:function(folios,areaRecibe,usuarioRecibe,usuarioEntrega,areaEntrega){
 
-            // creamos las variables 
-            // la primera es preparar una promesa 
+            // creamos las variables
+            // la primera es preparar una promesa
             var promesa = $q.defer(),
                 foliosIn = [],
                 foliosVal = [];
 
-            //verificamos los folios enviados para ver si hay algun error 
+            //verificamos los folios enviados para ver si hay algun error
             angular.forEach(folios,function (folio){
 
                 var documento = folio;
@@ -20,7 +20,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede entregar debido a que la etapa 1 no esta capturada'});
                 }
                 //Si se envia a Facturación y no es original ó ya fue enviado anteriormente manda mensaje de error
-                //se agrego indexof(busca el contenido que se ponga aqui) por que javascript no soporta muchos && y || en un mismo if 
+                //se agrego indexof(busca el contenido que se ponga aqui) por que javascript no soporta muchos && y || en un mismo if
                 else if( (   (documento.FLD_formaRecep.indexOf('O')  == -1 && documento.FLD_formaRecep.indexOf('NP') == -1 && documento.FLD_formaRecep.indexOf('FE') == -1)   && areaRecibe == 5)  || (areaRecibe == 5 && documento.FLD_AROent == 5 && documento.USU_ent != 'null')||(areaRecibe == 5 && documento.EnvFac == 'SI' && documento.FLD_etapa == 1) ){
                     foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puede enviar a Facturación debido a que no es etapa 1 o ya fue mandado'});
                 }
@@ -39,27 +39,27 @@ app.factory("checkFolios", function($q,$http,find, api){
                 else if(areaRecibe == 5 && documento.EnvFac.indexOf('SI') == 0){
 
                     foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puedo enviar a Facturación por que ya fue enviado'});
-                
+
                 }
 
                 // si se envia a pagos o facturacion pero no esta capturado
                 else if( (areaRecibe == 5 || areaRecibe == 6 || areaRecibe == 4) && documento.DOC_situacionoriginal == 0){
 
                     foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puedo generar envio por que no esta capturado'});
-                
+
                 }
 
-                //Si se envia a pagos y no es original 
+                //Si se envia a pagos y no es original
                 else if(areaRecibe == 6 && documento.EnvFac.indexOf('SI') == -1 && documento.FLD_etapa == 1) {
 
-                    if(confirm('El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se a enviado a Facturación. ¿Desea proseguir?')){                         
+                    if(confirm('El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se a enviado a Facturación. ¿Desea proseguir?')){
                         //si es facturacion agrega un juego mas al flujo
                         foliosVal.push(documento);
                     }else{
                         foliosIn.push({msg:'El documento ' + documento.PAS_folio + ' etapa '+ documento.FLD_etapa + ' # ' + documento.FLD_numeroEntrega + ' no se puedo enviar a Pagos por que no se ha enviado a facturación'});
                     }
 
-                
+
                 }else{
 
                     foliosVal.push(documento);
@@ -67,12 +67,12 @@ app.factory("checkFolios", function($q,$http,find, api){
                 }
 
             });
-            
-            //verifica que ya haya terminado para mandarlos el $q detecta cuando no se hayan efectuado cambios en los arreglos 
+
+            //verifica que ya haya terminado para mandarlos el $q detecta cuando no se hayan efectuado cambios en los arreglos
             $q.all([foliosVal,foliosIn]).then(function (respuesta){
 
 
-                // al generar una respuesta generamos un objecto para mandar respuesta 
+                // al generar una respuesta generamos un objecto para mandar respuesta
                 var resultado = {
                     respuesta:'',
                     rechazos:respuesta[1]
@@ -85,7 +85,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     if(areaRecibe == 5 && areaEntrega == 4) {
                         var ruta = api+'flujo/alta';
                     }else{
-                        var ruta = api+'flujo/actualiza';                    
+                        var ruta = api+'flujo/actualiza';
                     }
 
                     //armamos la estructura de nuestros datos a enviar
@@ -103,14 +103,14 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                         resultado.respuesta = data.respuesta;
                         // resolvemos la promesa para que lo pueda mandar y retornar
-                        promesa.resolve(resultado);          
+                        promesa.resolve(resultado);
 
                     }).error( function (data){
                         // hubo un error y rechaza todo
                         promesa.reject('Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas')
 
                     });
-                    
+
                 }else{
 
                     resultado.respuesta = 'No se generó ninguna entrega';
@@ -118,8 +118,8 @@ app.factory("checkFolios", function($q,$http,find, api){
                 }
 
             });
-            
-            // 
+
+            //
             return promesa.promise;
         },
         preparaGuardado:function(datos, esoriginal, esfax, esfe, sinVerificar){
@@ -132,7 +132,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 tipoalerta:''
             }
             console.log(datos);
-            
+
             //verificamos si el folio tiene documento registrado
             if(datos.documento == 0){
 
@@ -154,7 +154,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                             promesa.reject(error);
 
                         }else{
-                            
+
                             //Segunda validacion para verificar que no esta en la tabla pase o capturas
                             find.verificafoliopase(datos.folio).success( function (data){
 
@@ -167,28 +167,28 @@ app.factory("checkFolios", function($q,$http,find, api){
                                 }else{
 
                                     promesa.resolve({info:datos,agregaOriginal:1});
-                                    
+
                                 }
-                                
+
                             });
                         }
-                        
+
                     })
-                    
+
 
 
                 }else{
 
-                    //en caso de que sea segunda atencion o tercera y se haya registrado por primera vez en sql server 
+                    //en caso de que sea segunda atencion o tercera y se haya registrado por primera vez en sql server
                     error.mensaje = 'No se permite capturar una segunda atencion de un registro nuevo';
                     error.tipoalerta = 'alert-danger';
                     promesa.reject(error);
 
                 }
-                
+
 
             }else{
-            ///Se actualiza pero se tiene que ver si es original o es una segunda atencion 
+            ///Se actualiza pero se tiene que ver si es original o es una segunda atencion
 
                 //Tiene fax/fe y no esta capturado como original y se actualiza a original
                 if(esoriginal == 0){
@@ -209,7 +209,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                                 //alert('entro actualiza');
                             }
 
-                        //es factura express    
+                        //es factura express
                         }else if(esfe == 1){
 
                             if(Date.parse(datos.fecha) < Date.parse(datos.fechafe)){
@@ -229,7 +229,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                         if (sinVerificar) {
 
                             promesa.resolve({info:datos,agregaOriginal:1});
-                            
+
                         }else{
 
                             //verifica que numero de segunda o tercera atencion es
@@ -261,7 +261,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                         if (sinVerificar) {
 
                             promesa.resolve({info:datos,agregaOriginal:1});
-                            
+
                         }else{
 
                             //verifica que numero de segunda o tercera atencion es
@@ -284,15 +284,15 @@ app.factory("checkFolios", function($q,$http,find, api){
         },
         enviaRechazos:function(folios, area, usuario){
 
-            // creamos las variables 
-            // la primera es preparar una promesa 
+            // creamos las variables
+            // la primera es preparar una promesa
             var promesa = $q.defer(),
                 foliosIn = [],
                 foliosVal = [];
 
-            //verificamos los folios enviados para ver si hay algun error 
+            //verificamos los folios enviados para ver si hay algun error
             angular.forEach(folios,function (folio){
-                
+
                 if(area == 4 && folio.FaxOrigianl == 'JF'){
                     foliosVal.push(folio);
                 }else{
@@ -304,12 +304,12 @@ app.factory("checkFolios", function($q,$http,find, api){
                 }
 
             });
-            
-            //verifica que ya haya terminado para mandarlos el $q detecta cuando no se hayan efectuado cambios en los arreglos 
+
+            //verifica que ya haya terminado para mandarlos el $q detecta cuando no se hayan efectuado cambios en los arreglos
             $q.all([foliosVal,foliosIn]).then(function (respuesta){
 
                 var folios_validos = respuesta[0];
-                // al generar una respuesta generamos un objecto para mandar respuesta 
+                // al generar una respuesta generamos un objecto para mandar respuesta
                 var resultado = {
                     respuesta:'',
                     rechazos:respuesta[1]
@@ -323,8 +323,8 @@ app.factory("checkFolios", function($q,$http,find, api){
                 });
 
             });
-            
-            // 
+
+            //
             return promesa.promise;
         },
         verificaInfo:function(cliente, producto, escolaridad, fecha, folio){
@@ -377,7 +377,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     }
 
                 }
-                
+
             }
 
             return promesa.promise;
@@ -422,8 +422,8 @@ app.factory("checkFolios", function($q,$http,find, api){
                 verifcacion    = find.verificafolio(folio,etapa),
                 folioweb       = find.folioweb(folio);
 
-            $q.all([verifcacion,folioweb]).then(function(data) { 
-                
+            $q.all([verifcacion,folioweb]).then(function(data) {
+
                 var interno = data[0].data[0],
                     web     = data[1].data[0];
 
@@ -431,7 +431,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                     // console.log(interno);
                     //verificamos si es una segunda atencion o tercera pero la tercera es manual
                     if (interno.original == 1) {
-                        
+
                         //segunda atencion
                         datos.bloqueo = true;
                         datos.bloqueoUni = false;
@@ -451,7 +451,7 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                         datos.documento = interno.clave;
 
-                        //verificamos que sea fax 
+                        //verificamos que sea fax
                         if(interno.fax == 1){
                             datos.label2 = 'FAX RECIBIDO: ' + interno.fechafax;
                             datos.fechafax = interno.fechafax;
@@ -493,7 +493,7 @@ app.factory("checkFolios", function($q,$http,find, api){
 
                 }else{
 
-                    //Como no ninguna atencion registrada en sql server buscamos en web 
+                    //Como no ninguna atencion registrada en sql server buscamos en web
                     if (web) {
 
                         // console.log(web)
@@ -507,20 +507,20 @@ app.factory("checkFolios", function($q,$http,find, api){
                             datos.unidad = web.Uni_claveMV ? String(web.Uni_claveMV) : web.Uni_claveMV;
                             datos.producto = web.Pro_claveMV ? String(web.Pro_claveMV) : web.Pro_claveMV;
                             datos.escolaridad = web.Esc_claveMV ? String(web.Esc_claveMV) : web.Esc_claveMV;
-                            
+
                             datos.label2 = 'NO SE RECIBIO FAX';
                             if (web.Exp_FE == 1) {
                                 datos.label3Class = 'text-danger';
                                 datos.label3 = 'ES FAC. EXPRESS NO REGISTRAR';
                                 datos.esFeSinCaptura = true;
                             }else{
-                                datos.label3 = 'NO ES FAC. EXPRESS';                                
+                                datos.label3 = 'NO ES FAC. EXPRESS';
                             }
 
                             datos.tipoDoc = 1;
                             datos.esoriginal = 0;
                         }
-                        
+
                     }else{
                         promesa.reject('El folio no se encuentra debido a que no tiene datos correctos de registro');
                     }
@@ -540,14 +540,14 @@ app.factory("checkFolios", function($q,$http,find, api){
             var promesa = $q.defer(),
                 foliosIn = [];
 
-            //verificamos los folios enviados para ver si hay algun error 
-            angular.forEach(folios,function (folio){ 
+            //verificamos los folios enviados para ver si hay algun error
+            angular.forEach(folios,function (folio){
                 folio.USU_rec = usuario;
                 folio.FLD_motivo = prompt("Escribe motivo de rechazo para el folio " + folio.PAS_folio,"Falto ");
                 foliosIn.push(folio);
             });
-            
-            //verifica que ya haya terminado para mandarlos el $q detecta cuando no se hayan efectuado cambios en los arreglos 
+
+            //verifica que ya haya terminado para mandarlos el $q detecta cuando no se hayan efectuado cambios en los arreglos
             $q.all(foliosIn).then(function (foliosgenerados){
 
                 $http.post(api+'entregas/rechaza',foliosgenerados,{timeout: 10000})
@@ -559,7 +559,7 @@ app.factory("checkFolios", function($q,$http,find, api){
                 });
 
             });
-            
+
             return promesa.promise;
         },
         globales:function(folios){
@@ -583,7 +583,7 @@ app.factory("carga", function($q,$http,find,api){
             $q.when(activos).then(function(data) {
                 promesa.resolve(data.data);
 
-            }); 
+            });
 
             return promesa.promise;
         },
@@ -595,8 +595,8 @@ app.factory("carga", function($q,$http,find,api){
                 productos      = find.productos(),
                 escolaridad    = find.escolaridad(),
                 areaOperativa  = find.areaoperativa();
-            $q.all([cliente,unidades,productos,escolaridad,areaOperativa]).then(function(data) { 
-                
+            $q.all([cliente,unidades,productos,escolaridad,areaOperativa]).then(function(data) {
+
                 var datos = {
                     clientes:data[0].data,
                     unidades:data[1].data,
@@ -628,7 +628,7 @@ app.factory("carga", function($q,$http,find,api){
                 }
                 promesa.resolve(datos);
 
-            }); 
+            });
 
             return promesa.promise;
         },
@@ -647,7 +647,7 @@ app.factory("carga", function($q,$http,find,api){
                 }
                 promesa.resolve(datos);
 
-            }); 
+            });
 
             return promesa.promise;
         }
@@ -674,16 +674,16 @@ app.factory("qualitas", function($q,$http,find,api,publicfiles,operacion){
             return $http.post(api+'qualitas/rechazos', datos);
         },
         descargaArchivos:function(folios){
-            
+
             console.log(folios);
-            
+
             angular.forEach(folios,function(dato){
 
                 // console.log(dato.folioSistema)
                 operacion.guardaImagenes(dato.folioSistema);
 
             });
-            
+
         },
         detalleEnvio:function(dato){
             var promesa = $q.defer(),
@@ -758,13 +758,13 @@ app.factory("qualitas", function($q,$http,find,api,publicfiles,operacion){
             // console.log(archivo);
             var ruta = publicfiles + archivo;
             //this trick will generate a temp <a /> tag
-            var link = document.createElement("a");    
+            var link = document.createElement("a");
             link.href = ruta;
-            
+
             //set the visibility hidden so it will not effect on your web-layout
             link.style = "visibility:hidden";
             link.download = ruta;
-            
+
             //this part will append the anchor tag and remove it after automatic click
             document.body.appendChild(link);
             link.click();
@@ -803,6 +803,9 @@ app.factory("facturacionExpress", function($q,$http,find,api){
         capturaAjustador:function(datos){
             return $http.post(api + 'facturacionExpress/capturaAjustador', datos,{timeout: 10000});
         },
+        capturaMedico:function(datos){
+            return $http.post(api + 'facturacionExpress/capturaMedico', datos,{timeout: 10000});
+        },
         capturaCuestionario:function(datos){
             return $http.post(api + 'facturacionExpress/capturaCuestionario', datos,{timeout: 10000});
         },
@@ -825,7 +828,7 @@ app.factory("facturacionExpress", function($q,$http,find,api){
 });
 
 app.factory("saceco", function($q,$http,find,api){
-    return{      
+    return{
         doctosValidados:function(datos){
             return $http.post(api + 'saceco/doctosValidados', datos,{timeout: 100000});
         },
@@ -972,13 +975,13 @@ app.factory("DetalleRelacion", function($q,$http,find,api,publicfiles){
         {
             return $http.post(api + 'DetalleRelacion/generaReporte2/'+ relacion).success(function (archivo){
                 // console.log(archivo);
-                var link = document.createElement("a");    
+                var link = document.createElement("a");
                 link.href = publicfiles  + 'Reporte.xls';
-                
+
                 //set the visibility hidden so it will not effect on your web-layout
                 link.style = "visibility:hidden";
                 link.download = publicfiles  + 'Reporte.xls';
-                
+
                 //this part will append the anchor tag and remove it after automatic click
                 document.body.appendChild(link);
                 link.click();
@@ -992,7 +995,7 @@ app.factory("DetalleRelacion", function($q,$http,find,api,publicfiles){
     }
 
 });
-   
+
 app.factory("PagoManual", function($q,$http,find,api){
 
     return{

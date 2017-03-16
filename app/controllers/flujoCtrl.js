@@ -51,20 +51,20 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
     $scope.cargaFlujo = function(){
 
         carga.activos($rootScope.id).then(function (data){
-            
+
             if (data) {
-                $scope.listado = data;         
+                $scope.listado = data;
             }else{
                 $scope.listado = [];
             }
-           
+
             $scope.mensaje = '';
 
         })
     }
 
 
-    //enlista los usuarios de cada area 
+    //enlista los usuarios de cada area
     $scope.altausuariosarea = function(area){
 
         $scope.area = area;
@@ -73,7 +73,7 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
             $scope.usuarios = data;
 
         });
-        
+
     }
 
     //guardamos pero antes verificamos que tengamos documentos seleccionados
@@ -82,7 +82,7 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
         $('#boton').button('loading');
 
         if ($scope.selectos.length > 0) {
-            
+
             var promesa = checkFolios.enviaFolios($scope.selectos,$scope.areaOp,$scope.user,$rootScope.id,$rootScope.area);
             promesa.then(
                 function (data){
@@ -107,7 +107,7 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
                     $scope.tipoalerta = 'alert-warning';
                 }
             );
-            
+
         }else{
             alert('No se ha seleccionado ningun documento');
         }
@@ -128,14 +128,14 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
                 $scope.cargaFlujo();
                 $('#boton2').button('reset');
             }).error( function (data){
-                
+
                 $scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
                 $scope.tipoalerta = 'alert-warning';
                 $('#boton2').button('reset');
 
-            }); 
+            });
 
-            
+
 
         }else{
             alert('No se ha seleccionado ningun documento');
@@ -146,7 +146,7 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
     $scope.pendientesRecibir = function(){
 
         find.listadorecepcion($rootScope.id).success( function (data){
-       
+
             if(data.respuesta){
                 $scope.recibidos = 0;
             }else{
@@ -176,17 +176,17 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
         iEUrl: 'downloads/download_as_csv'
     };
 
-    ////opciones del grid                 
-   $scope.gridOptions = { 
-        data: 'listado', 
+    ////opciones del grid
+   $scope.gridOptions = {
+        data: 'listado',
         enableColumnResize:true,
-        enablePinning: true, 
+        enablePinning: true,
         enableRowSelection:true,
         multiSelect:true,
         showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
         enableCellSelection: true,
-        selectedItems: $scope.selectos, 
+        selectedItems: $scope.selectos,
         filterOptions: $scope.filterOptions,
         columnDefs: [
                     // { field:'PAS_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: true },
@@ -206,7 +206,8 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
                     { field:'USU_ent', displayName:'USU_ent', width: 100, visible:false },
                     { field:'DOC_situacionoriginal', displayName:'Capturado', width: 100, visible:true },
                     { field:'FLD_fechaent', displayName:'FechaEntrega', width: 100, visible:true },
-                    { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true}
+                    { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true},
+                    { field:'Triage', displayName:'Triage', width: 100, enableCellEdit: true}
         ],
         showFooter: true,
         showFilter:true
@@ -236,7 +237,7 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
         }else{
             var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
             $scope.filtrado.UNI_nombrecorto = $scope.unidad.nombre;
-            
+
         }
         if($scope.cliente == undefined || $scope.cliente == 0){
             var objeto2 = "";
@@ -250,26 +251,26 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
         }else if($scope.tipo == 'original'){
             var objeto3 = "FaxOrigianl:O; ";
         }else{
-            var objeto3 = ""; 
+            var objeto3 = "";
         }
 
         if($scope.folio.length == 0){
             var objeto4 = "";
         }else{
-            var objeto4 = "Folio:" + $scope.folio + "; ";   
+            var objeto4 = "Folio:" + $scope.folio + "; ";
         }
 
         if($scope.lesionado.length == 0){
             var objeto5 = "";
         }else{
-            var objeto5 = "Lesionado:" + $scope.lesionado + "; ";   
+            var objeto5 = "Lesionado:" + $scope.lesionado + "; ";
         }
 
         if($scope.producto == undefined || $scope.producto == 0){
             var objeto6 = "";
         }else{
             var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
-            
+
         }
 
         if($scope.etapa == undefined || $scope.etapa == 0){
@@ -278,7 +279,7 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
         }else{
             var objeto7 = "Etapa:" + $scope.etapa + "; ";
             $scope.filtrado.FLD_etapa = $scope.etapa;
-            
+
         }
 
 
@@ -292,8 +293,8 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
 
     $scope.quitafiltro = function(){
 
-        $scope.filterOptions.filterText = ''; 
-        $scope.unidad = 0; 
+        $scope.filterOptions.filterText = '';
+        $scope.unidad = 0;
         $scope.cliente = 0;
         $scope.folio = '';
         $scope.fechaini = '';
@@ -306,7 +307,7 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
             FLD_etapa:''
         };
 
-    
+
     }
 
     $scope.quitaselectos = function(){
@@ -315,10 +316,10 @@ function flujoCtrl($scope, $rootScope, find , loading, $http, checkFolios, carga
     }
 
     $scope.exporta = function(){
-        
+
         $scope.exportables = $filter('filter')($scope.listado, $scope.filtrado);
         JSONToCSVConvertor($scope.exportables,'Reporte',true);
-        
+
     }
 
 };
@@ -332,6 +333,7 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
     $scope.recibidos = datos.recepcion;
     datos.activos.success(function (data){
         $scope.listado = data;
+        console.log(data);
     });
 
     $scope.inicio = function(){
@@ -378,18 +380,19 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
         carga.activos($rootScope.userM).then(function (data){
 
             if (data) {
-                $scope.listado = data;         
+                $scope.listado = data;
+                console.log(data);
             }else{
                 $scope.listado = [];
             }
-           
+
             $scope.mensaje = '';
 
         })
     }
 
 
-    //enlista los usuarios de cada area 
+    //enlista los usuarios de cada area
     $scope.altausuariosarea = function(area){
 
         $scope.area = area;
@@ -398,7 +401,7 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
             $scope.usuarios = data;
 
         });
-        
+
     }
 
     //guardamos pero antes verificamos que tengamos documentos seleccionados
@@ -407,7 +410,7 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
         $('#boton').button('loading');
 
         if ($scope.selectos.length > 0) {
-            
+
             var promesa = checkFolios.enviaFolios($scope.selectos,$scope.areaOp,$scope.user,$rootScope.id,$rootScope.area);
             promesa.then(
                 function (data){
@@ -432,7 +435,7 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
                     $scope.tipoalerta = 'alert-warning';
                 }
             );
-            
+
         }else{
             alert('No se ha seleccionado ningun documento');
         }
@@ -453,14 +456,14 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
                 $scope.cargaFlujo();
                 $('#boton2').button('reset');
             }).error( function (data){
-                
+
                 $scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
                 $scope.tipoalerta = 'alert-warning';
                 $('#boton2').button('reset');
 
-            }); 
+            });
 
-            
+
 
         }else{
             alert('No se ha seleccionado ningun documento');
@@ -471,7 +474,7 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
     $scope.pendientesRecibir = function(){
 
         find.listadorecepcion($rootScope.id).success( function (data){
-       
+
             if(data.respuesta){
                 $scope.recibidos = 0;
             }else{
@@ -484,7 +487,7 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 
     }
 
-    ///Busquedas 
+    ///Busquedas
 
 
 
@@ -505,17 +508,18 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
         iEUrl: 'downloads/download_as_csv'
     };
 
-    ////opciones del grid                 
-   $scope.gridOptions = { 
-        data: 'listado', 
+    ////opciones del grid
+
+   $scope.gridOptions = {
+        data: 'listado',
         enableColumnResize:true,
-        enablePinning: true, 
+        enablePinning: true,
         enableRowSelection:true,
         multiSelect:true,
         showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
         enableCellSelection: true,
-        selectedItems: $scope.selectos, 
+        selectedItems: $scope.selectos,
         filterOptions: $scope.filterOptions,
         columnDefs: [
                     { field:'PAS_folio', displayName:'Folio' , width: 120, pinned:true, enableCellEdit: true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
@@ -535,6 +539,7 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
                     { field:'DOC_situacionoriginal', displayName:'Capturado', width: 100, visible:true },
                     { field:'FLD_fechaent', displayName:'FechaEntrega', width: 100, visible:true },
                     { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true}
+
         ],
         showFooter: true,
         showFilter:true
@@ -564,7 +569,7 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
         }else{
             var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
             $scope.filtrado.UNI_nombrecorto = $scope.unidad.nombre;
-            
+
         }
         if($scope.cliente == undefined || $scope.cliente == 0){
             var objeto2 = "";
@@ -578,26 +583,26 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
         }else if($scope.tipo == 'original'){
             var objeto3 = "FaxOrigianl:O; ";
         }else{
-            var objeto3 = ""; 
+            var objeto3 = "";
         }
 
         if($scope.folio.length == 0){
             var objeto4 = "";
         }else{
-            var objeto4 = "Folio:" + $scope.folio + "; ";   
+            var objeto4 = "Folio:" + $scope.folio + "; ";
         }
 
         if($scope.lesionado.length == 0){
             var objeto5 = "";
         }else{
-            var objeto5 = "Lesionado:" + $scope.lesionado + "; ";   
+            var objeto5 = "Lesionado:" + $scope.lesionado + "; ";
         }
 
         if($scope.producto == undefined || $scope.producto == 0){
             var objeto6 = "";
         }else{
             var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
-            
+
         }
 
         if($scope.etapa == undefined || $scope.etapa == 0){
@@ -606,7 +611,7 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
         }else{
             var objeto7 = "Etapa:" + $scope.etapa + "; ";
             $scope.filtrado.FLD_etapa = $scope.etapa;
-            
+
         }
 
 
@@ -620,8 +625,8 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 
     $scope.quitafiltro = function(){
 
-        $scope.filterOptions.filterText = ''; 
-        $scope.unidad = 0; 
+        $scope.filterOptions.filterText = '';
+        $scope.unidad = 0;
         $scope.cliente = 0;
         $scope.folio = '';
         $scope.fechaini = '';
@@ -634,7 +639,7 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
             FLD_etapa:''
         };
 
-    
+
     }
 
     $scope.quitaselectos = function(){
@@ -646,7 +651,7 @@ function flujoAreaCtrl($scope, $rootScope, find , loading, $http, checkFolios, c
 
         $scope.exportables = $filter('filter')($scope.listado, $scope.filtrado);
         JSONToCSVConvertor($scope.exportables,'Reporte',true);
-        
+
     }
 
 };

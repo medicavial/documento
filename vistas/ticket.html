@@ -6,7 +6,7 @@
 
     <div class="row" ng-show="edicion">
       <div class="col-md-12">
-      
+
         <fieldset>
           <legend>Datos del Expediente</legend>
         </fieldset>
@@ -47,7 +47,7 @@
       </div>
 
     </div>
-  
+
     <br>
   <form name="formTicket" novalidate>
     <div class="row">
@@ -103,14 +103,14 @@
             <select id="subcategoria" class="form-control"  ng-model="datos.subcategoria" ng-options="subcategoria.Clave as subcategoria.Nombre for subcategoria in subcategorias" required>
                 <option value="">Subcategoria</option>
             </select>
-        </div>         
+        </div>
         <div class="col-md-3">
             <label for="status">Status</label>
             <select id="status" class="form-control"  ng-model="datos.statusa" ng-options="statu.Clave as statu.Nombre for statu in status" required>
                 <option value="">Status</option>
             </select>
-        </div> 
-    </div> 
+        </div>
+    </div>
     <div class="row" ng-show="datos.statusa == 2">
       <div class="col-md-6">
           <label for="folio">Asignado A:</label>
@@ -139,12 +139,12 @@
 
         <div id="collapseOne" class="panel-collapse collapse in">
           <div class="panel-body">
-            
+
 
             <div class="btn-group" data-toggle="buttons">
 
               <label class="btn btn-primary" ng-click="datos.diagnostico = !datos.diagnostico">
-                <input type="checkbox" ng-model="datos.diagnostico"><i ng-show="datos.diagnostico" class="glyphicon glyphicon-ok"></i> Diagnóstico
+                <input type="checkbox" ng-model="datos.diagnostico"><i ng-show="datos.diagnostico" class="glyphicon glyphicon-ok"></i> Diagnóstico Inválido
               </label>
               <label class="btn btn-primary" ng-click="datos.firma = !datos.firma">
                 <input type="checkbox" ng-model="datos.firma"><i ng-show="datos.firma" class="glyphicon glyphicon-ok"></i> Firma de lesionado
@@ -155,14 +155,8 @@
               <label class="btn btn-primary" ng-click="datos.finiquito = !datos.finiquito">
                 <input type="checkbox" ng-model="datos.finiquito" ><i ng-show="datos.finiquito" class="glyphicon glyphicon-ok"></i> Sin finiquito
               </label>
-              <label class="btn btn-primary" ng-click="datos.refactura = !datos.refactura">
-                <input type="checkbox" ng-model="datos.refactura" ><i ng-show="datos.refactura" class="glyphicon glyphicon-ok"></i> Refacturación
-              </label>
               <label class="btn btn-primary" ng-click="datos.pase = !datos.pase">
                 <input type="checkbox" ng-model="datos.pase"><i ng-show="datos.pase" class="glyphicon glyphicon-ok"></i> Pase médico alterado
-              </label>
-              <label class="btn btn-primary" ng-click="datos.suministro = !datos.suministro">
-                <input type="checkbox" ng-model="datos.suministro"><i ng-show="datos.suministro" class="glyphicon glyphicon-ok"></i> Suministros (Medicamento/ Órtesis)
               </label>
               <label class="btn btn-primary" ng-click="datos.identificacion = !datos.identificacion">
                 <input type="checkbox" ng-model="datos.identificacion" ><i ng-show="datos.identificacion" class="glyphicon glyphicon-ok"></i> Identificación oficial
@@ -171,10 +165,7 @@
                 <input type="checkbox" ng-model="datos.verificacion" ><i ng-show="datos.verificacion" class="glyphicon glyphicon-ok"></i> Verificación de firmas
               </label>
               <label class="btn btn-primary" ng-click="datos.notamedicain = !datos.notamedicain">
-                <input type="checkbox" ng-model="datos.notamedicain"><i ng-show="datos.notamedicain" class="glyphicon glyphicon-ok"></i> Nota médica incompleta
-              </label>
-              <label class="btn btn-primary" ng-click="datos.informe = !datos.informe">
-                <input type="checkbox" ng-model="datos.informe"><i ng-show="datos.informe" class="glyphicon glyphicon-ok"></i> Informe AIG/CHARTIS
+                <input type="checkbox" ng-model="datos.notamedicain"><i ng-show="datos.notamedicain" class="glyphicon glyphicon-ok"></i> Incompleta
               </label>
               <label class="btn btn-primary" ng-click="datos.reverso = !datos.reverso">
                 <input type="checkbox" ng-model="datos.reverso"><i ng-show="datos.reverso" class="glyphicon glyphicon-ok"></i> Reverso de identificación
@@ -187,12 +178,6 @@
               </label>
               <label class="btn btn-primary" ng-click="datos.pasemedico = !datos.pasemedico">
                 <input type="checkbox" ng-model="datos.pasemedico"><i ng-show="datos.pasemedico" class="glyphicon glyphicon-ok"></i> Pase médico en copia
-              </label>
-              <label class="btn btn-primary" ng-click="datos.nombrein = !datos.nombrein">
-                <input type="checkbox" ng-model="datos.nombrein"><i ng-show="datos.nombrein" class="glyphicon glyphicon-ok"></i> Nombre incorrecto
-              </label>
-              <label class="btn btn-primary" ng-click="datos.folioseg = !datos.folioseg">
-                <input type="checkbox" ng-model="datos.folioseg"><i ng-show="datos.folioseg" class="glyphicon glyphicon-ok"></i> Folio de segmentación
               </label>
               <label class="btn btn-primary" ng-click="datos.sinpase = !datos.sinpase">
                 <input type="checkbox" ng-model="datos.sinpase"><i ng-show="datos.sinpase" class="glyphicon glyphicon-ok"></i> Sin pase médico
@@ -216,18 +201,50 @@
                 <input type="checkbox" ng-model="datos.cruce"><i ng-show="datos.cruce" class="glyphicon glyphicon-ok"></i> Cruce Zima-MV
               </label>
               <label class="btn btn-primary" ng-click="datos.cadulaT = !datos.cadulaT">
-                <input type="checkbox" ng-model="datos.cadulaT"><i ng-show="datos.cadulaT" class="glyphicon glyphicon-ok"></i> Cédula en Tramite
+                <input type="checkbox" ng-model="datos.cadulaT"><i ng-show="datos.cadulaT" class="glyphicon glyphicon-ok"></i>Sin Cédula
               </label>
               <label class="btn btn-primary" ng-click="datos.cedulaI = !datos.cedulaI">
                 <input type="checkbox" ng-model="datos.cedulaI"><i ng-show="datos.cedulaI" class="glyphicon glyphicon-ok"></i> Cédula Invalida
               </label>
-
+              <label class="btn btn-primary" ng-click="datos.paseT = !datos.paseT">
+                <input type="checkbox" ng-model="datos.paseT"><i ng-show="datos.paseT" class="glyphicon glyphicon-ok"></i> Pase Taller Mécanico
+              </label>
+              <label class="btn btn-primary" ng-click="datos.sDiagnostico = !datos.sDiagnostico">
+                <input type="checkbox" ng-model="datos.sDiagnostico"><i ng-show="datos.sDiagnostico" class="glyphicon glyphicon-ok"></i> Sin Diagnóstico
+              </label>
+              <label class="btn btn-primary" ng-click="datos.sNMedico = !datos.sNMedico">
+                <input type="checkbox" ng-model="datos.sNMedico"><i ng-show="datos.sNMedico" class="glyphicon glyphicon-ok"></i> Sin Nombre del Médico
+              </label>
+              <label class="btn btn-primary" ng-click="datos.sFecha = !datos.sFecha">
+                <input type="checkbox" ng-model="datos.sFecha"><i ng-show="datos.sFecha" class="glyphicon glyphicon-ok"></i> Sin Fecha
+              </label>
+              <label class="btn btn-primary" ng-click="datos.sNMedica = !datos.sNMedica">
+                <input type="checkbox" ng-model="datos.sNMedica"><i ng-show="datos.sNMedica" class="glyphicon glyphicon-ok"></i> Sin Nota Médica
+              </label>
+              <label class="btn btn-primary" ng-click="datos.nRequisitado = !datos.nRequisitado">
+                <input type="checkbox" ng-model="datos.nRequisitado"><i ng-show="datos.nRequisitado" class="glyphicon glyphicon-ok"></i> No Requisitado
+              </label>
+              <label class="btn btn-primary" ng-click="datos.sId = !datos.sId">
+                <input type="checkbox" ng-model="datos.sId"><i ng-show="datos.sId" class="glyphicon glyphicon-ok"></i> Sin ID
+              </label>
+              <label class="btn btn-primary" ng-click="datos.ilegible = !datos.ilegible">
+                <input type="checkbox" ng-model="datos.ilegible"><i ng-show="datos.ilegible" class="glyphicon glyphicon-ok"></i> Ilegible
+              </label>
+              <label class="btn btn-primary" ng-click="datos.nIncorrecto = !datos.nIncorrecto">
+                <input type="checkbox" ng-model="datos.nIncorrecto"><i ng-show="datos.nIncorrecto" class="glyphicon glyphicon-ok"></i> Nombre Incorrecto
+              </label>
+              <label class="btn btn-primary" ng-click="datos.sCartaLG = !datos.sCartaLG">
+                <input type="checkbox" ng-model="datos.sCartaLG"><i ng-show="datos.sCartaLG" class="glyphicon glyphicon-ok"></i> Sin Carta LG
+              </label>
+              <label class="btn btn-primary" ng-click="datos.sCAvisoA = !datos.sCAvisoA">
+                <input type="checkbox" ng-model="datos.sCAvisoA"><i ng-show="datos.sCAvisoA" class="glyphicon glyphicon-ok"></i> Sin Carta Aviso de Accidente
+              </label>
             </div>
 
           </div>
         </div>
       </div>
-      
+
       </div>
     </div>
 
@@ -277,7 +294,7 @@
               <thead>
                 <tr>
                   <th>Usuario</th>
-                  <th>Descripcion</th>          
+                  <th>Descripcion</th>
                   <th>Fecha</th>
 
                 </tr>
@@ -290,13 +307,13 @@
                 </tr>
               </tbody>
             </table>
-            
+
         </div>
       </div>
 
     </div>
     <div class="col-md-6">
-      
+
       <div class="panel panel-primary">
         <div class="panel-heading">
           <h3 class="panel-title">Historial de Notas</h3>
@@ -306,7 +323,7 @@
               <thead>
                 <tr>
                   <th>Usuario</th>
-                  <th>Descripcion</th>          
+                  <th>Descripcion</th>
                   <th>Fecha</th>
 
                 </tr>

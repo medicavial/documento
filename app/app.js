@@ -33,4 +33,8 @@ app.constant('xmlFE','http://localhost/apimv/public/FacturasPagos/xmltemporal/')
 
 // var xml = new Firebase("http://www.medicavial.net/registro");
 
+//app.constant('api','http://172.17.10.15/apimv/public/api/')
+//app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/');
+
+
 

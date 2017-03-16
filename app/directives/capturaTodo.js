@@ -16,7 +16,7 @@ function capturaTodo() {
 controladorTodo.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api', 'tickets'];;
 
 function controladorTodo($scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api, tickets) {
-    
+
     // Injecting $scope just for comparison
     //muestra Ventan de alta de Original
 
@@ -77,11 +77,9 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
             finiquito:false,
             refactura:false,
             pase:false,
-            suministro:false,
             identificacion:false,
             verificacion:false,
             notamedicain:false,
-            informe:false,
             reverso:false,
             verificapar:false,
             nocoincide:false,
@@ -92,11 +90,22 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
             fueravigencia:false,
             sinpoliza:false,
             sindeducible:false,
-            cedulaT:false,
-            cedulaI:false,
-            sincuestionario:false,
             firmamedico:false,
             cruce:false,
+            cedulaT:false,
+            cedulaI:false,
+            paseT:false,
+            sincuestionario:false,
+            sDiagnostico:false,
+            sNMedico:false,
+            sFecha:false,
+            sNMedica:false,
+            nRequisitado:false,
+            sId:false,
+            ilegible:false,
+            nIncorrecto:false,
+            sCartaLG:false,
+            sCAvisoA:false,
             usuario:$rootScope.userWeb,
             usuariomv:$rootScope.id
         }
@@ -136,7 +145,7 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
             $scope.productos = data.productos;
             $scope.areas = data.areaOperativa;
             $scope.escolaridades = data.escolaridad;
-            $scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}]; 
+            $scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];
             $scope.altacategorias();
             $scope.altastatus();
             $scope.empresasWeb();
@@ -171,11 +180,11 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
         find.categorias().success(function (data){
             $scope.categorias = data;
         });
-        
+
     }
 
     $scope.altasubcategorias = function(id){
-        
+
         find.subcategorias(id).success(function (data){
             $scope.subcategorias = data;
         });
@@ -189,7 +198,7 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
     }
 
 
-    //Verificamos si el fiolio esta dado de alta o se tiene que buscar en 
+    //Verificamos si el fiolio esta dado de alta o se tiene que buscar en
     $scope.validaOriginalB = function(folio){
 
         $scope.limpiaVariables();
@@ -199,9 +208,9 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
         //verificamos si tiene primera atencion
         checkFolios.validaFolio(folio, 1)
         .then( function (data){
-            
+
             // console.log(data);
-            
+
             if (data.tipoDoc == 1) {
 
                 $scope.original.tipoDoc = data.tipoDoc;
@@ -228,7 +237,7 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
                 $scope.bloqueoUni = data.bloqueoUni;
                 $scope.esoriginal = data.esoriginal;
                 $scope.unidadref = data.unidadref;
-                
+
                 find.folioweb(folio).success( function (data){
                     console.log(data);
                     $scope.ticket.cliente = data[0].Cia_clave;
@@ -237,13 +246,13 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
                     $scope.ticket.etapa = '1';
 
                     find.ultimoticket().success(function (data){
-                        $scope.ticket.folioIn = Number(data) + 1; 
+                        $scope.ticket.folioIn = Number(data) + 1;
                     });
 
                     $scope.cargar = false;
 
-                }); 
-            
+                });
+
             }else{
                 $scope.cargar = false;
                 alert('Solo puedes registrar etapa 1 si es etapa 2 o mas favor de registrar y registrar ticket por separado');
@@ -329,11 +338,9 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
             finiquito:false,
             refactura:false,
             pase:false,
-            suministro:false,
             identificacion:false,
             verificacion:false,
             notamedicain:false,
-            informe:false,
             reverso:false,
             verificapar:false,
             nocoincide:false,
@@ -344,17 +351,28 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
             fueravigencia:false,
             sinpoliza:false,
             sindeducible:false,
-            cedulaT:false,
-            cedulaI:false,
-            sincuestionario:false,
             firmamedico:false,
             cruce:false,
+            cedulaT:false,
+            cedulaI:false,
+            paseT:false,
+            sincuestionario:false,
+            sDiagnostico:false,
+            sNMedico:false,
+            sFecha:false,
+            sNMedica:false,
+            nRequisitado:false,
+            sId:false,
+            ilegible:false,
+            nIncorrecto:false,
+            sCartaLG:false,
+            sCAvisoA:false,
             usuario:$rootScope.userWeb,
             usuariomv:$rootScope.id
         }
     }
 
-    /////////Inicia proceso de guardado 
+    /////////Inicia proceso de guardado
 
     ///Proceso de guardado ya sea de fax u original
     $scope.guardaDatosB = function(){
@@ -382,24 +400,21 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
                     alta.then(function (data){
 
                         $('#folioO').focus();
-
-                        // console.log($scope.ticket);
+                        console.log($scope.ticket);
                         tickets.guardar($scope.ticket).success( function (data){
-                        
+                            $scope.limpiaVariables();
                             $scope.original.folio = '';
                             $scope.mensaje = 'Folio registrado correctamente con el ticket ' + $scope.ticket.folioIn;
                             $scope.tipoalerta = 'alert-success';
-                            $('#botonGuardaTodo').button('reset');            
-                            $scope.limpiaVariables();
-
+                            $('#botonGuardaTodo').button('reset');
+                            $scope.limpiaVariables();                            
                         }).error( function (data){
-                            
+                            console.log(data);
                             $scope.original.folio = '';
                             $scope.mensaje = 'El documento se gurado bien pero ocurrio un error al guardar el ticket intenta registrarlo de forma independiente';
                             $scope.tipoalerta = 'alert-warning';
                             $('#botonGuardaTodo').button('reset');
                             $scope.limpiaVariables();
-
                         });
 
                     },function (data){
@@ -427,7 +442,7 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
 
     //Guarda los datos de Original
 
-    /////////Termina proceso de guardado 
+    /////////Termina proceso de guardado
 
     /////////////////Seccion de validaciones
 
@@ -436,7 +451,7 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
 
         var fecha1 = moment($scope.original.fecha, 'DD/MM/YYYY');
         var fecha2 = moment(FechaAct, 'DD/MM/YYYY');
-        
+
         if(fecha1 > fecha2){
             $scope.original.fecha = FechaAct;
             alert('La fecha no debe ser mayo al dia de hoy');
@@ -458,7 +473,7 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
 
     }
 
-    //verificamos que tipo de atencion es y si ya tien fax capturado al momento de cambiar el tipo de documento 
+    //verificamos que tipo de atencion es y si ya tien fax capturado al momento de cambiar el tipo de documento
     $scope.verificaatencion = function(){
 
         // console.log($scope.original.tipoDoc);
@@ -466,10 +481,10 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
 
         if(($scope.original.tipoDoc == 2 || $scope.original.tipoDoc == 3) && $scope.bloqueoUni == false){
 
-    
+
             $scope.original.unidad = $scope.unidadref;//asignamos el valor de referencia por si queremos regresar al estado anterior
             $scope.bloqueoUni = false;
-            
+
 
         }else if($scope.bloqueo == true && $scope.original.tipoDoc == 1){
 

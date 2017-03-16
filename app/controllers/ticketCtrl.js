@@ -1,4 +1,4 @@
-///controlador para editar el ticket 
+///controlador para editar el ticket
 function editaTicketCtrl($scope,$rootScope, $http, find, $routeParams, datos, loading,tickets){
 
 	loading.despedida();
@@ -7,13 +7,13 @@ function editaTicketCtrl($scope,$rootScope, $http, find, $routeParams, datos, lo
 	$scope.status = datos[1].data;
 	$scope.unidades = datos[2].data;
 	$scope.categorias = datos[3].data;
-	
+
 	$scope.inicio = function(){
 
 		$scope.tituloT = "Generar Ticket";
 		$scope.mensaje = '';
 		$scope.mensaje2 = '';
-		
+
 		$scope.datos = {
 			folioweb:'',
 			folioIn:'',
@@ -40,7 +40,7 @@ function editaTicketCtrl($scope,$rootScope, $http, find, $routeParams, datos, lo
 	}
 
 	$scope.altasubcategorias = function(id){
-		
+
 		find.subcategorias(id).success(function (data){
 			$scope.subcategorias = data;
 		});
@@ -82,12 +82,12 @@ function editaTicketCtrl($scope,$rootScope, $http, find, $routeParams, datos, lo
 		// console.log($scope.datos);
 		$('#boton').button('loading');
 
-		tickets.actualiza($scope.datos).success( function (data){  
+		tickets.actualiza($scope.datos).success( function (data){
 
 			$scope.mensaje2 = data.respuesta;
 			$scope.tipoalerta = 'alert-success';
 			$('#boton').button('reset');
-		
+
 		}).error( function (data){
 			$scope.mensaje2 = 'Ups parece que el internet esta lento no te desesperes intentalo nuevamente y se feliz =D';
 			$scope.tipoalerta = 'alert-warning';
@@ -97,7 +97,7 @@ function editaTicketCtrl($scope,$rootScope, $http, find, $routeParams, datos, lo
 	}
 
 };
-	
+
 //generacion de tickets
 function ticketCtrl($scope,$rootScope, $http, find, tickets){
 
@@ -153,7 +153,19 @@ function ticketCtrl($scope,$rootScope, $http, find, tickets){
 			cedulaI:false,
 			sincuestionario:false,
 			firmamedico:false,
+			sDiagnostico:false,
+			sNMedico:false,
+			sFecha:false,
+			sNMedica:false,
+			nRequisitado:false,
+			sId:false,
+			ilegible:false,
+			nIncorrecto:false,
+			sCartaLG:false,
+			sCAvisoA:false,
 			cruce:false,
+			paseT:false,
+
 			usuario:$rootScope.userWeb,
 			usuariomv:$rootScope.id
 		}
@@ -185,8 +197,8 @@ function ticketCtrl($scope,$rootScope, $http, find, tickets){
 		if ($scope.datos.folioIn == 'NUEVO') {
 
 			find.ultimoticket().success(function (data){
-				
-				$scope.datos.folioIn = Number(data) + 1; 
+
+				$scope.datos.folioIn = Number(data) + 1;
 				$scope.guardaTicket();
 
 			});
@@ -197,7 +209,7 @@ function ticketCtrl($scope,$rootScope, $http, find, tickets){
 			$scope.mensaje2  = 'El folio interno ya fue guardado';
 
 		}
-		
+
 	}
 
 	//busca clientes
@@ -226,11 +238,11 @@ function ticketCtrl($scope,$rootScope, $http, find, tickets){
 		find.categorias().success(function (data){
 			$scope.categorias = data;
 		});
-		
+
 	}
 
 	$scope.altasubcategorias = function(id){
-		
+
 		find.subcategorias(id).success(function (data){
 			$scope.subcategorias = data;
 		});
@@ -249,10 +261,10 @@ function ticketCtrl($scope,$rootScope, $http, find, tickets){
 		if ($scope.datos.folioweb) {
 			$scope.mensaje = '';
 			$scope.cargar = true;
-			
+
 			find.folioweb($scope.datos.folioweb).success( function (data){
-	        	
-	        
+
+
 	        	if(data.length == 0){
 
 	        		$scope.mensaje  = 'No se encontro el Folio Solicitado';
@@ -276,9 +288,9 @@ function ticketCtrl($scope,$rootScope, $http, find, tickets){
 	        	}
 
 				$scope.cargar = false;
-				
+
 				//console.log(data);
-			});			
+			});
 		};
 
 	}
@@ -288,10 +300,10 @@ function ticketCtrl($scope,$rootScope, $http, find, tickets){
 		$('#boton').button('loading');
 
 		tickets.guardar($scope.datos).success( function (data){
-			        	
+
 			$scope.mensaje2 = data.respuesta;
 			$scope.tipoalerta = 'alert-success';
-			$('#boton').button('reset');			
+			$('#boton').button('reset');
 
 		}).error( function (data){
 
@@ -318,16 +330,16 @@ function menuticketCtrl($scope, $location, find, loading){
 	// $scope.usuarios = datos[3].data;
 
 	find.empresasweb().success(function (data){
-		$scope.clientes = data;	
+		$scope.clientes = data;
 	});
     find.statusweb().success(function (data){
-    	$scope.status = data;	
+    	$scope.status = data;
     });
     find.unidadesweb().success(function (data){
-    	$scope.unidades = data;	
+    	$scope.unidades = data;
     });
     find.usuariosweb().success(function (data){
-    	$scope.usuarios = data;	
+    	$scope.usuarios = data;
     });
 
 	$scope.inicio = function(){
@@ -385,7 +397,7 @@ function menuticketCtrl($scope, $location, find, loading){
         		loading.despedida();
 		});
 
-	}	
+	}
 
 
 	//////LLena el grid y toma filtros
@@ -403,15 +415,15 @@ function menuticketCtrl($scope, $location, find, loading){
 	  $location.path('/ticket/'+row.entity.Folio_Interno+'/'+row.entity.Folio_Web );
 	};
 
-    ////opciones del grid                 
-    $scope.gridOptions = { 
-    	data: 'listado', 
+    ////opciones del grid
+    $scope.gridOptions = {
+    	data: 'listado',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:false,
     	multiSelect:false,
     	rowTemplate: rowTempl,
-    	selectedItems: $scope.selectos, 
+    	selectedItems: $scope.selectos,
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
                     { field:'Cliente', width: 120, pinned: true},
@@ -450,7 +462,7 @@ function menuticketCtrl($scope, $location, find, loading){
     		var objeto1 = "";
     	}else{
     		var objeto1 = "Unidad:" + $scope.unidad.Nombre + "; ";
-    		
+
     	}
     	if($scope.cliente == undefined || $scope.cliente == 0){
     		var objeto2 = "";
@@ -466,20 +478,20 @@ function menuticketCtrl($scope, $location, find, loading){
     	if($scope.interno.length == 0){
     		var objeto4 = "";
     	}else{
-    		var objeto4 = "Folio_Interno:" + $scope.interno + "; ";	
+    		var objeto4 = "Folio_Interno:" + $scope.interno + "; ";
     	}
 
     	if($scope.web.length == 0){
     		var objeto5 = "";
     	}else{
-    		var objeto5 = "Folio_Web:" + $scope.web + "; ";	
+    		var objeto5 = "Folio_Web:" + $scope.web + "; ";
     	}
 
     	if($scope.statu == undefined || $scope.statu == 0){
     		var objeto6 = "";
     	}else{
     		var objeto6 = "Status:" + $scope.statu.Nombre + "; ";
-    		
+
     	}
 
 
@@ -493,14 +505,14 @@ function menuticketCtrl($scope, $location, find, loading){
 
     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
+    	$scope.filterOptions.filterText = '';
+    	$scope.unidad = 0;
     	$scope.cliente = 0;
-    	$scope.statu = 0; 
+    	$scope.statu = 0;
     	$scope.usuario = 0;
     	$scope.interno = '';
 		$scope.web = '';
-    
+
     }
 
 };
