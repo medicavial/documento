@@ -861,6 +861,16 @@ app.factory("relaciones", function($q,$http,find,api){
         },
         validaUnidad:function(rfc){
             return $http.post(api + 'RelacionPagos/validaUnidad/'+rfc);
+        },
+        tipoOrden:function(){
+            return $http.post(api + 'RelacionPagos/tipoOrden');
+        },
+        proveedores:function(){
+            return $http.post(api + 'RelacionPagos/proveedores');
+        },
+        busquedaOrdenes:function(datos){
+
+            return $http.post(api + 'RelacionPagos/busquedaOrdenes',datos);
         }
     }
 
@@ -990,8 +1000,8 @@ app.factory("PagoManual", function($q,$http,find,api){
         consultaFolioFiscal:function(foliofiscal){
             return $http.post(api + 'PagoManual/consultaFolioFiscal/'+foliofiscal);
         },
-        validaUnidad:function(rfc){
-            return $http.post(api + 'PagoManual/validaUnidad/'+rfc);
+        validaUnidad:function(unidad){
+            return $http.post(api + 'PagoManual/validaUnidad/'+unidad);
         },
         proveedores:function(){
             return $http.post(api + 'PagoManual/proveedor');
@@ -999,3 +1009,44 @@ app.factory("PagoManual", function($q,$http,find,api){
     }
 
 });
+
+app.factory("proveedores", function($q,$http,find,api){
+
+    return{
+
+        listadoproveedor:function(){
+            return $http.post(api + 'proveedores/listadoproveedor');
+        }
+
+    }
+
+});
+
+app.factory("pagoPropias", function($q,$http,find,api){
+
+    return{
+
+        listadoPropias:function(datos){
+            return $http.post(api + 'pagoPropias/listadoPropias', datos);
+        }
+
+    }
+
+});
+
+app.factory("FacturaNormal", function($q,$http,find,api){
+
+    return{
+
+        consultaFolioFiscal:function(foliofiscal){
+            return $http.post(api + 'entregas/consultaFolioFiscal/'+foliofiscal);
+        },
+        validaUnidad:function(unidad){
+            return $http.post(api + 'entregas/validaUnidad/'+unidad);
+        },
+
+    }
+
+});
+
+

@@ -771,6 +771,18 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'subeFacturaCtrl'
     });
 
+    $routeProvider.when('/altaproveedor',{
+            templateUrl   : 'vistas/altaProveedores.html',
+            controller    : 'altaProveedorCtrl'
+
+    });
+
+    $routeProvider.when('/pagoPropias',{
+            templateUrl   : 'vistas/pagoPropias.html',
+            controller    : 'pagoPropiasCtrl'
+
+    });
+
     $routeProvider.when('/relaciona',{
             templateUrl   : 'vistas/relacion.html',
             controller    : 'relacionCtrl',

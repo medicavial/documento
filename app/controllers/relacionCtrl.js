@@ -55,6 +55,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         $scope.tipoTramite(); 
         $scope.borratemporales();
 
+
         $scope.filtrado = {
             Unidad : '',
             Cliente : '',
@@ -99,7 +100,11 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                 tipotramite: '',
                 concepto: '',
                 tasa: '',
-                subtotal: ''
+                subtotal: '',
+                Reserva: 0.00,
+                Tabulador: 0.00
+
+
         }
 
         $scope.datos = {
@@ -107,6 +112,18 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
             rfc : '',
             claveunidad: ''
         }
+
+         $scope.tipoOrden();
+         $scope.Proveedores();
+
+         $scope.norelacion = {
+
+            tipoOrden: '',
+            unidad: '',
+            proveedor: ''
+
+
+         }
 
     }
 
@@ -136,6 +153,15 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         find.unidades().success( function (data){
 
             $scope.unidades = data;
+            
+         });
+    }
+
+    $scope.Proveedores = function(){
+
+        relaciones.proveedores().success( function (data){
+
+            $scope.proveedores = data;
             
          });
     }
@@ -172,14 +198,29 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
     }
 
-    $scope.buscaxProveedor = function(id){
+    $scope.tipoOrden = function(){
+
+        relaciones.tipoOrden().success( function (data) {
+
+            $scope.ordenes = data;
+
+        });
+    }
+
+    $scope.busquedaOrdenes = function(){
+
+        console.log($scope.norelacion);
+
+        if ($scope.norelacion.tipoOrden == '') {
+
+            swal("Oops...", "No seleccionaste Tipo de Facturación", "error")
+        };
 
         loading.cargando('Buscando Folios');
-        find.buscaxProveedor(id).success(function (data){
+        relaciones.busquedaOrdenes($scope.norelacion).success(function (data){
 
             if(data){
                 console.log(data);
-
                 
                 $scope.listado = data;
                 $scope.datos.claveunidad = data[0].claveunidad;
@@ -474,8 +515,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
     $scope.relacionaFolios = function(success){
 
-        console.log($scope.selectedRows);
-
         $scope.relacionesFol= [];
         for (var i = 0; i < $scope.selectedRows.length; i++){
 
@@ -507,22 +546,8 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
             var suma4 = 0;
             for (var i = 0; i < $scope.detalles.length; i++){
 
-                console.log($scope.detalles);
-
-                var valor = $scope.detalles[i].Reserva;
-                var numero = valor.replace(",",'');
-                suma += parseFloat(numero);
-                var sumas = suma.toFixed(2);
-                $scope.resultado= sumas;
-                $scope.detalles[i].btn_edit = true;
-
-                var valor1 = $scope.detalles[i].Tabulador;
-                var numero1 = valor1.replace(",",'');
-                suma1 += parseFloat(numero1);
-                var sumas1 = suma1.toFixed(2);
-                $scope.totales = sumas1;
-
-                if ($scope.detalles[0].total != ''){
+                if ($scope.detalles[i].total != ''){
+                    console.log($scope.detalles[i].total);
                     var valor2 = $scope.detalles[i].total;
                     var numero2 = valor2.replace(",",'');
                     suma2 += parseFloat(numero2);
@@ -530,7 +555,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                     $scope.totalimporte= sumas2;
                 }
 
-                if ($scope.detalles[0].subtotal!= ''){
+                if ($scope.detalles[i].subtotal!= ''){
                     var valor3 = $scope.detalles[i].subtotal;
                     var numero3 = valor3.replace(",",'');
                     suma3 += parseFloat(numero3);
@@ -538,13 +563,31 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                     $scope.totalsubtotal= sumas3;
                 }
 
-                if ($scope.detalles[0].tasa!= ''){
+                if ($scope.detalles[i].tasa!= ''){
                     var valor4 = $scope.detalles[i].tasa;
                     var numero4 = valor4.replace(",",'');
                     suma4 += parseFloat(numero4);
                     var sumas4 = suma4.toFixed(2);
                     $scope.totaltasa= sumas4;
                 }
+
+                if ($scope.detalles[i].Reserva != ''){
+                    var valor = $scope.detalles[i].Reserva;
+                    var numero = valor.replace(",",'');
+                    suma += parseFloat(numero);
+                    var sumas = suma.toFixed(2);
+                    $scope.resultado= sumas;
+                    $scope.detalles[i].btn_edit = true;
+                }
+
+                if ($scope.detalles[i].Tabulador != ''){
+                    var valor1 = $scope.detalles[i].Tabulador;
+                    var numero1 = valor1.replace(",",'');
+                    suma1 += parseFloat(numero1);
+                    var sumas1 = suma1.toFixed(2);
+                    $scope.totales = sumas1;
+                }
+
 
             }
 
@@ -1041,6 +1084,8 @@ $scope.guardaRelacion = function(success){
         subtotal:  $scope.totalsubtotal
 
     }
+
+    console.log($scope.relaciones);
 
     $http.post(api+'RelacionPagos/insertaRelacion/'+ $rootScope.id,$scope.relaciones).success(function (data){
         loading.cargando('Buscando Folios');

@@ -16,7 +16,6 @@ function controlFacturasCtrl($scope, $rootScope,$http, find, loading,api , Factu
         $scope.Altaunidades();
         $scope.listadofacturas();
 
-
 		$('#modalEx').on('hidden.bs.modal', function (e){
 			$scope.gridOptions.$gridScope.toggleSelectAll(false);
 		 	// $scope.buscafacturas();
@@ -279,7 +278,6 @@ $scope.buscaxUnidad = function(id){
         if(data){
             console.log(data);
 
-            
             $scope.listado = data;
             // $scope.norelacion.referencia = data[0].referencia;
 

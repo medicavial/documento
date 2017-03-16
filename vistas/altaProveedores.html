@@ -1,0 +1,144 @@
+<div id="contenedor"  ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/pagoManual" class="icon-arrow-left"></a>
+        <h1>{{tituloPrveedor}}</h1>
+    </div>
+
+    <legend></legend>
+
+    <div class="row">
+
+<!--           <label class="switch">
+             <input type="checkbox" checked>
+             <span></span>
+          </label> -->
+
+		<div class="col-md-4">
+				<label>Nombre Prveedor</label>
+				<input type="text" ng-model="proveedor.nombre" class="form-control">
+		</div>
+
+		<div class="col-md-3">
+				<label>RFC</label>
+				<input type="text" ng-model="proveedor.rfc" class="form-control">
+		</div>
+
+	    <div class="col-md-3">
+				<label>Referencia</label>
+				<input type="text" ng-model="proveedor.referencia" class="form-control">
+		</div>
+
+    </div><br><br>
+
+    <div class="row">
+
+        <div class="form-group">
+           <label class="col-sm-2 control-label">Tipo de Persona</label>
+           <div class="col-sm-10">
+              <label class="radio-inline c-radio">
+                 <input id="inlineradio1" type="radio" ng-model="proveedor.persona" value="M">
+                 <span class="glyphicon glyphicon-ok"></span>Moral</label>
+              <label class="radio-inline c-radio">
+                 <input id="inlineradio2" type="radio" ng-model="proveedor.persona" value="F">
+                 <span class="glyphicon glyphicon-ok"></span>Fisica</label>
+
+           </div>
+        </div>
+    	
+    </div><br><br>
+
+    <div class="center">
+
+    	    <div class="col-md-3">
+				<button type="button" ng-hide="edicion" ng-click="guardaProveedor()"  class="btn btn-success btn-lg btn-block glyphicon glyphicon-floppy-save"> Guardar </button>
+			</div>
+    	
+    </div><br><br>
+
+    <legend><h2>Filtrar x</h2></legend>
+
+    <div class="row">
+
+    	<div class="col-md-4">
+				<label>Nombre Prveedor</label>
+				<input type="text" ng-model="proveedor.nombre" ng-change="filtra()" class="form-control">
+		</div>
+
+		<div class="col-md-2">
+			<label></label>
+			<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
+		</div>
+    	
+    </div><br><br>
+
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+
+
+</div>
+
+<div  id="detProveedor" class="modal fade bs-example-modal-lg" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog modal-lg">
+		<form name="Mov" novalidate>
+		<div class="modal-content">
+			<div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Cerrar</span></button>
+		        <h4 class="modal-title">Detalle de Proveedor</h4>
+		    </div>
+		  	<div class="modal-body">
+
+  		    <div class="row">
+
+				<div class="col-md-4">
+						<label>Nombre Prveedor</label>
+						<input type="text" ng-model="proveedor.nombre" class="form-control">
+				</div>
+
+				<div class="col-md-3">
+						<label>RFC</label>
+						<input type="text" ng-model="proveedor.rfc" class="form-control">
+				</div>
+
+			    <div class="col-md-3">
+						<label>Referencia</label>
+						<input type="text" ng-model="proveedor.referencia" class="form-control">
+				</div>
+
+		    </div><br><br>
+
+		    <div class="row">
+
+		        <div class="form-group">
+		           <label class="col-sm-2 control-label">Tipo de Persona</label>
+		           <div class="col-sm-3">
+		              <label class="radio-inline c-radio">
+		                 <input id="inlineradio1" type="radio" ng-model="proveedor.persona" value="M">
+		                 <span class="glyphicon glyphicon-ok"></span>Moral</label>
+		              <label class="radio-inline c-radio">
+		                 <input id="inlineradio2" type="radio" ng-model="proveedor.persona" value="F">
+		                 <span class="glyphicon glyphicon-ok"></span>Fisica</label>
+		           </div>
+		        </div>
+		        <div class="form-group">
+		        	<label class="col-sm-2 control-label">Proveedor Activo</label>
+			        <div class="col-sm-4">
+				        <label class="switch">
+				             <input type="checkbox" ng-model="proveedor.activo" ng-true-value="'SI'" ng-false-value="'NO'">
+				             <span></span>
+				        </label>
+			        </div>
+		        </div>
+		    	
+		    </div><br><br>
+
+		  	</div>
+		  	<br>
+			<div ng-show="mensaje2" class="alert  animate-show text-center" ng-class="tipoalerta">{{ mensaje2 }}</div>
+		  	<div class="modal-footer">
+
+		        <button type="button" class="btn btn-danger" data-dismiss="modal">Cerrar</button>
+		        <button type="button" ng-disabled="Mov.$invalid" class="btn btn-primary" ng-click="actualizaProveedor()">Guardar</button>
+		    </div>
+		</div>
+		</form>
+	</div>
+</div>

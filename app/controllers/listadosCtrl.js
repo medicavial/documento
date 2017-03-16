@@ -1,5 +1,5 @@
 ///Folios rechazados
-function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loading, checkFolios,datos){
+function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loading, checkFolios,datos,$upload, api,leexml){
 
     loading.despedida();
 
@@ -18,11 +18,8 @@ function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loadin
 
 	}
 
-
 	//Carga la lista de archivos a enviar 
 	$scope.cargaRechazos = function(){
-
-		
 
 		find.listadorechazos($rootScope.id).success( function (data){
        
@@ -1678,7 +1675,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
 };
 
 //muestra los folios por recibir
-function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios,datos,$location){
+function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios,datos,$location,$upload, api, leexml, FacturaNormal){
 	
     $scope.listadoRecepcion = datos.data;
     loading.despedida();
@@ -1696,10 +1693,67 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 		$scope.recibe = true;
 		$scope.subeFactGlo = false;
 		$scope.subeFactInd = false;
+		$scope.tipoTramite();
+		$scope.borratemporales();
 
+		$scope.PagoG = {
 
+        	unidad: '',
+        	folio: '',
+        	tipotramite: '',
+        	concepto: '',
+        	etapa: '',
+        	foliofiscal: '',
+	        subtotal: '', 
+	        descuento: '', 
+	        total: '',
+	        fechaemision: '',
+	        observacion: '',
+	        rfcemisor: '',
+	        serie:'',
+	        foliointerno: '',
+	        emisor: '',
+	        impuesto: '',
+	        tasa: '',
+	        usuarioentrega: ''
+
+        }
+
+        $scope.PagoI = {
+
+        	unidad: '',
+        	folio: '',
+        	tipotramite: '',
+        	concepto: '',
+        	etapa: '',
+        	foliofiscal: '',
+	        subtotal: '', 
+	        descuento: '', 
+	        total: '',
+	        fechaemision: '',
+	        observacion: '',
+	        rfcemisor: '',
+	        serie:'',
+	        foliointerno: '',
+	        emisor: '',
+	        impuesto: '',
+	        tasa: '',
+	        usuarioentrega: ''
+
+        }
+
+        $scope.archivos = [];
 		
 	}
+
+	$scope.borratemporales = function(){
+
+      find.borratemporales($rootScope.user).success(function (data){
+
+      });
+
+    }
+
 
 	//Carga la lista de archivos a Recibir de otras areas 
 	$scope.cargaRecepcion = function(){
@@ -1803,7 +1857,7 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
     	if($scope.unidad == undefined || $scope.unidad == 0){
     		var objeto1 = "";
     	}else{
-    		var objeto1 = "Unidad:" + $scope.unidad + "; ";
+    		var objeto1 = "claveunidad:" + $scope.unidad + "; ";
     	}
     	if($scope.cliente == undefined || $scope.cliente == 0){
     		var objeto2 = "";
@@ -1881,7 +1935,8 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 		            { field:'', displayName:'motivo', width: 20, visible:false },
 		            { field:'ARO_porRecibir', width: 100, visible:false },
 		            { field:'FLD_AROent', width: 100, visible:false },
-		            { field:'USU_ent', width: 100, visible:false }
+		            { field:'USU_ent', width: 100, visible:false },
+		            { field:'UNI_claveint', displayName:'claveunidad',width: 100, visible:false }
         ]
     };
 
@@ -1897,22 +1952,525 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 
     });
 
-    $scope.IngresaFacturaGlo = function(){
+    $scope.subtipotramite = function(idx,tipotramite){
+
+        find.conceptotramite(tipotramite).success( function (data){
+
+            $scope.conceptost = data;
+
+        });
+    }
+
+    $scope.tipoTramite = function(){
+        find.tipotramite().success( function (data) {
+
+            $scope.tipostramites = data;
+
+        });
+    }
+
+   $scope.IngresaFacturaGlo = function(success){
+
+    	console.log($scope.selectos);
+    	$scope.relaciones = {
+    		tipofactura: 2
+
+    	}
+
+    	if ($scope.unidad == '' || $scope.unidad == undefined) {
+
+    		alert('Debes Realizar busqueda x Unidad');
+    		location.reload();
+    	};
 
     	$scope.recibe = false;
 		$scope.subeFactGlo = true;
 
+        $scope.relacionesFol= [];
+        for (var i = 0; i < $scope.selectos.length; i++){
+
+             $scope.relacionesFol.push($scope.selectos[i]);
+             
+        };
+        // console.log($scope.relacionesFol[0].claveunidad);
+        // find.unidadesref($scope.relacionesFol[0].claveunidad).success( function (data) {
+
+            // var referencia = data.ref;
+        
+        if ($scope.relacionesFol.length > 0){
+
+            console.log($scope.relacionesFol);
+
+            $scope.iniciorelacion = false;
+            $scope.finrelacion = true;
+            $scope.tituloFinRelacion = "Relación de Folios";
+            
+            console.log($scope.relacionesFol);
+
+            $scope.detalles = $scope.relacionesFol;
+            $scope.referencia = $scope.relacionesFol[0].referencia;
+
+    }else{
+
+        swal("Oops...", "No seleccionaste Folios", "error")
+
+    }
+// });
+
+    }
+$scope.subeXML = function($files){
+
+        var aux = $files[0].name.split('.');
+
+        if(aux[aux .length-1] == 'xml' || aux[aux .length-1] == 'XML'){
+
+         for (var i = 0; i < $files.length; i++){
+         var file = $files[i];
+         var amt = 0;
+          $scope.upload = $upload.upload({
+                url: api+'entregas/upload/'+$rootScope.user, //upload.php script, node.js route, or servlet url
+                method: 'POST',
+                data: $scope.PagoM,
+                file: file // or list of files ($files) for html5 only
+        }).success(function (data){
+
+            leexml.getxmltemporal($rootScope.user,data.archivo).success(function(data){
+            courses  = x2js.xml_str2json(data);
+
+                FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){     
+                    if (data[0].count != 0){
+
+                        swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
+                        $scope.borratemporales();
+                        $scope.PagoG.importe = '';
+                        $scope.PagoG.total = '';
+                        $scope.PagoG.foliofiscal = '';
+                        $scope.PagoG.fechaemision = '';
+                        $scope.PagoG.descuento = '';
+                        $scope.PagoG.emisor = '';
+                        $scope.PagoG.descuento = '';
+                        $scope.PagoG.serie = '';
+                        $scope.PagoG.elimina = false;
+
+                    }
+                });
+                // FacturaNormal.validaUnidad($scope.unidad).success(function (data){ 
+                //         if (data.length > 0){
+
+                //             $scope.PagoG.rfcemisor = data[0].rfc;
+                //             $scope.PagoG.unidad = data[0].unidad;
+
+                //         if ($scope.PagoG.rfcemisor == courses.Comprobante.Emisor._rfc){
+
+			                $scope.PagoG.serie = courses.Comprobante._serie;
+			                $scope.PagoG.foliointerno = courses.Comprobante._folio;
+			                $scope.PagoG.subtotal = courses.Comprobante._subTotal;
+			                $scope.PagoG.total = courses.Comprobante._total;
+			                $scope.PagoG.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
+			                $scope.PagoG.fechaemision = courses.Comprobante._fecha;
+			                $scope.PagoG.descuento = courses.Comprobante._descuento;
+			                $scope.PagoG.emisor = courses.Comprobante.Emisor._nombre;
+			                $scope.PagoG.rfcemisor = courses.Comprobante.Emisor._rfc;
+			                $scope.PagoG.impuesto = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+			                $scope.PagoG.tasa = courses.Comprobante.Impuestos.Traslados.Traslado._tasa;
+			                $scope.PagoG.usuarioentrega = Number($rootScope.id);
+			                // $scope.PagoG.areaentrega =Number(areaEntrega);
+			                // $scope.PagoG.usuariorecibe =Number(usuarioRecibe);
+			                // $scope.PagoG.arearecibe =Number(areaRecibe);
+			                // $scope.PagoG.folio = data.Folios;
+			                $scope.PagoG.tipoorden = 2;
+                            $scope.btndelete = true;
+                          
+                    //     }else{
+
+                    //         swal('Upss','Tu Factura no coincide con el Emisor','error');
+
+                    //         // var archivo = $scope.datos.leexml;
+                    //         // $scope.elimina_ahora(archivo);
+
+                    //     }
+                    // }else{
+
+                    //   swal("Upss", "El proveedor no se encuentra en el sistema, Solicitalo al area de Sistemas", "error");
+
+                    // }
+
+                // });
+
+            });
+
+                $scope.archivos = data.ruta;
+
+                console.log(data.ruta);
+
+        }).error( function (xhr,status,data){
+
+                  alert('Ocurrio un error');
+
+                });
+            }
+
+        }else{
+
+               alert('La extensión debe ser xml');
+        }
+
+}
+
+$scope.enviaOrdenPagoGlo = function(){
+
+
+
+    $scope.OPago = {
+
+        seleccionados : $scope.detalles,
+        archivos : $scope.archivos,
+        usucarpeta: $rootScope.user,
+        factura: $scope.PagoG,
+        subtotaltotal: $scope.subtotalPago,
+        iva: $scope.ivaPago,
+        total: $scope.totalPago,
+        usuario: $rootScope.id,
+        unidad: $scope.unidad
+
+    }
+console.log($scope.OPago );
+
+    	var areaRecibe = 6;
+        var areaEntrega = 6;
+        var usuarioRecibe = $rootScope.id;
+
+        var ruta = api+'entregas/ordenPago'; 
+
+    	    $http.post(ruta,$scope.OPago).success(function (data){
+
+    	    	$scope.borratemporales();
+    	    	swal("ok","Se Genero una Orden de Pago","success");
+    	    	location.reload();
+
+
+            }).error( function (data){
+
+                alert('Error, Intentalo de Nuevo');
+
+            });
+
+
+
+
+}
+
+$scope.eliminaxmlGlo = function(){
+
+    $http.post(api+'entregas/eliminaxml/'+$rootScope.user).success(function (data){
+
+      $scope.PagoG.foliointerno = '';
+      $scope.PagoG.serie = '';
+      $scope.PagoG.foliofiscal = '';
+      $scope.PagoG.emisor = '';
+      $scope.PagoG.rfcemisor = '';
+      $scope.PagoG.subtotal = '';
+      $scope.PagoG.tasa = '';
+      $scope.PagoG.total = '';
+      $scope.PagoG.fechaemision = '';
+
+    }).error( function (data){
+
+        alert('Ocurrio un error, Intentalo de nuevo');
+
+    });
+
+}
+
+
+
+
+//////////// factura individual //////////////////
+
+$scope.IngresaFacturaInd = function(){
+
+	console.log($scope.selectos);
+
+    	$scope.relaciones = {
+    		tipofactura: 1
+
     }
 
-    $scope.IngresaFacturaInd = function(){
+    if ($scope.unidad == '' || $scope.unidad == undefined) {
+
+		alert('Debes Realizar busqueda x Unidad');
+		location.reload();
+	};
 
     	$scope.recibe = false;
 		$scope.subeFactInd = true;
+		$scope.subefactura = true;
 
 		$scope.detalles = $scope.selectos;
-		console.log($scope.detalles);
+
+		        $scope.relacionesFol= [];
+        for (var i = 0; i < $scope.selectos.length; i++){
+
+             $scope.relacionesFol.push($scope.selectos[i]);
+             
+        };
+        // console.log($scope.relacionesFol[0].claveunidad);
+        // find.unidadesref($scope.relacionesFol[0].claveunidad).success( function (data) {
+
+            // var referencia = data.ref;
+        
+        if ($scope.relacionesFol.length > 0){
+
+            console.log($scope.relacionesFol);
+
+            $scope.iniciorelacion = false;
+            $scope.finrelacion = true;
+            $scope.tituloFinRelacion = "Relación de Folios";
+            
+            console.log($scope.relacionesFol);
+
+            $scope.detalles = $scope.relacionesFol;
+            $scope.referencia = $scope.relacionesFol[0].referencia;
+
+            var suma = 0;
+            var suma1 = 0;
+            var suma2 = 0;
+            var suma3 = 0;
+            var suma4 = 0;
+            for (var i = 0; i < $scope.detalles.length; i++){
+
+                if ($scope.detalles[i].total != ''){
+                    console.log($scope.detalles[i].total);
+                    var valor2 = $scope.detalles[i].total;
+                    var numero2 = valor2.replace(",",'');
+                    suma2 += parseFloat(numero2);
+                    var sumas2 = suma2.toFixed(2);
+                    $scope.totalimporte= sumas2;
+                }
+
+                if ($scope.detalles[i].subtotal!= ''){
+                    var valor3 = $scope.detalles[i].subtotal;
+                    var numero3 = valor3.replace(",",'');
+                    suma3 += parseFloat(numero3);
+                    var sumas3 = suma3.toFixed(2);
+                    $scope.totalsubtotal= sumas3;
+                }
+
+                if ($scope.detalles[i].tasa!= ''){
+                    var valor4 = $scope.detalles[i].tasa;
+                    var numero4 = valor4.replace(",",'');
+                    suma4 += parseFloat(numero4);
+                    var sumas4 = suma4.toFixed(2);
+                    $scope.totaltasa= sumas4;
+                }
+
+            }
+
+
+            // console.log($scope.detalles[1].tasa);
+
+        //   swal({   
+        //       title: "",   
+        //       text:  data[0].ref + "_" + "" + "Ingresa N° Relación", 
+        //       type: "input",
+        //       imageUrl: "images/relacion.png",
+        //       closeOnConfirm: false,     
+        //       animation: "slide-from-top",  
+        //       inputPlaceholder: "N° Relación" },
+
+        //       function(inputValue){   
+        //         if (inputValue === false) return false;      
+        //         if (inputValue === ""){ 
+
+        //         inputValue = 0;    
+        //           // swal.showInputError("Ocurrio un Error!!");     
+        //           // return false  
+        //         } 
+        //         $scope.numrelacion = data[0].ref + "_" +inputValue;     
+        //         swal("OK!", "El N° Relación Factura es: " + data[0].ref + "_" + inputValue, "success"); 
+        //         $('#ventanarelacion').modal('show');
+
+
+        // });
+    }else{
+
+        swal("Oops...", "No seleccionaste Folios", "error")
 
     }
+
+
+
+}
+
+$scope.subeXMLInd = function(idx,$files){
+
+    var aux = $files[0].name.split('.');
+
+    if(aux[aux .length-1] == 'xml' || aux[aux .length-1] == 'XML'){
+
+                for (var i = 0; i < $files.length; i++){
+                 var file = $files[i];
+                  var amt = 0;
+                  $scope.upload = $upload.upload({
+                        url: api+'entregas/upload/'+$rootScope.user, //upload.php script, node.js route, or servlet url
+                        method: 'POST',
+                        data: $scope.datos,
+                        file: file // or list of files ($files) for html5 only
+                  }).success(function (data){
+
+                    for (var ii = 0; ii < data.archivo.length; ii++){
+
+                        console.log(data.archivo[ii]);
+
+                        leexml.getxmltemporal($rootScope.user,data.archivo[ii]).success(function(data){
+                        courses  = x2js.xml_str2json(data);
+
+                           FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){                  
+                                  if (data[0].count != 0){
+
+                                    swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
+                                    $scope.borratemporales();
+			                        $scope.detalles[idx].importe = '';
+			                        $scope.detalles[idx].total = '';
+			                        $scope.detalles[idx].foliofiscal = '';
+			                        $scope.detalles[idx].fechaemision = '';
+			                        $scope.detalles[idx].descuento = '';
+			                        $scope.detalles[idx].emisor = '';
+			                        $scope.detalles[idx].descuento = '';
+			                        $scope.detalles[idx].serie = '';
+                                    $scope.detalles[idx].elimina = false;
+                                    $scope.btndelete = false;
+
+                                  }
+                            });
+                                // if ($scope.datos.rfc == courses.Comprobante.Emisor._rfc){
+
+                                    var suma1 = 0;
+
+					                $scope.detalles[idx].serie = courses.Comprobante._serie;
+					                $scope.detalles[idx].foliointerno = courses.Comprobante._folio;
+					                $scope.detalles[idx].subtotal = courses.Comprobante._subTotal;
+					                $scope.detalles[idx].total = courses.Comprobante._total;
+					                $scope.detalles[idx].foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
+					                $scope.detalles[idx].fechaemision = courses.Comprobante._fecha;
+					                $scope.detalles[idx].descuento = courses.Comprobante._descuento;
+					                $scope.detalles[idx].emisor = courses.Comprobante.Emisor._nombre;
+					                $scope.detalles[idx].rfcemisor = courses.Comprobante.Emisor._rfc;
+					                $scope.detalles[idx].impuesto = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+					                $scope.detalles[idx].tasa = courses.Comprobante.Impuestos.Traslados.Traslado._tasa;
+					                $scope.detalles[idx].usuarioentrega = Number($rootScope.id);
+					                $scope.detalles[idx].tipoorden = 2;
+                                    $scope.detalles[idx].elimina = true;
+                                    $scope.btndelete = true;
+
+                                    for (var i = 0; i < $scope.detalles.length; i++){
+
+                                    var valor1 = $scope.detalles[i].total;
+                                    var numero1 = valor1.replace(",",'');
+                                    suma1 += parseFloat(numero1);
+                                    var sumas1 = suma1.toFixed(2);
+                                    $scope.totalimporte= sumas1;
+
+                                    console.log($scope.totalimporte);
+
+                                    }
+                                // }else{
+
+                                //     swal('Upss','Tu Factura no coincide con el Emisor','error');
+
+                                //     // var archivo = $scope.datos.leexml;
+                                //     // $scope.elimina_ahora(archivo);
+                                //     $scope.detalles[idx].importe =  '';
+                                //     $scope.detalles[idx].total = '';
+                                //     $scope.detalles[idx].foliofiscal = '';
+                                //     $scope.detalles[idx].fechaemision = '';
+                                //     $scope.detalles[idx].descuento = '';
+                                //     $scope.detalles[idx].emisor = '';
+                                //     $scope.detalles[idx].elimina = false;
+                                //     $scope.btndelete = false;
+
+                                // }
+
+                      });
+                   }
+                        $scope.archivos = data.archivo;
+
+                    }).error( function (xhr,status,data){
+
+                          alert('Ocurrio un error');
+
+                    });
+                }
+
+                }else{
+
+                       alert('La extensión debe ser xml');
+                  // return false;
+
+                }
+
+}
+
+$scope.enviaOrdenPagoInd = function(){
+
+    $scope.OPago = {
+
+        seleccionados : $scope.detalles,
+        archivos : $scope.archivos,
+        usucarpeta: $rootScope.user,
+        factura: $scope.detalles,
+        subtotaltotal: $scope.totalsubtotal,
+        iva: $scope.totaltasa,
+        total: $scope.totalimporte,
+        usuario: $rootScope.id,
+        unidad: $scope.unidad
+
+    }
+console.log($scope.OPago );
+
+    	var areaRecibe = 6;
+        var areaEntrega = 6;
+        var usuarioRecibe = $rootScope.id;
+
+        var ruta = api+'entregas/ordenPagoIndividual'; 
+
+	    $http.post(ruta,$scope.OPago).success(function (data){
+
+	    	$scope.borratemporales();
+	    	swal("ok","Se Genero una Orden de Pago","success");
+	    	location.reload();
+
+
+        }).error( function (data){
+
+            alert('Error, Intentalo de Nuevo');
+
+        });
+}
+
+$scope.eliminaxmlInd = function(idx){
+
+    var archivo = $scope.archivos[idx];
+    console.log(archivo);
+    console.log(idx);
+
+    $http.post(api+'entregas/eliminaxmlInd/' + archivo, {usuario:$rootScope.user}).success(function (data){
+
+        $scope.detalles[idx].importe = '';
+        $scope.detalles[idx].total = '';
+        $scope.detalles[idx].foliofiscal = '';
+        $scope.detalles[idx].fechaemision = '';
+        $scope.detalles[idx].descuento = '';
+        $scope.detalles[idx].emisor = '';
+        $scope.detalles[idx].descuento = '';
+        $scope.detalles[idx].serie = '';
+
+    }).error( function (data){
+
+        alert('Ocurrio un error, Intentalo de nuevo');
+
+    });
+}
 
 };
 
@@ -2129,7 +2687,7 @@ traspasosCtrl.$inject = ['$scope', '$rootScope', '$routeParams','$http', 'find',
 entregasCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading', '$http'];
 listadoEntregasCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading', 'checkFolios','datos','$filter'];
 listadoEntregasAreaCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading', 'checkFolios','datos','$filter'];
-listadoRecepcionCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios','datos','$location'];
+listadoRecepcionCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios','datos','$location','$upload','api','leexml','FacturaNormal'];
 listadoRecepcionAreaCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios','datos'];
 
 app.controller('rechazosCtrl',rechazosCtrl);

@@ -9,25 +9,40 @@
 	<div class="row">
 
 		<div class="col-md-2">
-			<label>Unidad</label>
-			<select class="form-control"  ng-model="norelacion.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades" ng-change="buscaxProveedor(norelacion.unidad)" >
-				<option value="">----</option>
-			</select>
-		</div>
-		<div class="col-md-2">
 			<label>Tipo Facturación</label>
-			<select class="form-control"  ng-model="tipoOrden" ng-options="orden.id as orden.nombre for orden in ordenes" ng-change="tipoxOrden(tipoOrden)">
-				<option value="">----</option>
+			<select class="form-control"  ng-model="norelacion.tipoOrden" ng-options="orden.id as orden.nombre for orden in ordenes" ng-change="tipoxOrden(tipoOrden)">
+				<option value="">Tipo Facturacion</option>
 			</select>
 		</div>
+		
+	</div>
+	<div class="row">
+		<div class="col-md-2">
+			<label></label>
+			<select class="form-control"  ng-model="norelacion.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades">
+				<option value="">Unidad</option>
+			</select>
+		</div>
+	    <div class="col-md-3">
+			<label></label>
+			<select class="form-control"  ng-model="norelacion.proveedor" ng-options="proveedor.id as proveedor.nombre for proveedor in proveedores" ng-change="filtra()">
+				<option value="">Proveedores</option>
+			</select>
+		</div>
+
+		<div class="col-md-2">
+			<label></label>
+			<button class="btn btn-primary btn-block icon-search" ng-click="busquedaOrdenes()"> Buscar
+			</button>
+		</div>
+
 		<div class="col-md-2">
 			<label></label>
 			<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros
 			</button>
 		</div>
 
-		<div class="col-md-2">
-		</div>
+
 
 	</div>
 	<br>

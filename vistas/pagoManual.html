@@ -4,15 +4,17 @@
         <h1>{{tituloPM}}</h1>
     </div>
 
-<!-- 	<ul id="rb-grid-small" class="rb-grid-small clearfix">
+	<ul id="rb-grid-small" class="rb-grid-small clearfix">
 
 	    <li class="rb-span-1" id="color3">
-	        <h3>listado </h3>
-	        <a href="#/ticketpagos">
-	            <span class="icon-list"></span>
+	        <h3> Proveedores </h3>
+	        <a href="#/altaproveedor">
+	            <span class="icon-user"></span>
 	        </a>
 	    </li>
-	</ul> -->
+	</ul>
+
+	<legend></legend>
 
     <div class="row">
         <div class="form-group">
@@ -37,36 +39,44 @@
 
 			<div class="col-md-3">
 				<label></label>
-				<select class="form-control"  ng-model="PagoM.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades" ng-change="filtra()">
+				<select class="form-control"  ng-model="PagoI.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades" ng-change="filtra()">
 					<option value="">Unidad</option>
+				</select>
+			</div>
+
+			<div class="col-md-3">
+				<label></label>
+				<select class="form-control"  ng-model="PagoI.proveedor" ng-options="proveedor.id as proveedor.nombre for proveedor in proveedores" ng-change="filtra()">
+					<option value="">Proveedores</option>
 				</select>
 			</div>
 
 	    </div>
 	    <br>
 	    <div class="row">
+
 	    	<div class="col-md-2">
 					<label>Folio</label>
-					<input type="text" ng-model="PagoM.folio" class="form-control" folio>
+					<input type="text" ng-model="PagoI.folio" class="form-control" folio>
 			</div>
 
 			<div class="col-md-2">
 				<label></label>
-				<select class="form-control"  ng-model="PagoM.tipotramite" ng-options="tipotramite.id as tipotramite.tipo for tipotramite in tipostramites" ng-change="subtipotramite(PagoM.tipotramite)">
+				<select class="form-control"  ng-model="PagoI.tipotramite" ng-options="tipotramite.id as tipotramite.tipo for tipotramite in tipostramites" ng-change="subtipotramite(PagoI.tipotramite)">
 					<option value="">Tipo de Tramite</option>
 				</select>
 			</div>
 
 			<div class="col-md-2">
 				<label></label>
-				<select class="form-control"  ng-model="PagoM.concepto" ng-options="concepto.id as concepto.nombre for concepto in conceptost" ng-change="filtra()">
+				<select class="form-control"  ng-model="PagoI.concepto" ng-options="concepto.id as concepto.nombre for concepto in conceptost" ng-change="filtra()">
 					<option value="">Subtipo</option>
 				</select>
 			</div>
 
 			<div class="col-md-2">
 				<label></label>
-				<select class="form-control"  ng-model="PagoM.etapa"  ng-change="filtra()">
+				<select class="form-control"  ng-model="PagoI.etapa"  ng-change="filtra()">
 					<option value="">Etapa</option>
 					<option value="1">Etapa 1</option>
 					<option value="2">Etapa 2</option>
@@ -76,7 +86,28 @@
 
 			<div class="col-md-2">
 					<label>Entrega</label>
-					<input type="text" ng-model="PagoM.entrega" class="form-control">
+					<input type="text" ng-model="PagoI.entrega" class="form-control">
+			</div>
+	    </div>
+
+	    <div class="row">
+	    	<div class="col-md-2">
+					<label>Subtotal</label>
+					<input type="text" ng-model="PagoI.SubtotalF" class="form-control">
+			</div>
+
+		    <div class="col-md-2">
+					<label>IVA</label>
+					<input type="text" ng-model="PagoI.IVAF" class="form-control">
+			</div>
+
+		    <div class="col-md-2">
+					<label>Total</label>
+					<input type="text" ng-model="PagoI.TotalF" class="form-control">
+			</div>
+
+			<div class="col-md-2">
+					<label><H2><strong>Total:{{PagoI.TotalF}}</strong></H2></label>
 			</div>
 	    </div>
 	    <br><br>
@@ -105,18 +136,18 @@
 			        </tr>
 			        <tr>
 			          <td>
-			          	<label class="btn btn-primary">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXML($files)">
+			          	<label class="btn btn-primary">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXMLInd($files)">
 	                    </label>
 	                  </td>
-			          <td>{{ PagoM.foliointerno }}</td>
-			          <td>{{ PagoM.serie }}</td>
-			          <td>{{ PagoM.foliofiscal }}</td>
-			          <td>{{ PagoM.emisor }}</td>
-			          <td>{{ PagoM.rfc_emisor }}</td>
-			          <td>{{ PagoM.subtotal }}</td>
-			          <td>{{ PagoM.tasa }}</td>
-			          <td>{{ PagoM.total }}</td>
-			          <td>{{ PagoM.fechaemision }}</td>
+			          <td>{{ PagoI.foliointerno }}</td>
+			          <td>{{ PagoI.serie }}</td>
+			          <td>{{ PagoI.foliofiscal }}</td>
+			          <td>{{ PagoI.emisor }}</td>
+			          <td>{{ PagoI.rfcemisor }}</td>
+			          <td>{{ PagoI.subtotal }}</td>
+			          <td>{{ PagoI.tasa }}</td>
+			          <td>{{ PagoI.total }}</td>
+			          <td>{{ PagoI.fechaemision }}</td>
 			          <td ng-show="btndelete"><button ng-click="eliminaxml()" class="btn btn-small btn-danger" type="button">Eliminar</button></td>
 			        </tr>
 			      </table>
@@ -127,7 +158,7 @@
 			<div class="col-md-12">
 			
 				<label for="descripcion">Observación</label>
-				<textarea name="descripcion" id="observacion" class="form-control " ng-model="PagoM.observacion" rows="5" ng-disabled="editafactura" mayusculas required></textarea>
+				<textarea name="descripcion" id="observacion" class="form-control " ng-model="PagoI.observacion" rows="5" ng-disabled="editafactura" mayusculas required></textarea>
 				
 			</div>
 		</div><br><br>
@@ -136,7 +167,7 @@
 
 		   <div class="col-md-3">
 
-				<button type="button" ng-hide="edicion" ng-click="enviaOrdenPago()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-arrow-right"> Enviar </button>
+				<button type="button" ng-hide="edicion" ng-click="enviaOrdenPagoInd()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-arrow-right"> Enviar </button>
 			</div>
 			
 		</div>
@@ -202,7 +233,6 @@
 	    </div>
 
 	    <div class="row">
-
 	    	<div class="col-md-2">
 					<label>Subtotal</label>
 					<input type="text" ng-model="PagoM.SubtotalF" class="form-control">
@@ -217,7 +247,6 @@
 					<label>Total</label>
 					<input type="text" ng-model="PagoM.TotalF" class="form-control">
 			</div>
-
 	    </div>
 
 	    <div class="row">
@@ -305,7 +334,7 @@
 			          <td>{{ PagoM.serie }}</td>
 			          <td>{{ PagoM.foliofiscal }}</td>
 			          <td>{{ PagoM.emisor }}</td>
-			          <td>{{ PagoM.rfc_emisor }}</td>
+			          <td>{{ PagoM.rfcemisor }}</td>
 			          <td>{{ PagoM.subtotal }}</td>
 			          <td>{{ PagoM.tasa }}</td>
 			          <td>{{ PagoM.total }}</td>
