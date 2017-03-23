@@ -2,92 +2,82 @@
 
 <div ng-show="recibe">
 
-  <div class="titulos">
-    <a href="#/{{area}}" class="icon-arrow-left"></a>
-    <h1>{{tituloLR}}</h1>
-  </div>
-  <fieldset>
-    <legend>Filtro</legend>
-    <div class="row">
-      <div class="col-md-2">
-        <input type="text" ng-model="folio" class="form-control" placeholder="Folio" ng-change="filtra()" folio>
-      </div>
-      <div class="col-md-3">
-        <select class="form-control"  ng-model="cliente" ng-change="filtra()" ng-options="cliente.nombre as cliente.nombre for cliente in clientes">
-          <option value="">Cliente</option>
-        </select>
-      </div>
-      <div class="col-md-3">
-        <select class="form-control"  ng-model="unidad" ng-change="filtra()" ng-options="unidad.id as unidad.nombre for unidad in unidades">
-          <option value="">Unidad</option>
-        </select>
-      </div>
-      <div class="col-md-2">
-        <button type="button" ng-click="quitafiltro()" class="btn btn-danger btn-block icon-close"> Quitar Filtro</button>
-      </div>
-      <div class="col-md-2" id="estatus">
-        <!-- <input type="text" x-webkit-speech=""> -->
-        <button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
-      </div>
-    </div>
-  </fieldset>
+	<div class="titulos">
+		<a href="#/{{area}}" class="icon-arrow-left"></a>
+		<h1>{{tituloLR}}</h1>
+	</div>
+	<fieldset>
+		<legend>Filtro</legend>
+		<div class="row">
+			<div class="col-md-2">
+				<input type="text" ng-model="folio" class="form-control" placeholder="Folio" ng-change="filtra()" folio>
+			</div>
+			<div class="col-md-3">
+				<select class="form-control"  ng-model="cliente" ng-change="filtra()" ng-options="cliente.nombre as cliente.nombre for cliente in clientes">
+					<option value="">Cliente</option>
+				</select>
+			</div>
+			<div class="col-md-3">
+				<select class="form-control"  ng-model="unidad" ng-change="filtra()" ng-options="unidad.id as unidad.nombre for unidad in unidades">
+					<option value="">Unidad</option>
+				</select>
+			</div>
+			<div class="col-md-2">
+				<button type="button" ng-click="quitafiltro()" class="btn btn-danger btn-block icon-close"> Quitar Filtro</button>
+			</div>
+			<div class="col-md-2" id="estatus">
+				<!-- <input type="text" x-webkit-speech=""> -->
+				<button type="button" ng-disabled="selectos.length == 0" class="btn btn-warning btn-block icon-close" ng-click="quitaselectos()"> Quitar Selección</button>
+			</div>
+		</div>
+	</fieldset>
 
-  <div class="row">
-    <div class="col-md-12">
-    </div>
-  </div>
+	<div class="row">
+		<div class="col-md-12">
+		</div>
+	</div>
 
-  <div class="gridStyle" ng-grid="gridOptions"></div>
-  <br>
-  <div class="row">
-    <div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert animate-show text-center">{{mensaje}}</div>
-  </div>
-  <br>
-  <div class="row">
-    <div class="col-md-3" ng-class="{'inactivo': area == 'pagos'}">
-      <button type="button" id="boton" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" class="btn btn-primary icon-checkmark-circle" ng-click="aceptaEntregas()" > Aceptar Entrega</button> 
-    </div>
-    <div class="col-md-3">
-      <button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="rechazaEntregas()" class="btn btn-warning icon-cancel-circle"> Rechazar Entrega</button>
-    </div>
+	<div class="gridStyle" ng-grid="gridOptions"></div>
+	<br>
+	<div class="row">
+		<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert animate-show text-center">{{mensaje}}</div>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-3">
+			<button type="button" id="boton" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" class="btn btn-primary icon-checkmark-circle" ng-click="aceptaEntregas()" > Aceptar Entrega</button>
+		</div>
+		<div class="col-md-3">
+			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="rechazaEntregas()" class="btn btn-warning icon-cancel-circle"> Rechazar Entrega</button>
+		</div>
 
-    <div class="col-md-3" ng-class="{'inactivo': area != 'pagos'}">
-      <button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaGlo()" class="btn btn-success icon-cancel-circle"> Factura Global
-      </button>
-    </div>
+		<div class="col-md-3" ng-class="{'inactivo': area != 'pagos'}">
+			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaGlo()" class="btn btn-success icon-cancel-circle"> Factura Global
+			</button>
+		</div>
 
-    <div class="col-md-3" ng-class="{'inactivo': area != 'pagos'}">
-      <button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaInd()" class="btn btn-info icon-cancel-circle"> Factura Individual
-
-    <div class="col-md-3">
-      <button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaGlo()" class="btn btn-success icon-cancel-circle" ng-class="['inactivo':area!='pagos']"> Factura Global
-      </button>
-    </div>
-
-    <div class="col-md-3">
-      <button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaInd()" class="btn btn-info icon-cancel-circle" ng-class="['inactivo':area!='pagos']"> Factura Individual
-
-      </button>
-    </div>
-  </div>
-  <br>
-  <br>
+		<div class="col-md-3" ng-class="{'inactivo': area != 'pagos'}">
+			<button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="IngresaFacturaInd()" class="btn btn-info icon-cancel-circle"> Factura Individual
+		</div>
+	</div>
+	<br>
+	<br>
 </div>
 
 <div ng-show="subeFactGlo">
 
 <div class="titulos">
-  <a href="#/{{area}}" class="icon-arrow-left"></a>
-  <h1>Ingresa tus Facturas</h1>
+	<a href="#/{{area}}" class="icon-arrow-left"></a>
+	<h1>Ingresa tus Facturas</h1>
 </div>
 
  <div class="col-lg-12">
 
      <div class="table-responsive">
-      <table id="datatable2"  class="table table-striped table-hover" 
+      <table id="datatable2"  class="table table-striped table-hover"
                 style="
           max-height: auto;
-          overflow-y: auto; 
+          overflow-y: auto;
           overflow-x: auto;
           width: 100%; background: #edebeb ">
          <thead>
@@ -123,12 +113,12 @@
               <td><select class="form-control" id="$index" ng-model="detalle.concepto" ng-options="concepto.id as concepto.nombre for concepto in conceptost" ng-disabled="editafactura" required>
             <option value=""> Subtipo Tramite </option>
           </select>
-        </td>  
+        </td>
             </tr>
             <tr>
-           
+
          </tbody>
-      </table> 
+      </table>
 
     </div>
 
@@ -139,7 +129,7 @@
     <div class="row">
           <div class="col-md-12">
             <table style="max-height: auto;
-                  overflow-y: auto; 
+                  overflow-y: auto;
                   overflow-x: auto;
                   width: 100%; background: #edebeb ">
               <tr style="background-color:#E9E9E9;">
@@ -177,12 +167,12 @@
             </table>
             </div>
 
-  <div class="row">
+  <!-- <div class="row">
     <div class="col-md-12">
       <table style="max-height: auto;
-            overflow-y: auto;
-            overflow-x: auto;
-            width: 100%; background: #edebeb ">
+				    overflow-y: auto;
+				    overflow-x: auto;
+				    width: 100%; background: #edebeb ">
         <tr style="background-color:#E9E9E9;">
           <th colspan="12" class="text-center"><h4>Datos de la Factura</h4></th>
           <th class="full-left">
@@ -202,7 +192,7 @@
         <tr>
 
           <td>
-            <label class="btn btn-primary">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXML($index,$files)">
+          	<label class="btn btn-primary">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXML($index,$files)">
             </label>
           </td>
           <td>{{ factura.foliofiscal }}</td>
@@ -215,31 +205,33 @@
         </tr>
       </table>
 
-      </div>
+      </div>-->
+      <br><br><br>
       <div class="row">
           <div class="col-md-3">
 
             <button type="button" ng-hide="edicion" ng-click="enviaOrdenPagoGlo()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-arrow-right"> Genera Orden </button>
-          </div>      
+          </div>
       </div>
+
+</div>
 </div>
 <div ng-show="subeFactInd">
-
-  <div class="titulos">
-    <a href="#/{{area}}" class="icon-arrow-left"></a>
-    <h1>Ingresa tus Facturas</h1>
-  </div>
+	<div class="titulos">
+		<a href="#/{{area}}" class="icon-arrow-left"></a>
+		<h1>Ingresa tus Facturas</h1>
+	</div>
     <legend>XML</legend>
 
-    <div class="col-lg-12">
+	  <div class="col-lg-12">
 
      <div class="table-responsive">
       <table id="datatable2"  class="table table-striped table-hover"
                 style="
-          max-height: auto;
-          overflow-y: auto;
-          overflow-x: auto;
-          width: 100%; background: #edebeb">
+			    max-height: auto;
+			    overflow-y: auto;
+			    overflow-x: auto;
+			    width: 100%; background: #edebeb">
          <thead>
             <tr>
                <th ng-show="subefactura">Examinar</th>
@@ -284,17 +276,17 @@
               <td>{{detalle.fechaRecepcion}}</td>
 
               <td><select  class="form-control"  id="$index" ng-model="detalle.tipotramite" ng-options="tipotramite.id as tipotramite.tipo for tipotramite in tipostramites" ng-disabled="editafactura"  ng-change="subtipotramite($index, detalle.tipotramite)" required>
-                  <option value=""> Tipo Tramite </option>
-            </select>
-              </td>
+			            <option value=""> Tipo Tramite </option>
+			      </select>
+			        </td>
               <td><select class="form-control" id="$index" ng-model="detalle.concepto" ng-options="concepto.id as concepto.nombre for concepto in conceptost" ng-disabled="editafactura" required>
-            <option value=""> Subtipo Tramite </option>
-          </select>
-        </td>
+						<option value=""> Subtipo Tramite </option>
+				  </select>
+			  </td>
             </tr>
 
           <tr>
-<!--                <td ng-show="subefactura"></td> 
+<!--                <td ng-show="subefactura"></td>
                <td ng-show="subefactura"></td> -->
              <td></td>
              <td></td>
@@ -304,20 +296,20 @@
              <td></td>
              <td></td>
              <td><h3><strong>Importe</h3></strong></td>
-             <td><h3><strong>{{ totalimporte | currency }}</h3></strong></td> 
+             <td><h3><strong>{{ totalimporte | currency }}</h3></strong></td>
              <td></td>
              <td></td>
              <td></td>
              <td></td>
 
-            </tr> 
+            </tr>
          </tbody>
       </table>
 
-            <tr>
+            <!-- <tr> -->
 <!--                <td ng-show="subefactura"></td>
                <td ng-show="subefactura"></td> -->
-               <td></td>
+<!--                <td></td>
                <td><h3><strong>Importe</h3></strong></td>
                <td><h3><strong>{{ totalimporte | currency }}</h3></strong></td>
                <td></td>
@@ -329,9 +321,9 @@
                <td><h3><strong>Subtotal</h3></strong></td>
                <td><h3><strong>{{ resultado | currency }} </strong></h3></td>
                <td><h3><strong>{{ totales  | currency }} </strong></h3></td>
-         <td></td>
-         <td></td>
-            </tr>
+			   <td></td>
+			   <td></td>
+            </tr> -->
 <!--             <tr ng-repeat="retencion in retenciones">
                <td></td>
                <td></td>
@@ -358,7 +350,7 @@
 <div class="row">
       <div class="col-md-3">
             <button type="button" ng-hide="edicion" ng-click="enviaOrdenPagoInd()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-arrow-right"> Genera Orden </button>
-      </div> 
+      </div>
 </div>
 
 </div>

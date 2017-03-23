@@ -23,7 +23,7 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 		$scope.lesionado = '';
 		$scope.cargar = false;
 
-        	
+
 		$scope.cargaInfo();
 
 	}
@@ -43,27 +43,27 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 
 
 		});
-		
+
 	}
 
 	//carga todos los folios del area activos, rechazados y por recibir por usuario
 	$scope.cargaFlujo = function(){
 
 		carga.activos($rootScope.id).then(function (data){
-            
+
             if (data) {
-                $scope.listado = data;         
+                $scope.listado = data;
             }else{
                 $scope.listado = [];
             }
-           
+
             $scope.mensaje = '';
 
         });
 	}
 
 
-	//enlista los usuarios de cada area 
+	//enlista los usuarios de cada area
 	$scope.altausuariosarea = function(area){
 
 		// if ($rootScope.area == area && $rootScope.id != 38) {
@@ -85,11 +85,11 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 	//guardamos pero antes verificamos que tengamos documentos seleccionados
 	$scope.entrega = function(){
 
-		
+
 		$('#boton').button('loading');
 
 		if ($scope.selectos.length > 0) {
-			
+
 			var promesa = checkFolios.enviaFolios($scope.selectos,$scope.areaOp,$scope.user,$rootScope.id,$rootScope.area);
 			promesa.then(
 				function (data){
@@ -114,7 +114,7 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 					$scope.tipoalerta = 'alert-warning';
 				}
 			);
-			
+
 		}else{
 			alert('No se ha seleccionado ningun documento');
 		}
@@ -130,7 +130,7 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 		if ($scope.selectos.length > 0) {
 
 			$http.post(api+'insertanpc',$scope.selectos).success(function (data){
-				
+
 				$scope.mensaje = data.respuesta;
 				$scope.tipoalerta = 'alert-success';
 				$scope.cargaFlujo();
@@ -138,14 +138,14 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 				$scope.gridOptions.$gridScope.toggleSelectAll(false);
 
 			}).error( function (data){
-				
+
 				$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
 				$scope.tipoalerta = 'alert-warning';
 				$('#boton2').button('reset');
 
-			}); 
+			});
 
-			
+
 
 		}else{
 			alert('No se ha seleccionado ningun documento');
@@ -156,7 +156,7 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 	$scope.pendientesRecibir = function(){
 
 		find.listadorecepcion($rootScope.id).success( function (data){
-       
+
         	if(data.respuesta){
         		$scope.recibidos = 0;
         	}else{
@@ -169,7 +169,7 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 
 	}
 
-	///Busquedas 
+	///Busquedas
 
 
 
@@ -190,17 +190,17 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 	    iEUrl: 'downloads/download_as_csv'
 	};
 
-    ////opciones del grid                 
-   $scope.gridOptions = { 
-    	data: 'listado', 
+    ////opciones del grid
+   $scope.gridOptions = {
+    	data: 'listado',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:true,
     	multiSelect:true,
     	showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
     	enableCellSelection: true,
-    	selectedItems: $scope.selectos, 
+    	selectedItems: $scope.selectos,
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
                     { field:'PAS_folio', displayName:'Folio' , width: 120, pinned:true, enableCellEdit: true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
@@ -246,7 +246,7 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
     		var objeto1 = "";
     	}else{
     		var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
-    		
+
     	}
     	if($scope.cliente == undefined || $scope.cliente == 0){
     		var objeto2 = "";
@@ -258,33 +258,33 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
     	}else if($scope.tipo == 'original'){
     		var objeto3 = "FaxOrigianl:O; ";
     	}else{
-    		var objeto3 = ""; 
+    		var objeto3 = "";
     	}
 
     	if($scope.folio.length == 0){
     		var objeto4 = "";
     	}else{
-    		var objeto4 = "Folio:" + $scope.folio + "; ";	
+    		var objeto4 = "Folio:" + $scope.folio + "; ";
     	}
 
     	if($scope.lesionado.length == 0){
     		var objeto5 = "";
     	}else{
-    		var objeto5 = "Lesionado:" + $scope.lesionado + "; ";	
+    		var objeto5 = "Lesionado:" + $scope.lesionado + "; ";
     	}
 
     	if($scope.producto == undefined || $scope.producto == 0){
     		var objeto6 = "";
     	}else{
     		var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
-    		
+
     	}
 
     	if($scope.etapa == undefined || $scope.etapa == 0){
     		var objeto7 = "";
     	}else{
     		var objeto7 = "Etapa:" + $scope.etapa + "; ";
-    		
+
     	}
 
 
@@ -298,15 +298,15 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 
     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
+    	$scope.filterOptions.filterText = '';
+    	$scope.unidad = 0;
     	$scope.cliente = 0;
     	$scope.folio = '';
     	$scope.fechaini = '';
     	$scope.fechafin = '';
     	$scope.lesionado = '';
     	$scope.foliosxarea();
-    
+
     }
 
     $scope.quitaselectos = function(){
@@ -318,7 +318,7 @@ function mesaControlCtrl($scope, $rootScope, find , loading, $http, checkFolios,
 
 //mustra los documentos entregados de no pagar hasta cobrar
 function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api,datos){
-	
+
 	loading.despedida();
 	//Carga Configuracion Inicial
 	$scope.inicio = function(){
@@ -330,14 +330,15 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
 		$scope.altaunidades();
 		$scope.listado = datos.data;
 		$scope.mensaje = '';
+		console.log($scope.listado);
 
 	}
 
-	//Carga la lista de archivos a Recibir de otras areas 
+	//Carga la lista de archivos a Recibir de otras areas
 	$scope.cargaEntregas = function(){
 
 		find.listadogeneralnpc($rootScope.id).success( function (data){
-       		
+
        		$scope.mensaje = '';
 
         	if(data){
@@ -347,7 +348,7 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
         	}
 
         	$scope.gridOptions.$gridScope.toggleSelectAll(false);
-		
+
 		});
 
 	}
@@ -384,12 +385,12 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
 				$scope.cargaEntregas();
 				$('#boton').button('reset');
 			}).error( function (data){
-				
+
 				$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
 				$scope.tipoalerta = 'alert-warning';
 				$('#boton').button('reset');
 
-			}); 
+			});
 
 
 		}else{
@@ -412,17 +413,17 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
 	};
 
 
-    ////opciones del grid                 
-    $scope.gridOptions = { 
-    	data: 'listado', 
+    ////opciones del grid
+    $scope.gridOptions = {
+    	data: 'listado',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:true,
     	multiSelect:true,
     	showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
     	enableCellSelection: true,
-    	selectedItems: $scope.selectos, 
+    	selectedItems: $scope.selectos,
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
                     { field:'PAS_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: true },
@@ -435,17 +436,20 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
 		            { field:'FLD_claveint', displayName:'FLD_claveint', width: 100, visible:false },
 		            { field:'DOC_claveint', displayName:'documento', width: 100, visible:false },
 		            { field:'CapEt2', displayName:'CapEt2', width: 100, visible:false },
-		            { field:'EnvFac', displayName:'EnvFac', width: 100, visible:true },
 		            { field:'FLD_AROent', displayName:'FLD_AROent', width: 100, visible:false },
 		            { field:'ARO_activa', displayName:'area', width: 100, visible:false },
 		            { field:'USU_ent', displayName:'USU_ent', width: 100, visible:false },
+								{ field:'TRI_nombre', displayName:'Triage', width: 100},
+		            { field:'AtnCobrada', displayName:'ATN Cobrada', width: 100},
+		            { field:'PAS_fechapago', displayName:'ATN Fecha Cobrada', width: 100},
+		            { field:'EnvFac', displayName:'EnvFac', width: 100, visible:true },
 		            { field:'factura', displayName:'Factura', width: 100, visible:true },
 		            { field:'Fac_fechafactura', displayName:'Fecha Factura', width: 100, visible:true },
 		            { field:'Fac_fechapagofactura', displayName:'Fecha Pago Factura', width: 100, visible:true },
 		            { field:'Fac_ultimaAplicacion', displayName:'Fecha Ultima Aplicacion', width: 100, visible:true },
 		            { field:'pagada', displayName:'Pagada', width: 100},
 		            { field:'FLD_observaciones', displayName:'Observaciones', width: 320, enableCellEdit: true}
-		            
+
         ],
         showFooter: true,
         showFilter:false
@@ -471,7 +475,7 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
     		var objeto1 = "";
     	}else{
     		var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
-    		
+
     	}
     	if($scope.cliente == undefined || $scope.cliente == 0){
     		var objeto2 = "";
@@ -482,7 +486,7 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
     	if($scope.folio.length == 0){
     		var objeto3 = "";
     	}else{
-    		var objeto3 = "Folio:" + $scope.folio + "; ";	
+    		var objeto3 = "Folio:" + $scope.folio + "; ";
     	}
 
 
@@ -497,10 +501,10 @@ function nopagarCtrl($scope, $rootScope, $routeParams, find, $http, loading, api
 
     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
+    	$scope.filterOptions.filterText = '';
+    	$scope.unidad = 0;
     	$scope.cliente = 0;
-    
+
     }
 
     $scope.quitaselectos = function(){

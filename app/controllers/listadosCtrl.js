@@ -18,19 +18,19 @@ function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loadin
 
 	}
 
-	//Carga la lista de archivos a enviar 
+	//Carga la lista de archivos a enviar
 	$scope.cargaRechazos = function(){
 
 		find.listadorechazos($rootScope.id).success( function (data){
-       
+
         	if(data){
         		$scope.listadoRechazos = data;
         	}else{
         		$scope.listadoRechazos = [];
         	}
-        	
+
         	$scope.gridOptions.$gridScope.toggleSelectAll(false);
-			
+
 		});
 
 	}
@@ -47,7 +47,7 @@ function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loadin
 	}
 
 
-	//enlista los usuarios de cada area 
+	//enlista los usuarios de cada area
 	$scope.altausuariosarea = function(area){
 
         console.log($rootScope.area);
@@ -58,7 +58,7 @@ function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loadin
 
                 alert('No puedes emitir entregas a tu misma area');
     			$scope.areaOp = '';
-                
+
             }else{
 
                 $scope.area = area;
@@ -162,16 +162,16 @@ function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loadin
 	    } },
 	    iEUrl: 'downloads/download_as_csv'
 	};
-                    
-    $scope.gridOptions = { 
-    	data: 'listadoRechazos', 
+
+    $scope.gridOptions = {
+    	data: 'listadoRechazos',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:true,
     	showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
     	multiSelect:true,
-    	selectedItems: $scope.selectos, 
+    	selectedItems: $scope.selectos,
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
 		            { field:'PAS_folio', displayName:'Folio', width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
@@ -220,14 +220,14 @@ function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loadin
     		var objeto1 = "";
     	}else{
     		var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
-    		
+
     	}
     	if($scope.cliente == undefined || $scope.cliente == 0){
     		var objeto2 = "";
     	}else{
     		var objeto2 = "Empresa:" + $scope.cliente.nombre + "; ";
     	}
-    	
+
     	// if($scope.tipo == 'Fax'){
     	// 	var objeto3 = "Fax:x; ";
     	// }else if($scope.tipo == 'Original'){
@@ -239,27 +239,27 @@ function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loadin
     	if($scope.folio.length == 0){
     		var objeto3 = "";
     	}else{
-    		var objeto3 = "Folio:" + $scope.folio + "; ";	
+    		var objeto3 = "Folio:" + $scope.folio + "; ";
     	}
 
     	// if($scope.lesionado.length == 0){
     	// 	var objeto5 = "";
     	// }else{
-    	// 	var objeto5 = "Lesionado:" + $scope.lesionado + "; ";	
+    	// 	var objeto5 = "Lesionado:" + $scope.lesionado + "; ";
     	// }
 
     	// if($scope.producto == undefined || $scope.producto == 0){
     	// 	var objeto6 = "";
     	// }else{
     	// 	var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
-    		
+
     	// }
 
     	// if($scope.etapa == undefined || $scope.etapa == 0){
     	// 	var objeto7 = "";
     	// }else{
     	// 	var objeto7 = "Etapa:" + $scope.etapa + "; ";
-    		
+
     	// }
 
 
@@ -273,10 +273,10 @@ function rechazosCtrl( $scope, $rootScope, $routeParams, $location, find, loadin
 
     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
+    	$scope.filterOptions.filterText = '';
+    	$scope.unidad = 0;
     	$scope.cliente = 0;
-    	
+
     }
 
     $scope.quitaselectos = function(){
@@ -308,21 +308,21 @@ function rechazosAreaCtrl( $scope, $rootScope, $routeParams, $location, find, lo
 	}
 
 
-	//Carga la lista de archivos a enviar 
+	//Carga la lista de archivos a enviar
 	$scope.cargaRechazos = function(){
 
-		
+
 
 		find.listadorechazos($rootScope.userM).success( function (data){
-       
+
         	if(data){
         		$scope.listadoRechazos = data;
         	}else{
         		$scope.listadoRechazos = [];
         	}
-        	
+
         	$scope.gridOptions.$gridScope.toggleSelectAll(false);
-			
+
 		});
 
 	}
@@ -339,7 +339,7 @@ function rechazosAreaCtrl( $scope, $rootScope, $routeParams, $location, find, lo
 	}
 
 
-	//enlista los usuarios de cada area 
+	//enlista los usuarios de cada area
 	$scope.altausuariosarea = function(area){
 
         console.log($rootScope.area);
@@ -350,7 +350,7 @@ function rechazosAreaCtrl( $scope, $rootScope, $routeParams, $location, find, lo
 
                 alert('No puedes emitir entregas a tu misma area');
     			$scope.areaOp = '';
-                
+
             }else{
 
                 $scope.area = area;
@@ -455,16 +455,16 @@ function rechazosAreaCtrl( $scope, $rootScope, $routeParams, $location, find, lo
 	    } },
 	    iEUrl: 'downloads/download_as_csv'
 	};
-                    
-    $scope.gridOptions = { 
-    	data: 'listadoRechazos', 
+
+    $scope.gridOptions = {
+    	data: 'listadoRechazos',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:true,
     	showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
     	multiSelect:true,
-    	selectedItems: $scope.selectos, 
+    	selectedItems: $scope.selectos,
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
 		            { field:'PAS_folio', displayName:'Folio', width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
@@ -513,14 +513,14 @@ function rechazosAreaCtrl( $scope, $rootScope, $routeParams, $location, find, lo
     		var objeto1 = "";
     	}else{
     		var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
-    		
+
     	}
     	if($scope.cliente == undefined || $scope.cliente == 0){
     		var objeto2 = "";
     	}else{
     		var objeto2 = "Empresa:" + $scope.cliente.nombre + "; ";
     	}
-    	
+
     	// if($scope.tipo == 'Fax'){
     	// 	var objeto3 = "Fax:x; ";
     	// }else if($scope.tipo == 'Original'){
@@ -532,27 +532,27 @@ function rechazosAreaCtrl( $scope, $rootScope, $routeParams, $location, find, lo
     	if($scope.folio.length == 0){
     		var objeto3 = "";
     	}else{
-    		var objeto3 = "Folio:" + $scope.folio + "; ";	
+    		var objeto3 = "Folio:" + $scope.folio + "; ";
     	}
 
     	// if($scope.lesionado.length == 0){
     	// 	var objeto5 = "";
     	// }else{
-    	// 	var objeto5 = "Lesionado:" + $scope.lesionado + "; ";	
+    	// 	var objeto5 = "Lesionado:" + $scope.lesionado + "; ";
     	// }
 
     	// if($scope.producto == undefined || $scope.producto == 0){
     	// 	var objeto6 = "";
     	// }else{
     	// 	var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
-    		
+
     	// }
 
     	// if($scope.etapa == undefined || $scope.etapa == 0){
     	// 	var objeto7 = "";
     	// }else{
     	// 	var objeto7 = "Etapa:" + $scope.etapa + "; ";
-    		
+
     	// }
 
 
@@ -566,10 +566,10 @@ function rechazosAreaCtrl( $scope, $rootScope, $routeParams, $location, find, lo
 
     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
+    	$scope.filterOptions.filterText = '';
+    	$scope.unidad = 0;
     	$scope.cliente = 0;
-    	
+
     }
 
     $scope.quitaselectos = function(){
@@ -588,16 +588,16 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
 		$scope.area = $routeParams.area;
 		$scope.cargaEntrada();
 		$scope.altausuariosarea();
-		
+
 	}
 
-	//Carga la lista de archivos a enviar 
+	//Carga la lista de archivos a enviar
 	$scope.cargaEntrada = function(){
 
 		loading.cargando('Buscando Folios');
 
 		find.listadogeneral($rootScope.id).success( function (data){
-       
+
         	if(data.respuesta){
         		loading.mensaje(data.respuesta);
         		$scope.listadoEntrega = [];
@@ -607,7 +607,7 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
         	}
 
         	loading.despedida();
-			
+
 		}).error( function (xhr,status,data){
 
 			loading.despedida();
@@ -616,7 +616,7 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
 		});
 	}
 
-	//enlista los usuarios de cada area 
+	//enlista los usuarios de cada area
 	$scope.altausuariosarea = function(){
 
 
@@ -637,7 +637,7 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
 			loading.cargando('Buscando Folios');
 
 			find.listadogeneral(usuario).success( function (data){
-	       
+
 	        	if(data.respuesta){
 	        		loading.mensaje(data.respuesta);
 	        		$scope.listadoEntrega2 = [];
@@ -647,7 +647,7 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
 	        	}
 
 	        	loading.despedida();
-				
+
 			}).error( function (xhr,status,data){
 
 				loading.despedida();
@@ -656,7 +656,7 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
 			});
 
 		}
-		
+
 	}
 
 	$scope.mandaFolios = function(numero){
@@ -675,7 +675,7 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
 
 
 			var documentoEnv = datos[i];
-			
+
 			if (numero == 1){
 				var entrega = Number($rootScope.id);
 				var recibe = Number($scope.user);
@@ -686,7 +686,7 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
 				var recibe = Number($rootScope.id);
 			}
 
-			// //generamos el JSON necesario incluyendo los datos del area y usuario para enviarlo mediante post 
+			// //generamos el JSON necesario incluyendo los datos del area y usuario para enviarlo mediante post
 			var info = {
 				folio:documentoEnv.Folio,
 				etapa:documentoEnv.Etapa,
@@ -705,15 +705,15 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
 
 		    $http({
 				url:'/documento/api/traspaso',
-				method:'POST', 
-				contentType: 'application/json', 
-				dataType: "json", 
+				method:'POST',
+				contentType: 'application/json',
+				dataType: "json",
 				data:info
 			}).success( function (data){
-				        	
+
 				$scope.mensaje = data.respuesta;
-				$scope.tipoalerta = 'alert-success';	
-				$scope.quitaselectos();		
+				$scope.tipoalerta = 'alert-success';
+				$scope.quitaselectos();
 
 			}).error( function (data){
 
@@ -757,17 +757,17 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
     $scope.selectos = [];
 
 
-    ////opciones del grid                 
-    $scope.gridOptions = { 
-    	data: 'listadoEntrega', 
+    ////opciones del grid
+    $scope.gridOptions = {
+    	data: 'listadoEntrega',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:true,
     	multiSelect:true,
     	showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
     	enableCellSelection: false,
-    	selectedItems: $scope.selectos, 
+    	selectedItems: $scope.selectos,
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
                     { field:'Folio', width: 120, enableCellEdit:true, pinned:true },
@@ -781,7 +781,7 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
 		            { field:'FLD_AROent', width: 100, visible:false },
 		            { field:'area', width: 100, visible:false },
 		            { field:'USU_ent', width: 100, visible:false },
-		            
+
         ],
         showFooter: false,
         showFilter:true,
@@ -794,21 +794,21 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
 
     //inicalizamos archivos seleccionados
 
-    ////opciones del grid    
+    ////opciones del grid
 
     $scope.selectos2 = [];
 
 
-    $scope.gridOptions2 = { 
-    	data: 'listadoEntrega2', 
+    $scope.gridOptions2 = {
+    	data: 'listadoEntrega2',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:true,
     	multiSelect:true,
     	showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
     	enableCellSelection: false,
-    	selectedItems: $scope.selectos2, 
+    	selectedItems: $scope.selectos2,
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
                     { field:'Folio', width: 120,  enableCellEdit:true, pinned:true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
@@ -822,7 +822,7 @@ function traspasosCtrl($scope, $rootScope, $routeParams,$http, find, loading){
 		            { field:'FLD_AROent', width: 100, visible:false },
 		            { field:'area', width: 100, visible:false },
 		            { field:'USU_ent', width: 100, visible:false },
-		            
+
         ],
         showFooter: false,
         showFilter:true,
@@ -852,13 +852,13 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 
 	}
 
-	//Carga la lista de archivos a enviar 
+	//Carga la lista de archivos a enviar
 	$scope.cargaEntrada = function(){
 
 		loading.cargando('Buscando Folios');
 
 		find.listadogeneral($rootScope.id).success( function (data){
-       
+
         	if(data.respuesta){
         		loading.mensaje(data.respuesta);
         		$scope.listadoEntrega = [];
@@ -868,7 +868,7 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
         	}
 
         	loading.despedida();
-			
+
 		}).error( function (xhr,status,data){
 
 			loading.despedida();
@@ -910,7 +910,7 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 	}
 
 
-	//enlista los usuarios de cada area 
+	//enlista los usuarios de cada area
 	$scope.altausuariosarea = function(area){
 
 		if ($rootScope.area == area) {
@@ -957,7 +957,7 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 				}
 
 				//Si se envia a Facturación y no es original ó ya fue enviado anteriormente manda mensaje de error
-				//se agrego indexof(busca el contenido que se ponga aqui) por que javascript no soporta muchos && y || en un mismo if 
+				//se agrego indexof(busca el contenido que se ponga aqui) por que javascript no soporta muchos && y || en un mismo if
 				if( (documento.FaxOrigianl.indexOf('O') == -1  && $scope.areaOp == 5) || ($scope.areaOp == 5 && documento.FLD_AROent == 5 && documento.USU_ent != 'null')||($scope.areaOp == 5 && documento.EnvFac == 'SI' && documento.Etapa == 1) ){
 					throw 'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede enviar a Facturación debido a que no es etapa 1 o ya fue mandado';
 				}
@@ -967,10 +967,10 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 					throw 'El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se puede enviar a Facturación debido a que no es etapa 1';
 				}
 
-				//Si se envia a pagos y no es original 
+				//Si se envia a pagos y no es original
 				if($scope.areaOp == 6 && documento.EnvFac != 'SI' && documento.Etapa == 1) {
 
-					if(confirm('El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se a enviado a Facturación. ¿Desea proseguir?')){							
+					if(confirm('El documento ' + documento.Folio + ' etapa '+ documento.Etapa + ' # ' + documento.Cantidad + ' no se a enviado a Facturación. ¿Desea proseguir?')){
 						//si es facturacion agrega un juego mas al flujo
 
 						$scope.actualizaFlujo(i);
@@ -997,7 +997,7 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 				if(err != 1){
 					alert(err);
 				}
-				
+
 			}
 		} //Termina for
 
@@ -1006,7 +1006,7 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 			$scope.mensaje = 'Termino el Envio';
 			$scope.inicio();
 		};
-		
+
 
 	}
 
@@ -1033,15 +1033,15 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 
 	    $http({
 			url:'/documento/api/altaentrega',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
+			method:'POST',
+			contentType: 'application/json',
+			dataType: "json",
 			data:datos
 		}).success( function (data){
-			
+
 			// console.log(data);
 			$scope.mensaje = data.respuesta;
-			$scope.tipoalerta = 'alert-success';			
+			$scope.tipoalerta = 'alert-success';
 
 		}).error( function (data){
 
@@ -1053,11 +1053,11 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 
 	$scope.actualizaFlujo = function(indice){
 
-		//seleccionamos el folio a mandar 
+		//seleccionamos el folio a mandar
 		var documentoEnv = $scope.selectos[indice];
-		
+
 		// console.log(documentoEnv);
-		//generamos el JSON necesario incluyendo los datos del area y usuario para enviarlo mediante post 
+		//generamos el JSON necesario incluyendo los datos del area y usuario para enviarlo mediante post
 		var datos = {
 			folio:documentoEnv.Folio,
 			etapa:documentoEnv.Etapa,
@@ -1074,14 +1074,14 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 
 	    $http({
 			url:'/documento/api/actualizaentrega',
-			method:'POST', 
-			contentType: 'application/json', 
-			dataType: "json", 
+			method:'POST',
+			contentType: 'application/json',
+			dataType: "json",
 			data:datos
 		}).success( function (data){
-			        	
+
 			$scope.mensaje = data.respuesta;
-			$scope.tipoalerta = 'alert-success';			
+			$scope.tipoalerta = 'alert-success';
 
 		}).error( function (data){
 
@@ -1107,21 +1107,21 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 	    } },
 	    iEUrl: 'downloads/download_as_csv'
 	};
-	
+
 
 	var checkboxCellTemplate='<div style="margin-top:10px;" class="text-center"><input  type="checkbox" ng-model="row.entity.Reasignado"/></div>';
 
-    ////opciones del grid                 
-    $scope.gridOptions = { 
-    	data: 'listadoEntrega', 
+    ////opciones del grid
+    $scope.gridOptions = {
+    	data: 'listadoEntrega',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:true,
     	multiSelect:true,
         showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
     	enableCellSelection: true,
-    	selectedItems: $scope.selectos, 
+    	selectedItems: $scope.selectos,
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
                     { field:'Folio', width: 120, pinned:true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
@@ -1140,7 +1140,7 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 		            { field:'USU_ent', width: 100, visible:false },
 		            { field:'Reasignado', cellTemplate:checkboxCellTemplate, width: 90 },
 		            { field:'Observaciones', width: 320, enableCellEdit: true}
-		            
+
         ],
         showFooter: true,
         showFilter:true
@@ -1167,7 +1167,7 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
     		var objeto1 = "";
     	}else{
     		var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
-    		
+
     	}
     	if($scope.cliente != undefined || $scope.cliente != 0){
     		var objeto2 = "Empresa:" + $scope.cliente.nombre + "; ";
@@ -1185,7 +1185,7 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 
     	var filtro = objeto1 + objeto2 + objeto3;
 
-    	
+
     	$scope.filterOptions.filterText = filtro;
 
     	// console.log(filtro);
@@ -1194,10 +1194,10 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 
     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
+    	$scope.filterOptions.filterText = '';
+    	$scope.unidad = 0;
     	$scope.cliente = 0;
-    
+
     }
 
     $scope.quitaselectos = function(){
@@ -1209,7 +1209,7 @@ function entregasCtrl($scope, $rootScope, $routeParams, find, loading, $http){
 
 //mustra los documentos entregados pendientes de recibir
 function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, checkFolios,datos,$filter){
-	
+
 
     loading.despedida();
     //Carga Configuracion Inicial
@@ -1231,7 +1231,7 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
 
     }
 
-    //Carga la lista de archivos a Recibir de otras areas 
+    //Carga la lista de archivos a Recibir de otras areas
     $scope.cargaEntregas = function(){
 
         find.listadoentrega($rootScope.id).success( function (data){
@@ -1241,7 +1241,7 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
             }else{
                 $scope.listadoEntregas = [];
             }
-            
+
         });
 
 	}
@@ -1268,7 +1268,7 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
 
 	//elimina la seleccion o al que le apretaron
 	$scope.elimina = function(dato){
-		
+
 		$scope.mensaje = '';
 		var datos = [dato.entity];
         $('#boton').button('loading');
@@ -1278,8 +1278,8 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
 				$scope.gridOptions.$gridScope.toggleSelectAll(false);
 				$scope.mensaje = data.respuesta;
 				$scope.tipoalerta = 'alert-success';
-				$scope.cargaEntregas();	
-                $('#boton').button('reset');	
+				$scope.cargaEntregas();
+                $('#boton').button('reset');
 			},
 			function (error){
 				$scope.mensaje = error;
@@ -1287,7 +1287,7 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
                 $('#boton').button('reset');
 			}
 		);
-        
+
 	}
 
 
@@ -1302,13 +1302,13 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
 				$scope.gridOptions.$gridScope.toggleSelectAll(false);
 				$scope.mensaje = data.respuesta;
 				$scope.tipoalerta = 'alert-success';
-				$scope.cargaEntregas();	
+				$scope.cargaEntregas();
 
 				if (data.rechazos.length > 0) {
 					$scope.rechazos = data.rechazos;
 					$('#myModal4').modal();
-				};	
-		        
+				};
+
                 $('#boton').button('reset');
             },
             function (error){
@@ -1335,18 +1335,18 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
 	};
 
 
-    ////opciones del grid                 
-    $scope.gridOptions = { 
-    	data: 'listadoEntregas', 
+    ////opciones del grid
+    $scope.gridOptions = {
+    	data: 'listadoEntregas',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:true,
     	multiSelect:true,
     	showFooter: true,
         showFilter:true,
         showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
-    	selectedItems: $scope.selectos, 
+    	selectedItems: $scope.selectos,
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
     				{ field:'PorEntregarA', displayName:'PorEntregarA', width: 120 },
@@ -1365,7 +1365,7 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
 		            { field:'ARO_porRecibir', width: 100, visible:false },
 		            { displayName:'Accion' ,cellTemplate:'  <a href="" ng-click="elimina(row)">Quitar</a>'}
 		]
-        
+
     };
 
     $scope.$on('ngGridEventRows', function (newFilterText){
@@ -1389,7 +1389,7 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
     	}else{
     		var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
             $scope.filtrado.UNI_nombrecorto = $scope.unidad.nombre;
-    		
+
     	}
     	if($scope.cliente == undefined || $scope.cliente == 0){
     		var objeto2 = "";
@@ -1402,7 +1402,7 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
     	if($scope.folio.length == 0){
     		var objeto3 = "";
     	}else{
-    		var objeto3 = "Folio:" + $scope.folio + "; ";	
+    		var objeto3 = "Folio:" + $scope.folio + "; ";
     	}
 
 
@@ -1417,15 +1417,15 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
 
     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
+    	$scope.filterOptions.filterText = '';
+    	$scope.unidad = 0;
     	$scope.cliente = 0;
 
         $scope.filtrado = {
             EMP_nombrecorto : '',
             UNI_nombrecorto : ''
         };
-    
+
     }
 
     $scope.quitaselectos = function(){
@@ -1442,7 +1442,7 @@ function listadoEntregasCtrl($scope, $rootScope, $routeParams, find, loading, ch
 
 //mustra los documentos entregados pendientes de recibir
 function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading, checkFolios,datos,$filter){
-	
+
 
     loading.despedida();
     //Carga Configuracion Inicial
@@ -1464,7 +1464,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
 
     }
 
-    //Carga la lista de archivos a Recibir de otras areas 
+    //Carga la lista de archivos a Recibir de otras areas
     $scope.cargaEntregas = function(){
 
         find.listadoentrega($rootScope.userM).success( function (data){
@@ -1474,7 +1474,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
             }else{
                 $scope.listadoEntregas = [];
             }
-            
+
         });
 
 	}
@@ -1501,7 +1501,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
 
 	//elimina la seleccion o al que le apretaron
 	$scope.elimina = function(dato){
-		
+
 		$scope.mensaje = '';
 		var datos = [dato.entity];
         $('#boton').button('loading');
@@ -1511,8 +1511,8 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
 				$scope.gridOptions.$gridScope.toggleSelectAll(false);
 				$scope.mensaje = data.respuesta;
 				$scope.tipoalerta = 'alert-success';
-				$scope.cargaEntregas();	
-                $('#boton').button('reset');	
+				$scope.cargaEntregas();
+                $('#boton').button('reset');
 			},
 			function (error){
 				$scope.mensaje = error;
@@ -1520,7 +1520,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
                 $('#boton').button('reset');
 			}
 		);
-        
+
 	}
 
 
@@ -1531,18 +1531,18 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
         var datos = $scope.selectos;
 
 		checkFolios.enviaRechazos(datos,$rootScope.area,$rootScope.id).then(
-			
+
 			function (data){
 				$scope.gridOptions.$gridScope.toggleSelectAll(false);
 				$scope.mensaje = data.respuesta;
 				$scope.tipoalerta = 'alert-success';
-				$scope.cargaEntregas();	
+				$scope.cargaEntregas();
 
 				if (data.rechazos.length > 0) {
 					$scope.rechazos = data.rechazos;
 					$('#myModal4').modal();
-				};	
-		        
+				};
+
                 $('#boton').button('reset');
             },
             function (error){
@@ -1569,18 +1569,18 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
 	};
 
 
-    ////opciones del grid                 
-    $scope.gridOptions = { 
-    	data: 'listadoEntregas', 
+    ////opciones del grid
+    $scope.gridOptions = {
+    	data: 'listadoEntregas',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:true,
     	multiSelect:true,
     	showFooter: true,
         showFilter:true,
         showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
-    	selectedItems: $scope.selectos, 
+    	selectedItems: $scope.selectos,
     	filterOptions: $scope.filterOptions,
     	columnDefs: [
     				{ field:'PorEntregarA', displayName:'PorEntregarA', width: 120 },
@@ -1599,7 +1599,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
 		            { field:'ARO_porRecibir', width: 100, visible:false },
 		            { displayName:'Accion' ,cellTemplate:'  <a href="" ng-click="elimina(row)">Quitar</a>'}
 		]
-        
+
     };
 
     $scope.$on('ngGridEventRows', function (newFilterText){
@@ -1623,7 +1623,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
     	}else{
     		var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
             $scope.filtrado.UNI_nombrecorto = $scope.unidad.nombre;
-    		
+
     	}
     	if($scope.cliente == undefined || $scope.cliente == 0){
     		var objeto2 = "";
@@ -1636,7 +1636,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
     	if($scope.folio.length == 0){
     		var objeto3 = "";
     	}else{
-    		var objeto3 = "Folio:" + $scope.folio + "; ";	
+    		var objeto3 = "Folio:" + $scope.folio + "; ";
     	}
 
 
@@ -1651,15 +1651,15 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
 
     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
+    	$scope.filterOptions.filterText = '';
+    	$scope.unidad = 0;
     	$scope.cliente = 0;
 
         $scope.filtrado = {
             EMP_nombrecorto : '',
             UNI_nombrecorto : ''
         };
-    
+
     }
 
     $scope.quitaselectos = function(){
@@ -1676,7 +1676,7 @@ function listadoEntregasAreaCtrl($scope, $rootScope, $routeParams, find, loading
 
 //muestra los folios por recibir
 function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios,datos,$location,$upload, api, leexml, FacturaNormal){
-	
+
     $scope.listadoRecepcion = datos.data;
     loading.despedida();
 
@@ -1704,8 +1704,8 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
         	concepto: '',
         	etapa: '',
         	foliofiscal: '',
-	        subtotal: '', 
-	        descuento: '', 
+	        subtotal: '',
+	        descuento: '',
 	        total: '',
 	        fechaemision: '',
 	        observacion: '',
@@ -1727,8 +1727,8 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
         	concepto: '',
         	etapa: '',
         	foliofiscal: '',
-	        subtotal: '', 
-	        descuento: '', 
+	        subtotal: '',
+	        descuento: '',
 	        total: '',
 	        fechaemision: '',
 	        observacion: '',
@@ -1743,7 +1743,7 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
         }
 
         $scope.archivos = [];
-		
+
 	}
 
 	$scope.borratemporales = function(){
@@ -1755,17 +1755,17 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
     }
 
 
-	//Carga la lista de archivos a Recibir de otras areas 
+	//Carga la lista de archivos a Recibir de otras areas
 	$scope.cargaRecepcion = function(){
 
 		find.listadorecepcion($rootScope.id).success( function (data){
-       
+
         	if(data.length>0){
         		$scope.listadoRecepcion = data;
             }else{
                 $scope.listadoRecepcion = [];
         	}
-			
+
 		});
 	}
 
@@ -1807,10 +1807,10 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 			.error(function (data){
 				$scope.mensaje = 'Ocurrio un error de conexion intente nuevamente si persiste el problema comunicate al area de sistemas';
                 $scope.tipoalerta = 'alert-error';
-				$('#boton').button('reset');	
+				$('#boton').button('reset');
 			});
-			
-		};		
+
+		};
 	}
 
 	$scope.rechazaEntregas = function(){
@@ -1835,12 +1835,12 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 	                $scope.tipoalerta = 'alert-error';
 	            }
             );
-            
+
         };
 
 	}
 
-	
+
 	$scope.selectos = [];
 
 	$scope.filterOptions = {
@@ -1868,13 +1868,13 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
     	if($scope.folio.length == 0){
     		var objeto3 = "";
     	}else{
-    		var objeto3 = "Folio:" + $scope.folio + "; ";	
+    		var objeto3 = "Folio:" + $scope.folio + "; ";
     	}
 
 
     	var filtro = objeto1 + objeto2 + objeto3;
 
-    	
+
     	$scope.filterOptions.filterText = filtro;
 
     	// console.log(filtro);
@@ -1883,11 +1883,11 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 
     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
+    	$scope.filterOptions.filterText = '';
+    	$scope.unidad = 0;
     	$scope.cliente = 0;
     	$scope.folio = '';
-    
+
     }
 
     $scope.quitaselectos = function(){
@@ -1903,18 +1903,18 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
 	};
 
 	//Cargamos el grid con los datos
-	$scope.gridOptions = { 
-    	data: 'listadoRecepcion', 
+	$scope.gridOptions = {
+    	data: 'listadoRecepcion',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:true,
     	multiSelect:true,
     	showFooter: true,
         showFilter:true,
         showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
-    	selectedItems: $scope.selectos, 
-    	filterOptions: $scope.filterOptions, 
+    	selectedItems: $scope.selectos,
+    	filterOptions: $scope.filterOptions,
     	columnDefs: [
     				{ field:'EntregadoPor', displayName:'EntregadoPor', width: 120, pinned:true},
                     { field:'PAS_folio', displayName:'Folio', width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
@@ -1990,13 +1990,13 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
         for (var i = 0; i < $scope.selectos.length; i++){
 
              $scope.relacionesFol.push($scope.selectos[i]);
-             
+
         };
         // console.log($scope.relacionesFol[0].claveunidad);
         // find.unidadesref($scope.relacionesFol[0].claveunidad).success( function (data) {
 
             // var referencia = data.ref;
-        
+
         if ($scope.relacionesFol.length > 0){
 
             console.log($scope.relacionesFol);
@@ -2004,7 +2004,7 @@ function listadoRecepcionCtrl($scope, $rootScope, $routeParams, find, loading , 
             $scope.iniciorelacion = false;
             $scope.finrelacion = true;
             $scope.tituloFinRelacion = "Relación de Folios";
-            
+
             console.log($scope.relacionesFol);
 
             $scope.detalles = $scope.relacionesFol;
@@ -2037,7 +2037,7 @@ $scope.subeXML = function($files){
             leexml.getxmltemporal($rootScope.user,data.archivo).success(function(data){
             courses  = x2js.xml_str2json(data);
 
-                FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){     
+                FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){
                     if (data[0].count != 0){
 
                         swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
@@ -2054,7 +2054,7 @@ $scope.subeXML = function($files){
 
                     }
                 });
-                // FacturaNormal.validaUnidad($scope.unidad).success(function (data){ 
+                // FacturaNormal.validaUnidad($scope.unidad).success(function (data){
                 //         if (data.length > 0){
 
                 //             $scope.PagoG.rfcemisor = data[0].rfc;
@@ -2080,7 +2080,7 @@ $scope.subeXML = function($files){
 			                // $scope.PagoG.folio = data.Folios;
 			                $scope.PagoG.tipoorden = 2;
                             $scope.btndelete = true;
-                          
+
                     //     }else{
 
                     //         swal('Upss','Tu Factura no coincide con el Emisor','error');
@@ -2140,7 +2140,7 @@ console.log($scope.OPago );
         var areaEntrega = 6;
         var usuarioRecibe = $rootScope.id;
 
-        var ruta = api+'entregas/ordenPago'; 
+        var ruta = api+'entregas/ordenPago';
 
     	    $http.post(ruta,$scope.OPago).success(function (data){
 
@@ -2212,13 +2212,13 @@ $scope.IngresaFacturaInd = function(){
         for (var i = 0; i < $scope.selectos.length; i++){
 
              $scope.relacionesFol.push($scope.selectos[i]);
-             
+
         };
         // console.log($scope.relacionesFol[0].claveunidad);
         // find.unidadesref($scope.relacionesFol[0].claveunidad).success( function (data) {
 
             // var referencia = data.ref;
-        
+
         if ($scope.relacionesFol.length > 0){
 
             console.log($scope.relacionesFol);
@@ -2226,7 +2226,7 @@ $scope.IngresaFacturaInd = function(){
             $scope.iniciorelacion = false;
             $scope.finrelacion = true;
             $scope.tituloFinRelacion = "Relación de Folios";
-            
+
             console.log($scope.relacionesFol);
 
             $scope.detalles = $scope.relacionesFol;
@@ -2269,25 +2269,25 @@ $scope.IngresaFacturaInd = function(){
 
             // console.log($scope.detalles[1].tasa);
 
-        //   swal({   
-        //       title: "",   
-        //       text:  data[0].ref + "_" + "" + "Ingresa N° Relación", 
+        //   swal({
+        //       title: "",
+        //       text:  data[0].ref + "_" + "" + "Ingresa N° Relación",
         //       type: "input",
         //       imageUrl: "images/relacion.png",
-        //       closeOnConfirm: false,     
-        //       animation: "slide-from-top",  
+        //       closeOnConfirm: false,
+        //       animation: "slide-from-top",
         //       inputPlaceholder: "N° Relación" },
 
-        //       function(inputValue){   
-        //         if (inputValue === false) return false;      
-        //         if (inputValue === ""){ 
+        //       function(inputValue){
+        //         if (inputValue === false) return false;
+        //         if (inputValue === ""){
 
-        //         inputValue = 0;    
-        //           // swal.showInputError("Ocurrio un Error!!");     
-        //           // return false  
-        //         } 
-        //         $scope.numrelacion = data[0].ref + "_" +inputValue;     
-        //         swal("OK!", "El N° Relación Factura es: " + data[0].ref + "_" + inputValue, "success"); 
+        //         inputValue = 0;
+        //           // swal.showInputError("Ocurrio un Error!!");
+        //           // return false
+        //         }
+        //         $scope.numrelacion = data[0].ref + "_" +inputValue;
+        //         swal("OK!", "El N° Relación Factura es: " + data[0].ref + "_" + inputValue, "success");
         //         $('#ventanarelacion').modal('show');
 
 
@@ -2325,7 +2325,7 @@ $scope.subeXMLInd = function(idx,$files){
                         leexml.getxmltemporal($rootScope.user,data.archivo[ii]).success(function(data){
                         courses  = x2js.xml_str2json(data);
 
-                           FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){                  
+                           FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){
                                   if (data[0].count != 0){
 
                                     swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
@@ -2432,7 +2432,7 @@ console.log($scope.OPago );
         var areaEntrega = 6;
         var usuarioRecibe = $rootScope.id;
 
-        var ruta = api+'entregas/ordenPagoIndividual'; 
+        var ruta = api+'entregas/ordenPagoIndividual';
 
 	    $http.post(ruta,$scope.OPago).success(function (data){
 
@@ -2476,7 +2476,7 @@ $scope.eliminaxmlInd = function(idx){
 
 //muestra los folios por recibir
 function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios,datos){
-	
+
     $scope.listadoRecepcion = datos.data;
     loading.despedida();
 
@@ -2493,17 +2493,17 @@ function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loadin
 
 	}
 
-	//Carga la lista de archivos a Recibir de otras areas 
+	//Carga la lista de archivos a Recibir de otras areas
 	$scope.cargaRecepcion = function(){
 
 		find.listadorecepcion($rootScope.userM).success( function (data){
-       
+
         	if(data.length>0){
         		$scope.listadoRecepcion = data;
             }else{
                 $scope.listadoRecepcion = [];
         	}
-			
+
 		});
 	}
 
@@ -2542,9 +2542,9 @@ function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loadin
                 $scope.gridOptions.$gridScope.toggleSelectAll(false);
 				$('#boton').button('reset');
 			});
-			
+
 		};
-		
+
 	}
 
 
@@ -2563,12 +2563,12 @@ function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loadin
                 $scope.cargaRecepcion();
                 $scope.gridOptions.$gridScope.toggleSelectAll(false);
             });
-            
+
         };
 
 	}
 
-	
+
 	$scope.selectos = [];
 
 	$scope.filterOptions = {
@@ -2596,13 +2596,13 @@ function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loadin
     	if($scope.folio.length == 0){
     		var objeto3 = "";
     	}else{
-    		var objeto3 = "Folio:" + $scope.folio + "; ";	
+    		var objeto3 = "Folio:" + $scope.folio + "; ";
     	}
 
 
     	var filtro = objeto1 + objeto2 + objeto3;
 
-    	
+
     	$scope.filterOptions.filterText = filtro;
 
     	// console.log(filtro);
@@ -2611,11 +2611,11 @@ function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loadin
 
     $scope.quitafiltro = function(){
 
-    	$scope.filterOptions.filterText = ''; 
-    	$scope.unidad = 0; 
+    	$scope.filterOptions.filterText = '';
+    	$scope.unidad = 0;
     	$scope.cliente = 0;
     	$scope.folio = '';
-    
+
     }
 
     $scope.quitaselectos = function(){
@@ -2631,18 +2631,18 @@ function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loadin
 	};
 
 	//Cargamos el grid con los datos
-	$scope.gridOptions = { 
-    	data: 'listadoRecepcion', 
+	$scope.gridOptions = {
+    	data: 'listadoRecepcion',
     	enableColumnResize:true,
-    	enablePinning: true, 
+    	enablePinning: true,
     	enableRowSelection:true,
     	multiSelect:true,
     	showFooter: true,
         showFilter:true,
         showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
-    	selectedItems: $scope.selectos, 
-    	filterOptions: $scope.filterOptions, 
+    	selectedItems: $scope.selectos,
+    	filterOptions: $scope.filterOptions,
     	columnDefs: [
     				{ field:'EntregadoPor', displayName:'EntregadoPor', width: 120, pinned:true},
                     { field:'PAS_folio', displayName:'Folio', width: 120 },
@@ -2698,4 +2698,3 @@ app.controller('listadoEntregasCtrl', listadoEntregasCtrl);
 app.controller('listadoEntregasAreaCtrl', listadoEntregasAreaCtrl);
 app.controller('listadoRecepcionCtrl', listadoRecepcionCtrl);
 app.controller('listadoRecepcionAreaCtrl', listadoRecepcionAreaCtrl);
-

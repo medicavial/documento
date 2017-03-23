@@ -402,12 +402,12 @@ function controladorTodo($scope, $rootScope, $filter, $location, $http, find, lo
                         $('#folioO').focus();
                         console.log($scope.ticket);
                         tickets.guardar($scope.ticket).success( function (data){
-                            $scope.limpiaVariables();
+
                             $scope.original.folio = '';
                             $scope.mensaje = 'Folio registrado correctamente con el ticket ' + $scope.ticket.folioIn;
                             $scope.tipoalerta = 'alert-success';
                             $('#botonGuardaTodo').button('reset');
-                            $scope.limpiaVariables();                            
+                            $scope.limpiaVariables();
                         }).error( function (data){
                             console.log(data);
                             $scope.original.folio = '';

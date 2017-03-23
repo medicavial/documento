@@ -24,7 +24,7 @@
 			</div>
 		</div>
 	</fieldset>
-		
+
 	<div class="row">
 		<div class="col-md-12">
 		</div>
@@ -33,7 +33,7 @@
 	<div class="gridStyle" ng-grid="gridOptions"></div>
 
 	<br>
-	<button ng-json-export-excel data="listado" 
+	<button ng-json-export-excel data="listado"
 		report-fields="{
 			PAS_folio:'Folio',
             FLD_etapa:'Etapa',
@@ -42,6 +42,9 @@
             UNI_nombrecorto:'Unidad',
             FLD_formaRecep:'FaxOrigianl',
             FLD_fechaRecep:'FechaRecepcion',
+						TRI_nombre:'Triage',
+						AtnCobrada:'ATN Cobrada',
+						PAS_fechapago:'ATN Fecha Cobrada',
             EnvFac:'EnvFac',
             factura:'Factura',
             Fac_fechafactura:'Fecha Factura',
@@ -51,8 +54,8 @@
             FLD_observaciones:'Observaciones',
             DOC_originalfechacaptura:'fechaRecepcionDocumentos',
             DOC_fechacapturado:'FechaCaptura'
-		}" 
-		filename =" 'ListadoNPC' " 
+		}"
+		filename =" 'ListadoNPC' "
 		class="btn btn-success">Exportar</button>
 
 	<div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
