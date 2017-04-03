@@ -777,6 +777,12 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     });
 
+    $routeProvider.when('/listadosinFactura',{
+            templateUrl   : 'vistas/listadosinFactura.html',
+            controller    : 'listadosinFacturaCtrl'
+
+    });
+
     $routeProvider.when('/pagoPropias',{
             templateUrl   : 'vistas/pagoPropias.html',
             controller    : 'pagoPropiasCtrl'
