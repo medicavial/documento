@@ -1052,4 +1052,16 @@ app.factory("FacturaNormal", function($q,$http,find,api){
 
 });
 
+app.factory("OPFactura", function($q,$http,find,api){
+
+    return{
+
+        listado:function(datos){
+            return $http.post(api + 'OPFactura/listado', datos);
+        }
+
+    }
+
+});
+
 
