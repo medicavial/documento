@@ -1,0 +1,58 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/reportes" class="icon-arrow-left"></a>
+        <h1>Listado Pagos</h1>
+    </div>
+
+    <legend>Fechas</legend>
+    <div class="row">
+      <div class="col-sm-3 col-md-3">
+        <input type="text" ng-model="datos.fechaini" class="form-control" id="datepicker" placeholder="inicial" />
+      </div>
+
+      <div class="col-sm-3 col-md-3">
+        <div class="input-group">
+          <input type="text" ng-model="datos.fechafin" class="form-control" id="datepicker2" placeholder="Final" />
+          <span class="input-group-btn">
+            <button class="btn btn-default" type="button" ng-click="buscaPagos()"><i class="glyphicon glyphicon-search"></i></button>
+          </span>
+        </div>
+      </div>
+      <div class="col-sm-3 col-md-3">
+        <select class="form-control"  ng-model="datos.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades">
+          <option value="">Unidad</option>
+        </select>
+      </div>
+    </div>
+    <br><br>
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+    <br>
+
+    <button ng-click="exportar()" class="btn btn-success">Exportar</button>
+
+</div>
+
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    // $( "#datepicker" ).datepicker({showButtonPanel: true});
+    // $( "#datepicker2" ).datepicker({showButtonPanel: true});
+    $( "#datepicker" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker2" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    $( "#datepicker2" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+
+</script>
