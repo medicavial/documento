@@ -121,6 +121,9 @@ app.factory("find", function($http,api){
         pagoUnidades:function(datos){
             return $http.post(api + 'reportes/pago/unidades',datos);
         },
+        listadoPagos:function(datos){
+            return $http.post(api + 'reportes/listadoPagos',datos);
+        },
         posiciones:function(){
             return $http.get(api+'consulta/posiciones');
         },
@@ -253,12 +256,12 @@ app.factory("find", function($http,api){
         listaRelacionReg:function(datos){
             return $http.post(api+'RelacionNP/fechaRegistro',datos);
         },
-        cartas:function(fecha,fecha1){ 
+        cartas:function(fecha,fecha1){
             fecha = fecha.replace(/\//g,'-');
-            fecha1 = fecha1.replace(/\//g,'-');                          
+            fecha1 = fecha1.replace(/\//g,'-');
             return $http.get(api+'facturacionExpress/cartas/'+fecha+'/'+fecha1);
         },
-        folioDetalleCancel:function(datos){                                     
+        folioDetalleCancel:function(datos){
             return $http.post(api+'facturacionExpress/folioDetalleCancelacion',datos);
         }
     }

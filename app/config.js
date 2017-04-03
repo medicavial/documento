@@ -35,7 +35,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
      $routeProvider.when('/busquedaFacFTP',{
             templateUrl   : 'vistas/busquedaFacFTP.html',
-            controller    : 'facturaFtpCTRL',  
+            controller    : 'facturaFtpCTRL',
     });
 
     $routeProvider.when('/captura',{
@@ -51,17 +51,17 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     $routeProvider.when('/consulta',{
             templateUrl   : 'vistas/consulta.html',
-            controller    : 'consultaCtrl'   
+            controller    : 'consultaCtrl'
     });
 
     $routeProvider.when('/control',{
             templateUrl   : 'vistas/controldocumentos.html',
-            controller    : 'controlDocumentosCtrl'   
+            controller    : 'controlDocumentosCtrl'
     });
 
     $routeProvider.when('/consultaflujo',{
             templateUrl   : 'vistas/consultaflujo.html',
-            controller    : 'consultaFlujoCtrl'   
+            controller    : 'consultaFlujoCtrl'
     });
 
     $routeProvider.when('/cordinacion',{
@@ -71,7 +71,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     $routeProvider.when('/entregas/:area',{
             templateUrl   : 'vistas/entregas.html',
-            controller    : 'entregasCtrl'   
+            controller    : 'entregasCtrl'
     });
 
     $routeProvider.when('/facturacion',{
@@ -228,7 +228,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     $routeProvider.when('/edicionDatos',{
             templateUrl   : 'vistas/edicionDatos.html',
-            controller    : 'edicionDatosCtrl',  
+            controller    : 'edicionDatosCtrl',
     });
 
     $routeProvider.when('/flujo',{
@@ -279,99 +279,104 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                             rechazos:data[0].data.rechazos,
                             recepcion:data[0].data.xrecibir
                         }
-                        
+
                         promesa.resolve(respuesta);
-                        
+
                     });
 
                     return promesa.promise;
                 }
-            }        
+            }
     });
 
     $routeProvider.when('/formatoqualitas',{
             templateUrl   : 'vistas/formatoqualitas.html',
-            controller    : 'formatoQualitasCtrl'   
+            controller    : 'formatoQualitasCtrl'
     });
 
     $routeProvider.when('/formatoqualitasFacEx',{
             templateUrl   : 'vistas/formatoqualitasFacEx.html',
-            controller    : 'formatoQualitasFacExCtrl'   
+            controller    : 'formatoQualitasFacExCtrl'
     });
 
     $routeProvider.when('/formatoqualitasconsulta',{
             templateUrl   : 'vistas/formatoqualitasconsulta.html',
-            controller    : 'formatoQualitasConsultaCtrl'   
+            controller    : 'formatoQualitasConsultaCtrl'
     });
 
     $routeProvider.when('/formatoqualitasFEconsulta',{
             templateUrl   : 'vistas/formatoqualitasFEconsulta.html',
-            controller    : 'formatoQualitasFEconsultaCtrl'   
+            controller    : 'formatoQualitasFEconsultaCtrl'
     });
 
     $routeProvider.when('/formatoqualitasarchivos',{
             templateUrl   : 'vistas/formatoqualitasarchivos.html',
-            controller    : 'formatoQualitasArchivosCtrl'   
+            controller    : 'formatoQualitasArchivosCtrl'
     });
 
     $routeProvider.when('/formatoqualitasFEarchivos',{
             templateUrl   : 'vistas/formatoqualitasFEarchivos.html',
-            controller    : 'formatoQualitasFEarchivosCtrl'   
+            controller    : 'formatoQualitasFEarchivosCtrl'
     });
 
     $routeProvider.when('/formatoqualitasenviado',{
             templateUrl   : 'vistas/formatoqualitasenviado.html',
-            controller    : 'formatoQualitasEnviadoCtrl'   
+            controller    : 'formatoQualitasEnviadoCtrl'
     });
 
     $routeProvider.when('/formatoqualitasFEenviado',{
             templateUrl   : 'vistas/formatoqualitasFEenviado.html',
-            controller    : 'formatoQualitasFEenviadoCtrl'   
+            controller    : 'formatoQualitasFEenviadoCtrl'
     });
 
     $routeProvider.when('/formatoqualitasrechazados',{
             templateUrl   : 'vistas/formatoqualitasrechazados.html',
-            controller    : 'formatoQualitasRechazadosCtrl'   
+            controller    : 'formatoQualitasRechazadosCtrl'
     });
 
     $routeProvider.when('/formatoqualitasFErechazados',{
             templateUrl   : 'vistas/formatoqualitasFErechazados.html',
-            controller    : 'formatoQualitasFErechazadosCtrl'   
+            controller    : 'formatoQualitasFErechazadosCtrl'
     });
 
     $routeProvider.when('/formatoqualitasrenombrar',{
             templateUrl   : 'vistas/formatoqualitasrenombrar.html',
-            controller    : 'formatoQualitasRenombrarCtrl'   
+            controller    : 'formatoQualitasRenombrarCtrl'
     });
 
     $routeProvider.when('/formatoqualitasFErenombrar',{
             templateUrl   : 'vistas/formatoqualitasFErenombrar.html',
-            controller    : 'formatoQualitasFErenombrarCtrl'   
+            controller    : 'formatoQualitasFErenombrarCtrl'
     });
 
     $routeProvider.when('/formatoqualitasincompletos',{
             templateUrl   : 'vistas/formatoqualitasincompletos.html',
-            controller    : 'formatoQualitasIncompletosCtrl'   
+            controller    : 'formatoQualitasIncompletosCtrl'
     });
 
     $routeProvider.when('/formatoqualitasFEincompletos',{
             templateUrl   : 'vistas/formatoqualitasFEincompletos.html',
-            controller    : 'formatoQualitasFEincompletosCtrl'   
+            controller    : 'formatoQualitasFEincompletosCtrl'
     });
 
     $routeProvider.when('/reportes/facturas',{
             templateUrl   : 'vistas/reporteFacturas.html',
-            controller    : 'reporteFacturasCtrl'   
+            controller    : 'reporteFacturasCtrl'
     });
 
     $routeProvider.when('/reportes/pagoUnidades',{
             templateUrl   : 'vistas/pagoUnidades.html',
-            controller    : 'pagoUnidadesCtrl'   
+            controller    : 'pagoUnidadesCtrl'
+    });
+
+    $routeProvider.when('/reportes/listadoPagos',{
+            templateUrl   : 'vistas/listadoPagos.html',
+            controller    : 'listadoPagosCtrl'
     });
 
     $routeProvider.when('/reportes/ticketsFE',{
             templateUrl   : 'vistas/ticketFE.html',
-            controller    : 'ticketFECtrl'   
+            controller    : 'ticketFECtrl'
     });
 
     $routeProvider.when('/generaticket',{
@@ -393,10 +398,10 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     var folio = $route.current.params.folio,
                         etapa = $route.current.params.etapa,
                         entrega = $route.current.params.entrega;
-                   
+
                     return find.muestrahistorico(folio,etapa,entrega);
                 }
-            }        
+            }
     });
 
     $routeProvider.when('/infopase',{
@@ -417,7 +422,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     loading.cargando('Cargando Entregas');
                     return find.listadoentrega($rootScope.id);
                 }
-            }     
+            }
     });
 
     $routeProvider.when('/listadoEntregasAreas/:area',{
@@ -428,7 +433,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     loading.cargando('Cargando Entregas');
                     return find.listadoentrega($rootScope.userM);
                 }
-            }     
+            }
     });
 
     $routeProvider.when('/listadoRecepcion/:area',{
@@ -439,7 +444,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     loading.cargando('Cargando Entregas');
                     return find.listadorecepcion($rootScope.id);
                 }
-            }     
+            }
     });
 
     $routeProvider.when('/listadoRecepcionarea/:area',{
@@ -450,23 +455,23 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     loading.cargando('Cargando Entregas');
                     return find.listadorecepcion($rootScope.userM);
                 }
-            }     
+            }
     });
 
     $routeProvider.when('/login',{
             templateUrl   : 'vistas/login.html',
-            controller    : 'loginCtrl'       
+            controller    : 'loginCtrl'
     });
 
 
     $routeProvider.when('/logout',{
             templateUrl   : 'vistas/adios.html',
-            controller    : 'logoutCtrl'       
+            controller    : 'logoutCtrl'
     });
 
     $routeProvider.when('/mapa',{
             templateUrl   : 'vistas/mapa.html',
-            controller    : 'mapaCtrl'       
+            controller    : 'mapaCtrl'
     });
 
     $routeProvider.when('/mesacontrol',{
@@ -477,12 +482,12 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     loading.cargando('Cargando Informacón');
                     return carga.flujo($rootScope.id);
                 }
-            }  
+            }
     });
 
     $routeProvider.when('/pagosrechazos',{
             templateUrl   : 'vistas/menuRechazo.html',
-            controller    : 'rechazosFolioCtrl'       
+            controller    : 'rechazosFolioCtrl'
     });
 
     $routeProvider.when('/nopagar',{
@@ -493,7 +498,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     loading.cargando('Cargando Informacón');
                     return find.listadogeneralnpc($rootScope.id);
                 }
-            }          
+            }
     });
 
     $routeProvider.when('/pagos',{
@@ -513,19 +518,19 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     info  = $http.get(api+'flujo/consulta/'+ $rootScope.id);
 
                     $q.all([info]).then(function (data){
-                        
+
                         var respuesta = {
                             activos:pagos,
                             rechazos:data[0].data.rechazos,
                             recepcion:data[0].data.xrecibir
                         }
                         promesa.resolve(respuesta);
-                        
+
                     });
 
                     return promesa.promise;
                 }
-            }        
+            }
     });
 
     $routeProvider.when('/rechazados',{
@@ -540,7 +545,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     loading.cargando('Cargando rechazos');
                     return find.listadorechazos($rootScope.id);
                 }
-            }    
+            }
     });
 
     $routeProvider.when('/Rechazosarea/:area',{
@@ -551,7 +556,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                     loading.cargando('Cargando rechazos');
                     return find.listadorechazos($rootScope.userM);
                 }
-            }    
+            }
     });
 
     $routeProvider.when('/Recepcion',{
@@ -592,7 +597,7 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
                 }
             }
     });
-    
+
     $routeProvider.when('/seguimiento',{
             templateUrl   : 'vistas/seguimiento.html',
             controller    : 'seguimientoCtrl',
