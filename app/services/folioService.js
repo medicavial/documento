@@ -1064,4 +1064,16 @@ app.factory("OPFactura", function($q,$http,find,api){
 
 });
 
+app.factory("listadoManual", function($q,$http,find,api){
+
+    return{
+
+        listado:function(datos){
+            return $http.post(api + 'listadoManual/listadoManual', datos);
+        }
+
+    }
+
+});
+
 

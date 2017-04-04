@@ -397,11 +397,13 @@ $scope.subeXMLInd = function($files){
 
                             // var archivo = $scope.datos.leexml;
                             // $scope.elimina_ahora(archivo);
+                            $scope.eliminaxml();
 
                         }
                     }else{
 
                       swal("Upss", "El proveedor no se encuentra en el sistema, Solicitalo al area de Sistemas", "error");
+                      $scope.eliminaxml();
 
                     }
 
