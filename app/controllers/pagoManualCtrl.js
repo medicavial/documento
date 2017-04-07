@@ -11,6 +11,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
         $scope.Pagos = [];
         // $scope.PagosM = [];
         $scope.Proveedores();
+        $scope.eliminaxml();
 
 
         $scope.PagoM = {
