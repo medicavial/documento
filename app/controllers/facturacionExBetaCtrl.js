@@ -109,6 +109,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                     { field:'Exp_siniestro', displayName:'Siniestro', width: 120, pinned:false },
                     { field:'Exp_reporte', displayName:'Reporte', width: 120, pinned:false },
                     { field:'RIE_nombre', displayName:'Riesgo', width: 120, pinned:false },
+                    { field:'Pro_nombre', displayName:'Producto', width: 120, pinned:false },
                     { field:'Triage_nombre', displayName:'Triage', width: 120, pinned:false },
                     { field:'FExpedicion', displayName:'Fecha Expedición', width: 120, pinned:false },
                     { field:'EXP_costoEmpresa', displayName:'Costo', width: 120, pinned:false },
