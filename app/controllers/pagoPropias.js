@@ -44,9 +44,9 @@ function pagoPropiasCtrl($scope, $rootScope, loading,$filter,$location,$http,che
         columnDefs: [
                     { field:'Cliente',displayName:'Proveedor', width: 120, pinned: true},
                     { field:'Folio', displayName:'Folio' , width: 120 , pinned: true, cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
-                    { field:'Lesionado', width: 120, pinned: true },
+                    { field:'Lesionado', width: 330, pinned: true },
                     { field:'FAtencion', width: 80 , pinned: true},
-                    { field:'HAtencion', width: 330, pinned: true },
+                    { field:'HAtencion', width: 150, pinned: true },
                     { field:'FRecepcion', width: 120 },
                     { field:'FCaptura', width: 120 },
                     { field:'MedicoTrat', width: 120 },
@@ -85,7 +85,6 @@ function pagoPropiasCtrl($scope, $rootScope, loading,$filter,$location,$http,che
 
             $scope.listado = data;
             loading.despedida();
-
         });
 
     }

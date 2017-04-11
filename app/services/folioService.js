@@ -1008,6 +1008,9 @@ app.factory("PagoManual", function($q,$http,find,api){
         },
         proveedores:function(){
             return $http.post(api + 'PagoManual/proveedor');
+        },
+        validaProveedor:function(proveedor){
+            return $http.post(api + 'PagoManual/validaProveedor/'+proveedor);
         }
     }
 
