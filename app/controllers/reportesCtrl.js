@@ -300,9 +300,6 @@ function listadoPagosCtrl($scope, $rootScope, find , loading){
     }
 
     $scope.buscaPagos = function(){
-
-
-        if ($scope.datos.unidad) {
             loading.cargando('Buscando Factura(s)');
 						console.log($scope.datos);
             find.listadoPagos($scope.datos).success(function (data){
@@ -310,10 +307,6 @@ function listadoPagosCtrl($scope, $rootScope, find , loading){
                 $scope.listado = data;
                 loading.despedida();
             });
-
-        }else{
-            alert('Debes Seleccionar Unidad');
-        }
     }
 
     $scope.selectos = [];
@@ -349,7 +342,8 @@ function listadoPagosCtrl($scope, $rootScope, find , loading){
 								{ field:'EXP_pagadoFactET1', displayName:'Pagado Fac', width: 200 },
 								{ field:'EXP_pagadofechaET1', displayName:'Pagado Fecha', width: 200 },
 								{ field:'EXP_PagadoRelacionET1', displayName:'Pagado Relación', width: 130 },
-								{ field:'EXP_PagadoFechaRelacionET1', displayName:'Pagado Fecha Relación', width: 130, visible:true }
+								{ field:'EXP_PagadoFechaRelacionET1', displayName:'Pagado Fecha Relación', width: 130, visible:true },
+								{ field:'Transf', displayName:'Transferencia', width: 130, visible:true }
         ],
         showFooter: true,
         showFilter:true

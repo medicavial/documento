@@ -26,8 +26,8 @@ var app = angular.module('app', [
 // app.constant('xml','http://localhost/apimv/public/FacturasPagos/')
 // app.constant('xmlFE','http://localhost/apimv/public/FacturasPagos/xmltemporal/')
 
-// ip producciongulp
-// 
+
+//ip produccion
 app.constant('api','http://172.17.10.15/apimv/public/api/')
 app.constant('publicfiles','http://172.17.10.15/apimv/public/exports/');
 app.constant('xml','http://172.17.10.15/apimv/public/FacturasPagos/')
