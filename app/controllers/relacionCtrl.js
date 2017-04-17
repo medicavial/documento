@@ -224,6 +224,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                 
                 $scope.listado = data;
                 $scope.datos.claveunidad = data[0].claveunidad;
+                $scope.datos.claveproveedor = data[0].claveproveedor;
                 $scope.datos.rfc = data[0].rfc;
                 $scope.cantidad = data.length -1;
                 $scope.activaboton = true;
@@ -304,7 +305,8 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         filterOptions: $scope.filterOptions,
         enableCellEdit: true,
         columnDefs: [
-                    { field:'Unidad',displayName:'Proveedor', width: 120, pinned: true},
+                    { field:'Unidad',displayName:'Unidad', width: 350, pinned: true},
+                    { field:'Proveedor',displayName:'Proveedor', width: 350, pinned: true},
                     { field:'Folio', displayName:'Folio' , width: 120 , pinned: true, cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
                     { field:'Etapa', width: 120, pinned: true },
                     { field:'Entrega', width: 80 , pinned: true},
@@ -515,6 +517,8 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
     $scope.relacionaFolios = function(success){
 
+        console.log($scope.selectedRows);
+
         $scope.relacionesFol= [];
         for (var i = 0; i < $scope.selectedRows.length; i++){
 
@@ -534,89 +538,76 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
             $scope.finrelacion = true;
             $scope.tituloFinRelacion = "Relación de Folios";
             
-            console.log($scope.relacionesFol);
-
             $scope.detalles = $scope.relacionesFol;
-            $scope.referencia = $scope.relacionesFol[0].referencia;
+            if ($scope.relacionesFol[0].referencia == null) {
+                
+                $scope.referencia = $scope.relacionesFol[0].ref_proveedor;
+                console.log($scope.relacionesFol[0].ref_proveedor);
+
+            }else{
+
+                $scope.referencia = $scope.relacionesFol[0].referencia;
+                console.log($scope.relacionesFol[0].referencia);
+
+            }
+            console.log($scope.referencia);
 
             var suma = 0;
             var suma1 = 0;
             var suma2 = 0;
             var suma3 = 0;
             var suma4 = 0;
+            var suma5 = 0;
             for (var i = 0; i < $scope.detalles.length; i++){
 
+
                 if ($scope.detalles[i].total != ''){
-                    console.log($scope.detalles[i].total);
+
                     var valor2 = $scope.detalles[i].total;
                     var numero2 = valor2.replace(",",'');
                     suma2 += parseFloat(numero2);
                     var sumas2 = suma2.toFixed(2);
-                    $scope.totalimporte= sumas2;
+
+                    $scope.totalimporte = sumas2;
+
                 }
 
-                if ($scope.detalles[i].subtotal!= ''){
+                if ($scope.detalles[i].subtotal != ''){
+
                     var valor3 = $scope.detalles[i].subtotal;
                     var numero3 = valor3.replace(",",'');
                     suma3 += parseFloat(numero3);
                     var sumas3 = suma3.toFixed(2);
-                    $scope.totalsubtotal= sumas3;
+
+                    $scope.totalsubtotal = sumas3;
+
                 }
 
-                if ($scope.detalles[i].tasa!= ''){
+                if ($scope.detalles[i].tasa != ''){
+
                     var valor4 = $scope.detalles[i].tasa;
                     var numero4 = valor4.replace(",",'');
                     suma4 += parseFloat(numero4);
                     var sumas4 = suma4.toFixed(2);
-                    $scope.totaltasa= sumas4;
+
+                    $scope.totaltasa = sumas4;
+
                 }
 
-                if ($scope.detalles[i].Reserva != ''){
-                    var valor = $scope.detalles[i].Reserva;
-                    var numero = valor.replace(",",'');
-                    suma += parseFloat(numero);
-                    var sumas = suma.toFixed(2);
-                    $scope.resultado= sumas;
-                    $scope.detalles[i].btn_edit = true;
-                }
+                if ($scope.detalles[i].retencion != ''){
 
-                if ($scope.detalles[i].Tabulador != ''){
-                    var valor1 = $scope.detalles[i].Tabulador;
-                    var numero1 = valor1.replace(",",'');
-                    suma1 += parseFloat(numero1);
-                    var sumas1 = suma1.toFixed(2);
-                    $scope.totales = sumas1;
-                }
+                    var valor5 = $scope.detalles[i].retencion;
+                    var numero5 = valor5.replace(",",'');
+                    suma5 += parseFloat(numero5);
+                    var sumas5 = suma5.toFixed(2);
 
+                    $scope.totalretencion = sumas5;
+
+                }
 
             }
 
 
-            // console.log($scope.detalles[1].tasa);
-
-        //   swal({   
-        //       title: "",   
-        //       text:  data[0].ref + "_" + "" + "Ingresa N° Relación", 
-        //       type: "input",
-        //       imageUrl: "images/relacion.png",
-        //       closeOnConfirm: false,     
-        //       animation: "slide-from-top",  
-        //       inputPlaceholder: "N° Relación" },
-
-        //       function(inputValue){   
-        //         if (inputValue === false) return false;      
-        //         if (inputValue === ""){ 
-
-        //         inputValue = 0;    
-        //           // swal.showInputError("Ocurrio un Error!!");     
-        //           // return false  
-        //         } 
-        //         $scope.numrelacion = data[0].ref + "_" +inputValue;     
-        //         swal("OK!", "El N° Relación Factura es: " + data[0].ref + "_" + inputValue, "success"); 
-        //         $('#ventanarelacion').modal('show');
-
-
-        // });
     }else{
 
         swal("Oops...", "No seleccionaste Folios", "error")
@@ -647,139 +638,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
       }
     }
 
-//     $scope.siguiente = function(){
-
-//         $scope.relaciones = {
-
-//             seleccionados : $scope.detalles,
-//             numrelacion : $scope.referencia +'_'+$scope.numreferencia,
-//             tipofactura : $scope.tipofactura,
-//             observacion : $scope.observaciones
-//         }
-//         var suma2 = 0
-
-//         for (var i = 0; i < $scope.detalles.length; i++){
-
-//             if ($scope.detalles[i].tipotramite == undefined){ 
-//                 console.log($scope.detalles[i].tipotramite);
-
-//                 $scope.detalles[i].tipotramite = 0;
-//             }
-
-//             if ($scope.detalles[i].concepto == undefined){ 
-
-//                 $scope.detalles[i].concepto = 0;
-//             }
-
-//             if ($scope.detalles[i].foliofiscal != '') {
-
-//                 $scope.factura.importe = '';
-//                 $scope.factura.total = $scope.detalles[i].total;
-//                 $scope.factura.foliofiscal = $scope.detalles[i].foliofiscal;
-//                 $scope.factura.fechaemision = '';
-//                 $scope.factura.emisor = $scope.detalles[i].nombreEmisor;
-//                 $scope.factura.rfcemisor = $scope.detalles[i].rfcemisor;
-//                 $scope.factura.descuento = '';
-
-
-//             };
-
-//                 if ($scope.detalles[0].total != '') {
-//                     var valor2 = $scope.detalles[i].total;
-//                     var numero2 = valor2.replace(",",'');
-//                     suma2 += parseFloat(numero2);
-//                     var sumas2 = suma2.toFixed(2);
-//                     $scope.totalimporte= sumas2;
-//                     console.log(valor2);
-//                 }
-
-//         }
-
-//         webStorage.local.add('relacionesData', JSON.stringify($scope.relaciones));
-
-//             console.log($scope.detalles);
-
-//             if ($scope.detalles.tipotramite == 0 || $scope.detalles.concepto == 0) {
-
-//                 swal("Upss","Revisa que todos los campos esten llenos","error");
-
-//             }else{
-
-//                 console.log($scope.relaciones.tipofactura);
-
-//                 if($scope.relaciones.tipofactura == 1){
-
-//                  // $scope.subefacturaglobal = true;
-//                  swal({   
-//                     title: "¿Sera Factura Global?",   
-//                     type: "warning",   
-//                     showCancelButton: true,   
-//                     confirmButtonColor: "#DD6B55",   
-//                     confirmButtonText: "Si",   
-//                     cancelButtonText: "No, Cancelar",   
-//                     closeOnConfirm: false,   
-//                     closeOnCancel: false 
-//                 }, 
-//                 function(isConfirm){  
-
-//                     if (isConfirm) {     
-//                         swal("Factura Global", "Folios Relacionado" + $scope.numreferencia, "success");   
-//                         $scope.editafactura = true;
-//                         $scope.subefactura = false;
-//                         console.log($scope.detalles[0]);
-//                         if($scope.detalles[0].foliofiscal == null){
-
-//                             $scope.global = true;
-
-//                         }else{
-
-//                             $scope.global = false;
-
-//                         }
-//                         $scope.subefacturaglo = true;
-//                         $scope.btnsiguiente = true;
-
-
-//                     } else {    
-
-//                         swal("Cancela", "Relación Cancelada", "error"); 
-//                         $scope.editafactura = false;
-//                         $scope.subefactura = false;  
-//                         $scope.global = false;
-//                     } 
-//                 });
-        
-        
-//                 }else{
-
-//             // $scope.subefacturaglobal = true;
-
-//                  swal({   
-//                     title: "¿Sera Factura Individual?",   
-//                     type: "warning",   
-//                     showCancelButton: true,   
-//                     confirmButtonColor: "#DD6B55",   
-//                     confirmButtonText: "Si",   
-//                     cancelButtonText: "No, Cancelar",   
-//                     closeOnConfirm: false,   
-//                     closeOnCancel: false 
-//                 }, 
-//                 function(isConfirm){   
-//                     if (isConfirm) {     
-//                         swal("Factura Individual", "Folios Relacionado" + $scope.numreferencia, "success");   
-//                         $scope.editafactura = true;
-//                         $scope.subefactura = true;
-//                         $scope.btnsiguiente = true;
-//                     } else {     
-//                         swal("Cancela", "Relación Cancelada", "error"); 
-//                         $scope.editafactura = false; 
-//                         $scope.subefactura = false; 
-//                     } 
-//                 });
-//             }
-//         }
-    
-// }
 
     $scope.relacionaFactura = function(success){
         $scope.divglobal = true;
@@ -1078,27 +936,31 @@ $scope.guardaRelacion = function(success){
         observacion : $scope.observaciones,
         archivos : $scope.archivos,
         usucarpeta: $rootScope.user,
+        proveedor: $scope.datos.claveproveedor,
         unidad: $scope.datos.claveunidad,
         total:  $scope.totalimporte,
         tasa:  $scope.totaltasa,
+        retencion: $scope.totalretencion,
         subtotal:  $scope.totalsubtotal
 
     }
 
     console.log($scope.relaciones);
 
-    $http.post(api+'RelacionPagos/insertaRelacion/'+ $rootScope.id,$scope.relaciones).success(function (data){
-        loading.cargando('Buscando Folios');
-        $scope.factguardada = true;
-        $scope.detalles.btn_edit = true;
-        swal("Tu Relación fue Completada");
-        $location.path('/relacionNP');
+    $scope.verificaReferencia();
 
-    }).error( function (data){
+    // $http.post(api+'RelacionPagos/insertaRelacion/'+ $rootScope.id,$scope.relaciones).success(function (data){
+    //     loading.cargando('Buscando Folios');
+    //     $scope.factguardada = true;
+    //     $scope.detalles.btn_edit = true;
+    //     swal("Tu Relación fue Completada");
+    //     $location.path('/relacionNP');
 
-        alert('Error, Intentalo de Nuevo');
+    // }).error( function (data){
 
-    }); 
+    //     alert('Error, Intentalo de Nuevo');
+
+    // }); 
 }
 
 $scope.guardaRelacionGlo = function(success){
