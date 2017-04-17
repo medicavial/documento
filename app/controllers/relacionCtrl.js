@@ -949,18 +949,18 @@ $scope.guardaRelacion = function(success){
 
     $scope.verificaReferencia();
 
-    // $http.post(api+'RelacionPagos/insertaRelacion/'+ $rootScope.id,$scope.relaciones).success(function (data){
-    //     loading.cargando('Buscando Folios');
-    //     $scope.factguardada = true;
-    //     $scope.detalles.btn_edit = true;
-    //     swal("Tu Relación fue Completada");
-    //     $location.path('/relacionNP');
+    $http.post(api+'RelacionPagos/insertaRelacion/'+ $rootScope.id,$scope.relaciones).success(function (data){
+        loading.cargando('Buscando Folios');
+        $scope.factguardada = true;
+        $scope.detalles.btn_edit = true;
+        swal("Tu Relación fue Completada");
+        $location.path('/relacionNP');
 
-    // }).error( function (data){
+    }).error( function (data){
 
-    //     alert('Error, Intentalo de Nuevo');
+        alert('Error, Intentalo de Nuevo');
 
-    // }); 
+    }); 
 }
 
 $scope.guardaRelacionGlo = function(success){
