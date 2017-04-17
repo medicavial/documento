@@ -17,7 +17,8 @@
 		<link rel="stylesheet" href="css/ngProgress.css" />
 		<link rel="stylesheet" href="css/genie.css" />
 		<link rel="stylesheet" href="css/app.css">
-	    <link rel="stylesheet" href="css/sweetalert.css">
+	  <link rel="stylesheet" href="css/sweetalert.css">
+		<link rel="stylesheet" href="lib/ng-grid.min.css">
 
 
 		<!-- <link rel="stylesheet" href="css/radio.css" /> -->
@@ -31,7 +32,7 @@
 		<![endif]-->
 	</head>
 	<body class="ng-cloak">
-		
+
 		<!--panel de usuario -->
 		<div ng-if="username != '' " class="animate-show">
 			<div id="panelusuario">
@@ -50,7 +51,7 @@
 			<div class="ng-view view-animate" ng-hide="pagina"></div>
 			<br>
 		</div>
-		
+
 		<buscador></buscador>
 
 		<!--imagen para cuando este cargando folio o contenido que el usuario busca-->
@@ -70,7 +71,7 @@
 			<button type="button" class="close" ng-click="error=false">&times;</button>
 			<h3 class="animate-show">{{label}}</h3>
 		</div>
-		
+
 
 		<!--Ventana para mostrar al usuario sus notificaciones pendientes solo funciona cuando inicia sesion-->
 		<div class="modal fade" id="myModal5" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -90,7 +91,7 @@
 		        		</div> -->
 
 		        		<div class="list-group padding">
-		        			
+
 		        			<p>Si ves un folio como este en tus folios activos o flujo de pagos: </p>
 		        			<p><div class="text-danger"><i class="glyphicon glyphicon-warning-sign"></i> ROMV000000</div></p>
 		        			<p>Significa que el folio tiene una penalización</p>
@@ -103,7 +104,7 @@
 		    </div>
 		  </div>
 		</div>
-		
+
 		<!-- modal para captura de documentos originales -->
 		<div class="modal fade" id="myModal10" tabindex="-1" role="dialog" aria-labelledby="Captura de pases originales" aria-hidden="true">
 			<captura-Original></captura-Original>
@@ -144,14 +145,14 @@
 		    </div><!-- /.modal-dialog -->
 		</div><!-- /.modal -->
 
-		
+
 		<!-- build:js js/vendor.min.js -->
 		<script src="lib/jquery.min.js"></script>
 		<script src="lib/angular.min.js" ></script>
 		<script src="lib/bootstrap.min.js"></script>
-		<script src="lib/jquery.dataTables.min.js"></script>
+		<script src="lib/jquery.dataTables.min.js"></script>	
 		<script src="js/genie.min.js"></script>
-		<script src="js/prefixfree.min.js"></script> 
+		<script src="js/prefixfree.min.js"></script>
 		<script src="js/jquery.ui.datepicker-es.js"></script>
 		<script src="js/jquery-ui-1.10.4.custom.min.js"></script>
 		<script src="js/date.format.js"></script>
@@ -160,13 +161,13 @@
 		<script src="js/amcharts.js"></script>
 		<script src="js/serial.js"></script>
 		<!-- endbuild -->
-		<!-- build:js js/modules.min.js --> 
+		<!-- build:js js/modules.min.js -->
 		<script src="modules/ng-file-upload-shim.js" ></script>
 		<script src="modules/ng-file-upload.js" ></script>
 		<script src="modules/angular-file-upload-all.min.js"></script>
-		<script src="modules/angular-file-upload.min.js"></script>  
+		<script src="modules/angular-file-upload.min.js"></script>
 		<script src="modules/FileSaver.min.js"></script>
-		<script src="modules/json-export-excel.min.js"></script> 
+		<script src="modules/json-export-excel.min.js"></script>
 		<script src="modules/angular-route.min.js" ></script>
 		<script src="modules/angular-messages.min.js" ></script>
 		<script src="modules/angular-cookies.min.js" ></script>
@@ -177,7 +178,7 @@
 		<script src="modules/ngProgress.min.js"></script>
 		<script src="modules/angular-webstorage.min.js"></script>
 		<script src="modules/uxGenie.min.js" ></script>
-		<script src="lib/angular-filter.min.js"></script> 
+		<script src="lib/angular-filter.min.js"></script>
 		<script src="modules/xml2json.js" ></script>
 		<script src="modules/sweetalert.min.js" ></script>
         <script src="js/angular-datatables.min.js"></script>
@@ -188,9 +189,10 @@
 	    <script src="js/dataTables.tableTools.js"></script>
 	    <script src="js/dataTables.responsive.min.js"></script>
 	    <script src="js/sweet-alert.min_.js"></script>
+
 		<!-- endbuild -->
         <!-- archivos de la aplicacion -->
-        <!-- build:js js/app.min.js --> 
+        <!-- build:js js/app.min.js -->
 		<script src="app/app.js" ></script>
 		<script src="app/config.js" ></script>
 		<script src="app/run.js" ></script>
@@ -254,4 +256,4 @@
 
 		<!-- endbuild -->
 	</body>
-</html>	
+</html>
