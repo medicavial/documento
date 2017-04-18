@@ -947,7 +947,7 @@ $scope.guardaRelacion = function(success){
 
     console.log($scope.relaciones);
 
-    $scope.verificaReferencia();
+    // $scope.verificaReferencia();
 
     $http.post(api+'RelacionPagos/insertaRelacion/'+ $rootScope.id,$scope.relaciones).success(function (data){
         loading.cargando('Buscando Folios');
