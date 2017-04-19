@@ -100,26 +100,26 @@
 	    <div class="row">
 	    	<div class="col-md-2">
 					<label>Subtotal</label>
-					<input type="text" ng-model="PagoI.SubtotalF" class="form-control">
+					<input type="text" ng-model="PagoI.SubtotalF" class="form-control" ng-blur="calculaTotalInd()">
 			</div>
 
 		    <div class="col-md-2">
 					<label>IVA</label>
-					<input type="text" ng-model="PagoI.IVAF" class="form-control">
+					<input type="text" ng-model="PagoI.IVAF" class="form-control" ng-blur="calculaTotalInd()">
 			</div>
 
 		    <div class="col-md-2">
 					<label>Retención</label>
-					<input type="text" ng-model="PagoI.retencion" class="form-control">
+					<input type="text" ng-model="PagoI.retencion" class="form-control" ng-blur="calculaTotalInd()">
 			</div>
 
 		    <div class="col-md-2">
 					<label>Total</label>
-					<input type="text" ng-model="PagoI.TotalF" class="form-control">
+					<input type="text" ng-model="PagoI.TotalF" class="form-control" disabled>
 			</div>
 
 			<div class="col-md-2">
-					<label><H2><strong>Total:{{PagoI.TotalF}}</strong></H2></label>
+					<label><H2><strong>Total:{{PagoI.TotalF | currency}}</strong></H2></label>
 			</div>
 	    </div>
 	    <br><br>
@@ -247,22 +247,22 @@
 	    <div class="row">
 	    	<div class="col-md-2">
 					<label>Subtotal</label>
-					<input type="text" ng-model="PagoM.SubtotalF" class="form-control">
+					<input type="text" ng-model="PagoM.SubtotalF" class="form-control" ng-blur="calculaTotal()">
 			</div>
 
 		    <div class="col-md-2">
 					<label>IVA</label>
-					<input type="text" ng-model="PagoM.IVAF" class="form-control">
+					<input type="text" ng-model="PagoM.IVAF" class="form-control" ng-blur="calculaTotal()">
 			</div>
 
 			<div class="col-md-2">
 					<label>Retención</label>
-					<input type="text" ng-model="PagoM.retencion" class="form-control">
+					<input type="text" ng-model="PagoM.retencion" class="form-control" ng-blur="calculaTotal()">
 			</div>
 
 		    <div class="col-md-2">
 					<label>Total</label>
-					<input type="text" ng-model="PagoM.TotalF" class="form-control">
+					<input type="text" ng-model="PagoM.TotalF" class="form-control" disabled>
 			</div>
 	    </div>
 
@@ -274,6 +274,15 @@
 				
 			</div>
 		</div><br><br>
+        <div class="row">
+        	<div class="col-md-2">
+
+	        	<button type="button" ng-hide="edicion" ng-click="limpiaTabla()"  class="btn btn-danger btn-lg btn-block glyphicon glyphicon-trash"> Limpiar 
+	        	</button>
+
+            </div>
+
+        </div>
 
 	    <div class="col-md-12">
 
