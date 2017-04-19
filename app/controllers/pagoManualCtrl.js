@@ -177,8 +177,22 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                             $scope.PagoM.serie = courses.Comprobante._serie;
                             $scope.PagoM.foliointerno = courses.Comprobante._folio;
-                            $scope.PagoM.subtotal = courses.Comprobante._subTotal;
-                            $scope.PagoM.total = courses.Comprobante._total;
+
+                            /////  particionar 2 decimales de xml 
+                            // $scope.PagoM.subtotal = courses.Comprobante._subTotal;
+
+                            var subglobal = courses.Comprobante._subTotal;
+                            var subglobal1 = parseFloat(subglobal);
+                            var subglobal2 = subglobal1.toFixed(2);
+                            $scope.PagoM.subtotal = subglobal2;
+
+                            var totalglobal = courses.Comprobante._total;
+                            var totalglobal1 = parseFloat(totalglobal);
+                            var totalglobal2 = totalglobal1.toFixed(2);
+                            $scope.PagoM.total = totalglobal2;
+
+
+                            // $scope.PagoM.total = courses.Comprobante._total;
                             $scope.PagoM.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
                             $scope.PagoM.fechaemision = courses.Comprobante._fecha;
                             $scope.PagoM.descuento = courses.Comprobante._descuento;
@@ -271,8 +285,17 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                             $scope.PagoM.serie = courses.Comprobante._serie;
                             $scope.PagoM.foliointerno = courses.Comprobante._folio;
-                            $scope.PagoM.subtotal = courses.Comprobante._subTotal;
-                            $scope.PagoM.total = courses.Comprobante._total;
+
+                            var subglobal = courses.Comprobante._subTotal;
+                            var subglobal1 = parseFloat(subglobal);
+                            var subglobal2 = subglobal1.toFixed(2);
+                            $scope.PagoM.subtotal = subglobal2;
+
+                            var totalglobal = courses.Comprobante._total;
+                            var totalglobal1 = parseFloat(totalglobal);
+                            var totalglobal2 = totalglobal1.toFixed(2);
+                            $scope.PagoM.total = totalglobal2;
+
                             $scope.PagoM.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
                             $scope.PagoM.fechaemision = courses.Comprobante._fecha;
                             $scope.PagoM.descuento = courses.Comprobante._descuento;
@@ -584,8 +607,22 @@ $scope.subeXMLInd = function($files){
 
                             $scope.PagoI.serie = courses.Comprobante._serie;
                             $scope.PagoI.foliointerno = courses.Comprobante._folio;
-                            $scope.PagoI.subtotal = courses.Comprobante._subTotal;
-                            $scope.PagoI.total = courses.Comprobante._total;
+
+                            //////////  limitar el subtotal del xml 
+                            // $scope.PagoI.subtotal = courses.Comprobante._subTotal;
+                            // $scope.PagoI.total = courses.Comprobante._total;
+
+                            var subglobal = courses.Comprobante._subTotal;
+                            var subglobal1 = parseFloat(subglobal);
+                            var subglobal2 = subglobal1.toFixed(2);
+                            $scope.PagoI.subtotal = subglobal2;
+
+                            var totalglobal = courses.Comprobante._total;
+                            var totalglobal1 = parseFloat(totalglobal);
+                            var totalglobal2 = totalglobal1.toFixed(2);
+                            $scope.PagoI.total = totalglobal2;
+
+
                             $scope.PagoI.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
                             $scope.PagoI.fechaemision = courses.Comprobante._fecha;
                             $scope.PagoI.descuento = courses.Comprobante._descuento;
@@ -679,8 +716,22 @@ $scope.subeXMLInd = function($files){
 
                             $scope.PagoI.serie = courses.Comprobante._serie;
                             $scope.PagoI.foliointerno = courses.Comprobante._folio;
-                            $scope.PagoI.subtotal = courses.Comprobante._subTotal;
-                            $scope.PagoI.total = courses.Comprobante._total;
+
+                            // $scope.PagoI.subtotal = courses.Comprobante._subTotal;
+                            // $scope.PagoI.total = courses.Comprobante._total;
+
+                            var subglobal = courses.Comprobante._subTotal;
+                            var subglobal1 = parseFloat(subglobal);
+                            var subglobal2 = subglobal1.toFixed(2);
+                            $scope.PagoI.subtotal = subglobal2;
+
+                            var totalglobal = courses.Comprobante._total;
+                            var totalglobal1 = parseFloat(totalglobal);
+                            var totalglobal2 = totalglobal1.toFixed(2);
+                            $scope.PagoI.total = totalglobal2;
+
+
+
                             $scope.PagoI.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
                             $scope.PagoI.fechaemision = courses.Comprobante._fecha;
                             $scope.PagoI.descuento = courses.Comprobante._descuento;

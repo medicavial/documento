@@ -170,6 +170,7 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
                     { field:'subtotal',displayName:'Subtotal', width: 120 },
                     { field:'total',displayName:'Importe', width: 120 },
                     { field:'unidad',displayName:'Unidad', width: 160 },
+                     { field:'proveedor',displayName:'Proveedor', width: 160 },
                     { field:'fecha',displayName:'Fecha Registro', width: 150 },
 
         ],
