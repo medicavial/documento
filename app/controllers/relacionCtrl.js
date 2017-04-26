@@ -569,41 +569,42 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                     var sumas2 = suma2.toFixed(2);
 
                     $scope.totalimporte = sumas2;
+                    console.log($scope.totalimporte);
 
                 }
 
-                if ($scope.detalles[i].subtotal != ''){
+                // if ($scope.detalles[i].subtotal != ''){
 
-                    var valor3 = $scope.detalles[i].subtotal;
-                    var numero3 = valor3.replace(",",'');
-                    suma3 += parseFloat(numero3);
-                    var sumas3 = suma3.toFixed(2);
+                //     var valor3 = $scope.detalles[i].subtotal;
+                //     var numero3 = valor3.replace(",",'');
+                //     suma3 += parseFloat(numero3);
+                //     var sumas3 = suma3.toFixed(2);
 
-                    $scope.totalsubtotal = sumas3;
+                //     $scope.totalsubtotal = sumas3;
 
-                }
+                // }
 
-                if ($scope.detalles[i].tasa != ''){
+                // if ($scope.detalles[i].tasa != ''){
 
-                    var valor4 = $scope.detalles[i].tasa;
-                    var numero4 = valor4.replace(",",'');
-                    suma4 += parseFloat(numero4);
-                    var sumas4 = suma4.toFixed(2);
+                //     var valor4 = $scope.detalles[i].tasa;
+                //     var numero4 = valor4.replace(",",'');
+                //     suma4 += parseFloat(numero4);
+                //     var sumas4 = suma4.toFixed(2);
 
-                    $scope.totaltasa = sumas4;
+                //     $scope.totaltasa = sumas4;
 
-                }
+                // }
 
-                if ($scope.detalles[i].retencion != ''){
+                // if ($scope.detalles[i].retencion != ''){
 
-                    var valor5 = $scope.detalles[i].retencion;
-                    var numero5 = valor5.replace(",",'');
-                    suma5 += parseFloat(numero5);
-                    var sumas5 = suma5.toFixed(2);
+                //     var valor5 = $scope.detalles[i].retencion;
+                //     var numero5 = valor5.replace(",",'');
+                //     suma5 += parseFloat(numero5);
+                //     var sumas5 = suma5.toFixed(2);
 
-                    $scope.totalretencion = sumas5;
+                //     $scope.totalretencion = sumas5;
 
-                }
+                // }
 
             }
 
