@@ -263,6 +263,9 @@ app.factory("find", function($http,api){
         },
         folioDetalleCancel:function(datos){
             return $http.post(api+'facturacionExpress/folioDetalleCancelacion',datos);
+        },
+        proveedores:function(){
+            return $http.post(api+'consulta/proveedor');
         }
     }
 })

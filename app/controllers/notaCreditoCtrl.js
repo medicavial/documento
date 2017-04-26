@@ -1,11 +1,11 @@
-function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,checkFolios,api, find, $upload, leexml, PagoManual){
+function notaCreditoCtrl($scope, $rootScope, loading,$filter,$location,$http,checkFolios,api, find, $upload, leexml, PagoManual){
 
     loading.despedida();
 
     $scope.inicio = function(){
 
         $rootScope.area = 6;
-        $scope.tituloPM = "Pagos Manuales";
+        $scope.tituloPM = "Notas de Credito";
         $scope.tipoTramite(); 
         $scope.archivos = [];
         $scope.Pagos = [];
@@ -13,8 +13,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
         $scope.Proveedores();
         $scope.eliminaxml();
 
-
-        $scope.PagoM = {
+        $scope.NotaG = {
 
         	unidad: '',
         	folio: '',
@@ -39,12 +38,9 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             SubtotalF: 0.00,
             IVAF: 0.00,
             TotalF: 0.00
-
-
-
         }
 
-        $scope.PagoI = {
+        $scope.NotaI = {
 
             unidad: '',
             folio: '',
@@ -70,8 +66,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             retencion: 0.00,
             SubtotalF: 0.00,
             IVAF: 0.00,
-            TotalF: 0.00,
-            ndc: 0
+            TotalF: 0.00
 
 
         }
@@ -91,17 +86,17 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
     $scope.calculaTotal = function(){
 
-        var m = parseFloat($scope.PagoM.SubtotalF) + parseFloat($scope.PagoM.IVAF) - parseFloat($scope.PagoM.retencion);
+        var m = parseInt($scope.NotaG.SubtotalF) + parseInt($scope.NotaG.IVAF) - parseInt($scope.NotaG.retencion);
         var mm = m.toFixed(2);
-        $scope.PagoM.TotalF = mm;
+        $scope.NotaG.TotalF = mm;
 
     }
 
     $scope.calculaTotalInd = function(){
 
-        var t = parseFloat($scope.PagoI.SubtotalF) + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencion);
+        var t = parseInt($scope.NotaI.SubtotalF) + parseInt($scope.NotaI.IVAF) - parseInt($scope.NotaI.retencion);
         var tt = t.toFixed(2);
-        $scope.PagoI.TotalF = tt;
+        $scope.NotaI.TotalF = tt;
 
     }
 
@@ -143,11 +138,11 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
           $scope.upload = $upload.upload({
                 url: api+'PagoManual/upload/'+$rootScope.user, //upload.php script, node.js route, or servlet url
                 method: 'POST',
-                data: $scope.PagoM,
+                data: $scope.NotaG,
                 file: file // or list of files ($files) for html5 only
         }).success(function (data){
 
-            if ($scope.PagoM.proveedor == '' || $scope.PagoM.proveedor == undefined){
+            if ($scope.NotaG.proveedor == '' || $scope.NotaG.proveedor == undefined){
 
                 leexml.getxmltemporal($rootScope.user,data.archivo).success(function(data){
                 courses  = x2js.xml_str2json(data);
@@ -156,28 +151,28 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                     if (data[0].count != 0){
 
                         swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
-                        $scope.PagoM.importe = '';
-                        $scope.PagoM.total = '';
-                        $scope.PagoM.foliofiscal = '';
-                        $scope.PagoM.fechaemision = '';
-                        $scope.PagoM.descuento = '';
-                        $scope.PagoM.emisor = '';
-                        $scope.PagoM.descuento = '';
-                        $scope.PagoM.serie = '';
-                        $scope.PagoM.elimina = false;
+                        $scope.NotaG.importe = '';
+                        $scope.NotaG.total = '';
+                        $scope.NotaG.foliofiscal = '';
+                        $scope.NotaG.fechaemision = '';
+                        $scope.NotaG.descuento = '';
+                        $scope.NotaG.emisor = '';
+                        $scope.NotaG.descuento = '';
+                        $scope.NotaG.serie = '';
+                        $scope.NotaG.elimina = false;
 
                     }
                 });
-                PagoManual.validaUnidad($scope.PagoM.unidad).success(function (data){ 
+                PagoManual.validaUnidad($scope.NotaG.unidad).success(function (data){ 
                         if (data.length > 0){
 
-                            $scope.PagoM.rfcemisor = data[0].rfc;
-                            $scope.PagoM.unidad = data[0].unidad;
+                            $scope.NotaG.rfcemisor = data[0].rfc;
+                            $scope.NotaG.unidad = data[0].unidad;
 
-                        if ($scope.PagoM.rfcemisor == courses.Comprobante.Emisor._rfc){
+                        if ($scope.NotaG.rfcemisor == courses.Comprobante.Emisor._rfc){
 
-                            $scope.PagoM.serie = courses.Comprobante._serie;
-                            $scope.PagoM.foliointerno = courses.Comprobante._folio;
+                            $scope.NotaG.serie = courses.Comprobante._serie;
+                            $scope.NotaG.foliointerno = courses.Comprobante._folio;
 
                             /////  particionar 2 decimales de xml 
                             // $scope.PagoM.subtotal = courses.Comprobante._subTotal;
@@ -185,52 +180,52 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                             var subglobal = courses.Comprobante._subTotal;
                             var subglobal1 = parseFloat(subglobal);
                             var subglobal2 = subglobal1.toFixed(2);
-                            $scope.PagoM.subtotal = subglobal2;
+                            $scope.NotaG.subtotal = subglobal2;
 
                             var totalglobal = courses.Comprobante._total;
                             var totalglobal1 = parseFloat(totalglobal);
                             var totalglobal2 = totalglobal1.toFixed(2);
-                            $scope.PagoM.total = totalglobal2;
+                            $scope.NotaG.total = totalglobal2;
 
 
                             // $scope.PagoM.total = courses.Comprobante._total;
-                            $scope.PagoM.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
-                            $scope.PagoM.fechaemision = courses.Comprobante._fecha;
-                            $scope.PagoM.descuento = courses.Comprobante._descuento;
-                            $scope.PagoM.emisor = courses.Comprobante.Emisor._nombre;
-                            $scope.PagoM.rfcemisor = courses.Comprobante.Emisor._rfc;
+                            $scope.NotaG.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
+                            $scope.NotaG.fechaemision = courses.Comprobante._fecha;
+                            $scope.NotaG.descuento = courses.Comprobante._descuento;
+                            $scope.NotaG.emisor = courses.Comprobante.Emisor._nombre;
+                            $scope.NotaG.rfcemisor = courses.Comprobante.Emisor._rfc;
 
                             if(courses.Comprobante.Impuestos.Traslados == undefined){
 
-                                $scope.PagoM.iva = '';
-                                $scope.PagoM.importeiva = '';
+                                $scope.NotaG.iva = '';
+                                $scope.NotaG.importeiva = '';
 
                             }else{
 
-                                $scope.PagoM.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                $scope.PagoM.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+                                $scope.NotaG.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                $scope.NotaG.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
 
                             }
 
                             if (courses.Comprobante.Impuestos.Retenciones == undefined) {
 
-                                $scope.PagoM.isr = '';
-                                $scope.PagoM.importeisr = '';
+                                $scope.NotaG.isr = '';
+                                $scope.NotaG.importeisr = '';
 
 
                             }else{
 
 
-                                $scope.PagoM.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
-                                $scope.PagoM.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+                                $scope.NotaG.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
+                                $scope.NotaG.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
 
                             }
-                            $scope.PagoM.usuarioentrega = Number($rootScope.id);
-                            // $scope.PagoM.areaentrega =Number(areaEntrega);
-                            // $scope.PagoM.usuariorecibe =Number(usuarioRecibe);
-                            // $scope.PagoM.arearecibe =Number(areaRecibe);
-                            // $scope.PagoM.folio = data.Folios;
-                            $scope.PagoM.tipoorden = 4;
+                            $scope.NotaG.usuarioentrega = Number($rootScope.id);
+                            // $scope.NotaG.areaentrega =Number(areaEntrega);
+                            // $scope.NotaG.usuariorecibe =Number(usuarioRecibe);
+                            // $scope.NotaG.arearecibe =Number(areaRecibe);
+                            // $scope.NotaG.folio = data.Folios;
+                            $scope.NotaG.tipoorden = 4;
                             $scope.btndelete = true;
                           
                         }else{
@@ -263,76 +258,76 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                         swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
                         $scope.eliminaxml();
-                        $scope.PagoM.importe = '';
-                        $scope.PagoM.total = '';
-                        $scope.PagoM.foliofiscal = '';
-                        $scope.PagoM.fechaemision = '';
-                        $scope.PagoM.descuento = '';
-                        $scope.PagoM.emisor = '';
-                        $scope.PagoM.descuento = '';
-                        $scope.PagoM.serie = '';
-                        $scope.PagoM.rfcemisor = '';
-                        $scope.PagoM.elimina = false;
+                        $scope.NotaG.importe = '';
+                        $scope.NotaG.total = '';
+                        $scope.NotaG.foliofiscal = '';
+                        $scope.NotaG.fechaemision = '';
+                        $scope.NotaG.descuento = '';
+                        $scope.NotaG.emisor = '';
+                        $scope.NotaG.descuento = '';
+                        $scope.NotaG.serie = '';
+                        $scope.NotaG.rfcemisor = '';
+                        $scope.NotaG.elimina = false;
 
                     }
                 });
-                PagoManual.validaProveedor($scope.PagoM.proveedor).success(function (data){ 
+                PagoManual.validaProveedor($scope.NotaG.proveedor).success(function (data){ 
                         if (data.length > 0){
 
-                            $scope.PagoM.rfcemisor = data[0].rfc;
-                            $scope.PagoM.unidad = data[0].unidad;
+                            $scope.NotaG.rfcemisor = data[0].rfc;
+                            $scope.NotaG.unidad = data[0].unidad;
 
-                        if ($scope.PagoM.rfcemisor == courses.Comprobante.Emisor._rfc){
+                        if ($scope.NotaG.rfcemisor == courses.Comprobante.Emisor._rfc){
 
-                            $scope.PagoM.serie = courses.Comprobante._serie;
-                            $scope.PagoM.foliointerno = courses.Comprobante._folio;
+                            $scope.NotaG.serie = courses.Comprobante._serie;
+                            $scope.NotaG.foliointerno = courses.Comprobante._folio;
 
                             var subglobal = courses.Comprobante._subTotal;
                             var subglobal1 = parseFloat(subglobal);
                             var subglobal2 = subglobal1.toFixed(2);
-                            $scope.PagoM.subtotal = subglobal2;
+                            $scope.NotaG.subtotal = subglobal2;
 
                             var totalglobal = courses.Comprobante._total;
                             var totalglobal1 = parseFloat(totalglobal);
                             var totalglobal2 = totalglobal1.toFixed(2);
-                            $scope.PagoM.total = totalglobal2;
+                            $scope.NotaG.total = totalglobal2;
 
-                            $scope.PagoM.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
-                            $scope.PagoM.fechaemision = courses.Comprobante._fecha;
-                            $scope.PagoM.descuento = courses.Comprobante._descuento;
-                            $scope.PagoM.emisor = courses.Comprobante.Emisor._nombre;
-                            $scope.PagoM.rfcemisor = courses.Comprobante.Emisor._rfc;
+                            $scope.NotaG.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
+                            $scope.NotaG.fechaemision = courses.Comprobante._fecha;
+                            $scope.NotaG.descuento = courses.Comprobante._descuento;
+                            $scope.NotaG.emisor = courses.Comprobante.Emisor._nombre;
+                            $scope.NotaG.rfcemisor = courses.Comprobante.Emisor._rfc;
                             if(courses.Comprobante.Impuestos.Traslados == undefined){
 
-                                $scope.PagoM.iva = '';
-                                $scope.PagoM.importeiva = '';
+                                $scope.NotaG.iva = '';
+                                $scope.NotaG.importeiva = '';
 
                             }else{
 
-                                $scope.PagoM.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                $scope.PagoM.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+                                $scope.NotaG.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                $scope.NotaG.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
 
                             }
 
                             if (courses.Comprobante.Impuestos.Retenciones == undefined) {
 
-                                $scope.PagoM.isr = '';
-                                $scope.PagoM.importeisr = '';
+                                $scope.NotaG.isr = '';
+                                $scope.NotaG.importeisr = '';
 
 
                             }else{
 
 
-                                $scope.PagoM.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
-                                $scope.PagoM.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+                                $scope.NotaG.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
+                                $scope.NotaG.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
 
                             }
-                            $scope.PagoM.usuarioentrega = Number($rootScope.id);
-                            // $scope.PagoM.areaentrega =Number(areaEntrega);
-                            // $scope.PagoM.usuariorecibe =Number(usuarioRecibe);
-                            // $scope.PagoM.arearecibe =Number(areaRecibe);
-                            // $scope.PagoM.folio = data.Folios;
-                            $scope.PagoM.tipoorden = 4;
+                            $scope.NotaG.usuarioentrega = Number($rootScope.id);
+                            // $scope.NotaG.areaentrega =Number(areaEntrega);
+                            // $scope.NotaG.usuariorecibe =Number(usuarioRecibe);
+                            // $scope.NotaG.arearecibe =Number(areaRecibe);
+                            // $scope.NotaG.folio = data.Folios;
+                            $scope.NotaG.tipoorden = 4;
                             $scope.btndelete = true;
                           
                         }else{
@@ -382,43 +377,25 @@ $scope.enviaOrdenPago = function(){
         seleccionados : $scope.Pagos,
         archivos : $scope.archivos,
         usucarpeta: $rootScope.user,
-        factura: $scope.PagoM,
+        factura: $scope.NotaG,
         subtotaltotal: $scope.subtotalPago,
-        importeiva: $scope.PagoM.importeiva,
-        importeisr: $scope.PagoM.importeisr,
+        importeiva: $scope.NotaG.importeiva,
+        importeisr: $scope.NotaG.importeisr,
         total: $scope.totalPago,
         usuario: $rootScope.id,
-        unidad: $scope.PagoM.unidad
+        unidad: $scope.NotaG.unidad
 
     }
-
-    console.log($scope.OPago.subtotaltotal);
-    console.log( $scope.OPago.factura.subtotal);
-
-    if ($scope.OPago.subtotaltotal !=  $scope.OPago.factura.subtotal){
-
-       swal("Upss","El Monto de los Pagos no Coincide con el Subtotal de la Factura","error");
-
-    }else
-
-    if ($scope.OPago.total != $scope.OPago.factura.total){
-
-       swal("Upss","El Monto de los Pagos no Coincide con el Total de la Factura","error");
-
-    }else{
 
     	var areaRecibe = 6;
         var areaEntrega = 6;
         var usuarioRecibe = $rootScope.id;
 
-        var ruta = api+'PagoManual/ordenPago'; 
-
-        // for (var i = 0; i < $scope.PagoM.length; i++){
+        var ruta = api+'PagoManual/NotaCreditoG'; 
 
     	    $http.post(ruta,$scope.OPago).success(function (data){
 
-    	    	// $scope.borratemporales();
-                $scope.PagoM = {
+                $scope.NotaG = {
 
                     unidad: '',
                     folio: '',
@@ -452,33 +429,29 @@ $scope.enviaOrdenPago = function(){
                 alert('Error, Intentalo de Nuevo');
 
             });
-
-        // } 
-    }
-
 }
 
 $scope.addRow = function(){
 
-	$scope.Pagos.push({ 'unidad':$scope.PagoM.unidad, 'folio': $scope.PagoM.folio, 'tramite': $scope.PagoM.tipotramite, 
-		                 'concepto': $scope.PagoM.concepto, 'etapa': $scope.PagoM.etapa, 'entrega': $scope.PagoM.entrega,
-		                 'observacion': $scope.PagoM.observacion, 'serie': $scope.PagoM.serie, 'foliointerno': $scope.PagoM.foliointerno,
-		                 'subtotal': $scope.PagoM.subtotal, 'total': $scope.PagoM.total, 'foliofiscal':$scope.PagoM.foliofiscal, 
-		                 'fechaemision':$scope.PagoM.fechaemision, 'descuento':$scope.PagoM.descuento, 'emisor':$scope.PagoM.emisor,
-		                 'rfcemisor':$scope.PagoM.rfcemisor, 'impuesto': $scope.PagoM.impuesto, 'tasa': $scope.PagoM.tasa, 'SubtotalF':$scope.PagoM.SubtotalF, 'IVAF':  $scope.PagoM.IVAF, 'TotalF': $scope.PagoM.TotalF,
-                         'proveedor': $scope.PagoM.proveedor, 'retencion': $scope.PagoM.retencion});
+	$scope.Pagos.push({ 'unidad':$scope.NotaG.unidad, 'folio': $scope.NotaG.folio, 'tramite': $scope.NotaG.tipotramite, 
+		                 'concepto': $scope.NotaG.concepto, 'etapa': $scope.NotaG.etapa, 'entrega': $scope.NotaG.entrega,
+		                 'observacion': $scope.NotaG.observacion, 'serie': $scope.NotaG.serie, 'foliointerno': $scope.NotaG.foliointerno,
+		                 'subtotal': $scope.NotaG.subtotal, 'total': $scope.NotaG.total, 'foliofiscal':$scope.NotaG.foliofiscal, 
+		                 'fechaemision':$scope.NotaG.fechaemision, 'descuento':$scope.NotaG.descuento, 'emisor':$scope.NotaG.emisor,
+		                 'rfcemisor':$scope.NotaG.rfcemisor, 'impuesto': $scope.NotaG.impuesto, 'tasa': $scope.NotaG.tasa, 'SubtotalF':$scope.NotaG.SubtotalF, 'IVAF':  $scope.NotaG.IVAF, 'TotalF': $scope.NotaG.TotalF,
+                         'proveedor': $scope.NotaG.proveedor, 'retencion': $scope.NotaG.retencion});
 
-    $scope.PagoM.folio = '';
-    $scope.PagoM.tipotramite = '';
-    $scope.PagoM.concepto = '';
-    $scope.PagoM.etapa = '';
-    $scope.PagoM.entrega = '';
-    $scope.PagoM.SubtotalF = 0.00;
-    $scope.PagoM.IVAF = 0.00;
-    $scope.PagoM.TotalF = 0.00;
-    $scope.PagoM.observacion = '';
-    $scope.PagoM.serie = '';
-    $scope.PagoM.retencion = 0.00;
+    $scope.NotaG.folio = '';
+    $scope.NotaG.tipotramite = '';
+    $scope.NotaG.concepto = '';
+    $scope.NotaG.etapa = '';
+    $scope.NotaG.entrega = '';
+    $scope.NotaG.SubtotalF = 0.00;
+    $scope.NotaG.IVAF = 0.00;
+    $scope.NotaG.TotalF = 0.00;
+    $scope.NotaG.observacion = '';
+    $scope.NotaG.serie = '';
+    $scope.NotaG.retencion = 0.00;
 
 
 
@@ -517,25 +490,25 @@ $scope.eliminaxml = function(){
 
     $http.post(api+'PagoManual/eliminaxml/'+$rootScope.user).success(function (data){
 
-      $scope.PagoM.foliointerno = '';
-      $scope.PagoM.serie = '';
-      $scope.PagoM.foliofiscal = '';
-      $scope.PagoM.emisor = '';
-      $scope.PagoM.rfc_emisor = '';
-      $scope.PagoM.subtotal = '';
-      $scope.PagoM.tasa = '';
-      $scope.PagoM.total = '';
-      $scope.PagoM.fechaemision = '';
+      $scope.NotaG.foliointerno = '';
+      $scope.NotaG.serie = '';
+      $scope.NotaG.foliofiscal = '';
+      $scope.NotaG.emisor = '';
+      $scope.NotaG.rfc_emisor = '';
+      $scope.NotaG.subtotal = '';
+      $scope.NotaG.tasa = '';
+      $scope.NotaG.total = '';
+      $scope.NotaG.fechaemision = '';
 
-      $scope.PagoI.foliointerno = '';
-      $scope.PagoI.serie = '';
-      $scope.PagoI.foliofiscal = '';
-      $scope.PagoI.emisor = '';
-      $scope.PagoI.rfcemisor = '';
-      $scope.PagoI.subtotal = '';
-      $scope.PagoI.tasa = '';
-      $scope.PagoI.total = '';
-      $scope.PagoI.fechaemision = '';
+      $scope.NotaI.foliointerno = '';
+      $scope.NotaI.serie = '';
+      $scope.NotaI.foliofiscal = '';
+      $scope.NotaI.emisor = '';
+      $scope.NotaI.rfcemisor = '';
+      $scope.NotaI.subtotal = '';
+      $scope.NotaI.tasa = '';
+      $scope.NotaI.total = '';
+      $scope.NotaI.fechaemision = '';
 
 
 
@@ -559,8 +532,6 @@ $scope.Proveedores = function(){
 
 $scope.subeXMLInd = function($files){
 
-    console.log($scope.PagoI);
-
         var aux = $files[0].name.split('.');
 
         if(aux[aux .length-1] == 'xml' || aux[aux .length-1] == 'XML'){
@@ -571,11 +542,11 @@ $scope.subeXMLInd = function($files){
           $scope.upload = $upload.upload({
                 url: api+'PagoManual/upload/'+$rootScope.user, //upload.php script, node.js route, or servlet url
                 method: 'POST',
-                data: $scope.PagoM,
+                data: $scope.NotaI,
                 file: file // or list of files ($files) for html5 only
         }).success(function (data){
 
-            if ($scope.PagoI.proveedor == '') {
+            if ($scope.NotaI.proveedor == '') {
 
                 leexml.getxmltemporal($rootScope.user,data.archivo).success(function(data){
                 courses  = x2js.xml_str2json(data);
@@ -584,80 +555,80 @@ $scope.subeXMLInd = function($files){
                     if (data[0].count != 0){
 
                         swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
-                        $scope.PagoI.importe = '';
-                        $scope.PagoI.total = '';
-                        $scope.PagoI.foliofiscal = '';
-                        $scope.PagoI.fechaemision = '';
-                        $scope.PagoI.descuento = '';
-                        $scope.PagoI.emisor = '';
-                        $scope.PagoI.descuento = "";
-                        $scope.PagoI.serie = '';
-                        $scope.PagoI.elimina = false;
-                        $scope.PagoI.retencion = '';
+                        $scope. NotaI.importe = '';
+                        $scope. NotaI.total = '';
+                        $scope. NotaI.foliofiscal = '';
+                        $scope. NotaI.fechaemision = '';
+                        $scope. NotaI.descuento = '';
+                        $scope. NotaI.emisor = '';
+                        $scope. NotaI.descuento = "";
+                        $scope. NotaI.serie = '';
+                        $scope. NotaI.elimina = false;
+                        $scope. NotaI.retencion = '';
 
                     }
                 });
-                PagoManual.validaUnidad($scope.PagoI.unidad).success(function (data){ 
+                PagoManual.validaUnidad($scope.NotaI.unidad).success(function (data){ 
                         if (data.length > 0){
 
-                            $scope.PagoI.rfcemisor = data[0].rfc;
-                            $scope.PagoI.unidad = data[0].unidad;
+                            $scope.NotaI.rfcemisor = data[0].rfc;
+                            $scope.NotaI.unidad = data[0].unidad;
 
-                        if ($scope.PagoI.rfcemisor == courses.Comprobante.Emisor._rfc){
+                        if ($scope.NotaI.rfcemisor == courses.Comprobante.Emisor._rfc){
 
 
-                            $scope.PagoI.serie = courses.Comprobante._serie;
-                            $scope.PagoI.foliointerno = courses.Comprobante._folio;
+                            $scope.NotaI.serie = courses.Comprobante._serie;
+                            $scope.NotaI.foliointerno = courses.Comprobante._folio;
 
                             //////////  limitar el subtotal del xml 
-                            // $scope.PagoI.subtotal = courses.Comprobante._subTotal;
-                            // $scope.PagoI.total = courses.Comprobante._total;
+                            // $scope.NotaI.subtotal = courses.Comprobante._subTotal;
+                            // $scope.NotaI.total = courses.Comprobante._total;
 
                             var subglobal = courses.Comprobante._subTotal;
                             var subglobal1 = parseFloat(subglobal);
                             var subglobal2 = subglobal1.toFixed(2);
-                            $scope.PagoI.subtotal = subglobal2;
+                            $scope.NotaI.subtotal = subglobal2;
 
                             var totalglobal = courses.Comprobante._total;
                             var totalglobal1 = parseFloat(totalglobal);
                             var totalglobal2 = totalglobal1.toFixed(2);
-                            $scope.PagoI.total = totalglobal2;
+                            $scope.NotaI.total = totalglobal2;
 
 
-                            $scope.PagoI.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
-                            $scope.PagoI.fechaemision = courses.Comprobante._fecha;
-                            $scope.PagoI.descuento = courses.Comprobante._descuento;
-                            $scope.PagoI.emisor = courses.Comprobante.Emisor._nombre;
-                            $scope.PagoI.rfcemisor = courses.Comprobante.Emisor._rfc;
+                            $scope.NotaI.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
+                            $scope.NotaI.fechaemision = courses.Comprobante._fecha;
+                            $scope.NotaI.descuento = courses.Comprobante._descuento;
+                            $scope.NotaI.emisor = courses.Comprobante.Emisor._nombre;
+                            $scope.NotaI.rfcemisor = courses.Comprobante.Emisor._rfc;
 
                             if(courses.Comprobante.Impuestos.Traslados == undefined){
 
-                                $scope.PagoI.iva = '';
-                                $scope.PagoI.importeiva = '';
+                                $scope.NotaI.iva = '';
+                                $scope.NotaI.importeiva = '';
 
                             }else{
 
-                                $scope.PagoI.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                $scope.PagoI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+                                $scope.NotaI.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                $scope.NotaI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
 
                             }
 
                             if (courses.Comprobante.Impuestos.Retenciones == undefined) {
 
-                                $scope.PagoI.isr = '';
-                                $scope.PagoI.importeisr = '';
+                                $scope.NotaI.isr = '';
+                                $scope.NotaI.importeisr = '';
 
 
                             }else{
 
 
-                                $scope.PagoI.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
-                                $scope.PagoI.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+                                $scope.NotaI.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
+                                $scope.NotaI.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
 
                             }
 
-                            $scope.PagoI.usuarioentrega = Number($rootScope.id);
-                            $scope.PagoI.tipoorden = 4;
+                            $scope.NotaI.usuarioentrega = Number($rootScope.id);
+                            $scope.NotaI.tipoorden = 4;
                             $scope.btndelete = true;
 
                           
@@ -665,8 +636,6 @@ $scope.subeXMLInd = function($files){
 
                             swal('Upss','Tu Factura no coincide con el Emisor','error');
 
-                            // var archivo = $scope.datos.leexml;
-                            // $scope.elimina_ahora(archivo);
                             $scope.eliminaxml();
 
                         }
@@ -694,85 +663,80 @@ $scope.subeXMLInd = function($files){
 
                         swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
                         $scope.eliminaxml();
-                        $scope.PagoI.importe = '';
-                        $scope.PagoI.total = '';
-                        $scope.PagoI.foliofiscal = '';
-                        $scope.PagoI.fechaemision = '';
-                        $scope.PagoI.descuento = '';
-                        $scope.PagoI.emisor = '';
-                        $scope.PagoI.descuento = "";
-                        $scope.PagoI.serie = '';
-                        $scope.PagoI.elimina = false;
-                        $scope.PagoI.retencion = '';
+                        $scope.NotaI.importe = '';
+                        $scope.NotaI.total = '';
+                        $scope.NotaI.foliofiscal = '';
+                        $scope.NotaI.fechaemision = '';
+                        $scope.NotaI.descuento = '';
+                        $scope.NotaI.emisor = '';
+                        $scope.NotaI.descuento = "";
+                        $scope.NotaI.serie = '';
+                        $scope.NotaI.elimina = false;
+                        $scope.NotaI.retencion = '';
 
                     }
                 });
-                PagoManual.validaProveedor($scope.PagoI.proveedor).success(function (data){ 
+                PagoManual.validaProveedor($scope.NotaI.proveedor).success(function (data){ 
                         if (data.length > 0){
 
-                            $scope.PagoI.rfcemisor = data[0].rfc;
-                            $scope.PagoI.unidad = data[0].unidad;
+                            $scope.NotaI.rfcemisor = data[0].rfc;
+                            $scope.NotaI.unidad = data[0].unidad;
 
-                        if ($scope.PagoI.rfcemisor == courses.Comprobante.Emisor._rfc){
+                        if ($scope.NotaI.rfcemisor == courses.Comprobante.Emisor._rfc){
 
-                            $scope.PagoI.serie = courses.Comprobante._serie;
-                            $scope.PagoI.foliointerno = courses.Comprobante._folio;
-
-                            // $scope.PagoI.subtotal = courses.Comprobante._subTotal;
-                            // $scope.PagoI.total = courses.Comprobante._total;
+                            $scope.NotaI.serie = courses.Comprobante._serie;
+                            $scope.NotaI.foliointerno = courses.Comprobante._folio;
 
                             var subglobal = courses.Comprobante._subTotal;
                             var subglobal1 = parseFloat(subglobal);
                             var subglobal2 = subglobal1.toFixed(2);
-                            $scope.PagoI.subtotal = subglobal2;
+                            $scope.NotaI.subtotal = subglobal2;
 
                             var totalglobal = courses.Comprobante._total;
                             var totalglobal1 = parseFloat(totalglobal);
                             var totalglobal2 = totalglobal1.toFixed(2);
-                            $scope.PagoI.total = totalglobal2;
+                            $scope.NotaI.total = totalglobal2;
 
-                            $scope.PagoI.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
-                            $scope.PagoI.fechaemision = courses.Comprobante._fecha;
-                            $scope.PagoI.descuento = courses.Comprobante._descuento;
-                            $scope.PagoI.emisor = courses.Comprobante.Emisor._nombre;
-                            $scope.PagoI.rfcemisor = courses.Comprobante.Emisor._rfc;
+                            $scope.NotaI.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
+                            $scope.NotaI.fechaemision = courses.Comprobante._fecha;
+                            $scope.NotaI.descuento = courses.Comprobante._descuento;
+                            $scope.NotaI.emisor = courses.Comprobante.Emisor._nombre;
+                            $scope.NotaI.rfcemisor = courses.Comprobante.Emisor._rfc;
 
                             if(courses.Comprobante.Impuestos.Traslados == undefined){
 
-                                $scope.PagoI.iva = '';
-                                $scope.PagoI.importeiva = '';
+                                $scope.NotaI.iva = '';
+                                $scope.NotaI.importeiva = '';
 
                             }else{
 
-                                $scope.PagoI.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                $scope.PagoI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+                                $scope.NotaI.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                $scope.NotaI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
 
                             }
 
                             if (courses.Comprobante.Impuestos.Retenciones == undefined) {
 
-                                $scope.PagoI.isr = '';
-                                $scope.PagoI.importeisr = '';
+                                $scope.NotaI.isr = '';
+                                $scope.NotaI.importeisr = '';
 
 
                             }else{
 
 
-                                $scope.PagoI.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
-                                $scope.PagoI.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+                                $scope.NotaI.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
+                                $scope.NotaI.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
 
                             }
 
-                            $scope.PagoI.usuarioentrega = Number($rootScope.id);
-                            $scope.PagoI.tipoorden = 4;
+                            $scope.NotaI.usuarioentrega = Number($rootScope.id);
+                            $scope.NotaI.tipoorden = 4;
                             $scope.btndelete = true;
 
                         }else{
 
                             swal('Upss','Tu Factura no coincide con el Emisor','error');
 
-                            // var archivo = $scope.datos.leexml;
-                            // $scope.elimina_ahora(archivo);
                             $scope.eliminaxml();
 
                         }
@@ -791,10 +755,7 @@ $scope.subeXMLInd = function($files){
 }
 
                 $scope.archivos = data.ruta;
-
                 console.log(data.ruta);
-
-
 
         }).error( function (xhr,status,data){
 
@@ -810,34 +771,22 @@ $scope.subeXMLInd = function($files){
 
 }
 
-$scope.enviaOrdenPagoInd = function(){
+$scope.enviaOrdenNotaInd = function(){
 
     $scope.OPago = {
 
         seleccionados : $scope.Pagos,
         archivos : $scope.archivos,
         usucarpeta: $rootScope.user,
-        factura: $scope.PagoI,
-        subtotaltotal: $scope.PagoI.SubtotalF,
-        importeiva: $scope.PagoI.importeiva,
-        importeisr: $scope.PagoI.importeisr,
-        total: $scope.PagoI.TotalF,
+        factura: $scope.NotaI,
+        subtotaltotal: $scope.NotaI.SubtotalF,
+        importeiva: $scope.NotaI.importeiva,
+        importeisr: $scope.NotaI.importeisr,
+        total: $scope.NotaI.TotalF,
         usuario: $rootScope.id,
-        unidad: $scope.PagoI.unidad,
-        proveedor: $scope.PagoI.proveedor
+        unidad: $scope.NotaI.unidad,
+        proveedor: $scope.NotaI.proveedor
     }
-
-    if ($scope.PagoI.SubtotalF != $scope.OPago.factura.subtotal){
-
-       swal("Upss","El Monto de los Pagos no Coincide con el Subtotal de la Factura","error");
-
-    }else
-
-    if ($scope.PagoI.TotalF != $scope.OPago.factura.total){
-
-       swal("Upss","El Monto de los Pagos no Coincide con el Total de la Factura","error");
-
-    }else{
 
         var areaRecibe = 6;
         var areaEntrega = 6;
@@ -850,7 +799,7 @@ $scope.enviaOrdenPagoInd = function(){
             $http.post(ruta,$scope.OPago).success(function (data){
 
                 // $scope.borratemporales();
-            $scope.PagoI = {
+            $scope.NotaI = {
 
                 unidad: '',
                 folio: '',
@@ -884,11 +833,9 @@ $scope.enviaOrdenPagoInd = function(){
             });
 
         // } 
-    }
-
 }
 
 }
 
-pagoManualCtrl.$inject = ['$scope', '$rootScope',  'loading','$filter','$location','$http','checkFolios','api','find', '$upload', 'leexml', 'PagoManual'];
-app.controller('pagoManualCtrl',pagoManualCtrl);
+notaCreditoCtrl.$inject = ['$scope', '$rootScope',  'loading','$filter','$location','$http','checkFolios','api','find', '$upload', 'leexml', 'PagoManual'];
+app.controller('notaCreditoCtrl',notaCreditoCtrl);
