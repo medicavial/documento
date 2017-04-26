@@ -573,16 +573,16 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
                 }
 
-                // if ($scope.detalles[i].subtotal != ''){
+                if ($scope.detalles[i].subtotal != ''){
 
-                //     var valor3 = $scope.detalles[i].subtotal;
-                //     var numero3 = valor3.replace(",",'');
-                //     suma3 += parseFloat(numero3);
-                //     var sumas3 = suma3.toFixed(2);
+                    var valor3 = $scope.detalles[i].subtotal;
+                    var numero3 = valor3.replace(",",'');
+                    suma3 += parseFloat(numero3);
+                    var sumas3 = suma3.toFixed(2);
 
-                //     $scope.totalsubtotal = sumas3;
+                    $scope.totalsubtotal = sumas3;
 
-                // }
+                }
 
                 // if ($scope.detalles[i].tasa != ''){
 
