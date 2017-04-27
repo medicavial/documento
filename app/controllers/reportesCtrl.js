@@ -209,7 +209,8 @@ function pagoUnidadesCtrl($scope, $rootScope, find , loading){
         $scope.datos = {
             fechaini:FechaAct,
             fechafin:FechaAct,
-            unidad:''
+            unidad:'',
+            proveedor: ''
         };
 
     }
@@ -294,9 +295,21 @@ function listadoPagosCtrl($scope, $rootScope, find , loading){
         $scope.datos = {
             fechaini:FechaAct,
             fechafin:FechaAct,
-            unidad:''
+            unidad: 0,
+            proveedor: 0
         };
 
+        $scope.Proveedores();
+
+    }
+
+    $scope.Proveedores = function(){
+
+        find.proveedores().success( function (data){
+
+            $scope.proveedores = data;
+            
+         });
     }
 
     $scope.buscaPagos = function(){
@@ -337,6 +350,7 @@ function listadoPagosCtrl($scope, $rootScope, find , loading){
         columnDefs: [
 								{ field:'PAS_folio', displayName:'Folio' , width: 120, pinned:true, enableCellEdit: true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
 								{ field:'UNI_nombrecorto', displayName:'Empresa', width: 120 },
+                                { field:'proveedor', displayName:'Proveedor', width: 120 },
 								{ field:'etapa', displayName:'Etapa', width: 120 },
 								{ field:'EXP_pagadoET1', displayName:'Pagado', width: 200, visible:true },
 								{ field:'EXP_pagadoFactET1', displayName:'Pagado Fac', width: 200 },
@@ -352,6 +366,29 @@ function listadoPagosCtrl($scope, $rootScope, find , loading){
     $scope.exportar = function(){
 
         JSONToCSVConvertor($scope.listado,'Reporte',true);
+
+    }
+
+    $scope.filtra = function(){
+
+        if($scope.datos.unidad == undefined || $scope.datos.unidad == 0){
+            var objeto1 = "";
+        }else{
+            var objeto1 = "UNI_nombrecorto:" + $scope.datos.unidad + "; ";
+            
+        }
+
+        if($scope.datos.proveedor == undefined || $scope.datos.proveedor == 0){
+            var objeto2 = "";
+        }else{
+            var objeto2 = "proveedor:" + $scope.datos.proveedor + "; ";
+            
+        }
+        
+        var filtro = objeto1 + objeto2;
+
+        
+        $scope.filterOptions.filterText = filtro;
 
     }
 

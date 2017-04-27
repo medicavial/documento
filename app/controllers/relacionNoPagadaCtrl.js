@@ -6,12 +6,6 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
 
     $scope.recibidos = datos.recepcion;
 
-    // datos.activos.success(function (data){
-
-    //     $scope.listado = data;
-    //     $scope.cantidad = data.length -1;
-
-    // });
 
     $scope.inicio = function(){
 
@@ -170,6 +164,7 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
                     { field:'subtotal',displayName:'Subtotal', width: 120 },
                     { field:'total',displayName:'Importe', width: 120 },
                     { field:'unidad',displayName:'Unidad', width: 160 },
+                    { field:'proveedor',displayName:'Proveedor', width: 160 },
                     { field:'fecha',displayName:'Fecha Registro', width: 150 },
 
         ],

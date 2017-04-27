@@ -569,6 +569,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                     var sumas2 = suma2.toFixed(2);
 
                     $scope.totalimporte = sumas2;
+                    console.log($scope.totalimporte);
 
                 }
 
@@ -583,27 +584,27 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
                 }
 
-                if ($scope.detalles[i].tasa != ''){
+                // if ($scope.detalles[i].tasa != ''){
 
-                    var valor4 = $scope.detalles[i].tasa;
-                    var numero4 = valor4.replace(",",'');
-                    suma4 += parseFloat(numero4);
-                    var sumas4 = suma4.toFixed(2);
+                //     var valor4 = $scope.detalles[i].tasa;
+                //     var numero4 = valor4.replace(",",'');
+                //     suma4 += parseFloat(numero4);
+                //     var sumas4 = suma4.toFixed(2);
 
-                    $scope.totaltasa = sumas4;
+                //     $scope.totaltasa = sumas4;
 
-                }
+                // }
 
-                if ($scope.detalles[i].retencion != ''){
+                // if ($scope.detalles[i].retencion != ''){
 
-                    var valor5 = $scope.detalles[i].retencion;
-                    var numero5 = valor5.replace(",",'');
-                    suma5 += parseFloat(numero5);
-                    var sumas5 = suma5.toFixed(2);
+                //     var valor5 = $scope.detalles[i].retencion;
+                //     var numero5 = valor5.replace(",",'');
+                //     suma5 += parseFloat(numero5);
+                //     var sumas5 = suma5.toFixed(2);
 
-                    $scope.totalretencion = sumas5;
+                //     $scope.totalretencion = sumas5;
 
-                }
+                // }
 
             }
 
@@ -947,7 +948,7 @@ $scope.guardaRelacion = function(success){
 
     console.log($scope.relaciones);
 
-    $scope.verificaReferencia();
+    // $scope.verificaReferencia();
 
     $http.post(api+'RelacionPagos/insertaRelacion/'+ $rootScope.id,$scope.relaciones).success(function (data){
         loading.cargando('Buscando Folios');

@@ -6,11 +6,7 @@
 
     <legend>Fechas</legend>
     <div class="row">
-      <div class="col-sm-3 col-md-3">
-        <select class="form-control" id="unidad"  ng-model="datos.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades">
-          <option value="">Unidad</option>
-        </select>
-      </div>
+
       <div class="col-sm-3 col-md-3">
         <input type="text" ng-model="datos.fechaini" class="form-control" id="datepicker" placeholder="inicial" />
       </div>
@@ -22,6 +18,22 @@
             <button class="btn btn-default" type="button" ng-click="buscaPagos()"><i class="glyphicon glyphicon-search"></i></button>
           </span>
         </div>
+      </div>
+      
+    </div><br><br>
+
+    <legend>Filtrar X</legend>
+
+    <div class="row">
+      <div class="col-sm-3 col-md-3">
+        <select class="form-control" id="unidad"  ng-model="datos.unidad" ng-options="unidad.nombre as unidad.nombre for unidad in unidades" ng-change="filtra()">
+          <option value="">Unidad</option>
+        </select>
+      </div>
+      <div class="col-sm-3 col-md-3">
+        <select class="form-control" id="unidad"  ng-model="datos.proveedor" ng-options="proveedor.nombre as proveedor.nombre for proveedor in proveedores" ng-change="filtra()">
+          <option value="">Proveedor</option>
+        </select>
       </div>
 
     </div>
