@@ -856,6 +856,12 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
         }
     });
 
+    $routeProvider.when('/subirDocumentos',{
+            templateUrl   : 'vistas/subirDocumentos.html',
+            controller    : 'subirDocumentosCtrl'
+
+    });
+
 
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
 

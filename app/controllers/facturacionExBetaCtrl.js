@@ -234,6 +234,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
             $scope.edicionSACE = true;
             find.detalleFolioSaceco(expediente, atencion).success(function (data){
                 loading.despedida();
+                console.log(data);
                 $scope.datosExpediente = data.expediente;
                 $scope.cveCia=data.expediente.claveEmpresa;
                 $scope.tipLesion = data.lesion.TLE_claveint;
@@ -286,7 +287,6 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
 
 
                 $scope.cuestionario = {
-
                     tipoCuestionario:6,
                     pregunta38:'',
                     pregunta39:'',
@@ -326,7 +326,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                 if(data.lesion.LesE_clave){
                     console.log(data.lesion.LES_clave);
                     $scope.LesMV = data.lesion.lesionCIA;
-                    $scope.LESUnidad = data.lesion.LES_clave;
+                    $scope.LESUnidad = data.lesion.LesE_clave;
                     $scope.verificaTabuladorOrigen($scope.LesMV);
                 }
                 $scope.captura.tipoLes= String($scope.tipLesion);

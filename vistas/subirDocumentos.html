@@ -1,0 +1,50 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/home" class="icon-arrow-left"></a>
+        <h1>{{tituloPT}}</h1>
+    </div>
+    <form class="" ng-submit="uploadFile($files)">
+        <div class="row">
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="">Selecciona unidad</label>
+              <select  class="form-control" ng-options="quien.id as quien.nombre for quien in unidades" ng-model="digitales.unidad" name="unidad" id="unidad">
+                <option value="">Selecciona</option>
+
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+            <div class="form-group">
+              <label for="">Tipo de Documento</label>
+              <select  class="form-control"  name="tipoDoc" id="tipoDoc" ng-model="digitales.tipo">
+                <option value="">Selecciona</option>
+                <option value="1">Acuse</option>
+              </select>
+            </div>
+          </div>
+          <div class="col-md-2">
+              <label for="">Fecha</label>
+              <input type="text" ng-model="digitales.fecha" class="form-control" id="datepicker" ng-model="digitales.fecha" placeholder="Fecha" required/>
+          </div>
+          <div class="col-md-4">
+            <div class="form-group">
+              <label for="">Selecciona Documento</label>
+              <input type="file" name="file" uploader-model="file" class="form-control" id="archivo">
+            </div>
+          </div>
+          <div class="col-md-2" style="margin-top:25px">
+              <button type="submit" name="button" class="btn btn-primary btn-block">Subir Documento</button>
+          </div>
+        </div>
+    </form>
+</div>
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    $( "#datepicker" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1
+    });
+</script>

@@ -59,6 +59,7 @@ function autorizadosSCCtrl($scope, $rootScope, datos, loading, find, saceco,webS
         showSelectionCheckbox: false,
         selectWithCheckboxOnly: false,
         enableCellSelection: true,
+        plugins: [new ngGridCsvExportPlugin()],
         selectedItems: $scope.selectos,
         filterOptions: $scope.filterOptions,
         rowTemplate: rowTempl,

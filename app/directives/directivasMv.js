@@ -7,7 +7,7 @@ app.directive('folio', function() {
 
             //var functionToCall = scope.$eval(attrs.folio);
 
-            //funcion que rellena folios 
+            //funcion que rellena folios
             var rellenaFolio = function(folio){
                 if (folio != '') {
 
@@ -32,7 +32,7 @@ app.directive('folio', function() {
                         var faltantes = 6 - numeros.length;
 
                         for (var i = 0; i < faltantes; i++) {
-                          
+
                           numeros = "0" + numeros;
                         }
                     }
@@ -86,7 +86,7 @@ app.directive('folio', function() {
                         }
                     }
                 };
-                
+
             });
 
 
@@ -94,7 +94,7 @@ app.directive('folio', function() {
       }
 
     };
-    
+
 });
 
 //funcion para convertir a folios validos con acciones que se ejecutan dando enter
@@ -106,7 +106,7 @@ app.directive('folioex', function() {
 
             var functionToCall = scope.$eval(attrs.folioex);
 
-            //funcion que rellena folios 
+            //funcion que rellena folios
             var rellenaFolio = function(folio){
 
                 if (folio != '') {
@@ -132,7 +132,7 @@ app.directive('folioex', function() {
                         var faltantes = 6 - numeros.length;
 
                         for (var i = 0; i < faltantes; i++) {
-                          
+
                           numeros = "0" + numeros;
                         }
                     }
@@ -168,9 +168,9 @@ app.directive('folioex', function() {
                                     if (transformedInput!=inputValue) {
                                         modelCtrl.$setViewValue(transformedInput);
                                         modelCtrl.$render();
-                                    }         
+                                    }
 
-                                    return transformedInput; 
+                                    return transformedInput;
                                 }
                             });
                         }
@@ -192,8 +192,8 @@ app.directive('folioex', function() {
 
                             e.preventDefault();
 
-                        }    
-                              
+                        }
+
                     }else{
 
                         if (e.keyCode == 13) {
@@ -211,7 +211,7 @@ app.directive('folioex', function() {
                         }
 
                     }
-                    
+
                 };
             });
 
@@ -220,10 +220,10 @@ app.directive('folioex', function() {
       }
 
     };
-    
+
 });
 
-//directiva para descargar el archivo que le pongamos como atributo 
+//directiva para descargar el archivo que le pongamos como atributo
 app.directive('descarga', function(){
     return {
         restrict: 'E',
@@ -233,17 +233,17 @@ app.directive('descarga', function(){
         controller: function($scope, $element){
 
             $scope.click = function(info){
-              
+
               console.log(info);
-              
+
               //this trick will generate a temp <a /> tag
-              var link = document.createElement("a");    
+              var link = document.createElement("a");
               link.href = info;
-              
+
               //set the visibility hidden so it will not effect on your web-layout
               link.style = "visibility:hidden";
               link.download = info;
-              
+
               //this part will append the anchor tag and remove it after automatic click
               document.body.appendChild(link);
               link.click();
@@ -252,7 +252,7 @@ app.directive('descarga', function(){
             }
         }
     }
-    
+
 });
 
 app.directive('fileUpload', function () {
@@ -314,7 +314,7 @@ app.directive('capitalize', function() {
 
         }
    };
-   
+
 });
 
 //funcion para convertir mayusculas pero con acciones al presionar enter
@@ -349,7 +349,7 @@ app.directive('capitalizeex', function() {
 
         }
    };
-   
+
 });
 
 
@@ -372,7 +372,7 @@ app.directive('excel', function(){
             $scope.click = function(JSONData){
 
                 var arrData = typeof JSONData != 'object' ? JSON.parse(JSONData) : JSONData;
-                var CSV = '';    
+                var CSV = '';
                 //This condition will generate the Label/Header
 
                 var row = "";
@@ -399,29 +399,29 @@ app.directive('excel', function(){
                     CSV += row + '\r\n';
                 }
 
-                if (CSV == '') {        
+                if (CSV == '') {
                     alert("Invalid data");
                     return;
-                }   
+                }
 
                 //this trick will generate a temp "a" tag
-                var link = document.createElement("a");    
+                var link = document.createElement("a");
                 link.id="lnkDwnldLnk";
 
                 //this part will append the anchor tag and remove it after automatic click
                 document.body.appendChild(link);
 
-                var csv = CSV;  
-                blob = new Blob([csv], { type: 'text/csv' }); 
+                var csv = CSV;
+                blob = new Blob([csv], { type: 'text/csv' });
                 var csvUrl = window.webkitURL.createObjectURL(blob);
                 var filename = 'Reporte.csv';
                 $("#lnkDwnldLnk")
                 .attr({
                     'download': filename,
                     'href': csvUrl
-                }); 
+                });
 
-                $('#lnkDwnldLnk')[0].click();    
+                $('#lnkDwnldLnk')[0].click();
                 document.body.removeChild(link);
 
             }
@@ -640,7 +640,7 @@ app.directive('remesa', function() {
                 if (modelCtrl.$modelValue) {
 
                     var cantidad = modelCtrl.$modelValue.length;
-    
+
                     // NO deben ser letras
                     if(cantidad < 5){
                       if (evento.keyCode >= 65 && evento.keyCode <= 90) {
@@ -653,7 +653,7 @@ app.directive('remesa', function() {
                       if (evento.keyCode != 8  && evento.keyCode != 46 ) {
 
                             evento.preventDefault();
-                        }       
+                        }
                     }
 
                     //Si se da enter o salto de linea ejecuta el autollenado de ceros
@@ -672,12 +672,12 @@ app.directive('remesa', function() {
                         modelCtrl.$setViewValue(nuevo);
                         modelCtrl.$render();
                         scope.$apply();
-       
+
 
                       }
 
                     }
-                    
+
                 };
             });
 
@@ -686,7 +686,7 @@ app.directive('remesa', function() {
       }
 
     };
-    
+
 });
 
 app.directive('numero', function() {
@@ -702,14 +702,14 @@ app.directive('numero', function() {
 
                 if (e.keyCode >= 65 && e.keyCode <= 90 || e.keyCode == 110 || e.keyCode == 190 || e.keyCode == 189 ) {
                     e.preventDefault();
-                }    
+                }
 
             });
 
       }
 
     };
-    
+
 });
 
 app.directive('fileUpload', function () {
@@ -728,3 +728,16 @@ app.directive('fileUpload', function () {
     };
 
 });
+
+app.directive('uploaderModel', ["$parse", function ($parse) {
+	return {
+		restrict: 'A',
+		link: function (scope, iElement, iAttrs)
+		{
+			iElement.on("change", function(e)
+			{
+				$parse(iAttrs.uploaderModel).assign(scope, iElement[0].files[0]);
+			});
+		}
+	};
+}])

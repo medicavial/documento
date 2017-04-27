@@ -1,15 +1,15 @@
 <div ng-init="inicio()">
     <h1>{{tituloH}}</h1>
     <ul id="rb-grid" class="rb-grid clearfix">
-        
-        
+
+
         <li class="rb-span-1"  ng-class="{'inactivo': area != 1 }" id="color1">
             <h3>Recepción de Documentos</h3>
             <a href="#/Recepcion">
                 <span class="icon-box-add"></span>
             </a>
         </li>
-     
+
         <li class="rb-span-1" ng-class="{'inactivo': area != 20}" id="color3">
 
             <h3>Cordinacion Médica</h3>
@@ -17,7 +17,7 @@
                 <span class="icon-paste"></span>
             </a>
         </li>
-        
+
         <li class="rb-span-1" ng-class="{'inactivo': area != 3}" id="color7">
 
             <h3>Captura</h3>
@@ -75,21 +75,21 @@
         </li>
 
         <li class="rb-span-1" ng-class="{'inactivo': FlujoDocumentos != 1 }" id="color4">
-        
+
             <h3>Flujo de documentos</h3>
             <a href="#/flujo">
                 <span class="icon-shuffle"></span>
             </a>
-        
+
         </li>
 
         <li class="rb-span-1" ng-class="{'inactivo': FlujoManual != 1 }" id="color4">
-        
+
             <h3>Flujo Manual</h3>
             <a href="" data-toggle="modal" data-target="#modalT">
                 <span class="icon-enter"></span>
             </a>
-        
+
         </li>
 
         <li class="rb-span-1" id="color4" ng-class="{'inactivo': FormatoQualitas != 1}">
@@ -114,14 +114,14 @@
                 <span class="icon-binoculars"></span>
             </a>
         </li>
-        
+
         <li class="rb-span-1" id="color3" ng-class="{'inactivo':Tickets != 1}">
             <h3>Tickets</h3>
             <a href="#/ticket">
                 <span class=" icon-ticket"></span>
             </a>
         </li>
-        
+
         <li class="rb-span-1" id="color4" ng-class="{'inactivo': Reportes != 1}">
 
             <h3>Reportes</h3>
@@ -219,6 +219,12 @@
             <h3>Facturas Zima</h3>
             <a href="#/controlFacturasZima">
                 <span class="glyphicon glyphicon-folder-open"></span>
+            </a>
+        </li>
+        <li class="rb-span-1" id="color4">
+            <h3>Subir Documentos</h3>
+            <a href="#/subirDocumentos">
+                <span class="glyphicon glyphicon-upload"></span>
             </a>
         </li>
 
