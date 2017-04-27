@@ -66,17 +66,6 @@
 				</select>
 			</div>
 
-			<div class="col-md-3">
-
-                <div class="checkbox c-checkbox">
-                   <label>
-                      <input type="checkbox">
-                      <span class="glyphicon glyphicon-ok" ng-model="PagoI.ndc" ng-true-value="1" ng-false-value="0"></span>Nota de Credito
-                   </label>
-                </div>
-
-			</div>
-
 	    </div>
 	    <br>
 	    <div class="row">
@@ -120,6 +109,11 @@
 	    	<div class="col-md-2">
 					<label>Subtotal</label>
 					<input type="text" ng-model="PagoI.SubtotalF" class="form-control" ng-blur="calculaTotalInd()">
+			</div>
+
+			<div class="col-md-2">
+					<label>Descuento</label>
+					<input type="text" ng-model="PagoI.descuento" class="form-control" ng-blur="calculaTotalInd()">
 			</div>
 
 		    <div class="col-md-2">
@@ -266,6 +260,11 @@
 	    	<div class="col-md-2">
 					<label>Subtotal</label>
 					<input type="text" ng-model="PagoM.SubtotalF" class="form-control" ng-blur="calculaTotal()">
+			</div>
+
+			<div class="col-md-2">
+					<label>Descuento</label>
+					<input type="text" ng-model="PagoM.descuento" class="form-control" ng-blur="calculaTotal()">
 			</div>
 
 		    <div class="col-md-2">

@@ -23,7 +23,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
         	etapa: '',
         	foliofiscal: '',
 	        subtotal: '', 
-	        descuento: '', 
+	        descuento: 0.00, 
 	        total: '',
 	        fechaemision: '',
 	        observacion: '',
@@ -53,7 +53,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             etapa: '',
             foliofiscal: '',
             subtotal: '', 
-            descuento: '', 
+            descuento: 0.00, 
             total: '',
             fechaemision: '',
             observacion: '',
@@ -91,7 +91,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
     $scope.calculaTotal = function(){
 
-        var m = parseFloat($scope.PagoM.SubtotalF) + parseFloat($scope.PagoM.IVAF) - parseFloat($scope.PagoM.retencion);
+        var m = parseFloat($scope.PagoM.SubtotalF) - parseFloat($scope.PagoM.descuento) + parseFloat($scope.PagoM.IVAF) - parseFloat($scope.PagoM.retencion);
         var mm = m.toFixed(2);
         $scope.PagoM.TotalF = mm;
 
@@ -99,7 +99,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
     $scope.calculaTotalInd = function(){
 
-        var t = parseFloat($scope.PagoI.SubtotalF) + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencion);
+        var t = parseFloat($scope.PagoI.SubtotalF) - parseFloat($scope.PagoI.descuento) + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencion);
         var tt = t.toFixed(2);
         $scope.PagoI.TotalF = tt;
 

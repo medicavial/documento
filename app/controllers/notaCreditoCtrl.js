@@ -604,33 +604,56 @@ $scope.subeXMLInd = function($files){
                             if(courses.Comprobante.Impuestos.Traslados == undefined){
 
                                 $scope.NotaI.iva = '';
-                                $scope.NotaI.importeiva = '';
+                                $scope.NotaI.importeiva = 0;
 
                             }else{
 
-                                $scope.NotaI.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                $scope.NotaI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+                                if(courses.Comprobante.Impuestos.Traslados.Traslado.length > 1){
+                                    
+                                    $scope.NotaI.iva = courses.Comprobante.Impuestos.Traslados.Traslado[0]._impuesto;
+                                    $scope.NotaI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado[0]._importe;
 
+                                }else{
+
+                                    $scope.NotaI.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                    $scope.NotaI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+
+                                }
                             }
 
                             if (courses.Comprobante.Impuestos.Retenciones == undefined) {
 
                                 $scope.NotaI.isr = '';
-                                $scope.NotaI.importeisr = '';
-
+                                $scope.NotaI.importeisr = 0;
 
                             }else{
 
+                                if(courses.Comprobante.Impuestos.Traslados.Traslado.length > 1){
+                                    
+                                    $scope.NotaI.isr = courses.Comprobante.Impuestos.Retenciones.Retencion[0]._impuesto;
+                                    $scope.NotaI.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion[0]._importe;
 
-                                $scope.NotaI.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
-                                $scope.NotaI.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+                                }else{
+
+                                    $scope.NotaI.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                    $scope.NotaI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+
+                                }
+
 
                             }
 
                             $scope.NotaI.usuarioentrega = Number($rootScope.id);
-                            $scope.NotaI.tipoorden = 4;
+                            $scope.NotaI.tipoorden = 5;
                             $scope.btndelete = true;
 
+                            ///// SE CALCULA EL MONTO DE LA NOTA DE CREDITO /////
+                            
+                            $scope.NotaI.importeNC = parseFloat($scope.NotaI.subtotal) - parseFloat($scope.NotaI.SubtotalF);
+                            $scope.NotaI.importeisrNC = parseFloat($scope.NotaI.importeisr) - parseFloat($scope.NotaI.retencion);
+                            $scope.NotaI.importeivaNC = parseFloat($scope.NotaI.importeiva) - parseFloat($scope.NotaI.IVAF);
+                            $scope.NotaI.TotalNC = parseFloat($scope.NotaI.total) - parseFloat($scope.NotaI.TotalF);
+            
                           
                         }else{
 
@@ -710,8 +733,17 @@ $scope.subeXMLInd = function($files){
 
                             }else{
 
-                                $scope.NotaI.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                $scope.NotaI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+                                if(courses.Comprobante.Impuestos.Traslados.Traslado.length > 1){
+                                    
+                                    $scope.NotaI.iva = courses.Comprobante.Impuestos.Traslados.Traslado[0]._impuesto;
+                                    $scope.NotaI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado[0]._importe;
+
+                                }else{
+
+                                    $scope.NotaI.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                    $scope.NotaI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+
+                                }
 
                             }
 
@@ -724,13 +756,22 @@ $scope.subeXMLInd = function($files){
                             }else{
 
 
-                                $scope.NotaI.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
-                                $scope.NotaI.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+                                if(courses.Comprobante.Impuestos.Traslados.Traslado.length > 1){
+                                    
+                                    $scope.NotaI.isr = courses.Comprobante.Impuestos.Retenciones.Retencion[0]._impuesto;
+                                    $scope.NotaI.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion[0]._importe;
+
+                                }else{
+
+                                    $scope.NotaI.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                    $scope.NotaI.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+
+                                }
 
                             }
 
                             $scope.NotaI.usuarioentrega = Number($rootScope.id);
-                            $scope.NotaI.tipoorden = 4;
+                            $scope.NotaI.tipoorden = 5;
                             $scope.btndelete = true;
 
                         }else{
@@ -785,14 +826,21 @@ $scope.enviaOrdenNotaInd = function(){
         total: $scope.NotaI.TotalF,
         usuario: $rootScope.id,
         unidad: $scope.NotaI.unidad,
-        proveedor: $scope.NotaI.proveedor
+        proveedor: $scope.NotaI.proveedor,
+        importeNC: $scope.NotaI.importeNC,
+        importeivaNC: $scope.NotaI.importeivaNC,
+        importeisrNC: $scope.NotaI.importeisrNC,
+        totalNC: $scope.NotaI.TotalNC 
+
     }
+
+    // console.log($scope.OPago);
 
         var areaRecibe = 6;
         var areaEntrega = 6;
         var usuarioRecibe = $rootScope.id;
 
-        var ruta = api+'PagoManual/ordenPagoIndividual'; 
+        var ruta = api+'PagoManual/notaCreditoI'; 
 
         // for (var i = 0; i < $scope.PagoM.length; i++){
 

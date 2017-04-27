@@ -140,7 +140,7 @@
 			          <td>{{ NotaI.emisor }}</td>
 			          <td>{{ NotaI.rfcemisor }}</td>
 			          <td>{{ NotaI.subtotal }}</td>
-			          <td>{{ NotaI.tasa }}</td>
+			          <td>{{ NotaI.importeiva }}</td>
 			          <td>{{ NotaI.total }}</td>
 			          <td>{{ NotaI.fechaemision }}</td>
 			          <td ng-show="btndelete"><button ng-click="eliminaxml()" class="btn btn-small btn-danger" type="button">Eliminar</button></td>
@@ -157,7 +157,7 @@
 							    overflow-x: auto;
 							    width: 100%; background: #edebeb ">
 			        <tr style="background-color:#E9E9E9;">
-			          <th colspan="12" class="text-center"><h4>Total Factura</h4></th>
+			          <th colspan="12" class="text-center"><h4>Total Nota de Credito</h4></th>
 			        </tr>
 			        <tr style="background-color:#F0FFFF">
 			          <th>Factura</th>
@@ -169,22 +169,22 @@
 			        <tr>
 
 			          <td>{{ NotaI.foliointerno  }}</td>
-			          <td>{{ NotaI.SubtotalF }}</td>
-			          <td>{{ NotaI.IVAF }}</td>
-			          <td>{{ NotaI.retencion }}</td>
-			          <td>{{ NotaI.TotalF }}</td>
+			          <td>{{ NotaI.importeNC }}</td>
+			          <td>{{ NotaI.importeivaNC }}</td>
+			          <td>{{ NotaI.importeisrNC }}</td>
+			          <td>{{ NotaI.TotalNC }}</td>
 
 			        </tr>
 			      </table>
 			</div>
-			
+
 			<div class="col-md-6">
 			      <table style="max-height: auto;
 							    overflow-y: auto; 
 							    overflow-x: auto;
 							    width: 100%; background: #edebeb ">
 			        <tr style="background-color:#E9E9E9;">
-			          <th colspan="12" class="text-center"><h4>Total Nota de Credito</h4></th>
+			          <th colspan="12" class="text-center"><h4>Total Factura</h4></th>
 			        </tr>
 			        <tr style="background-color:#F0FFFF">
 			          <th>Factura</th>
@@ -209,7 +209,7 @@
 		<div class="row">
 
 			<div class="col-md-6">
-					<H2><strong>Total a Pagar:</strong></H2>
+					<H2><strong>Total a Pagar:{{NotaI.TotalF | currency}}</strong></H2>
 			</div>
 			
 		</div><br><br>
