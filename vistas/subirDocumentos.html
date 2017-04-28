@@ -8,7 +8,7 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="">Selecciona unidad</label>
-              <select  class="form-control" ng-options="quien.id as quien.nombre for quien in unidades" ng-model="digitales.unidad" name="unidad" id="unidad">
+              <select  class="form-control" ng-options="quien.UnidadClave as quien.Nombre for quien in unidades" ng-model="digitales.unidad" name="unidad" id="unidad">
                 <option value="">Selecciona</option>
 
               </select>
@@ -36,6 +36,12 @@
           <div class="col-md-2" style="margin-top:25px">
               <button type="submit" name="button" class="btn btn-primary btn-block">Subir Documento</button>
           </div>
+        </div>
+        <div class="row" ng-show="mensaje">
+          <div class="col-md-12">
+            <label style="width:100%" class="alert alert-success">{{mensaje}}</label>
+          </div>
+
         </div>
     </form>
 </div>
