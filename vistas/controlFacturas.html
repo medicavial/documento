@@ -71,10 +71,10 @@
             <button  ng-click="enviaFolios()" ng-disabled="selectedRows.length == 0" id="boton1" class="btn btn-primary"> Acepta Folios a Pago</button>
         </div>
         <div class="col-sm-3 col-md-3">
-            <!-- <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->
+            <button  ng-click="enviaxCorreo()" ng-disabled="selectedRows.length == 0" id="boton1" class="btn btn-warning"> Envia a SAFE DATA</button>
         </div>
         <div class="col-sm-3 col-md-3">
-           <!--  <button type="button" class="btn btn-success btn-block" ng-click="generar()">Generar</button> -->
+            <button  ng-click="rechazaFactura()" ng-disabled="selectedRows.length == 0" id="boton1" class="btn btn-danger"> Rechazar Factura</button>
         </div>
     </div> 
     <br>
@@ -86,48 +86,23 @@
   <div class="modal-dialog">
     <div class="modal-content">
       <div class="modal-header">
-        <h4 class="modal-title" id="myModalLabel">Se generaron {{numerocorrectos}} de {{total}} folios</h4>
+        <h3 class="modal-title" id="myModalLabel">Rechazo de Factura <strong>{{ folioRechazado }}</strong></h3>
       </div>
       <div class="modal-body">
-           <div class="row">
-                <div class="col-md-12 text-center">
-                    <div class="alert alert-warning" ng-show="numerocorrectos > compresos" role="alert">
-                        Solo se generaran {{compresos}} folios validos para no sobrepasar el peso maximo permitido por Qualitas
-                    </div>
-                    <br>
-                    <p>¿Deseas Generar el archivo de los folios completos?</p>
-                    <button type="button" class="btn btn-success" ng-click="generaarchivos()">Descargar Archivos</button>
-                </div>
-           </div>    
+        <h3>** ¿Cual es el motivo de tu rechazo? **</h3>
+          <div class="row">
+            <div class="col-md-12">
+            
+              <label for="descripcion">Observación</label>
+              <textarea name="descripcion" id="descripcion" class="form-control " ng-model="datos.observacion" rows="5" ng-disabled="editafactura" mayusculas required></textarea>
+              
+            </div>
+          </div>    
            <hr>
-           <div class="text-center">
-                <p>Detalle de archivos no generados por falta de archivo(s)</p>
-           </div>
-           <div id="tablaincorrectos">
-                <table class="table">
-                  <thead>
-                    <tr>
-                      <th>Folio QUA</th>
-                      <th>Folio Sistema</th>
-                      <th>Reporte</th>
-                      <th>Poliza</th>
-                      <th>Lesionado</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr ng-repeat="dato in incorrectos">
-                      <td>{{dato.folioElectronico}}</td>
-                      <td>{{dato.folioSistema}}</td>
-                      <td>{{dato.Reporte}}</td>
-                      <td>{{dato.Poliza}}</td>
-                      <td>{{dato.Lesionado}}</td>
-                    </tr>
-                  </tbody>
-                </table>
-           </div>
       </div>
       <div class="modal-footer text-center">
-            <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar Ventana</button>
+            <button  ng-click="enviaRechazo()" class="btn btn-primary"> Envia Rechazo </button>
+            <button type="button" class="btn btn-success" data-dismiss="modal">Cerrar Ventana </button>
       </div>
     </div>
   </div>
