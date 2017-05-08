@@ -856,6 +856,31 @@ $scope.subeXMLInd = function(idx,$files){
                                     $scope.detalles[idx].tasa = courses.Comprobante.Impuestos.Traslados.Traslado._tasa;
                                     $scope.detalles[idx].usuarioentrega = Number($rootScope.id);
                                     $scope.detalles[idx].tipoorden = 2;
+                                    if(courses.Comprobante.Impuestos.Traslados == undefined){
+
+                                        $scope.detalles[idx].iva = '';
+                                        $scope.detalles[idx].importeiva = '';
+
+                                    }else{
+
+                                        $scope.detalles[idx].iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                        $scope.detalles[idx].importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+
+                                    }
+
+                                    if (courses.Comprobante.Impuestos.Retenciones == undefined) {
+
+                                        $scope.detalles[idx].isr = '';
+                                        $scope.detalles[idx].importeisr = '';
+
+
+                                    }else{
+
+
+                                        $scope.detalles[idx].isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
+                                        $scope.detalles[idx].importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+
+                                    }
                                     $scope.detalles[idx].elimina = true;
                                     $scope.btndelete = true;
 
@@ -934,7 +959,7 @@ console.log($scope.OPago );
 
             $scope.borratemporales();
             swal("ok","Se Genero una Orden de Pago","success");
-            location.reload();
+            // location.reload();
 
 
         }).error( function (data){

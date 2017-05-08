@@ -285,8 +285,6 @@
                <th>Total</th>
                <th>Empresa</th>
                <th>Unidad</th>
-
-               <th>Fecha Recepcion</th>
                <th>Tipo Tramite</th>
                <th>Subtipo Tramite</th>
 
@@ -304,15 +302,13 @@
               <td>{{detalle.foliointerno}}</td>
               <td>{{detalle.serie}}</td>
               <td>{{detalle.foliofiscal}}</td>
-              <td>{{detalle.PAS_folio}}</td>
+              <td>{{detalle.DOC_folio}}</td>
               <td>{{detalle.FLD_etapa}}</td>
               <td>{{detalle.FLD_numeroEntrega}}</td>
 
               <td>{{detalle.total}}</td>
               <td>{{detalle.EMP_nombrecorto}}</td>
               <td>{{detalle.UNI_nombrecorto}}</td>
-
-              <td>{{detalle.fechaRecepcion}}</td>
 
               <td><select  class="form-control"  id="$index" ng-model="detalle.tipotramite" ng-options="tipotramite.id as tipotramite.tipo for tipotramite in tipostramites" ng-disabled="editafactura"  ng-change="subtipotramite($index, detalle.tipotramite)" required>
 			            <option value=""> Tipo Tramite </option>
@@ -345,43 +341,8 @@
          </tbody>
       </table>
 
-            <tr>
-<!--                <td ng-show="subefactura"></td>
-               <td ng-show="subefactura"></td> -->
-               <td></td>
-               <td><h3><strong>Importe</h3></strong></td>
-               <td><h3><strong>{{ totalimporte | currency }}</h3></strong></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td><h3><strong>Subtotal</h3></strong></td>
-               <td><h3><strong>{{ resultado | currency }} </strong></h3></td>
-               <td><h3><strong>{{ totales  | currency }} </strong></h3></td>
-			   <td></td>
-			   <td></td>
-            </tr>
-<!--             <tr ng-repeat="retencion in retenciones">
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td></td>
-               <td>
-                <select class="form-control"  ng-model="retencion.impuest" ng-options="impuesto.id as impuesto.nombre for impuesto in impuestos" ng-change="calculaImpuesto($index,retencion.impuest)">
-                   <option value="">Impuesto</option>
-                </select>
-                </td>
-               <td><h3><strong>{{ retencion.totaliva  | currency }} </strong></h3></td>
-              <td><h3><strong>{{ retencion.totalivamanual  | currency }} </strong></h3></td>
-            </tr> -->
-
          </tbody>
       </table>
-
 
 
 </div>
