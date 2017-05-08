@@ -18,6 +18,8 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
     $scope.cedula='';
     $scope.verAMedico = false;
     $scope.sinFactura=0;
+    $scope.pattern='';
+    //$scope.secuencia='/19[789]\d|20[01]\d/g';
 
     loading.despedida();
 
@@ -351,7 +353,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                 console.log($scope.captura.Ajustador);
 
                 //verificamos cliente para condiciones de texto
-                if ($scope.datos.cliente == 19 && $scope.sinCedula==true) {
+                if ($scope.datos.cliente == 19) {
 
                     $scope.SiniestroMin = 11;
                     $scope.SiniestroMax = 11;
@@ -366,6 +368,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                     $scope.FolioElecMax = 12;
                     $scope.validaCobertura($scope.captura.RIEClave);
 
+
                 }else{
 
                     $scope.SiniestroMin = '';
@@ -377,8 +380,8 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                     $scope.ReporteMin = '';
                     $scope.ReporteMax = 100;
 
-                    $scope.FolioElecMin = '';
-                    $scope.FolioElecMax = 100;
+                    $scope.FolioElecMin = 12;
+                    $scope.FolioElecMax = 12;
 
                 }
 
@@ -1194,8 +1197,8 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
               $scope.ReporteMin = '';
               $scope.ReporteMax = 100;
 
-              $scope.FolioElecMin = '';
-              $scope.FolioElecMax = 100;
+              $scope.FolioElecMin = 12;
+              $scope.FolioElecMax = 12;
               if($scope.captura.Reporte.length==11){
                   $scope.cargador1=true;
                   $http.get('http://172.17.10.15/apimv/public/api/qualitas/reporte/' + $scope.captura.Reporte).success(function (data){
