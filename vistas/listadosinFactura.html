@@ -2,9 +2,13 @@
 	<div ng-show="recibe">
 
 	<div class="titulos">
-		<a href="#/pagos" class="icon-arrow-left"></a>
+		<a href="#/listadosinFactura" class="icon-arrow-left"></a>
 		<h1>{{tituloR}}</h1>
 	</div>
+
+  <div class="row">
+    <h5 class="text-danger"><strong>*** PARA PODER SUBIR UNA FACTURA, DEBES SELECCIONAR PRIMERO LA UNIDAD ***</strong></h5>
+  </div>
 
 	<div class="row">
 		
@@ -44,21 +48,14 @@
 	<br>
 	
 	<div class="row">
-		<div class="col-md-2">
+<!-- 		<div class="col-md-2">
 				<select class="form-control"  ng-model="unidad" ng-change="filtra()" ng-options="unidad.id as unidad.nombre for unidad in unidades">
 					<option value="">Unidad</option>
 				</select>
-		</div>
+		</div> -->
 		<div class="col-md-2">
 			<select class="form-control"  ng-model="unidad" ng-options="unidad as unidad.nombre for unidad in unidades" ng-change="filtra()">
 				<option value="">Unidad</option>
-			</select>
-		</div>
-		<div class="col-md-2">
-			<select class="form-control"  ng-model="tipo" ng-change="filtra()">
-				<option value="">Fax Y Original</option>
-				<option value="fax">Fax</option>
-				<option value="original">Original</option>
 			</select>
 		</div>
 		<div class="col-md-2">
@@ -114,12 +111,13 @@
                <th>Folio</th>
                <th>Etapa</th>
                <th>Entrega</th>
+               <th>Subtotal</th>
+               <th>Total</th>
                <th>Empresa</th>
                <th>Unidad</th>
-               <th>Fecha Recepción</th>
                <th>Triage</th>
-               <th></th>
-               <th></th>
+               <th>Tipo</th>
+               <th>Subtipo</th>
 
             </tr>
          </thead>
@@ -127,12 +125,13 @@
 
             <tr ng-repeat="detalle in detalles">
 
-              <td>{{detalle.PAS_folio}}</td>
+              <td>{{detalle.DOC_folio}}</td>
               <td>{{detalle.FLD_etapa}}</td>
               <td>{{detalle.FLD_numeroEntrega}}</td>
+              <td><input type="text" ng-model="detalle.Subtotal" class="form-control" ng-blur="calculaSubtotal()"></td>
+              <td><input type="text" ng-model="detalle.Total" class="form-control" ng-blur="calculaSubtotal()"></td>
               <td>{{detalle.EMP_nombrecorto}}</td>
               <td>{{detalle.UNI_nombrecorto}}</td>
-              <td>{{detalle.FLD_fechaRecep}}</td>
               <td>{{detalle.Triage}}</td>
               <td><select  class="form-control"  id="$index" ng-model="detalle.tipotramite" ng-options="tipotramite.id as tipotramite.tipo for tipotramite in tipostramites" ng-disabled="editafactura"  ng-change="subtipotramite($index, detalle.tipotramite)" required>
                   <option value=""> Tipo Tramite </option>
@@ -144,6 +143,18 @@
         </td>
             </tr>
             <tr>
+
+              <td></td>
+              <td></td>
+              <td><h3>Total:</h3></td>
+              <td><h3><STRONG>{{ PagoG.SubtotalS | currency }}</STRONG></h3></td>
+              <td><h3><STRONG>{{ PagoG.TotalS | currency }}</STRONG></h3></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+              <td></td>
+            </tr>
 
          </tbody>
       </table>
@@ -234,7 +245,7 @@
       </table>
 
       </div>-->
-      <br><br><br>
+      <br><br><br><br>
       <div class="row">
           <div class="col-md-3">
 

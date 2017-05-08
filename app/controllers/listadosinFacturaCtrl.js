@@ -24,6 +24,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         $scope.empresas();
         $scope.Altaunidades();
         $scope.productos();
+        $scope.PagoG = [];
 
         $scope.filtrado = {
             Unidad : '',
@@ -84,6 +85,12 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
 
         }
 
+        $scope.detalles = {
+
+            Subtotal: 0.00,
+            Total: 0.00
+        }
+
         $scope.archivos = [];
 
     }
@@ -123,6 +130,30 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
             $scope.unidades = data;
 
          });
+    }
+
+    $scope.calculaSubtotal = function(){
+
+        var suma = 0;
+        var suma1 = 0;
+
+      
+
+        for (var i = 0; i < $scope.detalles.length; i++) {
+
+        
+            suma+= parseFloat($scope.detalles[i].Subtotal);
+            var mm = suma.toFixed(2);
+            $scope.PagoG.SubtotalS = mm;
+
+
+            suma1+= parseFloat($scope.detalles[i].Total);
+            var mm1 = suma1.toFixed(2);
+            $scope.PagoG.TotalS = mm1;
+
+
+        }
+
     }
 
     $scope.fRegistro = function(){
@@ -186,7 +217,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         selectedItems: $scope.selectos,
         filterOptions: $scope.filterOptions,
         columnDefs: [
-                    { field:'PAS_folio', displayName:'Folio', width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
+                    { field:'DOC_folio', displayName:'Folio', width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
                     { field:'FLD_etapa', displayName:'Etapa', width: 120 },
                     { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
                     { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
@@ -203,7 +234,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
                     { field:'ARO_porRecibir', width: 100, visible:false },
                     { field:'FLD_AROent', width: 100, visible:false },
                     { field:'USU_ent', width: 100, visible:false },
-                    { field:'UNI_claveint', displayName:'claveunidad',width: 100, visible:false }
+                    { field:'UNI_claveint', displayName:'claveunidad',width: 100}
         ]
     };
     $scope.$on('ngGridEventRows', function (newFilterText){
@@ -449,18 +480,18 @@ $scope.subeXML = function($files){
           $scope.upload = $upload.upload({
                 url: api+'OPFactura/upload/'+$rootScope.user, //upload.php script, node.js route, or servlet url
                 method: 'POST',
-                data: $scope.PagoM,
+                data: $scope.PagoG,
                 file: file // or list of files ($files) for html5 only
         }).success(function (data){
 
-            leexml.getxmltemporal($rootScope.user,data.archivo).success(function(data){
-            courses  = x2js.xml_str2json(data);
+               leexml.getxmltemporal($rootScope.user,data.archivo).success(function(data){
+                courses  = x2js.xml_str2json(data);
 
-                FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){
+                FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){     
                     if (data[0].count != 0){
 
                         swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
-                        $scope.borratemporales();
+                        $scope.eliminaxml();
                         $scope.PagoG.importe = '';
                         $scope.PagoG.total = '';
                         $scope.PagoG.foliofiscal = '';
@@ -469,54 +500,90 @@ $scope.subeXML = function($files){
                         $scope.PagoG.emisor = '';
                         $scope.PagoG.descuento = '';
                         $scope.PagoG.serie = '';
+                        $scope.PagoG.rfcemisor = '';
                         $scope.PagoG.elimina = false;
 
                     }
                 });
-                // FacturaNormal.validaUnidad($scope.unidad).success(function (data){
-                //         if (data.length > 0){
+                FacturaNormal.validaUnidad($scope.unidad.id).success(function (data){ 
+                        if (data.length > 0){
 
-                //             $scope.PagoG.rfcemisor = data[0].rfc;
-                //             $scope.PagoG.unidad = data[0].unidad;
+                            $scope.PagoG.rfcemisor = data[0].rfc;
+                            $scope.PagoG.unidad = data[0].unidad;
 
-                //         if ($scope.PagoG.rfcemisor == courses.Comprobante.Emisor._rfc){
+                        if ($scope.PagoG.rfcemisor == courses.Comprobante.Emisor._rfc){
 
                             $scope.PagoG.serie = courses.Comprobante._serie;
                             $scope.PagoG.foliointerno = courses.Comprobante._folio;
-                            $scope.PagoG.subtotal = courses.Comprobante._subTotal;
-                            $scope.PagoG.total = courses.Comprobante._total;
+
+                            var subglobal = courses.Comprobante._subTotal;
+                            var subglobal1 = parseFloat(subglobal);
+                            var subglobal2 = subglobal1.toFixed(2);
+                            $scope.PagoG.subtotal = subglobal2;
+
+                            var totalglobal = courses.Comprobante._total;
+                            var totalglobal1 = parseFloat(totalglobal);
+                            var totalglobal2 = totalglobal1.toFixed(2);
+                            $scope.PagoG.total = totalglobal2;
+
                             $scope.PagoG.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
                             $scope.PagoG.fechaemision = courses.Comprobante._fecha;
                             $scope.PagoG.descuento = courses.Comprobante._descuento;
                             $scope.PagoG.emisor = courses.Comprobante.Emisor._nombre;
                             $scope.PagoG.rfcemisor = courses.Comprobante.Emisor._rfc;
-                            $scope.PagoG.impuesto = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                            $scope.PagoG.tasa = courses.Comprobante.Impuestos.Traslados.Traslado._tasa;
+                            if(courses.Comprobante.Impuestos.Traslados == undefined){
+
+                                $scope.PagoG.iva = '';
+                                $scope.PagoG.importeiva = '';
+
+                            }else{
+
+                                $scope.PagoG.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                $scope.PagoG.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+
+                            }
+
+                            if (courses.Comprobante.Impuestos.Retenciones == undefined) {
+
+                                $scope.PagoG.isr = '';
+                                $scope.PagoG.importeisr = '';
+
+
+                            }else{
+
+
+                                $scope.PagoG.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
+                                $scope.PagoG.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+
+                            }
                             $scope.PagoG.usuarioentrega = Number($rootScope.id);
                             // $scope.PagoG.areaentrega =Number(areaEntrega);
                             // $scope.PagoG.usuariorecibe =Number(usuarioRecibe);
                             // $scope.PagoG.arearecibe =Number(areaRecibe);
                             // $scope.PagoG.folio = data.Folios;
-                            $scope.PagoG.tipoorden = 2;
+                            $scope.PagoG.tipoorden = 4;
                             $scope.btndelete = true;
+                          
+                        }else{
 
-                    //     }else{
+                            swal('Upss','Tu Factura no coincide con el Emisor','error');
 
-                    //         swal('Upss','Tu Factura no coincide con el Emisor','error');
+                            // var archivo = $scope.datos.leexml;
+                           $scope.eliminaxml();
 
-                    //         // var archivo = $scope.datos.leexml;
-                    //         // $scope.elimina_ahora(archivo);
+                        }
+                    }else{
 
-                    //     }
-                    // }else{
+                      swal("Upss", "El proveedor no se encuentra en el sistema, Solicitalo al area de Sistemas", "error");
+                      $scope.eliminaxml();
 
-                    //   swal("Upss", "El proveedor no se encuentra en el sistema, Solicitalo al area de Sistemas", "error");
+                    }
 
-                    // }
-
-                // });
+                });
 
             });
+
+            // }
 
                 $scope.archivos = data.ruta;
 
@@ -533,12 +600,9 @@ $scope.subeXML = function($files){
 
                alert('La extensión debe ser xml');
         }
-
 }
 
 $scope.enviaOrdenPagoGlo = function(){
-
-
 
     $scope.OPago = {
 
@@ -546,13 +610,30 @@ $scope.enviaOrdenPagoGlo = function(){
         archivos : $scope.archivos,
         usucarpeta: $rootScope.user,
         factura: $scope.PagoG,
-        subtotaltotal: $scope.subtotalPago,
-        iva: $scope.ivaPago,
-        total: $scope.totalPago,
+        subtotaltotal: $scope.PagoG.subtotal,
+        // importeiva: $scope.PagoG.importeiva,
+        // importeisr: $scope.PagoG.importeisr,
+        total: $scope.PagoG.total,
         usuario: $rootScope.id,
-        unidad: $scope.unidad
+        unidad: $scope.PagoG.unidad
 
     }
+
+    console.log($scope.OPago.subtotaltotal);
+    console.log( $scope.PagoG.SubtotalS);
+
+    if ($scope.OPago.subtotaltotal !=  $scope.PagoG.SubtotalS){
+
+       swal("Upss","El Monto de los Pagos no Coincide con el Subtotal de la Factura","error");
+
+    }else
+
+    if ($scope.OPago.total != $scope.PagoG.TotalS){
+
+       swal("Upss","El Monto de los Pagos no Coincide con el Total de la Factura","error");
+
+    }else{
+
 console.log($scope.OPago );
 
         var areaRecibe = 6;
@@ -573,6 +654,7 @@ console.log($scope.OPago );
                 alert('Error, Intentalo de Nuevo');
 
             });
+    }
 
 }
 
