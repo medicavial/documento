@@ -703,8 +703,12 @@
 					<div class="col-md-6">
 						<div class="form-group">
 						    <label for="RegCompania">Folio Electronico</label>
-
-						    <input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-pattern="/[a-zA-Z0-9]{12,12}/"  ng-required="datos.cliente == 19&&sinCedula==true" placeholder="RegCompania" capitalize ng-disabled="datos.cliente == 19&&sinCedula==true">
+								<div ng-if="datos.cliente == 19">
+							    <input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-pattern="/[a-zA-Z0-9]{12,12}/"  ng-required="datos.cliente == 19&&sinCedula==true" placeholder="RegCompania" capitalize ng-disabled="datos.cliente == 19&&sinCedula==true">
+								</div>
+								<div ng-if="datos.cliente != 19">
+									<input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-required="datos.cliente == 19&&sinCedula==true" placeholder="RegCompania" capitalize ng-disabled="datos.cliente == 19&&sinCedula==true">
+								</div>
 						    <div ng-messages="capturaForm.RegCompania.$error" class="text-danger">
 
 								<div ng-message="required">Campo obligatorio.</div>

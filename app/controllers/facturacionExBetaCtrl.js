@@ -380,8 +380,8 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                     $scope.ReporteMin = '';
                     $scope.ReporteMax = 100;
 
-                    $scope.FolioElecMin = 12;
-                    $scope.FolioElecMax = 12;
+                    $scope.FolioElecMin = '';
+                    $scope.FolioElecMax = 100;
 
                 }
 
