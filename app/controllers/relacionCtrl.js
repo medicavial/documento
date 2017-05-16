@@ -122,7 +122,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
             unidad: '',
             proveedor: ''
 
-
          }
 
     }

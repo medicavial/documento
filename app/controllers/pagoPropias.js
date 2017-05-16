@@ -1,4 +1,4 @@
-function pagoPropiasCtrl($scope, $rootScope, loading,$filter,$location,$http,checkFolios,api, find, $upload, leexml, pagoPropias, xeditable){
+function pagoPropiasCtrl($scope, $rootScope, loading,$filter,$location,$http,checkFolios,api, find, $upload, leexml, pagoPropias){
 
     loading.despedida();
 
@@ -97,5 +97,5 @@ function pagoPropiasCtrl($scope, $rootScope, loading,$filter,$location,$http,che
 
 }
 
-pagoPropiasCtrl.$inject = ['$scope', '$rootScope',  'loading','$filter','$location','$http','checkFolios','api','find', '$upload', 'leexml', 'pagoPropias', 'xeditable'];
+pagoPropiasCtrl.$inject = ['$scope', '$rootScope',  'loading','$filter','$location','$http','checkFolios','api','find', '$upload', 'leexml', 'pagoPropias'];
 app.controller('pagoPropiasCtrl',pagoPropiasCtrl);
