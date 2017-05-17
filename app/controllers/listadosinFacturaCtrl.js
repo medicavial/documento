@@ -4,6 +4,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
 
         $rootScope.area = 6;
         $scope.tituloR = "Ordenes de Pago sin Factura";
+        $scope.listado = [];
 
 
         $scope.datosRegistro = {
@@ -89,6 +90,11 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
 
             Subtotal: 0.00,
             Total: 0.00
+        }
+
+        $scope.listado ={
+
+            serie: ''
         }
 
         $scope.archivos = [];
@@ -184,6 +190,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
     ///filtros
     $scope.selectos = [];
     $scope.selectedRows = [];
+    $scope.subeFactInd = true;
 
     $scope.filterOptions = {
         filterText: '',
@@ -197,9 +204,10 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
     };
 
     var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
-
+    
     $scope.onDblClickRow = function(row){
-      $location.path('/detallerelacion/'+row.entity.relacion);
+      // $location.path('/detallerelacion/'+row.entity.relacion);
+      console.log(row.entity);
 
     };
 
@@ -216,15 +224,18 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         selectWithCheckboxOnly: false,
         selectedItems: $scope.selectos,
         filterOptions: $scope.filterOptions,
+        rowTemplate: rowTempl,
         columnDefs: [
-                    { field:'DOC_folio', displayName:'Folio', width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
+                    { field:'Folio',  displayName:'Folio', width: 150, cellTemplate: '<label class="btn btn-primary" ng-disabled="subeFactInd != 1 || selectos.length == 0">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXMLInd(row.entity.id,$files)"></label>'},
+                    { field:'foliofiscal', displayName:'Folio Fiscal', width: 170 },
+                    { field:'total', displayName:'Total', width: 120 },
+                    { field:'DOC_folio', displayName:'Folio', width: 120},
                     { field:'FLD_etapa', displayName:'Etapa', width: 120 },
-                    { field:'FLD_numeroEntrega', displayName:'Cantidad', width: 100 },
+                    { field:'FLD_numeroEntrega', displayName:'Entrega', width: 100 },
                     { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
                     { field:'UNI_nombrecorto', displayName:'Unidad', width: 200 },
                     { field:'Triage', width: 120 },
                     { field:'FLD_fechaent', displayName:'FechaEntrega', width: 100, visible:true },
-                    { field:'', displayName:'DocRevision', width: 100 },
                     { field:'DOC_claveint', width: 100, visible:false },
                     { field:'FLD_claveint', width: 100, visible:false },
                     { field:'FLD_AROrec', width: 100, visible:false },
@@ -235,6 +246,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
                     { field:'FLD_AROent', width: 100, visible:false },
                     { field:'USU_ent', width: 100, visible:false },
                     { field:'UNI_claveint', displayName:'claveunidad',width: 100}
+
         ]
     };
     $scope.$on('ngGridEventRows', function (newFilterText){
@@ -243,10 +255,10 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         $scope.exportables = [];
         allChecked = true;
 
-        angular.forEach(filas , function(item){
-            $scope.exportables.push(item.entity);
-        });
-        // if (!$scope.gridOptions.$gridScope.checker)
+        // angular.forEach(filas , function(item){
+        //     $scope.exportables.push(item.entity);
+        // });
+        // if (!$scope.gridOptions.$gridScope.checker){ console.log('hola');}
         // $scope.gridOptions.$gridScope.checker = {};
         // $scope.gridOptions.$gridScope.checker.checked = allChecked;
 
@@ -687,31 +699,33 @@ $scope.eliminaxmlGlo = function(){
 
 $scope.IngresaFacturaInd = function(){
 
-    console.log($scope.selectos);
+    $scope.subeFactInd = 1;
 
-        $scope.relaciones = {
+    $scope.relaciones = {
             tipofactura: 1
 
     }
 
     if ($scope.unidad == '' || $scope.unidad == undefined) {
 
-        alert('Debes Realizar busqueda x Unidad');
-        location.reload();
+        swal("Upss","Debes Seleccionar una Unidad para subir tu Factura","error");
+        $scope.listado = [];
+        $scope.subeFactInd = 0;
     };
 
-        $scope.recibe = false;
-        $scope.subeFactInd = true;
-        $scope.subefactura = true;
+    // $scope.recibe = false;
+    // $scope.subeFactInd = true;
+    // $scope.subefactura = true;
 
-        $scope.detalles = $scope.selectos;
+    // $scope.detalles = $scope.selectos;
 
-                $scope.relacionesFol= [];
-        for (var i = 0; i < $scope.selectos.length; i++){
+    $scope.relacionesFol= [];
+    for (var i = 0; i < $scope.selectos.length; i++){
 
-             $scope.relacionesFol.push($scope.selectos[i]);
 
-        };
+         $scope.relacionesFol.push($scope.selectos[i]);
+
+    };
         // console.log($scope.relacionesFol[0].claveunidad);
         // find.unidadesref($scope.relacionesFol[0].claveunidad).success( function (data) {
 
@@ -719,50 +733,52 @@ $scope.IngresaFacturaInd = function(){
 
         if ($scope.relacionesFol.length > 0){
 
-            console.log($scope.relacionesFol);
 
-            $scope.iniciorelacion = false;
-            $scope.finrelacion = true;
-            $scope.tituloFinRelacion = "Relación de Folios";
 
-            console.log($scope.relacionesFol);
+            // console.log($scope.relacionesFol);
 
-            $scope.detalles = $scope.relacionesFol;
-            $scope.referencia = $scope.relacionesFol[0].referencia;
+            // $scope.iniciorelacion = false;
+            // $scope.finrelacion = true;
+            // $scope.tituloFinRelacion = "Relación de Folios";
 
-            var suma = 0;
-            var suma1 = 0;
-            var suma2 = 0;
-            var suma3 = 0;
-            var suma4 = 0;
-            for (var i = 0; i < $scope.detalles.length; i++){
+            // console.log($scope.relacionesFol);
 
-                if ($scope.detalles[i].total != ''){
-                    console.log($scope.detalles[i].total);
-                    var valor2 = $scope.detalles[i].total;
-                    var numero2 = valor2.replace(",",'');
-                    suma2 += parseFloat(numero2);
-                    var sumas2 = suma2.toFixed(2);
-                    $scope.totalimporte= sumas2;
-                }
+            // $scope.detalles = $scope.relacionesFol;
+            // $scope.referencia = $scope.relacionesFol[0].referencia;
 
-                if ($scope.detalles[i].subtotal!= ''){
-                    var valor3 = $scope.detalles[i].subtotal;
-                    var numero3 = valor3.replace(",",'');
-                    suma3 += parseFloat(numero3);
-                    var sumas3 = suma3.toFixed(2);
-                    $scope.totalsubtotal= sumas3;
-                }
+            // var suma = 0;
+            // var suma1 = 0;
+            // var suma2 = 0;
+            // var suma3 = 0;
+            // var suma4 = 0;
+            // for (var i = 0; i < $scope.detalles.length; i++){
 
-                if ($scope.detalles[i].tasa!= ''){
-                    var valor4 = $scope.detalles[i].tasa;
-                    var numero4 = valor4.replace(",",'');
-                    suma4 += parseFloat(numero4);
-                    var sumas4 = suma4.toFixed(2);
-                    $scope.totaltasa= sumas4;
-                }
+            //     if ($scope.detalles[i].total != ''){
+            //         console.log($scope.detalles[i].total);
+            //         var valor2 = $scope.detalles[i].total;
+            //         var numero2 = valor2.replace(",",'');
+            //         suma2 += parseFloat(numero2);
+            //         var sumas2 = suma2.toFixed(2);
+            //         $scope.totalimporte= sumas2;
+            //     }
 
-            }
+            //     if ($scope.detalles[i].subtotal!= ''){
+            //         var valor3 = $scope.detalles[i].subtotal;
+            //         var numero3 = valor3.replace(",",'');
+            //         suma3 += parseFloat(numero3);
+            //         var sumas3 = suma3.toFixed(2);
+            //         $scope.totalsubtotal= sumas3;
+            //     }
+
+            //     if ($scope.detalles[i].tasa!= ''){
+            //         var valor4 = $scope.detalles[i].tasa;
+            //         var numero4 = valor4.replace(",",'');
+            //         suma4 += parseFloat(numero4);
+            //         var sumas4 = suma4.toFixed(2);
+            //         $scope.totaltasa= sumas4;
+            //     }
+
+            // }
 
 
             // console.log($scope.detalles[1].tasa);
@@ -800,6 +816,8 @@ $scope.IngresaFacturaInd = function(){
 
 $scope.subeXMLInd = function(idx,$files){
 
+    console.log($scope.selectos);
+
     var aux = $files[0].name.split('.');
 
     if(aux[aux .length-1] == 'xml' || aux[aux .length-1] == 'XML'){
@@ -814,11 +832,9 @@ $scope.subeXMLInd = function(idx,$files){
                         file: file // or list of files ($files) for html5 only
                   }).success(function (data){
 
-                    for (var ii = 0; ii < data.archivo.length; ii++){
+                    for (var idx = 0; idx < $scope.selectos.length; idx++){
 
-                        console.log(data.archivo[ii]);
-
-                        leexml.getxmltemporal($rootScope.user,data.archivo[ii]).success(function(data){
+                        leexml.getxmltemporal($rootScope.user,data.archivo[idx]).success(function(data){
                         courses  = x2js.xml_str2json(data);
 
                            FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){
@@ -826,15 +842,15 @@ $scope.subeXMLInd = function(idx,$files){
 
                                     swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
                                     $scope.borratemporales();
-                                    $scope.detalles[idx].importe = '';
-                                    $scope.detalles[idx].total = '';
-                                    $scope.detalles[idx].foliofiscal = '';
-                                    $scope.detalles[idx].fechaemision = '';
-                                    $scope.detalles[idx].descuento = '';
-                                    $scope.detalles[idx].emisor = '';
-                                    $scope.detalles[idx].descuento = '';
-                                    $scope.detalles[idx].serie = '';
-                                    $scope.detalles[idx].elimina = false;
+                                    $scope.selectos[idx].importe = '';
+                                    $scope.selectos[idx].total = '';
+                                    $scope.selectos[idx].foliofiscal = '';
+                                    $scope.selectos[idx].fechaemision = '';
+                                    $scope.selectos[idx].descuento = '';
+                                    $scope.selectos[idx].emisor = '';
+                                    $scope.selectos[idx].descuento = '';
+                                    $scope.selectos[idx].serie = '';
+                                    $scope.selectos[idx].elimina = false;
                                     $scope.btndelete = false;
 
                                   }
@@ -843,58 +859,60 @@ $scope.subeXMLInd = function(idx,$files){
 
                                     var suma1 = 0;
 
-                                    $scope.detalles[idx].serie = courses.Comprobante._serie;
-                                    $scope.detalles[idx].foliointerno = courses.Comprobante._folio;
-                                    $scope.detalles[idx].subtotal = courses.Comprobante._subTotal;
-                                    $scope.detalles[idx].total = courses.Comprobante._total;
-                                    $scope.detalles[idx].foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
-                                    $scope.detalles[idx].fechaemision = courses.Comprobante._fecha;
-                                    $scope.detalles[idx].descuento = courses.Comprobante._descuento;
-                                    $scope.detalles[idx].emisor = courses.Comprobante.Emisor._nombre;
-                                    $scope.detalles[idx].rfcemisor = courses.Comprobante.Emisor._rfc;
-                                    $scope.detalles[idx].impuesto = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                    $scope.detalles[idx].tasa = courses.Comprobante.Impuestos.Traslados.Traslado._tasa;
-                                    $scope.detalles[idx].usuarioentrega = Number($rootScope.id);
-                                    $scope.detalles[idx].tipoorden = 2;
+                                    console.log($scope.selectos[idx]);
+
+                                    if(courses.Comprobante._serie == undefined){ $scope.selectos[idx-1].serie = ''; }else{ $scope.selectos[idx-1].serie = courses.Comprobante._serie };
+                                    $scope.selectos[idx-1].foliointerno = courses.Comprobante._folio;
+                                    $scope.selectos[idx-1].subtotal = courses.Comprobante._subTotal;
+                                    $scope.selectos[idx-1].total = courses.Comprobante._total;
+                                    $scope.selectos[idx-1].foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
+                                    $scope.selectos[idx-1].fechaemision = courses.Comprobante._fecha;
+                                    $scope.selectos[idx-1].descuento = courses.Comprobante._descuento;
+                                    $scope.selectos[idx-1].emisor = courses.Comprobante.Emisor._nombre;
+                                    $scope.selectos[idx-1].rfcemisor = courses.Comprobante.Emisor._rfc;
+                                    // $scope.selectos[idx-1].impuesto = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                    // $scope.selectos[idx-1].tasa = courses.Comprobante.Impuestos.Traslados.Traslado._tasa;
+                                    $scope.selectos[idx-1].usuarioentrega = Number($rootScope.id);
+                                    $scope.selectos[idx-1].tipoorden = 2;
                                     if(courses.Comprobante.Impuestos.Traslados == undefined){
 
-                                        $scope.detalles[idx].iva = '';
-                                        $scope.detalles[idx].importeiva = '';
+                                        $scope.selectos[idx-1].iva = '';
+                                        $scope.selectos[idx-1].importeiva = '';
 
                                     }else{
 
-                                        $scope.detalles[idx].iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                        $scope.detalles[idx].importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+                                        $scope.selectos[idx-1].iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                        $scope.selectos[idx-1].importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
 
                                     }
 
                                     if (courses.Comprobante.Impuestos.Retenciones == undefined) {
 
-                                        $scope.detalles[idx].isr = '';
-                                        $scope.detalles[idx].importeisr = '';
+                                        $scope.selectos[idx-1].isr = '';
+                                        $scope.selectos[idx-1].importeisr = '';
 
 
                                     }else{
 
 
-                                        $scope.detalles[idx].isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
-                                        $scope.detalles[idx].importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+                                        $scope.selectos[idx-1].isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
+                                        $scope.selectos[idx-1].importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
 
                                     }
-                                    $scope.detalles[idx].elimina = true;
+                                    $scope.selectos[idx-1].elimina = true;
                                     $scope.btndelete = true;
 
-                                    for (var i = 0; i < $scope.detalles.length; i++){
+                                    // for (var i = 0; i < $scope.selectos.length; i++){
 
-                                    var valor1 = $scope.detalles[i].total;
-                                    var numero1 = valor1.replace(",",'');
-                                    suma1 += parseFloat(numero1);
-                                    var sumas1 = suma1.toFixed(2);
-                                    $scope.totalimporte= sumas1;
+                                    // var valor1 = $scope.selectos[i].total;
+                                    // var numero1 = valor1.replace(",",'');
+                                    // suma1 += parseFloat(numero1);
+                                    // var sumas1 = suma1.toFixed(2);
+                                    // $scope.totalimporte= sumas1;
 
-                                    console.log($scope.totalimporte);
+                                    // console.log($scope.totalimporte);
 
-                                    }
+                                    // }
                                 // }else{
 
                                 //     swal('Upss','Tu Factura no coincide con el Emisor','error');
@@ -936,10 +954,10 @@ $scope.enviaOrdenPagoInd = function(){
 
     $scope.OPago = {
 
-        seleccionados : $scope.detalles,
+        seleccionados : $scope.selectos,
         archivos : $scope.archivos,
         usucarpeta: $rootScope.user,
-        factura: $scope.detalles,
+        factura: $scope.selectos,
         subtotaltotal: $scope.totalsubtotal,
         iva: $scope.totaltasa,
         total: $scope.totalimporte,

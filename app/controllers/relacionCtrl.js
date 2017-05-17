@@ -306,7 +306,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         columnDefs: [
                     { field:'Unidad',displayName:'Unidad', width: 200, pinned: true},
                     { field:'Proveedor',displayName:'Proveedor', width: 200, pinned: true},
-                    { field:'Folio', displayName:'Folio' , width: 120 , pinned: true, cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
+                    { field:'Folio', displayName:'Folio' , width: 120 , pinned: true},
                     { field:'total', width: 120, pinned: true  },
                     { field:'Etapa', width: 120, pinned: true },
                     { field:'Entrega', width: 80 , pinned: true},
