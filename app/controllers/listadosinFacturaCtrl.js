@@ -39,6 +39,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         $scope.subeFactInd = false;
         $scope.tipoTramite();
         $scope.borratemporales();
+        $scope.borratemporales2();
 
         $scope.PagoG = {
 
@@ -104,6 +105,13 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
     $scope.borratemporales = function(){
 
       find.borratemporales($rootScope.user).success(function (data){
+
+      });
+
+    }
+    $scope.borratemporales2 = function(){
+
+      find.borratemporales2($rootScope.user).success(function (data){
 
       });
 
@@ -203,11 +211,11 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         iEUrl: 'downloads/download_as_csv'
     };
 
-    var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
+    var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns  track by $index" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
     
     $scope.onDblClickRow = function(row){
       // $location.path('/detallerelacion/'+row.entity.relacion);
-      console.log(row.entity);
+      console.log(row);
 
     };
 
@@ -226,8 +234,8 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         filterOptions: $scope.filterOptions,
         rowTemplate: rowTempl,
         columnDefs: [
-                    { field:'Folio',  displayName:'Folio', width: 150, cellTemplate: '<label class="btn btn-primary" ng-disabled="subeFactInd != 1 || selectos.length == 0">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXMLInd(row.entity.id,$files)"></label>'},
-                    { field:'foliofiscal', displayName:'Folio Fiscal', width: 170 },
+                    { field:'Folio',  displayName:'Folio', width: 150, cellTemplate: '<label class="btn btn-primary" ng-disabled="subeFactInd != 1 || selectos.length == 0">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXMLInd(row,row.rowIndex,$files)"></label>'},
+                    { field:'foliofiscal', displayName:'Folio Fiscal', width: 200 },
                     { field:'total', displayName:'Total', width: 120 },
                     { field:'DOC_folio', displayName:'Folio', width: 120},
                     { field:'FLD_etapa', displayName:'Etapa', width: 120 },
@@ -814,14 +822,14 @@ $scope.IngresaFacturaInd = function(){
 
 }
 
-$scope.subeXMLInd = function(idx,$files){
+$scope.subeXMLInd = function(row,idx,$files){
 
     console.log($scope.selectos);
 
     var aux = $files[0].name.split('.');
 
     if(aux[aux .length-1] == 'xml' || aux[aux .length-1] == 'XML'){
-
+console.log($files);
                 for (var i = 0; i < $files.length; i++){
                  var file = $files[i];
                   var amt = 0;
@@ -832,25 +840,27 @@ $scope.subeXMLInd = function(idx,$files){
                         file: file // or list of files ($files) for html5 only
                   }).success(function (data){
 
-                    for (var idx = 0; idx < $scope.selectos.length; idx++){
+                    // if(idx == 0){ var id = 0 }else{ id = idx-1}
+                    console.log(idx);
 
-                        leexml.getxmltemporal($rootScope.user,data.archivo[idx]).success(function(data){
+                        leexml.getxmltemporal($rootScope.user,data.archivo[0]).success(function(data){
                         courses  = x2js.xml_str2json(data);
 
                            FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){
+                                 
                                   if (data[0].count != 0){
 
                                     swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
                                     $scope.borratemporales();
-                                    $scope.selectos[idx].importe = '';
-                                    $scope.selectos[idx].total = '';
-                                    $scope.selectos[idx].foliofiscal = '';
-                                    $scope.selectos[idx].fechaemision = '';
-                                    $scope.selectos[idx].descuento = '';
-                                    $scope.selectos[idx].emisor = '';
-                                    $scope.selectos[idx].descuento = '';
-                                    $scope.selectos[idx].serie = '';
-                                    $scope.selectos[idx].elimina = false;
+                                    row.entity.importe = '';
+                                    row.entity.total = '';
+                                    row.entity.foliofiscal = '';
+                                    row.entity.fechaemision = '';
+                                    row.entity.descuento = '';
+                                    row.entity.emisor = '';
+                                    row.entity.descuento = '';
+                                    row.entity.serie = '';
+                                    row.entity.elimina = false;
                                     $scope.btndelete = false;
 
                                   }
@@ -859,48 +869,50 @@ $scope.subeXMLInd = function(idx,$files){
 
                                     var suma1 = 0;
 
-                                    console.log($scope.selectos[idx]);
+                                    console.log(row.entity);
+                                   
 
-                                    if(courses.Comprobante._serie == undefined){ $scope.selectos[idx-1].serie = ''; }else{ $scope.selectos[idx-1].serie = courses.Comprobante._serie };
-                                    $scope.selectos[idx-1].foliointerno = courses.Comprobante._folio;
-                                    $scope.selectos[idx-1].subtotal = courses.Comprobante._subTotal;
-                                    $scope.selectos[idx-1].total = courses.Comprobante._total;
-                                    $scope.selectos[idx-1].foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
-                                    $scope.selectos[idx-1].fechaemision = courses.Comprobante._fecha;
-                                    $scope.selectos[idx-1].descuento = courses.Comprobante._descuento;
-                                    $scope.selectos[idx-1].emisor = courses.Comprobante.Emisor._nombre;
-                                    $scope.selectos[idx-1].rfcemisor = courses.Comprobante.Emisor._rfc;
-                                    // $scope.selectos[idx-1].impuesto = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                    // $scope.selectos[idx-1].tasa = courses.Comprobante.Impuestos.Traslados.Traslado._tasa;
-                                    $scope.selectos[idx-1].usuarioentrega = Number($rootScope.id);
-                                    $scope.selectos[idx-1].tipoorden = 2;
+                                    if(courses.Comprobante._serie == undefined){ row.entity.serie = ''; }else{ row.entity.serie = courses.Comprobante._serie };
+                                    row.entity.foliointerno = courses.Comprobante._folio;
+                                    row.entity.subtotal = courses.Comprobante._subTotal;
+                                    row.entity.total = courses.Comprobante._total;
+                                    row.entity.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
+                                    row.entity.fechaemision = courses.Comprobante._fecha;
+                                    row.entity.descuento = courses.Comprobante._descuento;
+                                    row.entity.emisor = courses.Comprobante.Emisor._nombre;
+                                    row.entity.rfcemisor = courses.Comprobante.Emisor._rfc;
+                                    // row.entity.impuesto = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                    // row.entity.tasa = courses.Comprobante.Impuestos.Traslados.Traslado._tasa;
+                                    row.entity.usuarioentrega = Number($rootScope.id);
+                                    row.entity.tipoorden = 2;
                                     if(courses.Comprobante.Impuestos.Traslados == undefined){
 
-                                        $scope.selectos[idx-1].iva = '';
-                                        $scope.selectos[idx-1].importeiva = '';
+                                        row.entity.iva = '';
+                                        row.entity.importeiva = '';
 
                                     }else{
 
-                                        $scope.selectos[idx-1].iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                        $scope.selectos[idx-1].importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+                                        row.entity.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                        row.entity.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
 
                                     }
 
                                     if (courses.Comprobante.Impuestos.Retenciones == undefined) {
 
-                                        $scope.selectos[idx-1].isr = '';
-                                        $scope.selectos[idx-1].importeisr = '';
+                                        row.entity.isr = '';
+                                        row.entity.importeisr = '';
 
 
                                     }else{
 
 
-                                        $scope.selectos[idx-1].isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
-                                        $scope.selectos[idx-1].importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+                                        row.entity.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
+                                        row.entity.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
 
                                     }
-                                    $scope.selectos[idx-1].elimina = true;
+                                    row.entity.elimina = true;
                                     $scope.btndelete = true;
+                                     console.log(row.entity.foliofiscal);
 
                                     // for (var i = 0; i < $scope.selectos.length; i++){
 
@@ -929,10 +941,12 @@ $scope.subeXMLInd = function(idx,$files){
                                 //     $scope.btndelete = false;
 
                                 // }
+                                // 
+                                
 
                       });
-                   }
-                        $scope.archivos = data.archivo;
+                   // }
+                        $scope.archivos.push(data.archivo);
 
                     }).error( function (xhr,status,data){
 

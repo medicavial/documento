@@ -250,6 +250,9 @@ app.factory("find", function($http,api){
         borratemporales:function(usuario){
             return $http.get(api+'RelacionPagos/borratemporales/' + usuario);
         },
+        borratemporales2:function(usuario){
+            return $http.get(api+'RelacionPagos/borratemporales2/' + usuario);
+        },
         buscaxProveedor:function(id){
             return $http.post(api+'RelacionPagos/buscaxProveedor/'+ id);
         },
