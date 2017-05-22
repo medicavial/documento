@@ -874,6 +874,10 @@ app.factory("relaciones", function($q,$http,find,api){
         busquedaOrdenes:function(datos){
 
             return $http.post(api + 'RelacionPagos/busquedaOrdenes',datos);
+        },
+        revisaRelacion:function(relacion){
+
+            return $http.post(api + 'RelacionPagos/revisaRelacion/'+relacion);
         }
     }
 

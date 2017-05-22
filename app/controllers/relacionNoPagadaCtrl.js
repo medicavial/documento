@@ -1,5 +1,5 @@
 
-function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$location,$http,checkFolios,api,$upload,leexml){
+function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$location,$http,relaciones,api){
 
     // console.log(datos);
     loading.despedida();
@@ -142,6 +142,7 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
 
     $scope.onDblClickRow = function(row){
       $location.path('/detallerelacion/'+row.entity.relacion);
+      console.log(row.entity);
 
     };
 
@@ -152,7 +153,7 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
         enablePinning: true, 
         enableRowSelection:true,
         multiSelect:true,
-        showSelectionCheckbox: false,
+        showSelectionCheckbox: true,
         selectWithCheckboxOnly: false,
         enableCellSelection: true,
         selectedItems: $scope.selectedRows, 
@@ -166,6 +167,7 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
                     { field:'unidad',displayName:'Unidad', width: 160 },
                     { field:'proveedor',displayName:'Proveedor', width: 160 },
                     { field:'fecha',displayName:'Fecha Registro', width: 150 },
+                    { field:'',displayName:' ', width: 170, cellTemplate: '<label class="btn btn-danger"> Cancela Relacion <input type="button" style="display: none;" ng-click="CancelaRelacion(row.entity.relacion)"></label>' },
 
         ],
         showFooter: true,
@@ -336,6 +338,35 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
 
         $scope.selectos = $filter('filter')($scope.listado, $scope.filtrado);
         JSONToCSVConvertor($scope.selectos,'Reporte',true);        
+    }
+
+    $scope.CancelaRelacion = function(row){
+
+        relaciones.revisaRelacion(row).success(function(data){
+
+            if (data[0].pagada == 1){
+
+                swal('Upss','No puedes Eliminar una Relacion que esta Pagada','error');
+            }else{
+
+            $http.post(api+'RelacionPagos/eliminaRelacion/'+ row).success(function (data){
+
+                swal('Upss','No puedes Eliminar una Relacion que esta Pagada','error');
+                location.reload();
+
+
+
+            }).error( function (data){
+
+                alert('Relacion Borrada!!');
+
+            }); 
+
+            }
+
+        });
+
+      
     }
 
     $scope.relacionaFolios = function(success){
@@ -545,7 +576,7 @@ $scope.generaReporte = function(success){
 };
 
 
-relacionNoPagadaCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading','datos','$filter','$location','$http','checkFolios','api','$upload','leexml'];
+relacionNoPagadaCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading','datos','$filter','$location','$http','relaciones','api'];
 // flujoPagosCtrl.$inject = ['$scope','$rootScope', 'find','loading', '$http', 'api','datos','$filter'];
 
 app.controller('relacionNoPagadaCtrl',relacionNoPagadaCtrl);

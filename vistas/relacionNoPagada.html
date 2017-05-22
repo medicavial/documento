@@ -26,53 +26,7 @@
 		</div>
 		
 	</div>
-	<div class="row">
-		<div class="col-md-2">
-				<label>Folio</label>
-				<input type="text" ng-model="folio" class="form-control" folio>
-		</div>
-		<div class="col-md-4">
 
-				<label>Lesionado</label>
-				<input type="text" ng-model="lesionado" ng-keydown="presionaLesionado" class="form-control" ng-change="filtra()" capitalize>
-
-		</div>
-
-	</div>
-	<br>
-	
-	<div class="row">
-		<div class="col-md-2">
-			<select class="form-control"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes" ng-change="filtra()">
-				<option value="">Cliente</option>
-			</select>
-		</div>
-		<div class="col-md-2">
-			<select class="form-control"  ng-model="unidad" ng-options="unidad as unidad.nombre for unidad in unidades" ng-change="filtra()">
-				<option value="">Unidad</option>
-			</select>
-		</div>
-		<div class="col-md-2">
-			<select class="form-control"  ng-model="tipo" ng-change="filtra()">
-				<option value="">Fax Y Original</option>
-				<option value="fax">Fax</option>
-				<option value="original">Original</option>
-			</select>
-		</div>
-		<div class="col-md-2">
-			<select class="form-control" id="tipodoc" ng-change="filtra()" ng-model="etapa">
-				<option value="">Etapa</option>
-				<option value="1">1</option>
-				<option value="2">2</option>
-				<option value="3">3</option>
-			</select>
-		</div>
-
-		<div class="col-md-2">
-			<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
-		</div>
-
-	</div>
 	<br>
 	<div class="gridStyle" ng-grid="gridOptions"></div>
 	

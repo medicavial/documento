@@ -947,9 +947,12 @@ $scope.guardaRelacion = function(success){
 
     }
 
-    console.log($scope.relaciones);
+    if ($scope.numreferencia == '' || $scope.numreferencia == undefined) {
 
-    // $scope.verificaReferencia();
+        swal("Debes Asignar un Número de Relación");
+    };
+
+
 
     $http.post(api+'RelacionPagos/insertaRelacion/'+ $rootScope.id,$scope.relaciones).success(function (data){
         loading.cargando('Buscando Folios');

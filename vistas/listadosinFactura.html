@@ -87,7 +87,7 @@
 	</div>
 
   <div class="col-md-3">
-        <button type="button" ng-hide="edicion" ng-click="enviaOrdenPagoInd()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-arrow-right"> Genera Orden </button>
+        <button type="button" id="boton2" data-loading-text="Procesando..." ng-disabled="selectos.length == 0" ng-click="enviaOrdenPagoInd()"  class="btn btn-warning  glyphicon glyphicon-arrow-right"> Genera Orden </button>
   </div>
 
 

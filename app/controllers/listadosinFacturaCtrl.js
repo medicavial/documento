@@ -605,9 +605,8 @@ $scope.subeXML = function($files){
 
             // }
 
-                $scope.archivos = data.ruta;
+                $scope.archivos.push(data.ruta);
 
-                console.log(data.ruta);
 
         }).error( function (xhr,status,data){
 
@@ -867,10 +866,7 @@ console.log($files);
                             });
                                 // if ($scope.datos.rfc == courses.Comprobante.Emisor._rfc){
 
-                                    var suma1 = 0;
-
-                                    console.log(row.entity);
-                                   
+                                    var suma1 = 0;                                   
 
                                     if(courses.Comprobante._serie == undefined){ row.entity.serie = ''; }else{ row.entity.serie = courses.Comprobante._serie };
                                     row.entity.foliointerno = courses.Comprobante._folio;
@@ -912,7 +908,6 @@ console.log($files);
                                     }
                                     row.entity.elimina = true;
                                     $scope.btndelete = true;
-                                     console.log(row.entity.foliofiscal);
 
                                     // for (var i = 0; i < $scope.selectos.length; i++){
 
@@ -979,7 +974,7 @@ $scope.enviaOrdenPagoInd = function(){
         unidad: $scope.unidad
 
     }
-console.log($scope.OPago );
+console.log($scope.OPago);
 
         var areaRecibe = 6;
         var areaEntrega = 6;
