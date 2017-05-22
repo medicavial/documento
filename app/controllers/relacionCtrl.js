@@ -930,6 +930,11 @@ $scope.eliminaxmlInd = function(idx){
 
 $scope.guardaRelacion = function(success){
 
+    if ($scope.numreferencia == '' || $scope.numreferencia == undefined) {
+
+        swal("Debes Asignar un Número de Relación");
+    };
+
     $scope.relaciones = {
 
         seleccionados : $scope.detalles,
@@ -946,13 +951,6 @@ $scope.guardaRelacion = function(success){
         subtotal:  $scope.totalsubtotal
 
     }
-
-    if ($scope.numreferencia == '' || $scope.numreferencia == undefined) {
-
-        swal("Debes Asignar un Número de Relación");
-    };
-
-
 
     $http.post(api+'RelacionPagos/insertaRelacion/'+ $rootScope.id,$scope.relaciones).success(function (data){
         loading.cargando('Buscando Folios');
