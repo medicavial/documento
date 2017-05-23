@@ -201,7 +201,7 @@ $scope.enviaFolios = function(){
 
             FacturaUnidades.enviaFolios({folio: $scope.selectedRows[a].Folio}, $rootScope.userWeb).success(function (data){
 
-                leexml.getxmlFE(data.Nombre).success(function(datos){
+                leexml.getxmlFE(data.Nombre,$rootScope.user).success(function(datos){
                 courses  = x2js.xml_str2json(datos);
 
                 console.log(courses);

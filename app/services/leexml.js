@@ -6,9 +6,9 @@ app.factory('leexml',function($http,xml,xmlFE){
       		return $http.get(xml+usuario+ '/' +archivo);
 
       },
-      factory.getxmlFE = function(archivo, folios){
+      factory.getxmlFE = function(archivo, usuario){
 
-      		return $http.get(xmlFE+archivo);
+      		return $http.get(xmlFE+usuario+'/'+archivo);
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                  l 
       }
       return factory;
