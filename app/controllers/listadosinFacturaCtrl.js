@@ -237,6 +237,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
                     { field:'Folio',  displayName:'Folio', width: 150, cellTemplate: '<label class="btn btn-primary" ng-disabled="subeFactInd != 1 || selectos.length == 0">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXMLInd(row,row.rowIndex,$files)"></label>'},
                     { field:'foliofiscal', displayName:'Folio Fiscal', width: 200 },
                     { field:'total', displayName:'Total', width: 120 },
+                    { field:'Reserva', displayName:'Reserva', width: 120 },
                     { field:'DOC_folio', displayName:'Folio', width: 120},
                     { field:'FLD_etapa', displayName:'Etapa', width: 120 },
                     { field:'FLD_numeroEntrega', displayName:'Entrega', width: 100 },
