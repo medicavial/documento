@@ -40,6 +40,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         $scope.tipoTramite();
         $scope.borratemporales();
         $scope.borratemporales2();
+        $scope.btnOG = 1;
 
         $scope.PagoG = {
 
@@ -150,17 +151,18 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
 
         var suma = 0;
         var suma1 = 0;
+        var IVA = 0.16;
 
       
-
         for (var i = 0; i < $scope.detalles.length; i++) {
-
-        
+                  
             suma+= parseFloat($scope.detalles[i].Subtotal);
             var mm = suma.toFixed(2);
             $scope.PagoG.SubtotalS = mm;
 
-
+            var calculoIVA = parseFloat($scope.detalles[i].Subtotal)*parseFloat(IVA);
+            $scope.detalles[i].Total= parseFloat($scope.detalles[i].Subtotal)+parseFloat(calculoIVA);
+            
             suma1+= parseFloat($scope.detalles[i].Total);
             var mm1 = suma1.toFixed(2);
             $scope.PagoG.TotalS = mm1;
@@ -463,10 +465,6 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
              $scope.relacionesFol.push($scope.selectos[i]);
 
         };
-        // console.log($scope.relacionesFol[0].claveunidad);
-        // find.unidadesref($scope.relacionesFol[0].claveunidad).success( function (data) {
-
-            // var referencia = data.ref;
 
         if ($scope.relacionesFol.length > 0){
 
@@ -509,25 +507,23 @@ $scope.subeXML = function($files){
                 courses  = x2js.xml_str2json(data);
 
                 FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){     
-                    if (data[0].count != 0){
+                    if (data[0].count > 0){
 
-                        swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
-                        $scope.eliminaxml();
-                        $scope.PagoG.importe = '';
-                        $scope.PagoG.total = '';
-                        $scope.PagoG.foliofiscal = '';
-                        $scope.PagoG.fechaemision = '';
-                        $scope.PagoG.descuento = '';
-                        $scope.PagoG.emisor = '';
-                        $scope.PagoG.descuento = '';
-                        $scope.PagoG.serie = '';
-                        $scope.PagoG.rfcemisor = '';
-                        $scope.PagoG.elimina = false;
+                          $scope.eliminaxmlGlo();
+                          $scope.btnOG = 1;
+                          swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
+                          $scope.archivos = [];
+                          // alert('Ya existe una Factura con ese Folio Fiscal');
+                          
+                          
 
-                    }
-                });
-                FacturaNormal.validaUnidad($scope.unidad.id).success(function (data){ 
+
+                    }else{
+
+                    FacturaNormal.validaUnidad($scope.unidad.id).success(function (data){ 
                         if (data.length > 0){
+
+                            console.log( courses.Comprobante.Emisor._rfc);
 
                             $scope.PagoG.rfcemisor = data[0].rfc;
                             $scope.PagoG.unidad = data[0].unidad;
@@ -584,23 +580,30 @@ $scope.subeXML = function($files){
                             // $scope.PagoG.folio = data.Folios;
                             $scope.PagoG.tipoorden = 4;
                             $scope.btndelete = true;
+                            $scope.btnOG = 0;
                           
                         }else{
 
                             swal('Upss','Tu Factura no coincide con el Emisor','error');
 
                             // var archivo = $scope.datos.leexml;
-                           $scope.eliminaxml();
+                           $scope.eliminaxmlGlo();
+                           $scope.btnOG = 0;
+                           $scope.archivos = [];
 
                         }
                     }else{
 
                       swal("Upss", "El proveedor no se encuentra en el sistema, Solicitalo al area de Sistemas", "error");
-                      $scope.eliminaxml();
+                      $scope.eliminaxmlGlo();
+                      $scope.archivos = [];
 
                     }
 
                 });
+                    }
+                });
+
 
             });
 
@@ -630,7 +633,7 @@ $scope.enviaOrdenPagoGlo = function(){
         archivos : $scope.archivos,
         usucarpeta: $rootScope.user,
         factura: $scope.PagoG,
-        subtotaltotal: $scope.PagoG.subtotal,
+        subtotaltotal: parseFloat($scope.PagoG.subtotal) - parseFloat($scope.PagoG.descuento),
         // importeiva: $scope.PagoG.importeiva,
         // importeisr: $scope.PagoG.importeisr,
         total: $scope.PagoG.total,
@@ -638,9 +641,6 @@ $scope.enviaOrdenPagoGlo = function(){
         unidad: $scope.PagoG.unidad
 
     }
-
-    console.log($scope.OPago.subtotaltotal);
-    console.log( $scope.PagoG.SubtotalS);
 
     if ($scope.OPago.subtotaltotal !=  $scope.PagoG.SubtotalS){
 
@@ -664,7 +664,7 @@ console.log($scope.OPago );
 
             $http.post(ruta,$scope.OPago).success(function (data){
 
-                $scope.borratemporales();
+                // $scope.borratemporales();
                 swal("ok","Se Genero una Orden de Pago","success");
                 location.reload();
 
@@ -691,6 +691,8 @@ $scope.eliminaxmlGlo = function(){
       $scope.PagoG.tasa = '';
       $scope.PagoG.total = '';
       $scope.PagoG.fechaemision = '';
+      $scope.btnOG = 0;
+      $scope.archivos= [];
 
     }).error( function (data){
 
