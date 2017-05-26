@@ -653,8 +653,6 @@ $scope.enviaOrdenPagoGlo = function(){
         unidad: $scope.PagoG.unidad
 
     }
-    consolo.log(subtotaltotal);
-    console.log(SubtotalS);
 
 
 
