@@ -545,7 +545,7 @@ $scope.subeXML = function($files){
 
                             $scope.PagoG.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
                             $scope.PagoG.fechaemision = courses.Comprobante._fecha;
-                            $scope.PagoG.descuento = courses.Comprobante._descuento;
+                            // $scope.PagoG.descuento = courses.Comprobante._descuento;
                             $scope.PagoG.emisor = courses.Comprobante.Emisor._nombre;
                             $scope.PagoG.rfcemisor = courses.Comprobante.Emisor._rfc;
                             if(courses.Comprobante.Impuestos.Traslados == undefined){
@@ -573,12 +573,24 @@ $scope.subeXML = function($files){
                                 $scope.PagoG.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
 
                             }
+
+                            if (courses.Comprobante._descuento == undefined) {
+
+                                $scope.PagoG.descuento= 0;
+
+
+                            }else{
+
+
+                                $scope.PagoG.descuento= courses.Comprobante._descuento;
+
+                            }
                             $scope.PagoG.usuarioentrega = Number($rootScope.id);
                             // $scope.PagoG.areaentrega =Number(areaEntrega);
                             // $scope.PagoG.usuariorecibe =Number(usuarioRecibe);
                             // $scope.PagoG.arearecibe =Number(areaRecibe);
                             // $scope.PagoG.folio = data.Folios;
-                            $scope.PagoG.tipoorden = 4;
+                            $scope.PagoG.tipoorden = 2;
                             $scope.btndelete = true;
                             $scope.btnOG = 0;
                           
@@ -641,6 +653,10 @@ $scope.enviaOrdenPagoGlo = function(){
         unidad: $scope.PagoG.unidad
 
     }
+    consolo.log(subtotaltotal);
+    console.log(SubtotalS);
+
+
 
     if ($scope.OPago.subtotaltotal !=  $scope.PagoG.SubtotalS){
 
@@ -666,7 +682,7 @@ console.log($scope.OPago );
 
                 // $scope.borratemporales();
                 swal("ok","Se Genero una Orden de Pago","success");
-                location.reload();
+                // location.reload();
 
 
             }).error( function (data){

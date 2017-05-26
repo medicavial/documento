@@ -316,12 +316,10 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                     { field:'nombreOrden', width: 120 },
                     { field:'nombreEmisor', width: 120 },
                     { field:'rfcemisor', width: 120 },
-                    
                     { field:'Producto', width: 120 },
                     { field:'Triage', width: 120 },
                     { field:'Cliente', width: 100 },
                     { field:'Unidad', width: 220 },
-                    // { field:'Folio', width: 120, pinned: false},
                     { field:'FAtencion', width: 120},
                     { field:'FormaRecep', width: 90 },
                     { field:'fechaRecepcion', width: 120},

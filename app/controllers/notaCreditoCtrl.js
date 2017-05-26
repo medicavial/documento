@@ -671,8 +671,6 @@ $scope.subeXMLInd = function($files){
 
                 });
 
-
-
             });
 
 
