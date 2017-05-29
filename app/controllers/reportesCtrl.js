@@ -394,13 +394,123 @@ function listadoPagosCtrl($scope, $rootScope, find , loading){
 
 };
 
+function listadoSinDocumentacionCtrl($scope, $rootScope, find , loading){
+
+    loading.despedida();
+
+    $scope.inicio = function(){
+
+        $scope.datos = {
+            fechaini:'',
+            fechafin:'',
+            unidad: '',
+            tipoUnidad:''           
+        };
+        $scope.tipoUnidad='';
+        find.unidades().success( function (data){
+            $scope.unidades = data;            
+        });
+      
+    }
+
+    $scope.generaListadoSD = function(){
+        loading.cargando('Buscando Factura(s)');                        
+        find.listadoSinDocumentacion($scope.datos).success(function (data){
+            console.log(data);
+            $scope.listado = data;
+            loading.despedida();
+        });
+    }
+
+    $scope.selectos = [];
+
+    $scope.filterOptions = {
+        filterText: '',
+        useExternalFilter: false
+    };
+
+    var csvOpts = { columnOverrides: { obj: function (o) {
+        return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
+        } },
+        iEUrl: 'downloads/download_as_csv'
+    };
+
+    ////opciones del grid
+   $scope.gridOptions = {
+        data: 'listado',
+        enableColumnResize:true,
+        enablePinning: true,
+        enableRowSelection:false,
+        multiSelect:false,
+        showSelectionCheckbox: false,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: false,
+        selectedItems: $scope.selectos,
+        filterOptions: $scope.filterOptions,
+        columnDefs: [
+                { field:'CLINombre', displayName:'Empresa' , width: 120, pinned:true, enableCellEdit: true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
+                { field:'UNINombre', displayName:'Unidad', width: 120 },
+                { field:'TipoUnidad', displayName:'Tipo Unidad', width: 120 },
+                { field:'Folio', displayName:'Folio', width: 120 },
+                { field:'Nombre', displayName:'Nombre', width: 200, visible:true },
+                { field:'FAtencion', displayName:'Fecha Atención', width: 200 },
+                { field:'Poliza', displayName:'Poliza', width: 200 },
+                { field:'Siniestro', displayName:'Siniestro', width: 130 },
+                { field:'Reporte', displayName:'Reporte', width: 130, visible:true },
+                { field:'RegCia', displayName:'Registro Compañia', width: 130, visible:true },
+                { field:'FNac', displayName:'Fecha de Nacimiento', width: 130, visible:true },
+                { field:'Edad', displayName:'Edad', width: 130, visible:true },
+                { field:'Meses', displayName:'Meses', width: 130, visible:true },
+                { field:'Sexo', displayName:'Sexo', width: 130, visible:true },
+                { field:'Riesgo', displayName:'Riesgo', width: 130, visible:true },
+                { field:'Localidad', displayName:'Localidad', width: 130, visible:true },
+                { field:'Estado', displayName:'Estado', width: 130, visible:true },
+                { field:'Periodo', displayName:'Periodo', width: 130, visible:true }
+        ],
+        showFooter: true,
+        showFilter:true
+    };
+
+    $scope.exportar = function(){
+
+        JSONToCSVConvertor($scope.listado,'Reporte',true);
+
+    }
+
+    $scope.filtra = function(){
+
+        if($scope.tipoUnidad == undefined || $scope.tipoUnidad == 0){
+            var objeto1 = "";
+        }else{
+            var objeto1 = "TipoUnidad:" + $scope.tipo + "; ";
+            
+        }
+
+        // if($scope.datos.proveedor == undefined || $scope.datos.proveedor == 0){
+        //     var objeto2 = "";
+        // }else{
+        //     var objeto2 = "proveedor:" + $scope.datos.proveedor + "; ";
+            
+        // }
+        
+        var filtro = objeto1;
+
+        
+        $scope.filterOptions.filterText = filtro;
+
+    }
+
+};
+
 reportesTicketsCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading', 'datos'];
 reporteFacturasCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
 pagoUnidadesCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
 listadoPagosCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
+listadoSinDocumentacionCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
 
 
 app.controller('reportesTicketsCtrl',reportesTicketsCtrl);
 app.controller('reporteFacturasCtrl',reporteFacturasCtrl);
 app.controller('pagoUnidadesCtrl',pagoUnidadesCtrl);
 app.controller('listadoPagosCtrl',listadoPagosCtrl);
+app.controller('listadoSinDocumentacionCtrl',listadoSinDocumentacionCtrl);

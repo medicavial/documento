@@ -374,6 +374,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'listadoPagosCtrl'
     });
 
+    $routeProvider.when('/reportes/listadoSinDocumentacion',{
+            templateUrl   : 'vistas/listadoSinDocumentacion.html',
+            controller    : 'listadoSinDocumentacionCtrl'
+    });
+
     $routeProvider.when('/reportes/ticketsFE',{
             templateUrl   : 'vistas/ticketFE.html',
             controller    : 'ticketFECtrl'
@@ -865,6 +870,12 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
     $routeProvider.when('/subirDocumentos',{
             templateUrl   : 'vistas/subirDocumentos.html',
             controller    : 'subirDocumentosCtrl'
+
+    });
+
+    $routeProvider.when('/documentosDigitales',{
+            templateUrl   : 'vistas/documentosDigitales.html',
+            controller    : 'documentosDigitalesCtrl'
 
     });
 

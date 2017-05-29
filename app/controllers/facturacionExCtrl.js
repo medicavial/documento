@@ -938,7 +938,9 @@ function cancelacionCtrl($scope, $rootScope, loading,facturacionExpress,find,web
     };
 
     $scope.onDblClickRow = function(row){        
-        $scope.datos.folioCancelar=row.entity.FOLIO;       
+        $scope.datos.folioCancelar=row.entity.FOLIO;  
+        console.log(row);     
+        console.log(row.rowIndex);     
         $('#modalCancelacion').modal();
         
     }

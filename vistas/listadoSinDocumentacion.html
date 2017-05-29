@@ -1,0 +1,96 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/reportes" class="icon-arrow-left"></a>
+        <h1>Listado Sin Documentación</h1>
+    </div>
+
+    <legend>Fechas</legend>
+    <div class="row">
+      <!-- <div class="col-sm-3 col-md-3">
+        <select class="form-control" id="unidad"  ng-model="datos.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades">
+          <option value="">Unidad</option>         
+        </select>
+      </div> -->
+      <div class="col-sm-4 col-md-4">
+        <select class="form-control" id="unidad" ng-model="datos.tipoUnidad">
+          <option value="">Tipo Unidad</option>
+          <option value="1">Propias</option>
+          <option value="0">Red</option>
+        </select>
+      </div>     
+      <!-- <div class="col-sm-3 col-md-2">
+          <input type="text" ng-model="datos.fechaini" class="form-control" id="datepicker" placeholder="inicial" />
+      </div>
+      <div class="col-sm-3 col-md-2">
+          <input type="text" ng-model="datos.fechafin" class="form-control" id="datepicker2" placeholder="Final" />          
+      </div> -->
+      <div class="col-sm-4 col-md-4">
+        <button class="btn btn-primary" ng-click="generaListadoSD()">Generar Listado</button>
+      </div>  
+      
+    </div><br><br>
+     <legend>Filtrar X</legend>
+
+    <div class="row">
+      <div class="col-sm-3 col-md-3">
+        <select class="form-control" id="unidad" ng-model="tipoUnidad"  ng-change="filtra()">
+          <option value="">Tipo Unidad</option>
+          <option value="Propia">Propias</option>
+          <option value="Red">Red</option>
+        </select>
+      </div>      
+
+    </div>
+
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+    <br>
+
+    <button ng-click="exportar()" class="btn btn-success">Exportar</button>
+
+</div><br><br>
+
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    var maximumDate = '25/04/2017';
+
+    // $( "#datepicker" ).datepicker({showButtonPanel: true});
+    // $( "#datepicker2" ).datepicker({showButtonPanel: true});
+    $( "#datepicker" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+         //604800000 Es el equivalente en milisegundos a 7 días. Se obtiene multiplicando 24 horas por 60 minutos
+         //por 60 segundos por 1000 milisegundos por la cantidad de días deseada
+         if($("#unidad").val()){
+              var p = new Date(Date.parse(selectedDate) + 518400000);
+         }else{
+              var p = new Date(Date.parse(selectedDate) + 259200000);
+         }
+
+         //p cotiene la nueva fecha. Ahora la desbaratamos en un valor string en formato mm/dd/aaaa
+         var curr_date = p.getDate();
+         var curr_month = p.getMonth();
+         //Date.getMonth() me devuelve los meses del 0 al 11, así que hay que aumentarle 1 para obtener el mes real
+         curr_month++;
+         var curr_year = p.getFullYear();
+         //armamos nuestro nuevo string para ajustar el valor del segundo datepicker
+         var newdate = curr_month + "/" + curr_date + "/" + curr_year;
+        $( "#datepicker2" ).datepicker( "option" ,"maxDate", newdate );
+      }
+    });
+    $( "#datepicker2" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker" ).datepicker( "option", "maxDate", selectedDate );
+      }
+
+
+    });
+
+
+</script>

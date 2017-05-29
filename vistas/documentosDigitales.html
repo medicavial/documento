@@ -1,0 +1,140 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/home" class="icon-arrow-left"></a>
+        <h1>{{tituloPT}}</h1>
+    </div>
+    <form class="" ng-submit="buscar()">
+        <div class="row">
+
+          <div class="col-md-4">
+              <label for="">Folio</label>
+              <input type="text" ng-model="digitales.folio" class="form-control" placeholder="Folio" folio />
+          </div>
+          <div class="col-md-4">
+              <label for="">Nombre</label>
+              <input type="text" ng-model="digitales.nombre" class="form-control" placeholder="Nombre" capitalize/>
+          </div>
+
+          <div class="col-md-2" style="margin-top:25px">
+              <button type="submit" name="button" class="btn btn-primary btn-block">Buscar Documentos</button>
+          </div>
+        </div>
+        <div class="row" ng-show="mensaje">
+          <div class="col-md-12">
+            <label style="width:100%" class="alert alert-success">{{mensaje}}</label>
+          </div>
+
+        </div>
+    </form>
+    <br><br>
+    <div class="row" ng-show="listaFolPar">
+       <div class="col-md-12">
+          <div class="panel panel-default">
+             <div class="panel-heading">
+                <div class="panel-title">Folios encontrados</div>
+             </div>
+             <!-- START list group-->
+             <div class="list-group">
+                <!-- START list group item-->
+                <div class="list-group-item" ng-repeat="listado in listaFolPar | orderBy:predicate:reverse">
+                   <div class="media" style="width:100%">
+                   	<div class="pull-left">
+                      	<img src="http://medicavial.net/mvred/imgs/logostmp/{{listado.Cia_clave}}.jpg" alt="Image" class="img-thumbnail" alt="Cinque Terre" width="100" height="80">
+                      </div>
+                      <div class="pull-right" ng-hide="listado.Exp_cancelado==1">
+                        <div class="media-heading text-danger m0">
+                            <small class="text-muted pull-right">fecha registro: <b>{{listado.Exp_fecreg}}</b></small>
+                        </div>
+                        <p class="m0">
+                           <div class="m0 pull-right"><a href="" ng-click="verDocumentos(listado.folio, listado.Uni_clave)">Ver documentos</a></div>
+
+                        </p>
+                      </div>
+                      <div class="media-body clearfix">
+                         <div class="media-heading text-danger m0"><a href="" ng-click="mandaPortada(listado.Exp_folio)">{{listado.folio}}</a> &nbsp;&nbsp;&nbsp;&nbsp;  {{listado.Exp_completo}}
+                         </div>
+                         <div class="" ng-if="listado.Exp_obs">
+
+                            Observaciones: {{listado.Exp_obs}}
+
+                         </div>
+                      </div>
+                   </div>
+                   <br>
+                </div>
+                <!-- END list group item-->
+             </div>
+
+             <!-- END list group-->
+             <!-- START panel footer-->
+             <div class="panel-footer clearfix">
+                <a href="#" class="pull-left">
+                   <small></small>
+                </a>
+             </div>
+             <!-- END panel-footer-->
+          </div>
+       </div>
+    </div>
+    <div class="row" ng-show="msjBus">
+      <div class="col-md-12">
+        <div class="alert alert-warning">
+          <span>No se encontraron coincidencias en la búsqueda.</span>
+        </div>
+      </div>
+    </div>
+    <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Documentos Digitales</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body">
+            <div ng-if="uniElegida!=232||uniElegida!=249||uniElegida!=125||uniElegida!=110||uniElegida!=266||uniElegida!=65||uniElegida!=269||uniElegida!=281">
+              <div ng-repeat="archivo in docsDigitales">
+                <!-- <img src="http://medicavial.net/registro/{{archivo.Arc_archivo}}" alt=""> -->
+                <h3>{{archivo.TID_nombre}}</h3>
+                <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo.Arc_archivo) }}" target="_blank">Abrir otra ventana</a>
+      	        <button class="btn btn-primary" ng-click=" rotar = !rotar ">Girar</button>
+      	        <embed ng-if="file(archivo.Arc_clave)" ng-src="{{ obtenerFrame(archivo.Arc_archivo) }}" width="100%" id="files">
+      	        <img ng-if="imagen(archivo.Arc_clave)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo.Arc_archivo) }}"
+          		        ng-init="zoomWidth = 400;imgStyle = {width:'100%'}"
+          		        ng-style="imgStyle"
+          				ng-mouse-wheel-up="zoomWidth = zoomWidth + 20; imgStyle.width = zoomWidth +'px'; "
+          				ng-mouse-wheel-down="zoomWidth = zoomWidth - 20;imgStyle.width = zoomWidth  +'px'; "
+			           />
+              </div>
+            </div>
+            <div ng-if="uniElegida==232||uniElegida==249||uniElegida==125||uniElegida==110||uniElegida==266||uniElegida==65||uniElegida==269||uniElegida==281">
+              <div ng-repeat="archivo in docsDigitales">
+                <h3>{{archivo.TID_nombre}}</h3>
+                <!-- <img src="http://medicavial.net/registro/{{digital.Arc_archivo+archivo.Arc_clave}}" alt=""> -->
+                <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo.Arc_archivo+'/'+archivo.Arc_clave) }}" target="_blank">Abrir otra ventana</a>
+      	        <button class="btn btn-primary" ng-click=" rotar = !rotar ">Girar</button>
+      	        <embed ng-if="file(archivo.Arc_clave)" ng-src="{{ obtenerFrame(archivo.Arc_archivo+'/'+archivo.Arc_clave) }}" width="100%" id="files">
+      	        <img ng-if="imagen(archivo.Arc_clave)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo.Arc_archivo+'/'+archivo.Arc_clave) }}"
+          		        ng-init="zoomWidth = 800;imgStyle = {width:'100%'}"
+          		        ng-style="imgStyle"
+          				ng-mouse-wheel-up="zoomWidth = zoomWidth + 20; imgStyle.width = zoomWidth +'px'; "
+          				ng-mouse-wheel-down="zoomWidth = zoomWidth - 20;imgStyle.width = zoomWidth  +'px'; "
+			           />
+              </div>
+            </div>
+            <div class="row" ng-show="msjDocs">
+              <div class="col-md-12">
+                <div class="alert alert-warning">
+                  <span>No se han digitalizado documentos.</span>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>

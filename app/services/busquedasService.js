@@ -100,6 +100,7 @@ app.factory("find", function($http,api){
         listadopagos:function(){
             return $http.get(api+'/flujopagos/general');
         },
+
         listadorecepcion:function(usuario){
             return $http.get(api+'flujo/recepcion/'+usuario);
         },
@@ -123,6 +124,9 @@ app.factory("find", function($http,api){
         },
         listadoPagos:function(datos){
             return $http.post(api + 'reportes/listadoPagos',datos);
+        },
+        listadoSinDocumentacion:function(datos){
+            return $http.post(api + 'reportes/listadoSinDocumentacion',datos);
         },
         posiciones:function(){
             return $http.get(api+'consulta/posiciones');
@@ -269,6 +273,12 @@ app.factory("find", function($http,api){
         },
         proveedores:function(){
             return $http.post(api+'consulta/proveedor');
+        },
+        busquedaDoctos:function(datos){
+            return $http.post(api+'consulta/buscaDatos',datos);
+        },
+        busquedaDigitalesFolio:function(folio){
+            return $http.get(api+'consulta/buscaDocumentosFolio/'+folio);
         }
     }
 })
