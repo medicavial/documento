@@ -76,6 +76,9 @@ app.factory("find", function($http,api){
         foliosSacecoPendientes:function(datos){
             return $http.post(api + 'saceco/pendientes',datos);
         },
+        folioZima:function(folioZ){
+            return $http.get(api + 'consulta/folioZima/'+folioZ);
+        },
         infoPase:function(folio){
             return $http.get(api + 'consulta/infoPase/' + folio);
         },

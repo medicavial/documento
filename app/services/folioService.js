@@ -940,6 +940,16 @@ app.factory("DetalleFacturasZima", function($q,$http,find,api){
 
 });
 
+app.factory("RegistroZimaMV", function($q,$http,find,api){
+
+    return{
+        registraFolio:function(datos){
+            return $http.post(api + 'FacturaZima/registraFolioZ', datos);
+        }
+    }
+
+});
+
 
 app.factory("FacturaZima", function($q,$http,find,api){
 

@@ -5,7 +5,7 @@
           <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
           <h4 class="modal-title">Recepcion de Original</h4>
         </div>
-        <form name="formCapturaOriginal" ng-submit="guardaDatosA()" novalidate>
+        <form name="formCapturaOriginal" id="formCapturaOriginal" ng-submit="guardaDatosA()" novalidate>
         <div class="modal-body" id="cantidad">
         	<div class="row">
         		<div class="col-md-5">
@@ -98,13 +98,35 @@
         	</div>
         	<div ng-show="mensaje != '' " ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
         </div>
+        </form>
         <div class="modal-footer">
-        	<button id="botonGuardaDatos" type="submit" ng-disabled="formCapturaOriginal.$invalid || esFeSinCaptura" data-loading-text="Guardando..." class="btn btn-primary">Guardar</button>
-        	<button type="button" class="btn btn-success" ng-click="inicio()">Limpiar</button>
-          	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+            <div class="row">
+                <div class="col-md-4" ng-show="veFolZima">                     
+                        <input type="text" class="form-control" capitalize placeholder="Folio Zima" name="folioZima" ng-model="folioZima" >                                
+                </div>            
+                <div class="col-md-2" ng-show="veFolZima">
+                    <div ng-hide='cargadorZ'>
+                    <button class="btn btn-success" ng-click="validaFolioZima(folioZima)">Enviar</button>
+                    </div>
+                    <div ng-show="cargadorZ">
+                        <img src="images/cargador.gif" width="60">
+                    </div>
+                </div>
+                <div class="col-md-6" ng-hide='veFolZima'></div>
+                <div class="col-md-6">
+                	<button id="botonGuardaDatos" type="submit" form="formCapturaOriginal" ng-disabled="formCapturaOriginal.$invalid || esFeSinCaptura" data-loading-text="Guardando..." class="btn btn-primary">Guardar</button>
+                	<button type="button" class="btn btn-success" ng-click="inicio()">Limpiar</button>
+                  	<button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+            <div class="row" ng-show="mensajeRes">
+                <div class="col-md-12 text-center" >
+                    <div class="alert alert-warning">{{mensajeRes}}</div>
+                </div>
+            </div>
         </div>
       </div><!-- /.modal-content -->
-      </form>
+      
 </div><!-- /.modal-dialog -->
 
 

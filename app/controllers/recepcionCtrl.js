@@ -21,6 +21,7 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
 		$scope.tipodocumentos = [{id:1,nombre:'Primera atención'},{id:2,nombre:'Subsecuencia'},{id:3,nombre:'Rehabilitación'}];	
 		$scope.limpia();
 		$scope.cargaInfo();
+		
 	}
 	
 	$scope.limpia = function(){
@@ -292,6 +293,8 @@ function recepcionCtrl( $scope, $rootScope, $filter, $location, $http, find, loa
     	$scope.filterOptions.filterText = filtro;
 
     	// console.log(filtro);
+
+
     }
 
     $scope.quitaselectos = function(){

@@ -14,9 +14,9 @@ function capturaOriginal() {
 
 }
 
-controladorOriginal.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api'];;
+controladorOriginal.$inject = ['$scope', '$rootScope', '$filter', '$location', '$http', 'find', 'loading', 'checkFolios','carga','api', 'RegistroZimaMV'];;
 
-function controladorOriginal($scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api) {
+function controladorOriginal($scope, $rootScope, $filter, $location, $http, find, loading, checkFolios, carga, api, RegistroZimaMV,webStorage) {
     // Injecting $scope just for comparison
     //muestra Ventan de alta de Original
     $('#myModal10').on('hidden.bs.modal', function (e) {
@@ -27,6 +27,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         $scope.inicio();
     });
 
+    $scope.usrWeb = sessionStorage.getItem("userWeb");
     $rootScope.$watch('folioGlobal', function(newValue, oldValue) {
         // console.log(newValue);
         if (newValue.length == 10) {
@@ -94,6 +95,11 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         $scope.cargaInfo();
 
         $('#folioO').focus();
+
+        $scope.veFolZima=false;
+        $scope.folioZima='';
+        $scope.mensajeRes='';
+        $scope.cargadorZ = false;
     }
 
     $scope.cargaInfo = function(){
@@ -112,6 +118,61 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         });
 
     }
+
+    //valdacion de folio zima para las unidades de san angel inn
+
+     $scope.validaFolioZima = function(folio){
+        console.log(folio);
+        console.log($scope.folioZima);
+        $scope.cargadorZ=true;
+        if(folio==''){
+            alert('El folio zima es necesario');
+
+        }else{
+
+            find.folioZima($scope.folioZima).success( function (data) {
+                console.log(data);   
+                if(data.length>0){
+                    if(data[0].UNI_clave==118||data[0].UNI_clave[0]==181){
+                        if(data[0].ASE_clave==17||data[0].ASE_clave==20){
+                            if(data[0].REG_folioMV==null){                                 
+                                 data[0].usrWeb=$scope.usrWeb;   
+                                 RegistroZimaMV.registraFolio(data[0]).success( function(data){
+                                    console.log(data);
+                                    if(data=='error'){
+                                        $scope.mensajeRes='Ocurrió un error en la inserción';
+                                        $scope.cargadorZ=false;
+                                    }else if(data=='existe'){
+                                        $scope.mensajeRes='Este folio Zima ya tiene folio MV';
+                                        $scope.cargadorZ=false;
+                                    }else{
+                                        $scope.mensajeRes='';
+                                        $scope.validaOriginalA(data);
+                                        $scope.cargadorZ=false;
+                                    }
+                                 });
+                            }else{
+                                $scope.mensajeRes='Este folio Zima ya tiene folio MV';
+                                $scope.cargadorZ=false;
+                            }                        
+                        }else{
+                            $scope.mensajeRes='Solo se tiene convenio con AIG y AXA';
+                            $scope.cargadorZ=false;
+                        }                        
+                    }else{
+                        $scope.mensajeRes='La Unidad del folio no corresponde';
+                        $scope.cargadorZ=false;
+                    }
+                }else{
+                    $scope.mensajeRes='Folio no existe';
+                    $scope.cargadorZ=false;
+                }             
+            });        
+        }
+
+    }
+
+
 
     //Verificamos si el fiolio esta dado de alta o se tiene que buscar en 
     $scope.validaOriginalA = function(folio){
@@ -136,7 +197,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                     $scope.original.propia = data.propia;
                 }
             };
-
+            $scope.original.folio = folio;
             $scope.original.tipoDoc = data.tipoDoc;
             $scope.original.documento = data.documento;
             $scope.original.fechafax = data.fechafax;
@@ -323,6 +384,12 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
     $scope.referencia = function(unidad){
 
         $scope.original.unidad = unidad;
+
+        if(unidad==28||unidad==278||unidad==243||unidad==247){
+            $scope.veFolZima=true;
+        }else{
+            $scope.veFolZima=false;
+        }
 
 
         find.referenciaxunidad(unidad).success(function (data){
