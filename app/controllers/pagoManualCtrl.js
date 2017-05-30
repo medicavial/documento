@@ -207,10 +207,20 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                             }else{
 
+
                                 $scope.PagoM.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                $scope.PagoM.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+                                $scope.PagoM.importeiva = 0;
 
                             }
+                            // else{
+
+                            //     $scope.PagoM.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
+                            //     $scope.PagoM.importeiva = courses.Comprobante.Impuestos_totalImpuestosTrasladados;
+
+
+                            // }
+
+
 
                             if (courses.Comprobante.Impuestos.Retenciones == undefined) {
 
