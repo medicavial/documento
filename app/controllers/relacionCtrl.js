@@ -124,6 +124,24 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
          }
 
+         $scope.NC = {
+
+            SubtotalNC:'',
+            IVANC: '',
+            folio: '',
+            cliente: '',
+            unidad: '',
+            total: '',
+            subtotal: ''
+
+         }
+
+         // $scope.SubtotalNC = '';
+         // $scope.IVANC = '';
+         // $scope.totalNC = '';
+
+
+
     }
 
     //busca clientes
@@ -304,6 +322,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         filterOptions: $scope.filterOptions,
         enableCellEdit: true,
         columnDefs: [
+                    { field:'',displayName:'', width: 50, pinned: true,  cellTemplate: '<label class="btn btn-link"> NC <input type="button" style="display: none;" ng-click="pedirNC(row)"></label>'},
                     { field:'Unidad',displayName:'Unidad', width: 200, pinned: true},
                     { field:'Proveedor',displayName:'Proveedor', width: 200, pinned: true},
                     { field:'Folio', displayName:'Folio' , width: 120 , pinned: true},
@@ -339,7 +358,8 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                     { field:'RelP', width: 80 },
                     { field:'Pagado', width: 80 },
                     { field:'Cobrado', width: 80 },
-                    { field:'nombreOrden', width: 80 }
+                    { field:'nombreOrden', width: 80 },
+                    { field:'id', width: 80 }
         ],
         showFooter: true,
         showFilter:false,
@@ -505,6 +525,63 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         //     $scope.foliosxarea();
         // };
         
+    }
+
+    $scope.calculaNC = function(){
+
+        // $scope.total = row.entity.total;
+
+        var m = parseFloat($scope.NC.SubtotalNC) + parseFloat($scope.NC.IVANC);
+        var mm = m.toFixed(2);
+        $scope.NC.totalNC= mm;
+
+
+    }
+
+    $scope.pedirNC = function(row){
+
+          $('#exampleModal').modal();   
+
+           console.log(row.entity);
+
+           // $scope.folio = row.entity.Folio;
+           // $scope.cliente = row.entity.Cliente;
+           // $scope.unidad = row.entity.Unidad;
+           // $scope.total = row.entity.total;
+           $scope.clave = row.entity.id;
+           // console.log($scope.SubtotalNC);
+
+        $scope.NC = {
+
+            // SubtotalNC:$scope.SubtotalNC,
+            // IVANC: $scope.IVANC,
+            folio: row.entity.Folio,
+            cliente: row.entity.Cliente,
+            unidad: row.entity.Unidad,
+            total: row.entity.total,
+            subtotal: row.entity.subtotal,
+            importeiva: row.entity.importeiva
+            // totalNC: $scope.totalNC
+
+        }
+
+    }
+
+    $scope.guardaNC = function(){
+
+        $http.post(api+'RelacionPagos/guardaNC/'+ $scope.clave,$scope.NC).success(function (data){
+
+            $scope.gridOptions.$gridScope.toggleSelectAll(false);
+            $('#exampleModal').modal('hide'); 
+
+
+        }).error( function (data){
+
+            alert('Error, Intentalo de Nuevo');
+
+        }); 
+
+
     }
 
 

@@ -673,7 +673,6 @@ $scope.subeXMLInd = function($files){
 
             });
 
-
             }else{
 
             leexml.getxmltemporal($rootScope.user,data.archivo).success(function(data){
