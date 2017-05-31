@@ -369,26 +369,32 @@ function listadoPagosCtrl($scope, $rootScope, find , loading){
 
     }
 
-    $scope.filtra = function(){
-
-        if($scope.datos.unidad == undefined || $scope.datos.unidad == 0){
-            var objeto1 = "";
-        }else{
-            var objeto1 = "UNI_nombrecorto:" + $scope.datos.unidad + "; ";
-            
+    $scope.filtra = function(valor){
+        if(valor==1){
+            $scope.datos.proveedor='';          
+        }if(valor==2){
+            $scope.datos.unidad='';
         }
 
-        if($scope.datos.proveedor == undefined || $scope.datos.proveedor == 0){
-            var objeto2 = "";
-        }else{
-            var objeto2 = "proveedor:" + $scope.datos.proveedor + "; ";
+
+        // if($scope.datos.unidad == undefined || $scope.datos.unidad == 0){
+        //     var objeto1 = "";
+        // }else{
+        //     var objeto1 = "UNI_nombrecorto:" + $scope.datos.unidad + "; ";
             
-        }
+        // }
+
+        // if($scope.datos.proveedor == undefined || $scope.datos.proveedor == 0){
+        //     var objeto2 = "";
+        // }else{
+        //     var objeto2 = "proveedor:" + $scope.datos.proveedor + "; ";
+            
+        // }
         
-        var filtro = objeto1 + objeto2;
+        // var filtro = objeto1 + objeto2;
 
         
-        $scope.filterOptions.filterText = filtro;
+        // $scope.filterOptions.filterText = filtro;
 
     }
 
