@@ -323,6 +323,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         enableCellEdit: true,
         columnDefs: [
                     { field:'',displayName:'', width: 50, pinned: true,  cellTemplate: '<label class="btn btn-link"> NC <input type="button" style="display: none;" ng-click="pedirNC(row)"></label>'},
+                    { field:'',displayName:'', width: 100, pinned: true,  cellTemplate: '<label class="btn btn-danger"> Cancela OP <input type="button" style="display: none;" ng-click="cancelaORP(row)"></label>'},
                     { field:'Unidad',displayName:'Unidad', width: 200, pinned: true},
                     { field:'Proveedor',displayName:'Proveedor', width: 200, pinned: true},
                     { field:'Folio', displayName:'Folio' , width: 120 , pinned: true},
@@ -571,8 +572,27 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
         $http.post(api+'RelacionPagos/guardaNC/'+ $scope.clave,$scope.NC).success(function (data){
 
-            $scope.gridOptions.$gridScope.toggleSelectAll(false);
             $('#exampleModal').modal('hide'); 
+            location.reload(true);
+
+
+
+        }).error( function (data){
+
+            alert('Error, Intentalo de Nuevo');
+
+        }); 
+
+
+    }
+
+    $scope.cancelaORP = function(row){
+
+        var id = row.entity.id;
+
+        $http.post(api+'RelacionPagos/cancelaORP/'+ id).success(function (data){
+
+            location.reload(true);
 
 
         }).error( function (data){

@@ -680,7 +680,7 @@ console.log($scope.OPago );
 
                 // $scope.borratemporales();
                 swal("ok","Se Genero una Orden de Pago","success");
-                // location.reload();
+                location.reload();
 
 
             }).error( function (data){
