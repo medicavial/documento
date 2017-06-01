@@ -237,7 +237,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         relaciones.busquedaOrdenes($scope.norelacion).success(function (data){
 
             if(data){
-                console.log(data);
                 
                 $scope.listado = data;
                 $scope.datos.claveunidad = data[0].claveunidad;
@@ -249,8 +248,9 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
             }else{
 
-                loading.despedida();
+                
                 $scope.listado = [];
+                loading.despedida();
                 // $scope.norelacion.referencia = '';
                 
             }
@@ -590,10 +590,9 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
         var id = row.entity.id;
 
-        $http.post(api+'RelacionPagos/cancelaORP/'+ id).success(function (data){
+        $http.post(api+'RelacionPagos/cancelaORP/'+ id, $scope.norelacion).success(function (data){
 
             location.reload(true);
-
 
         }).error( function (data){
 
