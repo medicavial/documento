@@ -8,7 +8,7 @@
           <div class="col-md-2">
             <div class="form-group">
               <label for="">Selecciona unidad</label>
-              <select  class="form-control" ng-options="quien.UnidadClave as quien.Nombre for quien in unidades" ng-model="digitales.unidad" name="unidad" id="unidad">
+              <select  class="form-control" ng-options="quien.UnidadClave as quien.Nombre for quien in unidades" ng-model="digitales.unidad" name="unidad" id="unidad" required>
                 <option value="">Selecciona</option>
 
               </select>
@@ -30,7 +30,7 @@
           <div class="col-md-4">
             <div class="form-group">
               <label for="">Selecciona Documento</label>
-              <input type="file" name="file" uploader-model="file" class="form-control" id="archivo">
+              <input type="file" onchange="angular.element(this).scope().getFileDetails(this)" name="file" uploader-model="file" class="form-control" id="archivo" multiple="multiple">
             </div>
           </div>
           <div class="col-md-2" style="margin-top:25px">

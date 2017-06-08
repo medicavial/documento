@@ -68,23 +68,7 @@
       changeMonth: true,
       numberOfMonths: 1,
       onClose: function( selectedDate ) {
-         //604800000 Es el equivalente en milisegundos a 7 días. Se obtiene multiplicando 24 horas por 60 minutos
-         //por 60 segundos por 1000 milisegundos por la cantidad de días deseada
-         if($("#unidad").val()){
-              var p = new Date(Date.parse(selectedDate) + 518400000);
-         }else{
-              var p = new Date(Date.parse(selectedDate) + 259200000);
-         }
-
-         //p cotiene la nueva fecha. Ahora la desbaratamos en un valor string en formato mm/dd/aaaa
-         var curr_date = p.getDate();
-         var curr_month = p.getMonth();
-         //Date.getMonth() me devuelve los meses del 0 al 11, así que hay que aumentarle 1 para obtener el mes real
-         curr_month++;
-         var curr_year = p.getFullYear();
-         //armamos nuestro nuevo string para ajustar el valor del segundo datepicker
-         var newdate = curr_month + "/" + curr_date + "/" + curr_year;
-        $( "#datepicker2" ).datepicker( "option" ,"maxDate", newdate );
+        
       }
     });
     $( "#datepicker2" ).datepicker({
@@ -93,7 +77,7 @@
       changeMonth: true,
       numberOfMonths: 1,
       onClose: function( selectedDate ) {
-        $( "#datepicker" ).datepicker( "option", "maxDate", selectedDate );
+        $( "#datepicker" ).datepicker( "option");
       }
 
 

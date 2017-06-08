@@ -19,14 +19,36 @@ function subirDocumentosCtrl($scope, $rootScope,  loading, $filter, $timeout, fi
         });
     }
 
+
+
+
+    $scope.getFileDetails = function (e) {
+
+        $scope.files = [];
+        $scope.$apply(function () {
+
+            // STORE THE FILE OBJECT IN AN ARRAY.
+            for (var i = 0; i < e.files.length; i++) {
+                $scope.files.push(e.files[i])
+            }
+
+        });
+        console.log($scope.files);
+    };
+
+
+
+
+
     //función para subir archivos
     $scope.uploadFile = function()
   	{
       loading.cargando('Subiendo Documento');
       var unidad = $scope.digitales.unidad;
       var fecha = $scope.digitales.fecha;
-  		var file = $scope.file;
-      var fechaMod = fecha.replace(/\//g,"-");
+  		var file = $scope.files;
+      var fechaMod = fecha.replace(/\//g,"-");  
+      console.log(file);    
   		upload.uploadFile(file, unidad, fechaMod).then(function(res)
   		{
         console.log(res);
