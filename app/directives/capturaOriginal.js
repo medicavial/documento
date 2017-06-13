@@ -133,7 +133,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
             find.folioZima($scope.folioZima).success( function (data) {
                 console.log(data);   
                 if(data.length>0){
-                    if(data[0].UNI_clave==118||data[0].UNI_clave[0]==181){
+                    if(data[0].UNI_clave==118||data[0].UNI_clave[0]==181||data[0].UNI_clave[0]==2183){
                         if(data[0].ASE_clave==17||data[0].ASE_clave==20){
                             if(data[0].REG_folioMV==null){                                 
                                  data[0].usrWeb=$scope.usrWeb;   
