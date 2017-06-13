@@ -654,7 +654,12 @@ $scope.enviaOrdenPagoGlo = function(){
 
     }
 
+    var valor = $scope.OPago.subtotaltotal;
+    var mm = valor.toFixed(2);
+    $scope.OPago.subtotaltotal = mm;
 
+console.log($scope.OPago.subtotaltotal);
+console.log($scope.PagoG.SubtotalS);
 
     if ($scope.OPago.subtotaltotal !=  $scope.PagoG.SubtotalS){
 
