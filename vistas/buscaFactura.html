@@ -1,0 +1,66 @@
+<div class="row" ng-init="inicio()">
+        <div class="row">
+
+          <div class="titulos">
+            <a href="#/pagos" class="icon-arrow-left"></a>
+            <h1>{{tituloR}}</h1>
+          </div>
+
+          <div class="row text-center"><h1></h1></div>
+          <legend><h2>Buscar x</h2></legend>
+
+        </div>
+        <div class="row">
+              <div class="col-md-6">
+                    <label> Folio Fiscal </label>
+                    <input type="text" ng-model="busqueda.foliofiscal" class="form-control" >
+
+              </div>
+              <div class="col-md-4">
+                    <label> FolioMV </label>
+                    <input type="text" ng-model="busqueda.foliomv" class="form-control" >
+
+              </div>
+              <div class="col-md-3">
+                <br>
+                <button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="buscar()">   Buscar </button>
+              </div>
+              <div class="col-md-3">
+                <br>
+                <button type="submit" class="btn btn-default btn-lg btn-block" ng-click="limpiar()">   Buscar </button>
+              </div>
+        </div><br>
+
+        <LEGEND style="color:#64A8C2">Resultados:</LEGEND>
+
+        <div class="row">
+
+            <div  class="lamp-wishes-container">
+              <div class="lamp-wish" ng-repeat="dato in resultados" >
+                <div class="wish-display resultado">
+                  Folio Fiscal: <strong>{{ dato.foliofiscal }}</strong>
+                </div>
+                <div class="wish-display resultado">
+                  FolioMV: <strong>{{ dato.folio }}</strong>
+                </div>
+                <div class="wish-display resultado">
+                  N° Relación: <strong>{{ dato.relacion }}</strong>
+                </div>
+
+                <div class="wish-display resultado">
+                  Unidad: <strong>{{ dato.uni }}</strong>
+                </div>
+
+                <div class="wish-display resultado">
+                  Etapa: <strong>{{ dato.etapa }}</strong> //  Entrega:<strong>{{ dato.entrega }}</strong> //  Tipo Factura: <strong>{{ dato.tipofactura }}</strong>
+                </div>
+
+              </div>
+            </div>
+          
+        </div>
+
+
+
+
+</div>
