@@ -504,9 +504,15 @@ $scope.subeXML = function($files){
         }).success(function (data){
 
                leexml.getxmltemporal($rootScope.user,data.archivo).success(function(data){
-                courses  = x2js.xml_str2json(data);
+                var xml = JSON.stringify(x2js.xml_str2json(data));
+                var prueba = xml.replace(/"([^"]+)":/g,function($0,$1){return ('"'+$1.toLowerCase()+'":');});
+                
+                var courses =  x2js.json2xml_str($.parseJSON(prueba));
+                courses  = x2js.xml_str2json(courses);
+                // console.log(prueba);
+                console.log(courses);
 
-                FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){     
+                FacturaNormal.consultaFolioFiscal(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
                     if (data[0].count > 0){
 
                           $scope.eliminaxmlGlo();
@@ -523,44 +529,44 @@ $scope.subeXML = function($files){
                     FacturaNormal.validaUnidad($scope.unidad.id).success(function (data){ 
                         if (data.length > 0){
 
-                            console.log( courses.Comprobante.Emisor._rfc);
+                            console.log(courses.comprobante.emisor._rfc);
 
                             $scope.PagoG.rfcemisor = data[0].rfc;
                             $scope.PagoG.unidad = data[0].unidad;
 
-                        if ($scope.PagoG.rfcemisor == courses.Comprobante.Emisor._rfc){
+                        if ($scope.PagoG.rfcemisor == courses.comprobante.emisor._rfc){
 
-                            $scope.PagoG.serie = courses.Comprobante._serie;
-                            $scope.PagoG.foliointerno = courses.Comprobante._folio;
+                            $scope.PagoG.serie = courses.comprobante._serie;
+                            $scope.PagoG.foliointerno = courses.comprobante._folio;
 
-                            var subglobal = courses.Comprobante._subTotal;
+                            var subglobal = courses.comprobante._subtotal;
                             var subglobal1 = parseFloat(subglobal);
                             var subglobal2 = subglobal1.toFixed(2);
                             $scope.PagoG.subtotal = subglobal2;
 
-                            var totalglobal = courses.Comprobante._total;
+                            var totalglobal = courses.comprobante._total;
                             var totalglobal1 = parseFloat(totalglobal);
                             var totalglobal2 = totalglobal1.toFixed(2);
                             $scope.PagoG.total = totalglobal2;
 
-                            $scope.PagoG.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
-                            $scope.PagoG.fechaemision = courses.Comprobante._fecha;
-                            // $scope.PagoG.descuento = courses.Comprobante._descuento;
-                            $scope.PagoG.emisor = courses.Comprobante.Emisor._nombre;
-                            $scope.PagoG.rfcemisor = courses.Comprobante.Emisor._rfc;
-                            if(courses.Comprobante.Impuestos.Traslados == undefined){
+                            $scope.PagoG.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
+                            $scope.PagoG.fechaemision = courses.comprobante._fecha;
+                            // $scope.PagoG.descuento = courses.comprobante._descuento;
+                            $scope.PagoG.emisor = courses.comprobante.emisor._nombre;
+                            $scope.PagoG.rfcemisor = courses.comprobante.emisor._rfc;
+                            if(courses.comprobante.impuestos.traslados == undefined){
 
                                 $scope.PagoG.iva = '';
                                 $scope.PagoG.importeiva = '';
 
                             }else{
 
-                                $scope.PagoG.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                $scope.PagoG.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+                                $scope.PagoG.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
+                                $scope.PagoG.importeiva = courses.comprobante.impuestos.traslados.traslado._importe;
 
                             }
 
-                            if (courses.Comprobante.Impuestos.Retenciones == undefined) {
+                            if (courses.comprobante.impuestos.retenciones == undefined) {
 
                                 $scope.PagoG.isr = '';
                                 $scope.PagoG.importeisr = '';
@@ -569,12 +575,12 @@ $scope.subeXML = function($files){
                             }else{
 
 
-                                $scope.PagoG.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
-                                $scope.PagoG.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+                                $scope.PagoG.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
+                                $scope.PagoG.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
 
                             }
 
-                            if (courses.Comprobante._descuento == undefined) {
+                            if (courses.comprobante._descuento == undefined) {
 
                                 $scope.PagoG.descuento= 0;
 
@@ -582,7 +588,7 @@ $scope.subeXML = function($files){
                             }else{
 
 
-                                $scope.PagoG.descuento= courses.Comprobante._descuento;
+                                $scope.PagoG.descuento= courses.comprobante._descuento;
 
                             }
                             $scope.PagoG.usuarioentrega = Number($rootScope.id);
@@ -661,11 +667,11 @@ $scope.enviaOrdenPagoGlo = function(){
 console.log($scope.OPago.subtotaltotal);
 console.log($scope.PagoG.SubtotalS);
 
-    if ($scope.OPago.subtotaltotal !=  $scope.PagoG.SubtotalS){
+    // if ($scope.OPago.subtotaltotal !=  $scope.PagoG.SubtotalS){
 
-       swal("Upss","El Monto de los Pagos no Coincide con el Subtotal de la Factura","error");
+    //    swal("Upss","El Monto de los Pagos no Coincide con el Subtotal de la Factura","error");
 
-    }else
+    // }else
 
     if ($scope.OPago.total != $scope.PagoG.TotalS){
 
@@ -865,9 +871,15 @@ console.log($files);
                     console.log(idx);
 
                         leexml.getxmltemporal($rootScope.user,data.archivo[0]).success(function(data){
-                        courses  = x2js.xml_str2json(data);
+                        var xml = JSON.stringify(x2js.xml_str2json(data));
+                        var prueba = xml.replace(/"([^"]+)":/g,function($0,$1){return ('"'+$1.toLowerCase()+'":');});
+                        
+                        var courses =  x2js.json2xml_str($.parseJSON(prueba));
+                        courses  = x2js.xml_str2json(courses);
+                        // console.log(prueba);
+                        console.log(courses);
 
-                           FacturaNormal.consultaFolioFiscal(courses.Comprobante.Complemento.TimbreFiscalDigital._UUID).success(function (data){
+                           FacturaNormal.consultaFolioFiscal(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){
                                  
                                   if (data[0].count != 0){
 
@@ -886,36 +898,36 @@ console.log($files);
 
                                   }
                             });
-                                // if ($scope.datos.rfc == courses.Comprobante.Emisor._rfc){
+                                // if ($scope.datos.rfc == courses.comprobante.Emisor._rfc){
 
                                     var suma1 = 0;                                   
 
-                                    if(courses.Comprobante._serie == undefined){ row.entity.serie = ''; }else{ row.entity.serie = courses.Comprobante._serie };
-                                    row.entity.foliointerno = courses.Comprobante._folio;
-                                    row.entity.subtotal = courses.Comprobante._subTotal;
-                                    row.entity.total = courses.Comprobante._total;
-                                    row.entity.foliofiscal = courses.Comprobante.Complemento.TimbreFiscalDigital._UUID;
-                                    row.entity.fechaemision = courses.Comprobante._fecha;
-                                    row.entity.descuento = courses.Comprobante._descuento;
-                                    row.entity.emisor = courses.Comprobante.Emisor._nombre;
-                                    row.entity.rfcemisor = courses.Comprobante.Emisor._rfc;
-                                    // row.entity.impuesto = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                    // row.entity.tasa = courses.Comprobante.Impuestos.Traslados.Traslado._tasa;
+                                    if(courses.comprobante._serie == undefined){ row.entity.serie = ''; }else{ row.entity.serie = courses.comprobante._serie };
+                                    row.entity.foliointerno = courses.comprobante._folio;
+                                    row.entity.subtotal = courses.comprobante._subtotal;
+                                    row.entity.total = courses.comprobante._total;
+                                    row.entity.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
+                                    row.entity.fechaemision = courses.comprobante._fecha;
+                                    row.entity.descuento = courses.comprobante._descuento;
+                                    row.entity.emisor = courses.comprobante.emisor._nombre;
+                                    row.entity.rfcemisor = courses.comprobante.emisor._rfc;
+                                    // row.entity.impuesto = courses.comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                    // row.entity.tasa = courses.comprobante.Impuestos.Traslados.Traslado._tasa;
                                     row.entity.usuarioentrega = Number($rootScope.id);
                                     row.entity.tipoorden = 2;
-                                    if(courses.Comprobante.Impuestos.Traslados == undefined){
+                                    if(courses.comprobante.impuestos.traslados == undefined){
 
                                         row.entity.iva = '';
                                         row.entity.importeiva = '';
 
                                     }else{
 
-                                        row.entity.iva = courses.Comprobante.Impuestos.Traslados.Traslado._impuesto;
-                                        row.entity.importeiva = courses.Comprobante.Impuestos.Traslados.Traslado._importe;
+                                        row.entity.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
+                                        row.entity.importeiva = courses.comprobante.impuestos.traslados.traslado._importe;
 
                                     }
 
-                                    if (courses.Comprobante.Impuestos.Retenciones == undefined) {
+                                    if (courses.comprobante.impuestos.retenciones == undefined) {
 
                                         row.entity.isr = '';
                                         row.entity.importeisr = '';
@@ -924,8 +936,8 @@ console.log($files);
                                     }else{
 
 
-                                        row.entity.isr = courses.Comprobante.Impuestos.Retenciones.Retencion._impuesto;
-                                        row.entity.importeisr = courses.Comprobante.Impuestos.Retenciones.Retencion._importe;
+                                        row.entity.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
+                                        row.entity.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
 
                                     }
                                     row.entity.elimina = true;
