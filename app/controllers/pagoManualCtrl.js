@@ -23,7 +23,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
         	etapa: '',
         	foliofiscal: '',
 	        subtotal: '', 
-	        descuento: 0.00, 
+	        descuentoF: 0.00, 
 	        total: '',
 	        fechaemision: '',
 	        observacion: '',
@@ -35,10 +35,12 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 	        tasa: '',
 	        usuarioentrega: '',
             proveedor: '',
-            retencion: 0.00,
+            retencionF: 0.00,
             SubtotalF: 0.00,
             IVAF: 0.00,
-            TotalF: 0.00
+            TotalF: 0.00,
+            deducibleF: 0.00,
+            descuento: 0.00
 
 
 
@@ -50,10 +52,10 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             folio: '',
             tipotramite: '',
             concepto: '',
-            etapa: '',
+            etapa: 0,
             foliofiscal: '',
             subtotal: '', 
-            descuento: 0.00, 
+            descuentoF: 0.00, 
             total: '',
             fechaemision: '',
             observacion: '',
@@ -67,11 +69,12 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             isr: '',
             usuarioentrega: '',
             proveedor: '',
-            retencion: 0.00,
+            retencionF: 0.00,
             SubtotalF: 0.00,
             IVAF: 0.00,
             TotalF: 0.00,
-            ndc: 0
+            ndc: 0,
+            deducibleF: 0.00
 
 
         }
@@ -91,7 +94,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
     $scope.calculaTotal = function(){
 
-        var m = parseFloat($scope.PagoM.SubtotalF) - parseFloat($scope.PagoM.descuento) + parseFloat($scope.PagoM.IVAF) - parseFloat($scope.PagoM.retencion);
+        var m = parseFloat($scope.PagoM.SubtotalF) +  parseFloat($scope.PagoM.deducibleF) - parseFloat($scope.PagoM.descuentoF) + parseFloat($scope.PagoM.IVAF) - parseFloat($scope.PagoM.retencionF);
         var mm = m.toFixed(2);
         $scope.PagoM.TotalF = mm;
 
@@ -99,7 +102,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
     $scope.calculaTotalInd = function(){
 
-        var t = parseFloat($scope.PagoI.SubtotalF) - parseFloat($scope.PagoI.descuento) + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencion);
+        var t = parseFloat($scope.PagoI.SubtotalF) +  parseFloat($scope.PagoI.deducibleF) - parseFloat($scope.PagoI.descuentoF) + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencionF);
         var tt = t.toFixed(2);
         $scope.PagoI.TotalF = tt;
 
@@ -215,7 +218,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
 
                                 $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
-                                $scope.PagoM.importeiva = 0;
+                                $scope.PagoM.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
 
                             }
                             // else{
@@ -326,7 +329,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                             }else{
 
                                 $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
-                                $scope.PagoM.importeiva = courses.comprobante.impuestos.traslados.traslado._importe;
+                                $scope.PagoM.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
 
                             }
 
@@ -408,18 +411,18 @@ $scope.enviaOrdenPago = function(){
 
     }
 
-    // console.log($scope.OPago);
+    console.log($scope.OPago);
     // console.log( $scope.OPago.factura.subtotal);
 
-    // if ($scope.OPago.subtotaltotal !=  $scope.OPago.factura.subtotal){
+    if ($scope.OPago.subtotaltotal >  $scope.OPago.factura.subtotal){
 
-    //    swal("Upss","El Monto de los Pagos no Coincide con el Subtotal de la Factura","error");
+       swal("Upss","El Monto del Subtotal es mas alto que la Factura","error");
 
-    // }else
+    }else
 
-    if ($scope.OPago.total != $scope.OPago.factura.total){
+    if ($scope.OPago.total > $scope.OPago.factura.total){
 
-       swal("Upss","El Monto de los Pagos no Coincide con el Total de la Factura","error");
+       swal("Upss","El Monto del Total es mas alto que la Factura","error");
 
     }else{
 
@@ -469,8 +472,8 @@ $scope.enviaOrdenPago = function(){
 
             });
 
-        // } 
-    }
+        } 
+    // }
 
 }
 
@@ -482,7 +485,7 @@ $scope.addRow = function(){
 		                 'subtotal': $scope.PagoM.subtotal, 'total': $scope.PagoM.total, 'foliofiscal':$scope.PagoM.foliofiscal, 
 		                 'fechaemision':$scope.PagoM.fechaemision, 'descuento':$scope.PagoM.descuento, 'emisor':$scope.PagoM.emisor,
 		                 'rfcemisor':$scope.PagoM.rfcemisor, 'impuesto': $scope.PagoM.impuesto, 'tasa': $scope.PagoM.tasa, 'SubtotalF':$scope.PagoM.SubtotalF, 'IVAF':  $scope.PagoM.IVAF, 'TotalF': $scope.PagoM.TotalF,
-                         'proveedor': $scope.PagoM.proveedor, 'retencion': $scope.PagoM.retencion});
+                         'proveedor': $scope.PagoM.proveedor, 'retencionF': $scope.PagoM.retencionF, 'deducibleF': $scope.PagoM.deducibleF, 'descuentoF': $scope.PagoM.descuentoF});
 
     $scope.PagoM.folio = '';
     $scope.PagoM.tipotramite = '';
@@ -494,7 +497,8 @@ $scope.addRow = function(){
     $scope.PagoM.TotalF = 0.00;
     $scope.PagoM.observacion = '';
     $scope.PagoM.serie = '';
-    $scope.PagoM.retencion = 0.00;
+    $scope.PagoM.retencionF = 0.00;
+    $scope.PagoM.deducibleF = 0.00;
 
 
 
@@ -663,7 +667,7 @@ $scope.subeXMLInd = function($files){
                             }else{
 
                                 $scope.PagoI.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
-                                $scope.PagoI.importeiva = courses.comprobante.impuestos.traslados.traslado._importe;
+                                $scope.PagoI.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
 
                             }
 
@@ -787,8 +791,10 @@ $scope.subeXMLInd = function($files){
 
                             }else{
 
+
                                 $scope.PagoI.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
-                                $scope.PagoI.importeiva = courses.comprobante.impuestos.traslados.traslado._importe;
+                                $scope.PagoI.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
+
 
                             }
 
@@ -872,15 +878,15 @@ $scope.enviaOrdenPagoInd = function(){
 
     console.log($scope.OPago);
 
-    // if ($scope.PagoI.SubtotalF != $scope.OPago.factura.subtotal){
+    if ($scope.PagoI.SubtotalF > $scope.OPago.factura.subtotal){
 
-    //    swal("Upss","El Monto de los Pagos no Coincide con el Subtotal de la Factura","error");
+       swal("Upss","El Monto del Subtotal a Pagar es mas alto a la Factura","error");
 
-    // }else
+    }else
 
-    if ($scope.PagoI.TotalF != $scope.OPago.factura.total){
+    if ($scope.PagoI.TotalF > $scope.OPago.factura.total){
 
-       swal("Upss","El Monto de los Pagos no Coincide con el Total de la Factura","error");
+       swal("Upss","El Monto del Total a Pagar es mas alto a la Factura","error");
 
     }else{
 
@@ -928,8 +934,8 @@ $scope.enviaOrdenPagoInd = function(){
 
             });
 
-        // } 
-    }
+        } 
+    // }
 
 }
 

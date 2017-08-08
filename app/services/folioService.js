@@ -987,7 +987,7 @@ app.factory("DetalleRelacion", function($q,$http,find,api,publicfiles){
         },
         descargaExcel : function(relacion)
         {
-            return $http.post(api + 'DetalleRelacion/generaReporte2/'+ relacion).success(function (archivo){
+            return $http.post(api + 'DetalleRelacion/generaReporte/'+ relacion).success(function (archivo){
                 // console.log(archivo);
                 var link = document.createElement("a");
                 link.href = publicfiles  + 'Reporte.xls';
@@ -1048,6 +1048,9 @@ app.factory("pagoPropias", function($q,$http,find,api){
 
         listadoPropias:function(datos){
             return $http.post(api + 'pagoPropias/listadoPropias', datos);
+        },
+        proveedores:function(){
+            return $http.post(api + 'PagoManual/proveedor');
         }
 
     }

@@ -811,6 +811,12 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     });
 
+    $routeProvider.when('/buscaFacturas',{
+            templateUrl   : 'vistas/buscaFactura.html',
+            controller    : 'buscaFacturaCtrl'
+
+    });
+
     $routeProvider.when('/relaciona',{
             templateUrl   : 'vistas/relacion.html',
             controller    : 'relacionCtrl',

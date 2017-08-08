@@ -112,8 +112,13 @@
 			</div>
 
 			<div class="col-md-2">
+					<label>Deducible</label>
+					<input type="text" ng-model="PagoI.deducibleF" class="form-control" ng-blur="calculaTotalInd()">
+			</div>
+
+			<div class="col-md-2">
 					<label>Descuento</label>
-					<input type="text" ng-model="PagoI.descuento" class="form-control" ng-blur="calculaTotalInd()">
+					<input type="text" ng-model="PagoI.descuentoF" class="form-control" ng-blur="calculaTotalInd()">
 			</div>
 
 		    <div class="col-md-2">
@@ -123,7 +128,7 @@
 
 		    <div class="col-md-2">
 					<label>Retención</label>
-					<input type="text" ng-model="PagoI.retencion" class="form-control" ng-blur="calculaTotalInd()">
+					<input type="text" ng-model="PagoI.retencionF" class="form-control" ng-blur="calculaTotalInd()">
 			</div>
 
 		    <div class="col-md-2">
@@ -263,8 +268,13 @@
 			</div>
 
 			<div class="col-md-2">
+					<label>Deducible</label>
+					<input type="text" ng-model="PagoM.deducibleF" class="form-control" ng-blur="calculaTotal()">
+			</div>
+
+			<div class="col-md-2">
 					<label>Descuento</label>
-					<input type="text" ng-model="PagoM.descuento" class="form-control" ng-blur="calculaTotal()">
+					<input type="text" ng-model="PagoM.descuentoF" class="form-control" ng-blur="calculaTotal()">
 			</div>
 
 		    <div class="col-md-2">
@@ -274,7 +284,7 @@
 
 			<div class="col-md-2">
 					<label>Retención</label>
-					<input type="text" ng-model="PagoM.retencion" class="form-control" ng-blur="calculaTotal()">
+					<input type="text" ng-model="PagoM.retencionF" class="form-control" ng-blur="calculaTotal()">
 			</div>
 
 		    <div class="col-md-2">

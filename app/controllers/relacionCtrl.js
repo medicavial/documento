@@ -322,7 +322,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         filterOptions: $scope.filterOptions,
         enableCellEdit: true,
         columnDefs: [
-                    { field:'',displayName:'', width: 50, pinned: true,  cellTemplate: '<label class="btn btn-link"> NC <input type="button" style="display: none;" ng-click="pedirNC(row)"></label>'},
+                    { field:'',displayName:'', width: 50, pinned: true,  cellTemplate: '<label class="btn btn-link" > NC <input type="button" style="display: none;" ng-click="pedirNC(row)"></label>'},
                     { field:'',displayName:'', width: 100, pinned: true,  cellTemplate: '<label class="btn btn-danger"> Cancela OP <input type="button" style="display: none;" ng-click="cancelaORP(row)"></label>'},
                     { field:'Unidad',displayName:'Unidad', width: 200, pinned: true},
                     { field:'Proveedor',displayName:'Proveedor', width: 200, pinned: true},
@@ -561,7 +561,8 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
             unidad: row.entity.Unidad,
             total: row.entity.total,
             subtotal: row.entity.subtotal,
-            importeiva: row.entity.importeiva
+            importeiva: row.entity.importeiva,
+            id: row.rowIndex
             // totalNC: $scope.totalNC
 
         }
@@ -570,12 +571,15 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
     $scope.guardaNC = function(){
 
+        console.log($scope.NC);
+
         $http.post(api+'RelacionPagos/guardaNC/'+ $scope.clave,$scope.NC).success(function (data){
 
             $('#exampleModal').modal('hide'); 
-            location.reload(true);
 
-
+               var index = $scope.NC.id;
+               $scope.gridOptions.selectItem(index, false);
+               $scope.listado.splice(index, 1);
 
         }).error( function (data){
 
@@ -592,7 +596,9 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
         $http.post(api+'RelacionPagos/cancelaORP/'+ id, $scope.norelacion).success(function (data){
 
-            location.reload(true);
+               var index = row.rowIndex;
+               $scope.gridOptions.selectItem(index, false);
+               $scope.listado.splice(index, 1);
 
         }).error( function (data){
 

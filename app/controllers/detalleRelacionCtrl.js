@@ -104,9 +104,15 @@ function detalleRelacionCtrl($scope, $rootScope, find,loading,$filter,$location,
 
     $scope.ExportaReporte = function(success){
 
+        loading.cargando('Descargando');
+        // alert('hola');
+
     DetalleRelacion.descargaExcel($routeParams.relacion).success(function (data){
 
+         loading.despedida();
+
     }).error( function (data){
+
 
         $scope.mensajetramite = 'Error, Intenta otra vez';
         $scope.tipoalerta = 'alert-danger';
