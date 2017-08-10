@@ -275,7 +275,11 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             }else{
 
                 leexml.getxmltemporal($rootScope.user,data.archivo).success(function(data){
-                courses  = x2js.xml_str2json(data);
+                var xml = JSON.stringify(x2js.xml_str2json(data));
+                var prueba = xml.replace(/"([^"]+)":/g,function($0,$1){return ('"'+$1.toLowerCase()+'":');});
+                
+                var courses =  x2js.json2xml_str($.parseJSON(prueba));
+                courses  = x2js.xml_str2json(courses);
 
                 PagoManual.consultaFolioFiscal(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
                     if (data[0].count != 0){

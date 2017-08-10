@@ -385,7 +385,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
 
                 }
 
-                if (data.hospitalario.length > 0 && $scope.datos.cliente == 19) {
+                if (data.hospitalario.length > 0 ) {
                     alert('La Atención Tiene Salida de Paquete');
                     $scope.captura.tipoLes = '5';
                     $scope.buscaLesiones('5');
@@ -516,7 +516,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
 
                 }
 
-                if (data.hospitalario.length > 0 && $scope.datos.cliente == 19) {
+                if (data.hospitalario.length > 0) {
 
                     alert('La Atención Tiene Salida de Paquete');
                     $scope.captura.tipoLes = '5';
