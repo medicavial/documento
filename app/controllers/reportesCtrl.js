@@ -579,8 +579,10 @@ function listadoCedulasSinCapturarCtrl($scope, $rootScope, find , loading){
     };
 
     $scope.exportar = function(){
-
-        JSONToCSVConvertor($scope.listado,'Reporte',true);
+        loading.cargando('Cargando');       
+        find.cedulasSinCapturaExcel().success( function (data){            
+            loading.despedida();
+        });
 
     }
 

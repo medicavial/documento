@@ -285,6 +285,9 @@ app.factory("find", function($http,api){
         },
         cedulasSinCaptura:function(){
             return $http.get(api+'consulta/buscaCedulasSinCaptura');
+        },
+        cedulasSinCapturaExcel:function(){
+            return $http.get(api+'reportes/generarReporteExcel');
         }
     }
 })
