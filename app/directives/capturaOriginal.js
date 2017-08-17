@@ -526,8 +526,9 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
     //verificamos que tipo de atencion es y si ya tien fax capturado al momento de cambiar el tipo de documento 
     $scope.verificaatencion = function(){
 
-        // console.log($scope.original.tipoDoc);
-        // console.log($scope.bloqueoUni);
+         console.log($scope.esfe);
+         console.log($scope.bloqueoUni);
+
 
         if(($scope.original.tipoDoc == 2 || $scope.original.tipoDoc == 3) && (  ($scope.bloqueoUni == false && $scope.esfe == 0) || ($scope.bloqueoUni == true && $scope.esfe == 1) ) ){
     

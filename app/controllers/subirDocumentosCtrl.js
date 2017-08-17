@@ -19,9 +19,6 @@ function subirDocumentosCtrl($scope, $rootScope,  loading, $filter, $timeout, fi
         });
     }
 
-
-
-
     $scope.getFileDetails = function (e) {
 
         $scope.files = [];
@@ -35,10 +32,6 @@ function subirDocumentosCtrl($scope, $rootScope,  loading, $filter, $timeout, fi
         });
         console.log($scope.files);
     };
-
-
-
-
 
     //función para subir archivos
     $scope.uploadFile = function()
