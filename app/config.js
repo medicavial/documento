@@ -379,6 +379,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'listadoSinDocumentacionCtrl'
     });
 
+     $routeProvider.when('/reportes/listadoCedulasSinCapturar',{
+            templateUrl   : 'vistas/listadoCedulasSinCapturar.html',
+            controller    : 'listadoCedulasSinCapturarCtrl'
+    });
+
     $routeProvider.when('/reportes/ticketsFE',{
             templateUrl   : 'vistas/ticketFE.html',
             controller    : 'ticketFECtrl'

@@ -282,6 +282,9 @@ app.factory("find", function($http,api){
         },
         busquedaDigitalesFolio:function(folio){
             return $http.get(api+'consulta/buscaDocumentosFolio/'+folio);
+        },
+        cedulasSinCaptura:function(){
+            return $http.get(api+'consulta/buscaCedulasSinCaptura');
         }
     }
 })
