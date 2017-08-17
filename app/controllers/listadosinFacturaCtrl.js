@@ -506,7 +506,6 @@ $scope.subeXML = function($files){
                leexml.getxmltemporal($rootScope.user,data.archivo).success(function(data){
                 var xml = JSON.stringify(x2js.xml_str2json(data));
                 var prueba = xml.replace(/"([^"]+)":/g,function($0,$1){return ('"'+$1.toLowerCase()+'":');});
-                
                 var courses =  x2js.json2xml_str($.parseJSON(prueba));
                 courses  = x2js.xml_str2json(courses);
                 // console.log(prueba);
@@ -520,10 +519,7 @@ $scope.subeXML = function($files){
                           swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
                           $scope.archivos = [];
                           // alert('Ya existe una Factura con ese Folio Fiscal');
-                          
-                          
-
-
+                                          
                     }else{
 
                     FacturaNormal.validaUnidad($scope.unidad.id).success(function (data){ 
@@ -1055,6 +1051,56 @@ $scope.eliminaxmlInd = function(idx){
 
     });
 }
+
+
+$scope.FoliosinFactura = function(success){
+
+        console.log($scope.selectos);
+        $scope.relaciones = {
+            tipofactura: 2
+
+        }
+
+        if ($scope.unidad == '' || $scope.unidad == undefined) {
+
+            alert('Debes Realizar busqueda x Unidad');
+            location.reload();
+        };
+
+        $http.post(api+'OPFactura/subeFolios', {selecionado:$scope.selectos}).success(function (data){
+
+            swal("Oops...", "No seleccionaste Folios", "success");
+
+
+        }).error( function (data){
+
+            alert('Ocurrio un error, Intentalo de nuevo');
+
+        });
+
+
+
+    //     if ($scope.relacionesFol.length > 0){
+
+    //         console.log($scope.relacionesFol);
+
+    //         $scope.iniciorelacion = false;
+    //         $scope.finrelacion = true;
+    //         $scope.tituloFinRelacion = "Relación de Folios";
+
+    //         console.log($scope.relacionesFol);
+
+    //         $scope.detalles = $scope.relacionesFol;
+    //         $scope.referencia = $scope.relacionesFol[0].referencia;
+
+    // }else{
+
+    //     swal("Oops...", "No seleccionaste Folios", "error")
+
+    // }
+// });
+
+    }
 
 };
 
