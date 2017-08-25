@@ -763,7 +763,7 @@ function cartasCtrl($scope, $rootScope, datos, loading,facturacionExpress,find,$
         $('#myModal').modal();
 
         info = row.entity;
-        if(info.UNI_clave==232||info.UNI_clave==249||info.UNI_clave==125||info.UNI_clave==110||info.UNI_clave==266||info.UNI_clave==65){
+        if(info.UNI_clave==232||info.UNI_clave==249||info.UNI_clave==125||info.UNI_clave==110||info.UNI_clave==266||info.UNI_clave==65||info.UNI_clave==301){
             if(info.Arc_archivo!=null){
                 $scope.archivo=info.Arc_archivo+'/'+info.Arc_clave;
             }else{
