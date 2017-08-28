@@ -94,7 +94,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
     $scope.calculaTotal = function(){
 
-        var m = parseFloat($scope.PagoM.SubtotalF) +  parseFloat($scope.PagoM.deducibleF) - parseFloat($scope.PagoM.descuentoF) + parseFloat($scope.PagoM.IVAF) - parseFloat($scope.PagoM.retencionF);
+        var m = parseFloat($scope.PagoM.SubtotalF) -  parseFloat($scope.PagoM.deducibleF) - parseFloat($scope.PagoM.descuentoF) + parseFloat($scope.PagoM.IVAF) - parseFloat($scope.PagoM.retencionF);
         var mm = m.toFixed(2);
         $scope.PagoM.TotalF = mm;
 
@@ -102,7 +102,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
     $scope.calculaTotalInd = function(){
 
-        var t = parseFloat($scope.PagoI.SubtotalF) +  parseFloat($scope.PagoI.deducibleF) - parseFloat($scope.PagoI.descuentoF) + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencionF);
+        var t = parseFloat($scope.PagoI.SubtotalF) -  parseFloat($scope.PagoI.deducibleF) - parseFloat($scope.PagoI.descuentoF) + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencionF);
         var tt = t.toFixed(2);
         $scope.PagoI.TotalF = tt;
 
