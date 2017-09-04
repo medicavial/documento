@@ -717,6 +717,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
             //se crea un delay por que carge la imagen de forma correcta
             $timeout(function(){
                 $scope.archivos = archivos;
+                console.log($scope.archivos);
                 $scope.vistaArchivos = true;
             }, 1000);
 
@@ -734,6 +735,23 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
 
 
     }
+
+
+     $scope.muestraArchivosSolos  = function(archivos){
+
+        arrayArchivos = [];
+        cont = archivos.todos.length;
+        $scope.vistaTodosArchivos = true;
+        for (var i = 0; i < cont; i++) {            
+            arrayArchivos.push(archivos[i]);
+        }
+        console.log(arrayArchivos);
+
+        $scope.archivos = arrayArchivos;
+    }
+
+
+
 
     $scope.muestraArchivosTodos  = function(tipoDoc){
         result = $scope.listArchivos.todos;

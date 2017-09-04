@@ -193,7 +193,7 @@
 
 						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
 						  <div class="btn-group" role="group">
-						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.todos)" ng-disabled="detalle.archivos.todos.length == 0"><i class="glyphicon glyphicon-th"></i> Ver todos</button>
+						    <button type="button" class="btn btn-default" ng-click="muestraArchivosSolos(detalle.archivos)" ng-disabled="detalle.archivos.todos.length == 0"><i class="glyphicon glyphicon-th"></i> Ver todos</button>
 						  </div>
 						  <div class="btn-group" role="group">
 						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.pase)" ng-disabled="detalle.archivos.pase.length == 0"><i class="glyphicon glyphicon-file"></i> Pase</button>
@@ -574,11 +574,12 @@
 	<div class="panel-heading">Vista Previa <button type="button" ng-click="vistaTodosArchivos = !vistaTodosArchivos" class="close" aria-label="Close"><span class="white-text" aria-hidden="true">&times;</span></button> </div>
 	<div class="panel-body">
 
-		<div class="frame-container"  ng-repeat="archivo in archvosTodos | unique">
-	        <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo) }}" target="_blank">Abrir otra ventana</a>
+		<div class="frame-container"  ng-repeat="archivo in archivos | unique">
+	        <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo.Arc_archivo) }}" target="_blank">Abrir otra ventana</a>
 	        <button class="btn btn-primary" ng-click=" rotar = !rotar ">Girar</button>
-	        <embed ng-if="file(archivo)" ng-src="{{ obtenerFrame(archivo) }}" width="100%" id="files">
-	        <img ng-if="imagen(archivo)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo) }}"
+	        <b>{{archivo.TID_nombre}}</b>
+	        <embed ng-if="file(archivo.Arc_archivo)" ng-src="{{ obtenerFrame(archivo.Arc_archivo) }}" width="100%" id="files">
+	        <img ng-if="imagen(archivo.Arc_archivo)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo.Arc_archivo) }}"
 		        ng-init="zoomWidth = 800;imgStyle = {width:'100%'}"
 		        ng-style="imgStyle"
 				ng-mouse-wheel-up="zoomWidth = zoomWidth + 20; imgStyle.width = zoomWidth +'px'; "
@@ -599,6 +600,7 @@
 		<div class="frame-container" ng-repeat="archivo in archivos">
 	        <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo) }}" target="_blank">Abrir otra ventana</a>
 	        <button class="btn btn-primary" ng-click=" rotar = !rotar ">Girar</button>
+	        <b>{{archivo.TID_nombre}}</b>prueba1
 	        <embed ng-if="file(archivo)" ng-src="{{ obtenerFrame(archivo) }}" width="100%" id="files">
 	        <img ng-if="imagen(archivo)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo) }}"
 		        ng-init="zoomWidth = 800;imgStyle = {width:'100%'}"
