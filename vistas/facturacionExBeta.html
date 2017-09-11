@@ -600,7 +600,7 @@
 		<div class="frame-container" ng-repeat="archivo in archivos">
 	        <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo) }}" target="_blank">Abrir otra ventana</a>
 	        <button class="btn btn-primary" ng-click=" rotar = !rotar ">Girar</button>
-	        <b>{{archivo.TID_nombre}}</b>prueba1
+	        
 	        <embed ng-if="file(archivo)" ng-src="{{ obtenerFrame(archivo) }}" width="100%" id="files">
 	        <img ng-if="imagen(archivo)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo) }}"
 		        ng-init="zoomWidth = 800;imgStyle = {width:'100%'}"

@@ -1193,9 +1193,9 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
         }
     }
 
-    $scope.validaSinCedula = function(){
+    $scope.validaSinCedula = function(){       
       if($scope.sinCedula==false){
-
+          $scope.sinFactura=1;
           $scope.msjAlerta='';
           $scope.captura.cedulaElectronica='';
           $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
@@ -1235,6 +1235,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
               }
 
       }else{
+              $scope.sinFactura=0;
               console.log($scope.sinCedula);
               $scope.SiniestroMin = 11;
               $scope.SiniestroMax = 11;
