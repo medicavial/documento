@@ -442,6 +442,9 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                     }
                 }
 
+                $scope.UniExpticket= data.expediente.uni_clave;
+                $scope.CiaExpticket= data.expediente.claveEmpresa;
+
 
                 //verificamos las lesiones disponibles segun el tipo
                 $scope.buscaTipoLesiones($scope.tipoLes);
@@ -906,8 +909,8 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
         $scope.ticket = {
             folioweb:expediente,
             folioIn:'',
-            cliente:'',
-            unidad:'',
+            cliente:$scope.CiaExpticket,
+            unidad:$scope.UniExpticket,
             etapa:'',
             categoria:'',
             subcategoria:'',
