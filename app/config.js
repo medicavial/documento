@@ -214,6 +214,18 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller     :'cancelacionCtrl'
     });
 
+    $routeProvider.when('/facturacionEx/capturadosSinFactura',{
+            templateUrl    :'vistas/capturadosSinFactura.html',
+            controller     :'capturadosSinFacturaCtrl',
+            resolve       :{
+                datos:function(facturacionExpress,loading,webStorage){
+                    loading.cargando('Cargando Información');
+                    var datos = JSON.parse( webStorage.local.get('facturacionExpressData') );                    
+                    return facturacionExpress.capNoFacturados();
+                }
+            }
+    });
+
     $routeProvider.when('/facturacionEx/cartas',{
             templateUrl    :'vistas/cartas.html',
             controller     :'cartasCtrl',

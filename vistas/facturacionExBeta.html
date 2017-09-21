@@ -78,6 +78,14 @@
 	        </a>
 
 	    </li>
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Cap sin Fac</h3>
+	        <a href="#/facturacionEx/capturadosSinFactura">
+	            <span class="glyphicon glyphicon-list"></span>
+	        </a>
+
+	    </li>
 
 	</ul>
 
@@ -742,7 +750,7 @@
 					<div class="col-md-12">
 						<div class="form-group">
 						    <label for="reporte">Lesionado</label>
-						    <input type="text" class="form-control" ng-model="captura.Nombre" id="Reporte" placeholder="Reporte">
+						    <input type="text" ng-disabled="captura.Nombre" class="form-control" ng-model="captura.Nombre" id="Reporte" placeholder="Reporte">
 						</div>
 					</div>
 
@@ -751,18 +759,17 @@
 					<div class="col-md-4">
 						<div class="form-group">
 						    <label for="siniestro">Siniestro</label>
-								<div ng-if="datos.cliente == 19">
-								    <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true" ng-pattern="/04+(16|17)+(\d{7})$/">
-								</div>
-								<div ng-if="datos.cliente != 19">
-								    <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true">
-								</div>
+								
+								   <!--  <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true" ng-pattern="/04+(16|17)+(\d{7})$/"> -->
+								     <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true" >
+
+								
 
 						    <div ng-messages="capturaForm.siniestro.$error" class="text-danger">
-								<div ng-message="pattern">Inválido. ej (04170000000)</div>
+								<!-- <div ng-message="pattern">Inválido. ej (04170000000)</div> -->
 								<div ng-message="required">Campo obligatorio.</div>
-								<!-- <div ng-message="maxlength">El campo no puede ser mayor que {{ SiniestroMax }} digitos.</div>
-								<div ng-message="minlength">El campo no puede ser menor que {{ SiniestroMin }} digitos.</div> -->
+								<div ng-message="maxlength">El campo no puede ser mayor que {{ SiniestroMax }} digitos.</div>
+								<div ng-message="minlength">El campo no puede ser menor que {{ SiniestroMin }} digitos.</div>
 					        </div>
 						</div>
 					</div>

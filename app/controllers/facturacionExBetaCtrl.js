@@ -601,6 +601,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                     localidad:$scope.captura.Localidad
                 }
                 facturacionExpress.capturaMedico(info).success(function (data){
+                    console.log(data);
                     $scope.captura.MedicoMV = data;
                     $scope.ocultaBotonesMed = true;
                 });
@@ -823,7 +824,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
     //verificamos la captura
     $scope.verificaDatos = function(){
 
-        if ($scope.capturaForm.$valid && $scope.tabuladorListo == true && $scope.captura.Ajustador != '') {
+        if ($scope.capturaForm.$valid && $scope.tabuladorListo == true && $scope.captura.Ajustador != '' && $scope.captura.MedicoMV != '') {
             return false
         }else{
             return true;

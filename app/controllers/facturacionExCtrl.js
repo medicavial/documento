@@ -999,6 +999,92 @@ function autorizadosCtrl($scope, $rootScope, datos, loading){
     };
 };
 
+function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading,facturacionExpress){
+
+     console.log(datos);
+
+    $rootScope.tituloFEA = 'Folios Autorizados';
+    loading.despedida();
+
+    $scope.listado = datos.data;
+
+    $scope.captura={};
+
+    var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
+
+    $scope.gridOptions = { 
+        data: 'listado', 
+        enableColumnResize:true,
+        enablePinning: true, 
+        enableRowSelection:false,
+        multiSelect:false,
+        showSelectionCheckbox: false,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: true,
+        selectedItems: $scope.selectos, 
+        filterOptions: $scope.filterOptions,
+        rowTemplate: rowTempl,
+        columnDefs: [
+                    { field:'Exp_folio', displayName:'Folio', width: 100, pinned:true, enableCellEdit: false },
+                    { field:'UNI_nombreMV', displayName:'Unidad', width: 180, pinned:false },
+                    { field:'Exp_fecreg', displayName:'Fecha Atención', width: 120, pinned:false },
+                    // { field:'FExpedicion', displayName:'Fecha Expedición', width: 120, pinned:false },                    
+                    // { field:'DocumentosDigitales', displayName:'Digitalizado', width: 120, pinned:false },
+                    { field:'EXP_fechaCaptura', displayName:'Fecha Captura', width: 120, pinned:false },
+                    { field:'Exp_poliza', displayName:'Poliza', width: 100, pinned:false },
+                    { field:'Exp_siniestro', displayName:'Siniestro', width: 100, pinned:false },
+                    { field:'Exp_reporte', displayName:'Reporte', width: 100, pinned:false },
+                    { field:'Exp_completo', displayName:'Lesionado', width: 240, pinned:false },
+                    // { field:'carta', displayName:'Carta', width: 80, pinned:false },
+                    { field:'carta' ,cellTemplate:"<img src='images/ok.jpg' width='20'/> "}
+                    // { field:'RIE_nombre', displayName:'Riesgo', width: 120, pinned:false },
+                    // { field:'Triage_nombre', displayName:'Triage', width: 120, pinned:false },
+                    // { field:'EXP_costoEmpresa', displayName:'Costo', width: 120, pinned:false },
+                    // { field:'UNI_propia', width: 120,visible:false}
+        ],
+        showFooter: true,
+        showFilter:false
+    };
+
+
+    $scope.onDblClickRow = function(row){
+        console.log(row.entity);  
+        $scope.mensaje='';
+        facturacionExpress.DatosCaptura(row.entity.Exp_folio).success( function (data){
+            console.log(data);
+            $('#myModal').modal();
+            if(data.length==0){
+                $scope.mensaje='El folio no está capturado';
+            }else{
+                if(!data[0].fac_folio){
+                    $scope.captura.Nombre= data[0].Afe_nombre;
+                    $scope.captura.Siniestro = data[0].das_siniestro;
+                    $scope.captura.Poliza = data[0].das_poliza;
+                    $scope.captura.Reporte = data[0].das_reporte;
+                    $scope.cpatura.RegCompania = data[0].FolioElect;
+                    $scope.captura.cedulaElectronica = data[0].Atencion;
+                }else{
+                    $scope.mensaje='El folio ya está facturado';  
+                    $scope.captura.Nombre= data[0].Afe_nombre;
+                    $scope.captura.Siniestro = data[0].das_siniestro;
+                    $scope.captura.Poliza = data[0].das_poliza;
+                    $scope.captura.Reporte = data[0].das_reporte; 
+                    $scope.captura.RegCompania = data[0].FolioElect;
+                    $scope.captura.cedulaElectronica = data[0].Atencion;
+                }
+            }
+        }).error(function (data){
+            $scope.tipoalerta = 'alert-warning';
+            $scope.mensaje = 'Algo salio mal intentalo nuevamente';
+            $('#boton').button('reset');
+        })
+
+        
+
+    }
+};
+
+
 function rechazadosCtrl($scope, $rootScope, datos, loading,facturacionExpress){
 
     // console.log(datos);
@@ -1072,6 +1158,7 @@ autorizadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 cartasCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress','find'];
 cancelacionCtrl.$inject =['$scope', '$rootScope','loading','facturacionExpress','find','webStorage'];
 rechazadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
+capturadosSinFacturaCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
 
 
 app.controller('facturacionExCtrl',facturacionExCtrl);
@@ -1080,3 +1167,4 @@ app.controller('autorizadosCtrl',autorizadosCtrl);
 app.controller('rechazadosCtrl',rechazadosCtrl);
 app.controller('cartasCtrl',cartasCtrl);
 app.controller('cancelacionCtrl',cancelacionCtrl);
+app.controller('capturadosSinFacturaCtrl',capturadosSinFacturaCtrl);

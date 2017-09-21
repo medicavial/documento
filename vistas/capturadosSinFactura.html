@@ -1,0 +1,241 @@
+<div ng-init="inicio()" id="contenedor">
+	<div class="titulos">
+		<a href="#/facturacionExBeta" class="icon-arrow-left"></a>
+		<h1>Capturados Sin Factura (Qualitas)</h1>
+	</div>
+	<div class="row">
+		<div class="col-md-12">
+			<fieldset>
+				<legend>Selecciona día</legend>
+				<form ng-submit="consultaCartas()">				
+					<div class="row">						       
+				        <div class="col-sm-4 col-md-4">
+				            <div class="input-group" style="width: 100%">
+				                <input type="text" ng-model="fecha" class="form-control" id="datepicker" placeholder="DIA" required/>				               
+				            </div>
+				        </div>
+			            <div class="col-sm-4 col-md-4">
+				            <div class="input-group" style="width: 100%">
+				                <input type="text" ng-model="fecha1" class="form-control" id="datepicker2" placeholder="DIA" required/>				                
+				            </div>
+				        </div>
+				        <div class="col-sm-4 col-md-4">
+				            <div class="input-group">				               
+				                <span class="input-group-btn">
+				                    <button class="btn btn-primary" type="submit"><i class="glyphicon glyphicon-search"></i></button>
+				                </span>
+				            </div>
+				        </div>				        
+				    </div>
+				</form>
+			</fieldset>
+		</div>
+	</div>
+	<div class="row">
+			<div class="col-md-12">
+				<fieldset>
+					<legend>Filtros</legend>
+					<div class="row">						
+						<div class="col-md-6">
+							<div class="input-group">
+								<div class="input-group-addon">
+							        <i class="glyphicon glyphicon-search"></i>
+							    </div>
+								<input type="text" ng-model="criterio" class="form-control" capitalize ng-change="filtra()" placeholder="NOMBRE/FOLIO/UNIDAD"/>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+
+	<section>
+		
+		<div class="gridStyle" ng-grid="gridOptions"></div>
+		<br>
+
+		<div id="myModal" class="modal fade" role="dialog">
+		  <div class="modal-dialog modal-lg">
+
+		    <!-- Modal content-->
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <button type="button" class="close" data-dismiss="modal">&times;</button>
+		        <h4 class="modal-title">Edición de Datos capturados</h4>
+		      </div>
+		      <div class="modal-body">
+		      	<div ng-show="mensaje" class="alert alert-warning">
+		      		{{mensaje}}
+		      	</div>
+
+		      	<div id="cajadeCaptura">
+		      		
+
+		      		<form ng-submit="capturaDatos()" name="capturaForm">
+						<div class="modal-body">
+							<div class="row">
+
+								<div class="col-md-6">
+									<div class="form-group">
+									    <label for="cedula">Folio de Autorización</label>
+									    <input type="text" class="form-control" ng-model="captura.cedulaElectronica" name="cedula" id="cedula" ng-required="datos.cliente == 19&&sinCedula==true" ng-keyup="validaFolioAutorizacion()" ng-minlength="13" ng-maxlength="13" placeholder="cedula" ng-disabled="datos.cliente == 19&&sinCedula==false" capitalize>
+									    <input type="checkbox" name="sinCedula" id="sinCedula" ng-model="sinCedula" ng-true-value="false" ng-false-value="true" ng-click="validaSinCedula()">Sin Cédula
+									    <div ng-messages="capturaForm.cedula.$error" class="text-danger">
+											<div ng-message="required">Campo obligatorio.</div>
+											<div ng-message="maxlength">El campo no puede ser mayor que 13 digitos.</div>
+											<div ng-message="minlength">El campo no puede ser menor que 13 digitos.</div>
+								        </div>
+									</div>
+								</div>
+								<div class="col-md-6">
+									<div class="form-group">
+									    <label for="RegCompania">Folio Electronico</label>
+											<div ng-if="datos.cliente == 19">
+										    <input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-pattern="/[a-zA-Z0-9]{12,12}/"  ng-required="datos.cliente == 19&&sinCedula==true" placeholder="RegCompania" capitalize ng-disabled="datos.cliente == 19&&sinCedula==true">
+											</div>
+											<div ng-if="datos.cliente != 19">
+												<input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-required="datos.cliente == 19&&sinCedula==true" placeholder="RegCompania" capitalize ng-disabled="datos.cliente == 19&&sinCedula==true">
+											</div>
+									    <div ng-messages="capturaForm.RegCompania.$error" class="text-danger">
+
+											<div ng-message="required">Campo obligatorio.</div>
+											<div ng-message="maxlength">El campo no puede ser mayor que {{ FolioElecMax }} digitos.</div>
+											<div ng-message="minlength">El campo no puede ser menor que {{ FolioElecMin }} digitos.</div>
+											<div ng-message="pattern">12 dígitos</div>
+								        </div>
+									</div>
+								</div>
+
+							</div>
+							<div class="row" ng-show="cargador">
+								<div class="col-md-12">
+									<div>
+										<img src="images/cargador.gif" width="60">
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-show="msjAlerta">
+								<div class="col-md-12">
+									<div class="alert alert-warning">
+										{{msjAlerta}}
+									</div>
+								</div>
+							</div>
+
+							<div class="row">
+
+								<div class="col-md-12">
+									<div class="form-group">
+									    <label for="reporte">Lesionado</label>
+									    <input type="text" class="form-control" ng-model="captura.Nombre" id="Reporte" placeholder="Reporte">
+									</div>
+								</div>
+
+							</div>
+							<div class="row">
+								<div class="col-md-4">
+									<div class="form-group">
+									    <label for="siniestro">Siniestro</label>
+											<div ng-if="datos.cliente == 19">
+											    <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true" ng-pattern="/04+(16|17)+(\d{7})$/">
+											</div>
+											<div ng-if="datos.cliente != 19">
+											    <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true">
+											</div>
+
+									    <div ng-messages="capturaForm.siniestro.$error" class="text-danger">
+											<div ng-message="pattern">Inválido. ej (04170000000)</div>
+											<div ng-message="required">Campo obligatorio.</div>
+											<!-- <div ng-message="maxlength">El campo no puede ser mayor que {{ SiniestroMax }} digitos.</div>
+											<div ng-message="minlength">El campo no puede ser menor que {{ SiniestroMin }} digitos.</div> -->
+								        </div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+									    <label for="poliza">Poliza</label>
+									    <input type="text" class="form-control" name="poliza" ng-model="captura.Poliza" id="poliza" ng-minlength="PolizaMin" ng-maxlength="PolizaMax" placeholder="Poliza" ng-disabled="datos.cliente == 19&&sinCedula==true">
+									    <div ng-messages="capturaForm.poliza.$error" class="text-danger">
+											<div ng-message="required">Campo obligatorio.</div>
+											<div ng-message="maxlength">El campo no puede ser mayor que {{ PolizaMax }} digitos.</div>
+											<div ng-message="minlength">El campo no puede ser menor que {{ PolizaMin }} digitos.</div>
+								        </div>
+									</div>
+								</div>
+								<div class="col-md-4">
+									<div class="form-group">
+									    <label for="reporte">Reporte</label>
+											<div ng-if="datos.cliente == 19">
+									    	<input type="text" class="form-control" name="reporte" ng-model="captura.Reporte" id="Reporte" ng-minlength="ReporteMin" ng-maxlength="ReporteMax" placeholder="Reporte" ng-disabled="datos.cliente == 19&&sinCedula==true" ng-pattern="/04+(16|17)+(\d{7})$/"  ng-keyup="validaReporte()">
+											</div>
+											<div ng-if="datos.cliente != 19">
+												<input type="text" class="form-control" name="reporte" ng-model="captura.Reporte" id="Reporte" ng-minlength="ReporteMin" ng-maxlength="ReporteMax" placeholder="Reporte" ng-disabled="datos.cliente == 19&&sinCedula==true" ng-keyup="validaReporte()">
+											</div>
+									    <div ng-messages="capturaForm.reporte.$error" class="text-danger">
+											<div ng-message="required">Campo obligatorio.</div>
+											<div ng-message="pattern">Inválido. ej (04170000000)</div>
+											<div ng-message="maxlength">El campo no puede ser mayor que {{ ReporteMax }} digitos.</div>
+											<div ng-message="minlength">El campo no puede ser menor que {{ ReporteMin }} digitos.</div>
+								        </div>
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-show="cargador1">
+								<div class="col-md-offset-8 col-md-4">
+									<div>
+										<img src="images/cargador.gif" width="60">
+									</div>
+								</div>
+							</div>
+							<div class="row" ng-show="msjReporte">
+								<div class="col-md-offset-8 col-md-4">
+									<div>
+										<label style="color:red">*Reporte inválido.</label>
+									</div>
+								</div>
+							</div>									
+							<div class="text-right">
+						        <button type="button" class="btn btn-default" ng-click="vistaCaptura = !vistaCaptura">Cerrar</button>
+						        <button type="submit" id="botonAct" class="btn btn-primary" ng-disabled="verificaDatos()" data-loading-text="Guardando...">Gaurdar Cambios</button>
+						    </div>
+						</div>
+					</form>
+		      	</div>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		      </div>
+		    </div>
+
+		  </div>
+		</div>
+
+	</section>
+</div>
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    // $( "#datepicker" ).datepicker({showButtonPanel: true});
+    // $( "#datepicker2" ).datepicker({showButtonPanel: true});
+    $( "#datepicker" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker2" ).datepicker( "option", "minDate", selectedDate );
+      }
+    });
+    
+    $( "#datepicker2" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker" ).datepicker( "option", "maxDate", selectedDate );
+      }
+    });
+
+    $( "#datepickerExpedicion" ).datepicker({showButtonPanel: true});
+
+</script>

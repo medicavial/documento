@@ -823,6 +823,12 @@ app.factory("facturacionExpress", function($q,$http,find,api){
         },
         cancelaFolio:function(datos){
             return $http.post(api + 'facturacionExpress/cancelaFolio', datos,{timeout: 10000});
+        },
+        capNoFacturados:function(){
+            return $http.get(api + 'facturacionExpress/capturadosNoFacturados');
+        },
+        DatosCaptura:function(folio){
+            return $http.get(api + 'facturacionExpress/datosCaptura/'+folio);
         }
     }
 });
