@@ -1,6 +1,6 @@
 <div id="contenedor" class="main" ng-init="inicio()">
     <div class="titulos">
-        <a href="#/reportes" class="icon-arrow-left"></a>
+        <a href="#/pagos" class="icon-arrow-left"></a>
         <h1>Listado Pagos sin Relación </h1>
     </div>
 
@@ -12,11 +12,11 @@
     <div class="row">
 
       <div class="col-sm-3 col-md-3">
-        <input type="text" ng-model="datos.fechaini" class="form-control" id="datepicker" placeholder="inicial" />
+        <input type="text" ng-model="datos.fechaini" class="form-control" id="datepicker3" placeholder="inicial" />
       </div>
 
       <div class="col-sm-3 col-md-3">        
-          <input type="text" ng-model="datos.fechafin" class="form-control" id="datepicker2" placeholder="Final" />
+          <input type="text" ng-model="datos.fechafin" class="form-control" id="datepicker4" placeholder="Final" />
       </div>
 
       <div class="col-sm-2 col-md-2">
@@ -46,7 +46,7 @@
 
     // $( "#datepicker" ).datepicker({showButtonPanel: true});
     // $( "#datepicker2" ).datepicker({showButtonPanel: true});
-    $( "#datepicker" ).datepicker({
+    $( "#datepicker3" ).datepicker({
       defaultDate: "+1w",
       showButtonPanel: true,
       changeMonth: true,
@@ -55,7 +55,7 @@
         
       }
     });
-    $( "#datepicker2" ).datepicker({
+    $( "#datepicker4" ).datepicker({
       defaultDate: "+1w",
       showButtonPanel: true,
       changeMonth: true,
