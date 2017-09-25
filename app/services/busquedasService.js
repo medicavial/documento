@@ -288,6 +288,12 @@ app.factory("find", function($http,api){
         },
         cedulasSinCapturaExcel:function(){
             return $http.get(api+'reportes/generarReporteExcel');
+        },
+        listadoxUnidadPagos:function(datos){
+            return $http.post(api + 'flujopagos/pagosxUnidad',datos);
+        },
+        listadosinRelacion:function(datos){
+            return $http.post(api + 'flujopagos/listadosinRelacion',datos);
         }
     }
 })

@@ -1,0 +1,82 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/reportes" class="icon-arrow-left"></a>
+        <h1>Listado Recepción Pagos</h1>
+    </div>
+
+      <ul id="rb-grid-small" class="rb-grid-small clearfix">
+
+        <li class="rb-span-1" id="color3">
+            <h3>Pagos sin Relación</h3>
+            <a href="#/pagosSinrelacion">
+                <span class="glyphicon glyphicon-file"></span>
+            </a>
+        </li>
+        
+    </ul>
+
+    <div class="row">
+      <h5 class="text-danger"><strong>*** Busqueda de Pagos solo x Unidad ***</strong></h5>
+    </div>
+
+    <legend>Fecha Recepción Pagos</legend>
+    <div class="row">
+
+      <div class="col-sm-3 col-md-3">
+        <input type="text" ng-model="datos.fechaini" class="form-control" id="datepicker" placeholder="inicial" />
+      </div>
+
+      <div class="col-sm-3 col-md-3">        
+          <input type="text" ng-model="datos.fechafin" class="form-control" id="datepicker2" placeholder="Final" />
+      </div>
+
+      <div class="col-sm-2 col-md-2">
+        <select class="form-control" id="unidad"  ng-model="datos.unidad" ng-options="unidad.id as unidad.nombre for unidad in unidades" ng-change="filtra(1)">
+          <option value="">Unidad</option>
+        </select>
+      </div>
+
+      <div class="col-sm-1 col-md-1">
+        <span class="input-group-btn">
+          <button class="btn btn-primary btn-lg" type="button" ng-click="cargaPagosxUnidad()">Buscar&nbsp;&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-search"></i></button>
+        </span>
+      </div>
+      
+    </div><br><br>
+
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+    <br>
+
+    <button ng-click="exportar()" class="btn btn-success">Exportar</button>
+
+</div>
+
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    var maximumDate = '25/04/2017';
+
+    // $( "#datepicker" ).datepicker({showButtonPanel: true});
+    // $( "#datepicker2" ).datepicker({showButtonPanel: true});
+    $( "#datepicker" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        
+      }
+    });
+    $( "#datepicker2" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker" ).datepicker( "option");
+      }
+
+
+    });
+
+
+</script>

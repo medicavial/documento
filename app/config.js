@@ -890,6 +890,18 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     });
 
+    $routeProvider.when('/listadoRecepcionPagos',{
+            templateUrl   : 'vistas/reporteRecepcionPagos.html',
+            controller    : 'listadoRecepcionPagoCtrl'
+
+    });
+
+    $routeProvider.when('/pagosSinrelacion',{
+            templateUrl   : 'vistas/listadosinRelacion.html',
+            controller    : 'listadosinRelacionCtrl'
+
+    });
+
 
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
 

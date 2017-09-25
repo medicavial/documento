@@ -2681,6 +2681,263 @@ function listadoRecepcionAreaCtrl($scope, $rootScope, $routeParams, find, loadin
 
 };
 
+function listadoRecepcionPagoCtrl($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios){
+
+    // $scope.listadoRecepcion = datos.data;
+    loading.despedida();
+
+    //Carga Configuracion Inicial
+	$scope.inicio = function(){
+
+		// $scope.altaunidades();
+
+		$scope.datos = {
+
+			fechaini: '',
+			fechafin: '',
+			unidad: ''
+
+		}
+
+	}
+
+	//Carga la lista de archivos a Recibir de otras areas
+	$scope.cargaPagosxUnidad = function(){
+		
+		loading.cargando('Buscando Folio'); 
+
+		find.listadoxUnidadPagos($scope.datos).success( function (data){
+
+
+        	if(data.length>0){
+        		loading.despedida();
+        		$scope.listadoxUnidad = data;
+            }else{
+                $scope.listadoxUnidad = [];
+        	}
+
+		});
+	}
+
+
+	//Enlista las unidades
+	$scope.altaunidades = function(){
+
+		find.unidades().success( function (data) {
+
+			$scope.unidades = data;
+
+		});
+	}
+
+
+
+    var csvOpts = { columnOverrides: { obj: function (o) {
+	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
+	    } },
+	    iEUrl: 'downloads/download_as_csv'
+	};
+
+	//Cargamos el grid con los datos
+    $scope.gridOptions = { 
+        data: 'listadoxUnidad', 
+        enableColumnResize:true,
+        enablePinning: true, 
+        enableRowSelection:true,
+        multiSelect:true,
+        showSelectionCheckbox: true,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: true,
+        selectedItems: $scope.selectedRows, 
+        filterOptions: $scope.filterOptions,
+        enableCellEdit: true,
+        columnDefs: [
+                    { field:'USUNombre', width: 120, pinned: true},
+                    { field:'Producto', width: 120 },
+                    { field:'Triage', width: 120 },
+                    { field:'Cliente', width: 100 },
+                    { field:'Unidad', width: 220 },
+                    // { field:'Folio', width: 120, pinned: false},
+                    { field:'Folio', displayName:'Folio' , width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
+                    { field:'Lesionado', width: 330 },
+                    { field:'Etapa', width: 120 },
+                    { field:'Entrega', width: 80 },
+                    { field:'FAtencion', width: 120},
+                    { field:'FormaRecep', width: 90 },
+                    { field:'fechaRecepcion', width: 120},
+                    { field:'FechaRecepPag', width: 120,  cellFilter: 'date:\'dd/MM/yyyy\'' },
+                    { field:'Tipo', width: 120 },
+                    { field:'Lesion', width: 120 },
+                    { field:'Relacion', width: 120 },
+                    { field:'FRelacion', displayName:'F.relacion', width: 120 },
+                    { field:'FRelPago', displayName:'F.Pago.Rel.', width: 120 },
+                    { field:'FRelPagoReg', displayName:'F.Pago.Rel.Reg.', width: 120 },
+                    { field:'PasC', width: 120 },
+                    { field:'FPasCobrado', width: 120 },
+                    { field:'Pago', width: 120 },
+                    { field:'Reserva', width: 120 },
+                    { field:'FacturaRelacion', width: 80 },
+                    { field:'FacDoc', width: 80 },
+                    { field:'RelP', width: 80 },
+                    { field:'Pagado', width: 80 },
+                    { field:'Cobrado', width: 80 }
+        ],
+        showFooter: true,
+        showFilter:false,
+
+    };
+
+    $scope.$on('ngGridEventRows', function (newFilterText){
+
+    	var filas = newFilterText.targetScope.renderedRows;
+
+    	$scope.exportables = [];
+
+    	angular.forEach(filas , function(item){
+    		$scope.exportables.push(item.entity);
+    	});
+
+    });
+
+    $scope.exportar = function(){
+
+        $scope.selectos = $scope.listadoxUnidad;
+        JSONToCSVConvertor($scope.selectos,'Reporte',true);        
+    }
+
+
+
+};
+
+function listadosinRelacionCtrl($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios){
+
+    // $scope.listadoRecepcion = datos.data;
+    loading.despedida();
+
+    //Carga Configuracion Inicial
+	$scope.inicio = function(){
+
+		// $scope.altaunidades();
+
+		$scope.datos = {
+
+			fechaini: '',
+			fechafin: '',
+			unidad: ''
+
+		}
+
+	}
+
+	//Carga la lista de archivos a Recibir de otras areas
+	$scope.cargaPagosxUnidad = function(){
+		
+		loading.cargando('Buscando Folio'); 
+
+		find.listadosinRelacion($scope.datos).success( function (data){
+
+
+        	if(data.length>0){
+        		loading.despedida();
+        		$scope.listado= data;
+            }else{
+                loading.despedida();
+                $scope.listado = [];
+        	}
+
+		});
+	}
+
+	//Enlista las unidades
+	$scope.altaunidades = function(){
+
+		find.unidades().success( function (data) {
+
+			$scope.unidades = data;
+
+		});
+	}
+
+
+
+    var csvOpts = { columnOverrides: { obj: function (o) {
+	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
+	    } },
+	    iEUrl: 'downloads/download_as_csv'
+	};
+
+	//Cargamos el grid con los datos
+    $scope.gridOptions = { 
+        data: 'listado', 
+        enableColumnResize:true,
+        enablePinning: true, 
+        enableRowSelection:true,
+        multiSelect:true,
+        showSelectionCheckbox: true,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: true,
+        selectedItems: $scope.selectedRows, 
+        filterOptions: $scope.filterOptions,
+        enableCellEdit: true,
+        columnDefs: [
+                    { field:'USUNombre', width: 120, pinned: true},
+                    { field:'Producto', width: 120 },
+                    { field:'Triage', width: 120 },
+                    { field:'Cliente', width: 100 },
+                    { field:'Unidad', width: 220 },
+                    // { field:'Folio', width: 120, pinned: false},
+                    { field:'Folio', displayName:'Folio' , width: 120 , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
+                    { field:'Lesionado', width: 330 },
+                    { field:'Etapa', width: 120 },
+                    { field:'Entrega', width: 80 },
+                    { field:'FAtencion', width: 120},
+                    { field:'FormaRecep', width: 90 },
+                    { field:'fechaRecepcion', width: 120},
+                    { field:'FechaRecepPag', width: 120,  cellFilter: 'date:\'dd/MM/yyyy\'' },
+                    { field:'Tipo', width: 120 },
+                    { field:'Lesion', width: 120 },
+                    { field:'Relacion', width: 120 },
+                    { field:'FRelacion', displayName:'F.relacion', width: 120 },
+                    { field:'FRelPago', displayName:'F.Pago.Rel.', width: 120 },
+                    { field:'FRelPagoReg', displayName:'F.Pago.Rel.Reg.', width: 120 },
+                    { field:'PasC', width: 120 },
+                    { field:'FPasCobrado', width: 120 },
+                    { field:'Pago', width: 120 },
+                    { field:'Reserva', width: 120 },
+                    { field:'FacturaRelacion', width: 80 },
+                    { field:'FacDoc', width: 80 },
+                    { field:'RelP', width: 80 },
+                    { field:'Pagado', width: 80 },
+                    { field:'Cobrado', width: 80 }
+        ],
+        showFooter: true,
+        showFilter:false,
+
+    };
+
+    $scope.$on('ngGridEventRows', function (newFilterText){
+
+    	var filas = newFilterText.targetScope.renderedRows;
+
+    	$scope.exportables = [];
+
+    	angular.forEach(filas , function(item){
+    		$scope.exportables.push(item.entity);
+    	});
+
+    });
+
+    $scope.exportar = function(){
+
+        $scope.selectos = $scope.listado;
+        JSONToCSVConvertor($scope.selectos,'Reporte',true);        
+    }
+
+
+
+};
+
+
 rechazosCtrl.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'find', 'loading', 'checkFolios','datos'];
 rechazosAreaCtrl.$inject = ['$scope', '$rootScope', '$routeParams', '$location', 'find', 'loading', 'checkFolios','datos'];
 traspasosCtrl.$inject = ['$scope', '$rootScope', '$routeParams','$http', 'find', 'loading'];
@@ -2689,6 +2946,9 @@ listadoEntregasCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', '
 listadoEntregasAreaCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading', 'checkFolios','datos','$filter'];
 listadoRecepcionCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios','datos','$location','$upload','api','leexml','FacturaNormal'];
 listadoRecepcionAreaCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios','datos'];
+listadoRecepcionPagoCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios'];
+listadosinRelacionCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios'];
+
 
 app.controller('rechazosCtrl',rechazosCtrl);
 app.controller('rechazosAreaCtrl',rechazosAreaCtrl);
@@ -2698,3 +2958,5 @@ app.controller('listadoEntregasCtrl', listadoEntregasCtrl);
 app.controller('listadoEntregasAreaCtrl', listadoEntregasAreaCtrl);
 app.controller('listadoRecepcionCtrl', listadoRecepcionCtrl);
 app.controller('listadoRecepcionAreaCtrl', listadoRecepcionAreaCtrl);
+app.controller('listadoRecepcionPagoCtrl', listadoRecepcionPagoCtrl);
+app.controller('listadosinRelacionCtrl', listadosinRelacionCtrl);
