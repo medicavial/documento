@@ -442,6 +442,9 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                     }
                 }
 
+                $scope.UniExpticket= data.expediente.uni_clave;
+                $scope.CiaExpticket= data.expediente.claveEmpresa;
+
 
                 //verificamos las lesiones disponibles segun el tipo
                 $scope.buscaTipoLesiones($scope.tipoLes);
@@ -598,6 +601,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                     localidad:$scope.captura.Localidad
                 }
                 facturacionExpress.capturaMedico(info).success(function (data){
+                    console.log(data);
                     $scope.captura.MedicoMV = data;
                     $scope.ocultaBotonesMed = true;
                 });
@@ -717,6 +721,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
             //se crea un delay por que carge la imagen de forma correcta
             $timeout(function(){
                 $scope.archivos = archivos;
+                console.log($scope.archivos);
                 $scope.vistaArchivos = true;
             }, 1000);
 
@@ -734,6 +739,23 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
 
 
     }
+
+
+     $scope.muestraArchivosSolos  = function(archivos){
+
+        arrayArchivos = [];
+        cont = archivos.todos.length;
+        $scope.vistaTodosArchivos = true;
+        for (var i = 0; i < cont; i++) {            
+            arrayArchivos.push(archivos[i]);
+        }
+        console.log(arrayArchivos);
+
+        $scope.archivos = arrayArchivos;
+    }
+
+
+
 
     $scope.muestraArchivosTodos  = function(tipoDoc){
         result = $scope.listArchivos.todos;
@@ -802,7 +824,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
     //verificamos la captura
     $scope.verificaDatos = function(){
 
-        if ($scope.capturaForm.$valid && $scope.tabuladorListo == true && $scope.captura.Ajustador != '') {
+        if ($scope.capturaForm.$valid && $scope.tabuladorListo == true && $scope.captura.Ajustador != '' && $scope.captura.MedicoMV != '') {
             return false
         }else{
             return true;
@@ -888,8 +910,8 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
         $scope.ticket = {
             folioweb:expediente,
             folioIn:'',
-            cliente:'',
-            unidad:'',
+            cliente:$scope.CiaExpticket,
+            unidad:$scope.UniExpticket,
             etapa:'',
             categoria:'',
             subcategoria:'',
@@ -1175,9 +1197,9 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
         }
     }
 
-    $scope.validaSinCedula = function(){
+    $scope.validaSinCedula = function(){       
       if($scope.sinCedula==false){
-
+          $scope.sinFactura=1;
           $scope.msjAlerta='';
           $scope.captura.cedulaElectronica='';
           $scope.captura.Siniestro = $scope.detalle.expediente.siniestro;
@@ -1217,6 +1239,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
               }
 
       }else{
+              $scope.sinFactura=0;
               console.log($scope.sinCedula);
               $scope.SiniestroMin = 11;
               $scope.SiniestroMax = 11;

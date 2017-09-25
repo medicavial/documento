@@ -78,6 +78,14 @@
 	        </a>
 
 	    </li>
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Cap sin Fac</h3>
+	        <a href="#/facturacionEx/capturadosSinFactura">
+	            <span class="glyphicon glyphicon-list"></span>
+	        </a>
+
+	    </li>
 
 	</ul>
 
@@ -193,7 +201,7 @@
 
 						<div class="btn-group btn-group-justified" role="group" aria-label="Documentos">
 						  <div class="btn-group" role="group">
-						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.todos)" ng-disabled="detalle.archivos.todos.length == 0"><i class="glyphicon glyphicon-th"></i> Ver todos</button>
+						    <button type="button" class="btn btn-default" ng-click="muestraArchivosSolos(detalle.archivos)" ng-disabled="detalle.archivos.todos.length == 0"><i class="glyphicon glyphicon-th"></i> Ver todos</button>
 						  </div>
 						  <div class="btn-group" role="group">
 						    <button type="button" class="btn btn-default" ng-click="muestraArchivos(detalle.archivos.pase)" ng-disabled="detalle.archivos.pase.length == 0"><i class="glyphicon glyphicon-file"></i> Pase</button>
@@ -574,11 +582,12 @@
 	<div class="panel-heading">Vista Previa <button type="button" ng-click="vistaTodosArchivos = !vistaTodosArchivos" class="close" aria-label="Close"><span class="white-text" aria-hidden="true">&times;</span></button> </div>
 	<div class="panel-body">
 
-		<div class="frame-container"  ng-repeat="archivo in archvosTodos | unique">
-	        <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo) }}" target="_blank">Abrir otra ventana</a>
+		<div class="frame-container"  ng-repeat="archivo in archivos | unique">
+	        <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo.Arc_archivo) }}" target="_blank">Abrir otra ventana</a>
 	        <button class="btn btn-primary" ng-click=" rotar = !rotar ">Girar</button>
-	        <embed ng-if="file(archivo)" ng-src="{{ obtenerFrame(archivo) }}" width="100%" id="files">
-	        <img ng-if="imagen(archivo)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo) }}"
+	        <b>{{archivo.TID_nombre}}</b>
+	        <embed ng-if="file(archivo.Arc_archivo)" ng-src="{{ obtenerFrame(archivo.Arc_archivo) }}" width="100%" id="files">
+	        <img ng-if="imagen(archivo.Arc_archivo)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo.Arc_archivo) }}"
 		        ng-init="zoomWidth = 800;imgStyle = {width:'100%'}"
 		        ng-style="imgStyle"
 				ng-mouse-wheel-up="zoomWidth = zoomWidth + 20; imgStyle.width = zoomWidth +'px'; "
@@ -599,6 +608,7 @@
 		<div class="frame-container" ng-repeat="archivo in archivos">
 	        <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo) }}" target="_blank">Abrir otra ventana</a>
 	        <button class="btn btn-primary" ng-click=" rotar = !rotar ">Girar</button>
+	        
 	        <embed ng-if="file(archivo)" ng-src="{{ obtenerFrame(archivo) }}" width="100%" id="files">
 	        <img ng-if="imagen(archivo)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo) }}"
 		        ng-init="zoomWidth = 800;imgStyle = {width:'100%'}"
@@ -740,7 +750,7 @@
 					<div class="col-md-12">
 						<div class="form-group">
 						    <label for="reporte">Lesionado</label>
-						    <input type="text" class="form-control" ng-model="captura.Nombre" id="Reporte" placeholder="Reporte">
+						    <input type="text" ng-disabled="captura.Nombre" class="form-control" ng-model="captura.Nombre" id="Reporte" placeholder="Reporte">
 						</div>
 					</div>
 
@@ -749,18 +759,17 @@
 					<div class="col-md-4">
 						<div class="form-group">
 						    <label for="siniestro">Siniestro</label>
-								<div ng-if="datos.cliente == 19">
-								    <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true" ng-pattern="/04+(16|17)+(\d{7})$/">
-								</div>
-								<div ng-if="datos.cliente != 19">
-								    <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true">
-								</div>
+								
+								   <!--  <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true" ng-pattern="/04+(16|17)+(\d{7})$/"> -->
+								     <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true" >
+
+								
 
 						    <div ng-messages="capturaForm.siniestro.$error" class="text-danger">
-								<div ng-message="pattern">Inválido. ej (04170000000)</div>
+								<!-- <div ng-message="pattern">Inválido. ej (04170000000)</div> -->
 								<div ng-message="required">Campo obligatorio.</div>
-								<!-- <div ng-message="maxlength">El campo no puede ser mayor que {{ SiniestroMax }} digitos.</div>
-								<div ng-message="minlength">El campo no puede ser menor que {{ SiniestroMin }} digitos.</div> -->
+								<div ng-message="maxlength">El campo no puede ser mayor que {{ SiniestroMax }} digitos.</div>
+								<div ng-message="minlength">El campo no puede ser menor que {{ SiniestroMin }} digitos.</div>
 					        </div>
 						</div>
 					</div>
