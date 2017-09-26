@@ -665,17 +665,17 @@ $scope.enviaOrdenPagoGlo = function(){
 // console.log($scope.OPago.subtotaltotal);
 // console.log($scope.PagoG.SubtotalS);
 
-    if ($scope.OPago.subtotaltotal !=  $scope.PagoG.SubtotalS){
+    // if ($scope.OPago.subtotaltotal !=  $scope.PagoG.SubtotalS){
 
-       swal("Upss","El Monto de los Pagos no Coincide con el Subtotal de la Factura","error");
+    //    swal("Upss","El Monto de los Pagos no Coincide con el Subtotal de la Factura","error");
 
-    }else
+    // }else
 
-    if ($scope.OPago.total != $scope.PagoG.TotalS){
+    // if ($scope.OPago.total != $scope.PagoG.TotalS){
 
-       swal("Upss","El Monto de los Pagos no Coincide con el Total de la Factura","error");
+    //    swal("Upss","El Monto de los Pagos no Coincide con el Total de la Factura","error");
 
-    }else{
+    // }else{
 
 console.log($scope.OPago );
 
@@ -697,7 +697,7 @@ console.log($scope.OPago );
                 alert('Error, Intentalo de Nuevo');
 
             });
-    }
+    // }
 
 }
 
