@@ -226,6 +226,18 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             }
     });
 
+    $routeProvider.when('/facturacionEx/relacionCartasQualitas',{
+            templateUrl    :'vistas/relacionCartasQualitas.html',
+            controller     :'relacionCartasQualitasCtrl',
+            resolve       :{
+                datos:function(facturacionExpress,loading,webStorage){
+                    loading.cargando('Cargando Información');
+                    var datos = JSON.parse( webStorage.local.get('facturacionExpressData') );                    
+                    return facturacionExpress.cedulasSinRelacion();
+                }
+            }
+    });
+
     $routeProvider.when('/facturacionEx/cartas',{
             templateUrl    :'vistas/cartas.html',
             controller     :'cartasCtrl',

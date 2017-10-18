@@ -999,7 +999,23 @@ function autorizadosCtrl($scope, $rootScope, datos, loading){
     };
 };
 
-function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading,facturacionExpress){
+
+function relacionCartasQualitasCtrl($scope, $rootScope, datos, loading, facturacionExpress){
+
+    loading.despedida();
+    $scope.listadoCartas = datos.data;
+    console.log($scope.listadoCartas);
+
+    $scope.buscaRelacion = function(nombre){
+        $('#relacionaFolio').modal();
+
+        $scope.nombre =nombre;
+       
+    }
+  
+};
+
+function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacionExpress){
 
      console.log(datos);
 
@@ -1159,6 +1175,7 @@ cartasCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpre
 cancelacionCtrl.$inject =['$scope', '$rootScope','loading','facturacionExpress','find','webStorage'];
 rechazadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
 capturadosSinFacturaCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
+relacionCartasQualitasCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
 
 
 app.controller('facturacionExCtrl',facturacionExCtrl);
@@ -1168,3 +1185,4 @@ app.controller('rechazadosCtrl',rechazadosCtrl);
 app.controller('cartasCtrl',cartasCtrl);
 app.controller('cancelacionCtrl',cancelacionCtrl);
 app.controller('capturadosSinFacturaCtrl',capturadosSinFacturaCtrl);
+app.controller('relacionCartasQualitasCtrl',relacionCartasQualitasCtrl);
