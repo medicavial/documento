@@ -74,7 +74,9 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             IVAF: 0.00,
             TotalF: 0.00,
             ndc: 0,
-            deducibleF: 0.00
+            deducibleF: 0.00,
+            tipoDeducible: 1
+
 
 
         }
@@ -102,9 +104,73 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
     $scope.calculaTotalInd = function(){
 
-        var t = parseFloat($scope.PagoI.SubtotalF) -  parseFloat($scope.PagoI.deducibleF) - parseFloat($scope.PagoI.descuentoF) + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencionF);
-        var tt = t.toFixed(2);
-        $scope.PagoI.TotalF = tt;
+        if ($scope.PagoI.tipoDeducible == 1) {
+
+            var t = parseFloat($scope.PagoI.SubtotalF) - parseFloat($scope.PagoI.deducibleF) -  parseFloat($scope.PagoI.descuentoF)  + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencionF);
+            var tt = t.toFixed(2);
+            $scope.PagoI.TotalF = tt;
+
+        }
+
+        if ($scope.PagoI.tipoDeducible == 2) {
+
+            var dF = parseFloat($scope.PagoI.SubtotalF) + parseFloat($scope.PagoI.deducibleF);
+            var dF = dF.toFixed(2);
+            $scope.PagoI.SubtotalF = dF;
+
+
+            var t = parseFloat($scope.PagoI.SubtotalF) - parseFloat($scope.PagoI.deducibleF)  +  parseFloat($scope.PagoI.descuentoF)  + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencionF);
+            var tt = t.toFixed(2);
+            $scope.PagoI.TotalF = tt;
+
+        }
+
+        if ($scope.PagoI.tipoDeducible == 3) {
+
+            // var ivadd  = parseFloat($scope.PagoI.deducibleF3) * 0.16;
+            // var ivadd1  =  ivadd.toFixed(2);
+            // var addiva = parseFloat($scope.PagoI.IVAF) + ivadd;
+            // $scope.PagoI.IVAF = addiva;
+            
+            //// obtengo lo que se agregara del deducible en el subtotal 
+
+            var d = parseFloat($scope.PagoI.deducibleF) / parseFloat(1.16); 
+
+            //// obtenemos el porcentaje del deducible para agregar al iva
+            
+            var dd = parseFloat(d) * parseFloat(0.16); 
+
+            // agregamos lo odtenido al subtotal
+
+            var ddd = parseFloat($scope.PagoI.SubtotalF) + parseFloat(d);
+            var ddd = ddd.toFixed(2);
+            $scope.PagoI.SubtotalF = ddd;
+
+            // agregamos lo odtenido al iva
+            // 
+            var dddd = parseFloat($scope.PagoI.IVAF) + parseFloat(dd);
+            var dddd = dddd.toFixed(2);
+            $scope.PagoI.IVAF = dddd;
+
+            /// sumamos lo que se obtuvo de lo agregado para restarlo al subtotal
+
+            var pretotal = parseFloat(d) + parseFloat(dd);
+            
+
+            var t = parseFloat($scope.PagoI.SubtotalF)  -  parseFloat($scope.PagoI.descuentoF)  + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencionF);
+            var tt = t.toFixed(2);
+
+            // console.log(ivadd1);
+            $scope.PagoI.TotalF = parseFloat(tt) - parseFloat(pretotal);
+
+        }
+
+        // console.log($scope.PagoI.tipoDeducible);
+        // console.log($scope.PagoI.deducibleF3);
+
+        // var t = parseFloat($scope.PagoI.SubtotalF) + parseFloat($scope.PagoI.deducibleF2) - parseFloat($scope.PagoI.deducibleF) +  parseFloat($scope.PagoI.descuentoF)  + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencionF);
+        // var tt = t.toFixed(2);
+        // $scope.PagoI.TotalF = tt;
 
     }
 
