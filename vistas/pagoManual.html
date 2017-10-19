@@ -129,17 +129,17 @@
 		<div class="row">
 		    <div class="col-md-2">
 					<label>Subtotal</label>
-					<input type="text" ng-model="PagoI.SubtotalF" class="form-control" ng-blur="calculaTotalInd()">
+					<input type="text" ng-model="PagoI.SubtotalF" class="form-control">
 			</div>
 
 			<div class="col-md-2">
 					<label>IVA</label>
-					<input type="text" ng-model="PagoI.IVAF" class="form-control" ng-blur="calculaTotalInd()">
+					<input type="text" ng-model="PagoI.IVAF" class="form-control">
 			</div>
 
 			<div class="col-md-2">
 					<label>Deducible</label>
-					<input type="text" ng-model="PagoI.deducibleF" class="form-control" ng-blur="calculaTotalInd()">
+					<input type="text" ng-model="PagoI.deducibleF" class="form-control" >
 			</div>
 
 <!-- 			<div class="col-md-2" ng-show="PagoI.tipoDeducible == 2">
@@ -154,19 +154,26 @@
 
 			<div class="col-md-2">
 					<label>Descuento</label>
-					<input type="text" ng-model="PagoI.descuentoF" class="form-control" ng-blur="calculaTotalInd()">
+					<input type="text" ng-model="PagoI.descuentoF" class="form-control" >
 			</div>
 
 
 
 		    <div class="col-md-2">
 					<label>Retención</label>
-					<input type="text" ng-model="PagoI.retencionF" class="form-control" ng-blur="calculaTotalInd()">
+					<input type="text" ng-model="PagoI.retencionF" class="form-control">
 			</div>
 
 		    <div class="col-md-2">
 					<label>Total</label>
 					<input type="text" ng-model="PagoI.TotalF" class="form-control" disabled>
+			</div>
+		</div><br>
+		<div class="row">
+
+			<div class="col-md-2">
+				<label>  </label>
+					<button type="button" ng-click="calculaTotalInd()"  class="btn btn-success btn-blockglyphicon glyphicon-equalizer"> Calcular </button>
 			</div>
 
 			<div class="col-md-2">
