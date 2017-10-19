@@ -232,6 +232,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
         if (info.SACE == 'SACE') {
 
             if(atencion!=null){
+            $scope.verCaptura= 2;
             $scope.verAMedico = true;
             $scope.edicionSACE = true;
             find.detalleFolioSaceco(expediente, atencion).success(function (data){
@@ -325,6 +326,16 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                 $scope.estatusDocto='success';
                 $scope.listArchivos = data.archivos;
                 $scope.captura.Dx=$scope.dx;
+                console.log(data.cedula[0]);
+                if(data.cedula[0]){
+                    $scope.captura.cedulaElectronica = data.cedula[0].CQ_folioautorizacion; 
+                    console.log($scope.captura.cedulaElectronica);
+                    $scope.validaFolioAutorizacion();
+                }else{
+                    $scope.captura.cedulaElectronica='';
+                } 
+
+
                 if(data.lesion.LesE_clave){
                     console.log(data.lesion.LES_clave);
                     $scope.LesMV = data.lesion.lesionCIA;
@@ -403,7 +414,8 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
             $scope.verAMedico = false;
             $scope.edicionFE = true;
             find.detalleFolioWeb(expediente).success(function (data){
-                console.log(data);
+                
+
                 loading.despedida();
                 $scope.edicionFE = true;
                 $scope.vistaArchivos = false;
@@ -414,6 +426,8 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                 $scope.ocultaBotones = false;
                 $scope.rotar = false;
                 $scope.vistaTicket = false;
+                
+                
 
                 $scope.buscaAjustadores(data.captura.EMPClave);
                 $scope.buscaMedicos(data.captura.UNIClave);
@@ -480,8 +494,17 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                 $scope.captura.triage = String(data.captura.triage);
                 $scope.captura.MedicoMV = String(data.captura.MedicoMV);
                 $scope.captura.RIEClave = String(data.captura.RIEClave);
-                $scope.datos.cliente = data.expediente.claveEmpresa;
-                console.log($scope.datos.cliente);
+                $scope.datos.cliente = data.expediente.claveEmpresa;                
+
+                if(data.cedula[0].CQ_folioautorizacion){
+                    $scope.captura.cedulaElectronica = data.cedula[0].CQ_folioautorizacion; 
+                    console.log($scope.captura.cedulaElectronica);
+                    $scope.validaFolioAutorizacion();
+                }else{
+                    $scope.captura.cedulaElectronica='';
+                }                
+
+                console.log($scope.captura);
 
                 //verificamos cliente para condiciones de texto
                 if ($scope.datos.cliente == 19) {

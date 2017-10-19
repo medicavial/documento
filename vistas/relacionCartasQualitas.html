@@ -22,23 +22,24 @@
 						Folio de autorizacion
 					</th>
 					<th>
-						Nombre cédula
+						Nombre Paciente
 					</th>
 					<th>
-						Nombre registro
+						Poliza
 					</th>
 					<th>
-						Folio Registro
+						Siniestro
 					</th>
 					<th>
-						Relacionar
+						Reporte
 					</th>
 				</tr>
 				<tr ng-repeat="cedula in listadoCartas | filter:searchText"">
-					<td>{{cedula.folCed}}</td>
-					<td>{{cedula.nomCed}}</td>
-					<td>{{cedula.nomMv}}</td>
-					<td>{{cedula.folMv}}</td>
+					<td>{{cedula.CQ_folioautorizacion}}</td>
+					<td>{{cedula.CQ_paciente}}</td>
+					<td>{{cedula.CQ_poliza}}</td>
+					<td>{{cedula.CQ_siniestro}}</td>
+					<td>{{cedula.CQ_reporte}}</td>
 					<td><button class="btn btn-primary" ng-click="buscaRelacion(cedula.CQ_paciente)">Relacionar</button></td>
 				</tr>
 			</table>			
