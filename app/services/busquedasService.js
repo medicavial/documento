@@ -131,6 +131,9 @@ app.factory("find", function($http,api){
         listadoSinDocumentacion:function(datos){
             return $http.post(api + 'reportes/listadoSinDocumentacion',datos);
         },
+        penalizaciones:function(empresa){
+            return $http.get(api + 'consulta/penalizaciones/'+ empresa);
+        },
         posiciones:function(){
             return $http.get(api+'consulta/posiciones');
         },

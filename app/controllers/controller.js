@@ -503,6 +503,7 @@ function controlDocumentosCtrl($scope, $http, loading, find, api, $filter, repor
 		$scope.Altaunidades();
 		$scope.productos();
 		$scope.foliosxfecha();
+        $scope.penalizaciones();
 
         $scope.filtrado = {
             EMP_nombrecorto:'',
@@ -556,6 +557,16 @@ function controlDocumentosCtrl($scope, $http, loading, find, api, $filter, repor
 
 		 });
 	}
+
+    //busca unidades
+    $scope.penalizaciones = function(){
+
+        find.unidades().success( function (data) {
+
+            $scope.unidades = data;
+
+         });
+    }
 
 	//busqueda de folios por fecha
 	$scope.foliosxfecha = function(){

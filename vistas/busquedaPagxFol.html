@@ -1,0 +1,63 @@
+<div id="contenedor" class="main" ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/pagos" class="icon-arrow-left"></a>
+        <h1>Búsqueda de pagos por folio </h1>
+    </div>
+
+    <div class="row">
+      <h5 class="text-danger"><strong>*** Busqueda de Pagos solo x Unidad ***</strong></h5>
+    </div>
+
+    <legend>Fecha Recepción Pagos</legend>
+
+    <div class="row">
+      <form ng-submit="buscaFolios()">
+      <div class="col-md-4">
+         <label for="exampleTextarea">listado de folios:</label> 
+         <div class="form-group" >
+              <textarea class="form-group" rows="10" ng-model="listadoFolios" required=""></textarea>
+          </div>
+      </div>
+      <div class="col-md-8"> 
+        <button class="btn btn-primary btn-lg" type="submit">Buscar&nbsp;&nbsp;&nbsp;&nbsp;<i class="glyphicon glyphicon-search"></i></button>
+      </div>
+      </form>
+    </div>
+    <br><br>
+
+    <div class="gridStyle" ng-grid="gridOptions"></div>
+    <br>
+
+    <button ng-click="exportar()" class="btn btn-success">Exportar</button>
+
+</div>
+
+<script>
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    var maximumDate = '25/04/2017';
+
+    // $( "#datepicker" ).datepicker({showButtonPanel: true});
+    // $( "#datepicker2" ).datepicker({showButtonPanel: true});
+    $( "#datepicker3" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        
+      }
+    });
+    $( "#datepicker4" ).datepicker({
+      defaultDate: "+1w",
+      showButtonPanel: true,
+      changeMonth: true,
+      numberOfMonths: 1,
+      onClose: function( selectedDate ) {
+        $( "#datepicker" ).datepicker( "option");
+      }
+
+
+    });
+
+
+</script>

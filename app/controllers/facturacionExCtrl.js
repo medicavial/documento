@@ -1003,13 +1003,19 @@ function autorizadosCtrl($scope, $rootScope, datos, loading){
 function relacionCartasQualitasCtrl($scope, $rootScope, datos, loading, facturacionExpress){
 
     loading.despedida();
-    $scope.listadoCartas = datos.data;
-    console.log($scope.listadoCartas);
+    $scope.listadoCartas    = datos.data;
+    $scope.folioBusqueda    = '';
+    $scope.nombreBusqueda   = '';
 
     $scope.buscaRelacion = function(nombre){
         $('#relacionaFolio').modal();
+        $scope.nombre =nombre;    
+    }
 
-        $scope.nombre =nombre;
+    $scope.buscarNombre = function(){        
+        facturacionExpress.buscaPorNombre($scope.nombreBusqueda).success( function (data){
+            console.log(data);       
+        });
        
     }
   

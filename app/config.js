@@ -926,6 +926,12 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     });
 
+    $routeProvider.when('/busquedaPagxFol',{
+            templateUrl   : 'vistas/busquedaPagxFol.html',
+            controller    : 'busquedaPagxFolCtrl'
+
+    });
+
 
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
 

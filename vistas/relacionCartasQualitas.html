@@ -50,7 +50,35 @@
 	  <div class="modal-dialog" role="document">
 	    <div class="modal-content">
 	      <div class="modal-body">
-	       <h2> el nombre es: {{nombre}}</h2>
+	       <h4> Nombre en cédula: <b>{{nombre}}</b></h4>
+
+	        
+	       <div class="row">
+	       		<form action="" ng-submit="buscarFolio()">
+		       		<div class="col-md-3">
+		       			Buscar por folio	
+		       		</div>
+		       		<div class="col-md-6">
+		       			<input type="text" class="form-control" id="usr"  ng-model="folioBusqueda">
+		       		</div>	       		
+		       		<div class="col-md-3">
+		       			<button type="submit" class="btn btn-primary">buscar</button>
+		       		</div>
+	       		</form>
+	       </div>
+	       <div class="row">
+		       	<form action="" ng-submit='buscarNombre()'>
+		       		<div class="col-md-3">
+		       			Buscar por nombre	
+		       		</div>
+		       		<div class="col-md-6">
+		       			<input type="text" class="form-control" id="usr" ng-model="nombreBusqueda">
+		       		</div>	       		
+		       		<div class="col-md-3">
+		       			<button type="submit" class="btn btn-primary">buscar</button>
+		       		</div>
+		       	</form>
+	       </div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>

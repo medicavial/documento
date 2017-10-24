@@ -611,12 +611,116 @@ function listadoCedulasSinCapturarCtrl($scope, $rootScope, find , loading){
 
 };
 
+function busquedaPagxFolCtrl($scope, $rootScope, find , loading){
+
+   
+
+    $scope.inicio = function(){
+
+        $scope.datos = {
+            fechaini:'',
+            fechafin:'',
+            unidad: '',
+            tipoUnidad:''           
+        };
+        $scope.tipoUnidad='';
+        find.cedulasSinCaptura().success( function (data){
+            $scope.listado = data;    
+            console.log(data);        
+            loading.despedida();
+        });
+
+        $scope.listadoFolios='';
+
+      
+    }
+
+    // $scope.generaListadoSD = function(){
+    //     loading.cargando('Buscando Factura(s)');                        
+    //     find.listadoSinDocumentacion($scope.datos).success(function (data){
+    //         console.log(data);
+    //         $scope.listado = data;
+    //         loading.despedida();
+    //     });
+    // }
+
+    $scope.selectos = [];
+
+    $scope.filterOptions = {
+        filterText: '',
+        useExternalFilter: false
+    };
+
+    var csvOpts = { columnOverrides: { obj: function (o) {
+        return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
+        } },
+        iEUrl: 'downloads/download_as_csv'
+    };
+
+    ////opciones del grid
+   $scope.gridOptions = {
+        data: 'listado',
+        enableColumnResize:true,
+        enablePinning: true,
+        enableRowSelection:false,
+        multiSelect:false,
+        showSelectionCheckbox: false,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: false,
+        selectedItems: $scope.selectos,
+        filterOptions: $scope.filterOptions,
+        columnDefs: [
+                { field:'Folio_Autorizacion', displayName:'Folio de Autorizacion' , width: 140, pinned:true, enableCellEdit: true , cellTemplate: '<div ng-class="{ \'text-danger\': row.entity.penalizado ==  \'1\'}" class="padding-cell"><i ng-if="row.entity.penalizado ==  \'1\'" class="glyphicon glyphicon-warning-sign"></i> {{row.getProperty(col.field)}}</div>'},
+                { field:'Nombre', displayName:'Nombre', width: 270 },
+                { field:'Poliza', displayName:'Poliza', width: 120 },
+                { field:'Siniestro', displayName:'Siniestro', width: 120 },
+                { field:'Reporte', displayName:'Reporte', width: 120, visible:true },
+                { field:'Folio_Electronico', displayName:'Folio Electronico', width: 140 },
+                { field:'Fecha', displayName:'Fecha', width: 200 },
+                
+        ],
+        showFooter: true,
+        showFilter:true
+    };
+
+    $scope.exportar = function(){
+        loading.cargando('Cargando');       
+        find.cedulasSinCapturaExcel().success( function (data){            
+            loading.despedida();
+        });
+
+    }
+
+    $scope.buscaFolios = function(){              
+       var res = $scope.listadoFolios.split("\n");
+       console.log(res);
+    }
+
+    $scope.filtra = function(){
+
+        if($scope.tipoUnidad == undefined || $scope.tipoUnidad == 0){
+            var objeto1 = "";
+        }else{
+            var objeto1 = "TipoUnidad:" + $scope.tipo + "; ";
+            
+        }
+        
+        var filtro = objeto1;
+
+        
+        $scope.filterOptions.filterText = filtro;
+
+    }
+
+};
+
 reportesTicketsCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading', 'datos'];
 reporteFacturasCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
 pagoUnidadesCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
 listadoPagosCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
 listadoSinDocumentacionCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
 listadoCedulasSinCapturarCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
+busquedaPagxFolCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading'];
 
 
 app.controller('reportesTicketsCtrl',reportesTicketsCtrl);
@@ -625,3 +729,4 @@ app.controller('pagoUnidadesCtrl',pagoUnidadesCtrl);
 app.controller('listadoPagosCtrl',listadoPagosCtrl);
 app.controller('listadoSinDocumentacionCtrl',listadoSinDocumentacionCtrl);
 app.controller('listadoCedulasSinCapturarCtrl',listadoCedulasSinCapturarCtrl);
+app.controller('busquedaPagxFolCtrl',busquedaPagxFolCtrl);
