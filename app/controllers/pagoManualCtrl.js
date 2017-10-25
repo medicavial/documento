@@ -484,17 +484,17 @@ $scope.enviaOrdenPago = function(){
     console.log($scope.OPago);
     // console.log( $scope.OPago.factura.subtotal);
 
-    if ($scope.OPago.subtotaltotal >  $scope.OPago.factura.subtotal){
+    // if ($scope.OPago.subtotaltotal >  $scope.OPago.factura.subtotal){
 
-       swal("Upss","El Monto del Subtotal es mas alto que la Factura","error");
+    //    swal("Upss","El Monto del Subtotal es mas alto que la Factura","error");
 
-    }else
+    // }else
 
-    if ($scope.OPago.total > $scope.OPago.factura.total){
+    // if ($scope.OPago.total > $scope.OPago.factura.total){
 
-       swal("Upss","El Monto del Total es mas alto que la Factura","error");
+    //    swal("Upss","El Monto del Total es mas alto que la Factura","error");
 
-    }else{
+    // }else{
 
     	var areaRecibe = 6;
         var areaEntrega = 6;
@@ -542,7 +542,7 @@ $scope.enviaOrdenPago = function(){
 
             });
 
-        } 
+        // } 
     // }
 
 }
@@ -948,17 +948,17 @@ $scope.enviaOrdenPagoInd = function(){
 
     console.log($scope.OPago);
 
-    if ($scope.PagoI.SubtotalF > $scope.OPago.factura.subtotal){
+    // if ($scope.PagoI.SubtotalF > $scope.OPago.factura.subtotal){
 
-       swal("Upss","El Monto del Subtotal a Pagar es mas alto a la Factura","error");
+    //    swal("Upss","El Monto del Subtotal a Pagar es mas alto a la Factura","error");
 
-    }else
+    // }else
 
-    if ($scope.PagoI.TotalF > $scope.OPago.factura.total){
+    // if ($scope.PagoI.TotalF > $scope.OPago.factura.total){
 
-       swal("Upss","El Monto del Total a Pagar es mas alto a la Factura","error");
+    //    swal("Upss","El Monto del Total a Pagar es mas alto a la Factura","error");
 
-    }else{
+    // }else{
 
         var areaRecibe = 6;
         var areaEntrega = 6;
@@ -1004,7 +1004,7 @@ $scope.enviaOrdenPagoInd = function(){
 
             });
 
-        } 
+        // } 
     // }
 
 }
