@@ -88,6 +88,23 @@
 					</blockquote>
         		</div>
         	</div>
+            <!-- <div class="row" ng-show="penalizaciones">                
+                <div class="col-md-12">
+                    <label for="" radio-inline c-radio>Penalización</label>    
+                </div>               
+                <div class="col-md-4">
+                    <label for="datepicker4">fecha de pase</label>
+                    <input type="text" ng-change="validafechaAtencion()" class="form-control" ng-model="original.fechaAtencion" id="datepickerB" >
+                </div>
+                <div class="col-md-8" style="padding-top: 1em">                
+                    <div class="col-md-3" ng-repeat="penalizacion in penalizaciones">
+                        <label class="radio-inline c-radio" style="font-size: 12px">
+                        <input id="inlineradio1" type="radio" name="i-radio" value="{{penalizacion.PEN_cveint}}" ng-model="original.penalizacion">
+                        <span class="glyphicon glyphicon-ok"></span>{{penalizacion.PEN_iniRango}} - {{penalizacion.PEN_diasRango}}</label>
+                    </div>
+                </div>
+            </div>   -->          
+
         	<div class="row">
         		<div class="col-md-6">
         			<h3 class="text-center">{{label2}}</h3>
@@ -133,4 +150,9 @@
 <script type="text/javascript">
 	$.datepicker.setDefaults($.datepicker.regional["es"]);
 	$( "#datepickerA" ).datepicker({showButtonPanel: true});
+</script>
+
+<script type="text/javascript">
+    $.datepicker.setDefaults($.datepicker.regional["es"]);
+    $( "#datepickerB" ).datepicker({showButtonPanel: true});
 </script>

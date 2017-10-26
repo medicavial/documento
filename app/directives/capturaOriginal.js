@@ -72,8 +72,12 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
             factura:'',
             propia:'',
             totalfactura:0,
-            captura:$scope.captura
+            captura:$scope.captura,
+            penalizacion:1,
+            fechaAtencion: FechaAct
         };
+
+
 
         $scope.muestraEntrega = false;
         $scope.consultaSub = false;
@@ -385,22 +389,19 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
     $scope.penalizaciones = function(empresa){
         console.log(empresa);
         find.penalizaciones(empresa).success( function (data) {
+            console.log(data);
             $scope.penalizaciones = data;            
         });
     }
 
     //busqueda de referencias por unidad
     $scope.referencia = function(unidad){
-
         $scope.original.unidad = unidad;
-
         if(unidad==28||unidad==278||unidad==243||unidad==247||unidad==1356||unidad==352){
             $scope.veFolZima=true;
         }else{
             $scope.veFolZima=false;
         }
-
-
         find.referenciaxunidad(unidad).success(function (data){
             $scope.label1 = data[0].referencia;
             $scope.verificaatencion();
@@ -516,6 +517,55 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
             alert('La fecha no debe ser mayo al dia de hoy');
         }
     }
+
+    //diferencia entre fecha de captura y fecha de pase para calcular la penalizacion
+    $scope.validafechaAtencion = function(){
+
+        var fecha1 = moment($scope.original.fecha, 'YYYY-MM-DD');
+        var fecha2 = moment($scope.original.fechaAtencion, 'YYYY-MM-DD');
+
+        $scope.diferencia = $scope.restaFechas($scope.original.fechaAtencion,$scope.original.fecha);
+
+        switch(true) {
+            case ($scope.diferencia>=0&&$scope.diferencia<=20):
+                $scope.original.penalizacion=1;
+                break;
+            case ($scope.diferencia>=21&&$scope.diferencia<=30):
+                $scope.original.penalizacion=2;
+                break;
+            case ($scope.diferencia>=31&&$scope.diferencia<=34):
+                $scope.original.penalizacion=3;
+                break;
+            case ($scope.diferencia>=35&&$scope.diferencia<=45):
+                $scope.original.penalizacion=4;
+                break;
+            case ($scope.diferencia>=46&&$scope.diferencia<=50):
+                $scope.original.penalizacion=5;
+                break;
+            case ($scope.diferencia>=51&&$scope.diferencia<=60):
+                $scope.original.penalizacion=6;
+                break;
+            case ($scope.diferencia>60):
+                $scope.original.penalizacion=7;
+                break;
+            default:
+                alert('error en calculo de días');
+        }       
+        
+    }
+
+
+    $scope.restaFechas = function(f1,f2)
+         {
+         var aFecha1 = f1.split('/'); 
+         var aFecha2 = f2.split('/'); 
+         var fFecha1 = Date.UTC(aFecha1[2],aFecha1[1]-1,aFecha1[0]); 
+         var fFecha2 = Date.UTC(aFecha2[2],aFecha2[1]-1,aFecha2[0]); 
+         var dif = fFecha2 - fFecha1;
+         var dias = Math.floor(dif / (1000 * 60 * 60 * 24)); 
+         return dias;
+     }
+
 
     //verifica si se tiene que mostrar la escolaridad
     $scope.verificaEscolaridad = function(){
