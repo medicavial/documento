@@ -390,7 +390,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         console.log(empresa);
         find.penalizaciones(empresa).success( function (data) {
             console.log(data);
-            $scope.penalizaciones = data;            
+            $scope.penalizacionesData = data;            
         });
     }
 
