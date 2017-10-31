@@ -835,6 +835,15 @@ app.factory("facturacionExpress", function($q,$http,find,api){
         },
         buscaPorNombre:function(nombre){            
             return $http.get(api + 'facturacionExpress/buscaPorNombre/'+nombre);
+        },
+        buscaFoliosSinCedula:function(){            
+            return $http.get(api + 'facturacionExpress/buscaFoliosSinCedula');
+        },
+        buscaDatosFolio:function(datos){
+            return $http.post(api + 'facturacionExpress/buscarDatosFolio', datos,{timeout: 10000});
+        },
+        buscaPaseDig:function(pase){
+            return $http.get(api + 'facturacionExpress/buscaPaseDig/'+pase);
         }
     }
 });

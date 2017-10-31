@@ -76,7 +76,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
             penalizacion:1,
             fechaAtencion: FechaAct
         };
-
+        $scope.penalizacionesData='';
 
 
         $scope.muestraEntrega = false;
@@ -437,6 +437,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
         $scope.muestraEsc = false;
         $scope.consultaSub = false;
         $scope.muestraEntrega = false;
+        $scope.penalizacionesData={};
     }
 
     /////////Inicia proceso de guardado 
@@ -549,8 +550,8 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                 $scope.original.penalizacion=7;
                 break;
             default:
-                alert('error en calculo de días');
-        }       
+                alert('La fecha de atención debe ser menor que la fecha de original');
+        }
         
     }
 
@@ -594,6 +595,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
             $scope.original.unidad = $scope.unidadref;//asignamos el valor de referencia por si queremos regresar al estado anterior
             $scope.bloqueoUni = false;
             $scope.muestraEntrega = true;
+            $scope.original.penalizacion=1;
 
         }else if($scope.bloqueo == true && $scope.original.tipoDoc == 1){
 
@@ -601,6 +603,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
             $scope.original.numentrega = 1;
             $scope.muestraEntrega = false;
             $scope.bloqueoUni = true;
+            $scope.original.penalizacion=1;
             // $scope.referencia($scope.unidadref);
 
         }

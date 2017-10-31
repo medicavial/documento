@@ -1003,19 +1003,123 @@ function autorizadosCtrl($scope, $rootScope, datos, loading){
 function relacionCartasQualitasCtrl($scope, $rootScope, datos, loading, facturacionExpress){
 
     loading.despedida();
-    $scope.listadoCartas    = datos.data;
-    $scope.folioBusqueda    = '';
-    $scope.nombreBusqueda   = '';
+    
 
-    $scope.buscaRelacion = function(nombre){
-        $('#relacionaFolio').modal();
-        $scope.nombre =nombre;    
+
+    $scope.inicio = function(){
+
+
+        console.log(datos.data);
+        $scope.listadoCartas    = datos.data;
+        $scope.folioBusqueda    = '';
+        $scope.nombreBusqueda   = '';
+        $scope.cargador         = false;   
+        $scope.mensaje='';   
+
+        $scope.datosFolio = {
+            nombre : '',
+            unidad : ''
+        }
+
+
+        $scope.conusultaFolioSinCeluda();
     }
+
+
+    $scope.conusultaFolioSinCeluda = function(cedula){
+       facturacionExpress.buscaFoliosSinCedula().success( function (data){
+            $scope.unidades = data;       
+        });
+    }
+
+    $scope.abrirVentana= function(folioAut){
+           url = "http://172.17.10.9/PDFCQ/"+folioAut+".pdf";        
+           return popitup(url);
+    }
+
+    $scope.abrirVentanaRelacion= function(){
+
+            
+
+            if(unidad==232||unidad==249||unidad==125||unidad==110||unidad==266||unidad==65||unidad==185||unidad==269)   {
+                url = "http://medicavial.net/registro/"+ruta+'/'+nomArchivo;             
+            }else{
+                url = "http://medicavial.net/registro/"+ruta;             
+            }                
+           return popitup(url);
+    }
+
+
+    $scope.buscaRelacion = function(cedula){
+        $('#relacionaFolio').modal();
+        $scope.listado='';
+        $scope.cedula =cedula; 
+        console.log($scope.cedula);
+        $scope.datosFolio.nombre = $scope.cedula.CQ_paciente;  
+    }
+
+    $scope.busquedaFolio = function(){
+         $scope.cargador         = true;
+         $scope.mensaje='';
+         console.log($scope.datosFolio);
+         facturacionExpress.buscaDatosFolio($scope.datosFolio).success( function (data){
+            console.log(data);      
+            if(data.length>0){
+                $scope.mensaje='';
+                $scope.listado = data;
+            }else{
+               $scope.listado = ''; 
+               $scope.mensaje = 'No hay resultados para la búsqueda'; 
+            } 
+            $scope.cargador         = false;
+        });
+    }
+
+    var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
+
+    $scope.gridOptions = { 
+        data: 'listado', 
+        enableColumnResize:true,
+        enablePinning: true, 
+        enableRowSelection:false,
+        multiSelect:false,
+        showSelectionCheckbox: false,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: true,
+        selectedItems: $scope.selectos, 
+        filterOptions: $scope.filterOptions,
+        rowTemplate: rowTempl,
+        columnDefs: [
+                    { field:'Exp_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: false },
+                    { field:'Exp_nombre', displayName:'Nombre', width: 120, pinned:false},
+                    { field:'EXP_paterno', displayName:'Paterno', width: 120, pinned:false},
+                    { field:'EXP_materno', displayName: 'Materno', width: 120, pinned:false},
+                    { field:'Exp_fecreg', displayName:'Fecha Atención', width: 120, pinned:false },
+                    // { field:'FExpedicion', displayName:'Fecha Expedición', width: 120, pinned:false },
+                    { field:'Uni_nombrecorto', displayName:'Unidad', width: 180, pinned:false },
+                    // { field:'DocumentosDigitales', displayName:'Digitalizado', width: 120, pinned:false },                  
+                    { field:'Exp_poliza', displayName:'Poliza', width: 120, pinned:false },
+                    { field:'Exp_siniestro', displayName:'Siniestro', width: 120, pinned:false },
+                    { field:'Exp_reporte', displayName:'Reporte', width: 120, pinned:false },
+                    { field:'EXP_regCompania', displayName:'Folio Electrónico', width: 120, pinned:false },                    
+        ],
+        showFooter: true,
+        showFilter:false
+    };
 
     $scope.buscarNombre = function(){        
         facturacionExpress.buscaPorNombre($scope.nombreBusqueda).success( function (data){
             console.log(data);       
         });
+       
+    }
+
+    $scope.onDblClickRow = function(row){
+        console.log(row);
+        facturacionExpress.buscaPaseDig(row.Exp_folio).success( function (data){
+            $("#modalRelacion").modal();
+            console.log(row);
+        });    
        
     }
   
@@ -1173,6 +1277,14 @@ function rechazadosCtrl($scope, $rootScope, datos, loading,facturacionExpress){
         showFilter:false
     };
 };
+
+
+function popitup(url)
+{
+    newwindow=window.open(url,'name','height=500,width=800,left=200, top=200'); 
+    if (window.focus) {newwindow.focus()}
+    return false;
+}
 
 facturacionExCtrl.$inject =['$scope', '$rootScope', '$filter', 'find', 'loading', 'checkFolios','datos','$timeout','facturacionExpress','webStorage','operacion','tickets'];
 solicitadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];

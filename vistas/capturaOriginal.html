@@ -88,11 +88,11 @@
 					</blockquote>
         		</div>
         	</div>
-            <!-- <div class="row" ng-show="penalizaciones">                
+            <div class="row" ng-show="penalizacionesData&&original.tipoDoc==1">                
                 <div class="col-md-12">
                     <label for="" radio-inline c-radio>Penalización</label>    
                 </div>               
-                <div class="col-md-4">
+                <div class="col-md-4" >
                     <label for="datepicker4">fecha de pase</label>
                     <input type="text" ng-change="validafechaAtencion()" class="form-control" ng-model="original.fechaAtencion" id="datepickerB" >
                 </div>
@@ -103,7 +103,14 @@
                         <span class="glyphicon glyphicon-ok"></span>{{penalizacion.PEN_iniRango}} - {{penalizacion.PEN_diasRango}}</label>
                     </div>
                 </div>
-            </div>   -->          
+            </div>     
+            <div class="row" ng-show="original.penalizacion>5">
+                <div class="col-md-12">
+                    <label>Correo</label>
+                    <input type="mail"  class="form-control" ng-model="original.correoPenalizacion" ng-required="original.penalizacion>5">                    
+                </div>
+                
+            </div>       
 
         	<div class="row">
         		<div class="col-md-6">
