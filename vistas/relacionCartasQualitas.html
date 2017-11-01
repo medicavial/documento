@@ -167,7 +167,7 @@
 
 
 	<div id="modalRelacion" class="modal fade" role="dialog">
-	  <div class="modal-dialog">
+	  <div class="modal-dialog modal-lg">
 
 	    <!-- Modal content-->
 	    <div class="modal-content">
@@ -176,23 +176,51 @@
 	        <h4 class="modal-title">Relacionar Cédula - FolioMv</h4>
 	      </div>
 	      <div class="modal-body">
-
-	      	<div class="row">
-	      		<div class="col-md-2">
-	      			<div class="col-md-1" align="right">
-		      			<a href=""
-						ng-click="abrirVentanaRelacion(cedula.Arc_archivo,cedula.Arc_clave,cedula.Uni_clave)" style="padding: 2px 2px 2px 2px"><i class="material-icons" style="font-size:30px;color:#8f4545;">photo</i></a>
+			<form action="" ng-submit="guardarRelacion()">
+		      	<div class="row">
+		      		<div class="col-md-2" ng-show="verPase">
+		      			<div class="col-md-1" align="right">
+			      			<a ng-repeat="pase in paseDigital" href=""
+							ng-click="abrirVentanaRelacion(pase.Arc_archivo,pase.Arc_clave,pase.Uni_clave)" style="padding: 2px 2px 2px 2px"><i class="material-icons" style="font-size:30px;color:#8f4545;">photo</i></a>
+			      		</div>
 		      		</div>
-	      		</div>
-	      		<div class="col-md-5">
-	      			
-	      		</div>
-	      		<div class="col-md-5">
-	      			
-	      		</div>
+		      		<div class="col-md-4">		      			
+						<div class="form-group">
+							
+								<span>Nombre cédula: </span>
+								<input type="text" class="form-control" ng-model="datosRelacion.nombreCedula" required="">
+					
+	                    </div>		
+		      		</div>
+		      		<div class="col-md-4">		      			
+						<div class="form-group">
+							
+								<span >Nombre registro: </span>
+								<input type="text" class="form-control" ng-model="datosRelacion.nombreRegistro" required>
+						
+	                    </div>				
+		      		</div>
+					<div class="col-md-2">
+		      			<button class="btn btn-primary" type="submit">Relacionar</button>
+		      		</div>
+		      	</div>
+	      	</form>
+	      		<div class="row" ng_show="msj">
+					<div class="col-md-12" align="center">
+						<div class="alert alert-danger">{{msj}}</div>
+					</div>
+				</div>	
+				<div class="row" ng_show="msjExito">
+					<div class="col-md-12" align="center">
+						<div class="alert alert-success">{{msjExito}}</div>
+					</div>
+				</div>	
+				<div class="row" ng_show="cargador1">
+				<div class="col-md-12" align="center">
+					<img src="images/loading.gif" alt="">
 
-	      	</div>
-	        
+				</div>
+			</div>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>

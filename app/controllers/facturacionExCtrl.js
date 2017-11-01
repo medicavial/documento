@@ -1013,13 +1013,22 @@ function relacionCartasQualitasCtrl($scope, $rootScope, datos, loading, facturac
         $scope.listadoCartas    = datos.data;
         $scope.folioBusqueda    = '';
         $scope.nombreBusqueda   = '';
-        $scope.cargador         = false;   
+        $scope.cargador         = false;  
+        $scope.cargador1        = false; 
         $scope.mensaje='';   
 
         $scope.datosFolio = {
             nombre : '',
             unidad : ''
         }
+
+        $scope.datosRelacion = {
+            nombreCedula : '',
+            nombreRegistro : ''
+        } 
+
+        $scope.mjs='';
+        $scope.msjExito= '';
 
 
         $scope.conusultaFolioSinCeluda();
@@ -1037,10 +1046,8 @@ function relacionCartasQualitasCtrl($scope, $rootScope, datos, loading, facturac
            return popitup(url);
     }
 
-    $scope.abrirVentanaRelacion= function(){
-
-            
-
+    $scope.abrirVentanaRelacion= function(ruta,nomArchivo,unidad){
+        
             if(unidad==232||unidad==249||unidad==125||unidad==110||unidad==266||unidad==65||unidad==185||unidad==269)   {
                 url = "http://medicavial.net/registro/"+ruta+'/'+nomArchivo;             
             }else{
@@ -1115,11 +1122,52 @@ function relacionCartasQualitasCtrl($scope, $rootScope, datos, loading, facturac
     }
 
     $scope.onDblClickRow = function(row){
-        console.log(row);
-        facturacionExpress.buscaPaseDig(row.Exp_folio).success( function (data){
+        $scope.paseDigital = '';     
+        $scope.msjExito='';   
+        facturacionExpress.buscaPaseDig(row.entity.Exp_folio).success( function (data){
             $("#modalRelacion").modal();
-            console.log(row);
+            if (data.length>0) {                
+                $scope.datosRelacion.nombreCedula = $scope.cedula.CQ_paciente;
+                $scope.datosRelacion.nombreRegistro= row.entity.Exp_completo;
+                $scope.datosRelacion.CQ_folio = $scope.cedula.CQ_folioautorizacion;
+                $scope.datosRelacion.Exp_folio = row.entity.Exp_folio; 
+                $scope.verPase=true;
+                $scope.paseDigital = data;
+                console.log($scope.paseDigital);
+            }else{
+                scope.datosRelacion.nombreCedula = $scope.cedula.CQ_paciente;
+                $scope.datosRelacion.nombreRegistro= row.entity.Exp_completo; 
+            }
+            
         });    
+       
+    }
+
+    $scope.guardarRelacion = function(){
+        $scope.cargador1 = true; 
+        $scope.msj='';
+        $scope.msjExito = ''; 
+        if($scope.datosRelacion.nombreCedula==$scope.datosRelacion.nombreRegistro){            
+            facturacionExpress.guardarRelacionCartas($scope.datosRelacion).success( function (data){                       
+               if(data!='error'){
+                    $scope.msjExito = '¡Correcto!. El folio relacionado es: '+data;
+                    facturacionExpress.cedulasSinRelacion().success( function (data){
+                        $scope.listadoCartas = data;
+                        console.log($scope.listadoCartas);
+                        $scope.cargador1 = false; 
+                    });
+                    
+               }
+            });    
+            
+        }else{
+            $scope.msj='Los nombres deben ser iguales, modifica el nombre incorrecto';
+            $scope.cargador1 = false; 
+        }
+
+
+
+        
        
     }
   

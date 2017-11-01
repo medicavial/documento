@@ -137,7 +137,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
             find.folioZima($scope.folioZima).success( function (data) {                
                 if(data.length>0){
                     console.log(data[0].UNI_clave);
-                    if(data[0].UNI_clave==118||data[0].UNI_clave==181||data[0].UNI_clave==2183||data[0].UNI_clave==2250||data[0].UNI_clave==2289){
+                    if(data[0].UNI_clave==118||data[0].UNI_clave==181||data[0].UNI_clave==2183||data[0].UNI_clave==2250||data[0].UNI_clave==2289||data[0].UNI_clave==2250){
                         if(data[0].ASE_clave==17||data[0].ASE_clave==20){
                             if(data[0].REG_folioMV==null){                                 
                                  data[0].usrWeb=$scope.usrWeb;   
@@ -397,7 +397,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
     //busqueda de referencias por unidad
     $scope.referencia = function(unidad){
         $scope.original.unidad = unidad;
-        if(unidad==28||unidad==278||unidad==243||unidad==247||unidad==1356||unidad==352){
+        if(unidad==28||unidad==278||unidad==243||unidad==247||unidad==1356||unidad==352||unidad==357){
             $scope.veFolZima=true;
         }else{
             $scope.veFolZima=false;

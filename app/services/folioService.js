@@ -844,7 +844,10 @@ app.factory("facturacionExpress", function($q,$http,find,api){
         },
         buscaPaseDig:function(pase){
             return $http.get(api + 'facturacionExpress/buscaPaseDig/'+pase);
-        }
+        },
+        guardarRelacionCartas:function(datos){
+            return $http.post(api + 'facturacionExpress/guardarRelacionCartas', datos,{timeout: 10000});
+        },
     }
 });
 
