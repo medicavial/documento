@@ -1135,8 +1135,10 @@ function relacionCartasQualitasCtrl($scope, $rootScope, datos, loading, facturac
                 $scope.paseDigital = data;
                 console.log($scope.paseDigital);
             }else{
-                scope.datosRelacion.nombreCedula = $scope.cedula.CQ_paciente;
+                $scope.datosRelacion.nombreCedula = $scope.cedula.CQ_paciente;
                 $scope.datosRelacion.nombreRegistro= row.entity.Exp_completo; 
+                $scope.datosRelacion.CQ_folio = $scope.cedula.CQ_folioautorizacion;
+                $scope.datosRelacion.Exp_folio = row.entity.Exp_folio; 
             }
             
         });    
@@ -1150,10 +1152,11 @@ function relacionCartasQualitasCtrl($scope, $rootScope, datos, loading, facturac
         if($scope.datosRelacion.nombreCedula==$scope.datosRelacion.nombreRegistro){            
             facturacionExpress.guardarRelacionCartas($scope.datosRelacion).success( function (data){                       
                if(data!='error'){
+                    console.log(data);
                     $scope.msjExito = '¡Correcto!. El folio relacionado es: '+data;
                     facturacionExpress.cedulasSinRelacion().success( function (data){
                         $scope.listadoCartas = data;
-                        console.log($scope.listadoCartas);
+                        
                         $scope.cargador1 = false; 
                     });
                     

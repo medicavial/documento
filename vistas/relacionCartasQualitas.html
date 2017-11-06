@@ -8,7 +8,7 @@
 		<div class="col-md-12">
 			<div class="input-group">
 				<span class="input-group-addon" id="basic-addon1">Buscar</span>
-				<input type="text" ng-model="searchText" class="form-control" placeholder="Nombre / cédula" aria-describedby="basic-addon1">
+				<input type="text" ng-model="searchText" class="form-control" capitalize placeholder="Nombre / cédula" aria-describedby="basic-addon1">
 			</div>
 			
 		</div>
@@ -64,7 +64,7 @@
 			      		</div>
 			      		<div class="col-md-1" align="right">
 			      			<a href=""
-							ng-click="abrirVentana(cedula.CQ_folioautorizacion)" style="padding: 2px 2px 2px 2px"><i class="material-icons" style="font-size:30px;color:#8f4545;">photo</i></a>
+							ng-click="abrirVentana(cedula.CQ_folioautorizacion)" style="padding: 2px 2px 2px 2px"><i class="glyphicon glyphicon-paperclip" style="font-size:20px;color:#8f4545;"></i></a>
 			      		</div>
 			      	</div>
 			      	<div class="row">
@@ -90,7 +90,7 @@
 						<div class="form-group">
 							<div class="input-group">
 								<span class="input-group-addon">Nombre: </span>
-								<input type="text" class="form-control" ng-model="datosFolio.nombre">
+								<input type="text" class="form-control" capitalize ng-model="datosFolio.nombre">
 							</div>
 	                    </div>
 					</div>
@@ -181,14 +181,14 @@
 		      		<div class="col-md-2" ng-show="verPase">
 		      			<div class="col-md-1" align="right">
 			      			<a ng-repeat="pase in paseDigital" href=""
-							ng-click="abrirVentanaRelacion(pase.Arc_archivo,pase.Arc_clave,pase.Uni_clave)" style="padding: 2px 2px 2px 2px"><i class="material-icons" style="font-size:30px;color:#8f4545;">photo</i></a>
+							ng-click="abrirVentanaRelacion(pase.Arc_archivo,pase.Arc_clave,pase.Uni_clave)" style="padding: 2px 2px 2px 2px"><i class="glyphicon glyphicon-paperclip" style="font-size:20px;color:#8f4545;"></i></a>
 			      		</div>
 		      		</div>
 		      		<div class="col-md-4">		      			
 						<div class="form-group">
 							
 								<span>Nombre cédula: </span>
-								<input type="text" class="form-control" ng-model="datosRelacion.nombreCedula" required="">
+								<input type="text" class="form-control" ng-model="datosRelacion.nombreCedula" capitalize required="">
 					
 	                    </div>		
 		      		</div>
@@ -196,7 +196,7 @@
 						<div class="form-group">
 							
 								<span >Nombre registro: </span>
-								<input type="text" class="form-control" ng-model="datosRelacion.nombreRegistro" required>
+								<input type="text" class="form-control" ng-model="datosRelacion.nombreRegistro" capitalize required>
 						
 	                    </div>				
 		      		</div>
