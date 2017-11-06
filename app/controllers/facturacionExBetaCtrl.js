@@ -496,7 +496,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                 $scope.captura.RIEClave = String(data.captura.RIEClave);
                 $scope.datos.cliente = data.expediente.claveEmpresa;                
 
-                if(data.cedula[0].CQ_folioautorizacion){
+                if(data.cedula[0]){
                     $scope.captura.cedulaElectronica = data.cedula[0].CQ_folioautorizacion; 
                     console.log($scope.captura.cedulaElectronica);
                     $scope.validaFolioAutorizacion();
