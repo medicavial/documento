@@ -76,6 +76,20 @@
 					</select>
         		</div>
         	</div>
+            <!-- <div class="row">
+                <div class="col-md-6">
+                        <label for="producto">Producto</label>
+                        <select class="form-control" id="producto" ng-disabled="bloqueo"  ng-model="original.producto" ng-options="producto.id as producto.nombre for producto in productos" ng-change="verificaEscolaridad()" required>
+                            <option value="">Producto</option>
+                        </select>
+                </div>
+                <div class="col-md-6">
+                    <label for="escolaridad">Ramo</label>
+                    <select  id="escolaridad" class="form-control" ng-disabled="bloqueo"  ng-model="original.escolaridad" ng-options="escolaridad.id as escolaridad.nombre for escolaridad in escolaridades">
+                        <option value="">Ramo</option>
+                    </select>
+                </div>
+            </div> -->
         	<div class="row">
         		<div class="col-md-6">
         			<label for="remesa">Remesa</label>
