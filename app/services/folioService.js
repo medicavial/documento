@@ -809,6 +809,9 @@ app.factory("facturacionExpress", function($q,$http,find,api){
         capturaCuestionario:function(datos){
             return $http.post(api + 'facturacionExpress/capturaCuestionario', datos,{timeout: 10000});
         },
+        getCedula:function(folio){
+            return $http.post(api + 'facturacionExpress/getCedula/'+folio);
+        },
         rechazados:function(datos){
             return $http.post(api + 'facturacionExpress/rechazados', datos,{timeout: 10000});
         },
@@ -848,6 +851,9 @@ app.factory("facturacionExpress", function($q,$http,find,api){
         guardarRelacionCartas:function(datos){
             return $http.post(api + 'facturacionExpress/guardarRelacionCartas', datos,{timeout: 10000});
         },
+        editaCaptura:function(datos){
+            return $http.post(api + 'facturacionExpress/guardarEdicionCaptura', datos,{timeout: 10000});
+        }
     }
 });
 

@@ -1169,21 +1169,25 @@ function relacionCartasQualitasCtrl($scope, $rootScope, datos, loading, facturac
         }
 
 
-
         
        
     }
   
 };
 
-function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacionExpress){
-
-     console.log(datos);
+function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacionExpress, webStorage){
+    
 
     $rootScope.tituloFEA = 'Folios Autorizados';
     loading.despedida();
 
-    $scope.listado = datos.data;
+    $scope.listado = datos.data.listado;
+
+    $scope.riesgos  = datos.data.riesgo;
+
+    $scope.usr = webStorage.session.get('id');  
+
+    console.log($scope.usr);
 
     $scope.captura={};
 
@@ -1203,6 +1207,7 @@ function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacio
         rowTemplate: rowTempl,
         columnDefs: [
                     { field:'Exp_folio', displayName:'Folio', width: 100, pinned:true, enableCellEdit: false },
+                    { field:'carta', displayName:'Con carta', width: 240, pinned:false },
                     { field:'UNI_nombreMV', displayName:'Unidad', width: 180, pinned:false },
                     { field:'Exp_fecreg', displayName:'Fecha Atención', width: 120, pinned:false },
                     // { field:'FExpedicion', displayName:'Fecha Expedición', width: 120, pinned:false },                    
@@ -1213,7 +1218,8 @@ function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacio
                     { field:'Exp_reporte', displayName:'Reporte', width: 100, pinned:false },
                     { field:'Exp_completo', displayName:'Lesionado', width: 240, pinned:false },
                     // { field:'carta', displayName:'Carta', width: 80, pinned:false },
-                    { field:'carta' ,cellTemplate:"<img src='images/ok.jpg' width='20'/> "}
+                    { field:'Exp_completo', displayName:'Lesionado', width: 240, pinned:false },
+                    
                     // { field:'RIE_nombre', displayName:'Riesgo', width: 120, pinned:false },
                     // { field:'Triage_nombre', displayName:'Triage', width: 120, pinned:false },
                     // { field:'EXP_costoEmpresa', displayName:'Costo', width: 120, pinned:false },
@@ -1222,43 +1228,117 @@ function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacio
         showFooter: true,
         showFilter:false
     };
+    $scope.onDblClickRow = function(row){       
+        $scope.mensaje='';        
+        if(row.entity.carta=='si'){
+            facturacionExpress.getCedula(row.entity.Exp_folio).success( function (data){
+                $scope.datosCedula = data;
 
+                    if($scope.datosCedula.CQ_folioautorizacion){
 
-    $scope.onDblClickRow = function(row){
-        console.log(row.entity);  
-        $scope.mensaje='';
-        facturacionExpress.DatosCaptura(row.entity.Exp_folio).success( function (data){
-            console.log(data);
-            $('#myModal').modal();
-            if(data.length==0){
-                $scope.mensaje='El folio no está capturado';
+                        facturacionExpress.DatosCaptura(row.entity.Exp_folio).success( function (data){
+                            console.log(data);
+                            $('#myModal').modal();
+
+                            if(data.length==0){
+                                $scope.mensaje='El folio no está capturado';
+                            }else{
+                                if(!data[0].fac_folio){
+                                    $scope.captura.Nombre= data[0].Afe_nombre;
+                                    $scope.captura.Siniestro = $scope.datosCedula.CQ_siniestro;
+                                    $scope.captura.Poliza = $scope.datosCedula.CQ_poliza;
+                                    $scope.captura.Reporte = $scope.datosCedula.CQ_reporte;
+                                    $scope.captura.RegCompania = $scope.datosCedula.CQ_folioelectronico;
+                                    $scope.captura.cedulaElectronica = $scope.datosCedula.CQ_folioautorizacion;
+                                    $scope.captura.RIEClave = data[0].rie_clave;
+                                    $scope.captura.folio = row.entity.Exp_folio;
+                                    $scope.captura.usr = $scope.usr;
+                                    $scope.validaCobertura($scope.captura.RIEClave);
+
+                                }else{
+                                    $scope.mensaje='El folio ya está facturado';  
+                                    $scope.captura.Nombre= data[0].Afe_nombre;
+                                    $scope.captura.Siniestro = data[0].das_siniestro;
+                                    $scope.captura.Poliza = data[0].das_poliza;
+                                    $scope.captura.Reporte = data[0].das_reporte; 
+                                    $scope.captura.RegCompania = data[0].FolioElect;
+                                    $scope.captura.cedulaElectronica = data[0].Atencion;
+                                    $scope.captura.RIEClave = data[0].rie_clave;
+                                    $scope.captura.folio = row.entity.Exp_folio;
+                                    $scope.captura.usr = $scope.usr;
+                                    $scope.validaCobertura($scope.captura.RIEClave);
+
+                                }
+                            }
+                        }).error(function (data){
+                            $scope.tipoalerta = 'alert-warning';
+                            $scope.mensaje = 'Algo salio mal intentalo nuevamente';
+                            $('#boton').button('reset');
+                        })
+
             }else{
-                if(!data[0].fac_folio){
-                    $scope.captura.Nombre= data[0].Afe_nombre;
-                    $scope.captura.Siniestro = data[0].das_siniestro;
-                    $scope.captura.Poliza = data[0].das_poliza;
-                    $scope.captura.Reporte = data[0].das_reporte;
-                    $scope.cpatura.RegCompania = data[0].FolioElect;
-                    $scope.captura.cedulaElectronica = data[0].Atencion;
-                }else{
-                    $scope.mensaje='El folio ya está facturado';  
-                    $scope.captura.Nombre= data[0].Afe_nombre;
-                    $scope.captura.Siniestro = data[0].das_siniestro;
-                    $scope.captura.Poliza = data[0].das_poliza;
-                    $scope.captura.Reporte = data[0].das_reporte; 
-                    $scope.captura.RegCompania = data[0].FolioElect;
-                    $scope.captura.cedulaElectronica = data[0].Atencion;
-                }
+                alert('No se encontró cédula');
             }
-        }).error(function (data){
-            $scope.tipoalerta = 'alert-warning';
-            $scope.mensaje = 'Algo salio mal intentalo nuevamente';
-            $('#boton').button('reset');
-        })
+
+
+            }).error(function (data){
+                $scope.tipoalerta = 'alert-warning';
+                $scope.mensaje = 'Algo salio mal intentalo nuevamente';
+                $('#boton').button('reset');
+            })    
+            
+        }else{
+             $('#sinAtencion').modal();
+        }
 
         
 
     }
+
+    $scope.validaCobertura = function(riesgo){
+        
+        if (riesgo == '1' || riesgo == '5') {
+            $scope.cobertura = '4';
+        }else if (riesgo == '10') {
+            $scope.cobertura = '13';
+        }else if (riesgo == '2') {
+            $scope.cobertura = '15';
+        }else if (riesgo == '8') {
+            $scope.cobertura = '3';
+        }else if (riesgo == '9') {
+            $scope.cobertura = '18';
+        }else{
+            $scope.cobertura = '';
+        }
+
+    }
+
+
+    $scope.guardaEdicionCaptura = function(){
+        loading.cargando('Guardando datos');
+        facturacionExpress.editaCaptura($scope.captura).success(function (data){            
+            $('#botonAct').button('reset');
+            if(data=='exito'){
+                facturacionExpress.capNoFacturados().success( function (data){
+                    console.log(data); 
+                    $scope.listado = data.listado;
+                    $scope.mensaje = 'Los datos del folio se modificaron correctamente';  
+                    loading.despedida();                                             
+                }).error(function (data){
+                    $scope.tipoalerta = 'alert-warning';
+                    $scope.mensaje = 'Algo salio mal intentalo nuevamente';
+                    $('#boton').button('reset');
+                })
+            }            
+           
+
+        }).error(function (data){
+            alert('Surgio un problema intente nuevamente');
+            $('#botonAct').button('reset');
+        })
+    }
+
+
 };
 
 
@@ -1343,7 +1423,7 @@ autorizadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 cartasCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress','find'];
 cancelacionCtrl.$inject =['$scope', '$rootScope','loading','facturacionExpress','find','webStorage'];
 rechazadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
-capturadosSinFacturaCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
+capturadosSinFacturaCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress','webStorage'];
 relacionCartasQualitasCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
 
 

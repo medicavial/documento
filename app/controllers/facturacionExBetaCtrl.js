@@ -366,33 +366,18 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                 //verificamos cliente para condiciones de texto
                 if ($scope.datos.cliente == 19) {
 
-                    // $scope.SiniestroMin = 11;
-                    // $scope.SiniestroMax = 11;
+                    $scope.SiniestroMin = 11;
+                    $scope.SiniestroMax = 11;
 
-                    // $scope.PolizaMin = 10;
-                    // $scope.PolizaMax = 10;
+                    $scope.PolizaMin = 10;
+                    $scope.PolizaMax = 10;
 
-                    // $scope.ReporteMin = 11;
-                    // $scope.ReporteMax = 11;
+                    $scope.ReporteMin = 11;
+                    $scope.ReporteMax = 11;
 
-                    // $scope.FolioElecMin = 12;
-                    // $scope.FolioElecMax = 12;
-                    // 
-                    // 
-                    
-                    $scope.SiniestroMin = '';
-                    $scope.SiniestroMax = 100;
-
-                    $scope.PolizaMin = '';
-                    $scope.PolizaMax = 100;
-
-                    $scope.ReporteMin = '';
-                    $scope.ReporteMax = 100;
-
-                    $scope.FolioElecMin = '';
-                    $scope.FolioElecMax = 100;
-
-
+                    $scope.FolioElecMin = 12;
+                    $scope.FolioElecMax = 12;
+                                     
 
                     $scope.validaCobertura($scope.captura.RIEClave);
 
@@ -526,29 +511,18 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                 //verificamos cliente para condiciones de texto
                 if ($scope.datos.cliente == 19) {
 
-                    // $scope.SiniestroMin = 11;
-                    // $scope.SiniestroMax = 11;
+                    $scope.SiniestroMin = 11;
+                    $scope.SiniestroMax = 11;
 
-                    // $scope.PolizaMin = 10;
-                    // $scope.PolizaMax = 10;
+                    $scope.PolizaMin = 10;
+                    $scope.PolizaMax = 10;
 
-                    // $scope.ReporteMin = 11;
-                    // $scope.ReporteMax = 11;
+                    $scope.ReporteMin = 11;
+                    $scope.ReporteMax = 11;
 
-                    // $scope.FolioElecMin = 12;
-                    // $scope.FolioElecMax = 12;
+                    $scope.FolioElecMin = 12;
+                    $scope.FolioElecMax = 12;
                     
-                    $scope.SiniestroMin = '';
-                    $scope.SiniestroMax = 100;
-
-                    $scope.PolizaMin = '';
-                    $scope.PolizaMax = 100;
-
-                    $scope.ReporteMin = '';
-                    $scope.ReporteMax = 100;
-
-                    $scope.FolioElecMin = '';
-                    $scope.FolioElecMax = 100;
 
 
 
@@ -1274,8 +1248,8 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
               $scope.ReporteMin = '';
               $scope.ReporteMax = 100;
 
-              $scope.FolioElecMin = 12;
-              $scope.FolioElecMax = 12;
+              $scope.FolioElecMin = '';
+              $scope.FolioElecMax = 100;
               if($scope.captura.Reporte.length==11){
                   $scope.cargador1=true;
                   $http.get('http://172.17.10.15/apimv/public/api/qualitas/reporte/' + $scope.captura.Reporte).success(function (data){
@@ -1296,17 +1270,32 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
       }else{
               $scope.sinFactura=0;
               console.log($scope.sinCedula);
-              $scope.SiniestroMin = 11;
-              $scope.SiniestroMax = 11;
+              // $scope.SiniestroMin = 11;
+              // $scope.SiniestroMax = 11;
 
-              $scope.PolizaMin = 10;
-              $scope.PolizaMax = 10;
+              // $scope.PolizaMin = 10;
+              // $scope.PolizaMax = 10;
 
-              $scope.ReporteMin = 11;
-              $scope.ReporteMax = 11;
+              // $scope.ReporteMin = 11;
+              // $scope.ReporteMax = 11;
 
-              $scope.FolioElecMin = 12;
-              $scope.FolioElecMax = 12;
+              // $scope.FolioElecMin = 12;
+              // $scope.FolioElecMax = 12;
+
+
+              $scope.SiniestroMin = '';
+              $scope.SiniestroMax = 100;
+
+              $scope.PolizaMin = '';
+              $scope.PolizaMax = 100;
+
+              $scope.ReporteMin = '';
+              $scope.ReporteMax = 100;
+
+              $scope.FolioElecMin = '';
+              $scope.FolioElecMax = 100;
+
+
               $scope.validaCobertura($scope.captura.RIEClave);
               $scope.cargador1=false;
       }

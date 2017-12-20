@@ -68,18 +68,26 @@
 		      		{{mensaje}}
 		      	</div>
 
-		      	<div id="cajadeCaptura">
+		      	<div id="cajadeCaptura" ng-hide="mensaje">
 		      		
 
-		      		<form ng-submit="capturaDatos()" name="capturaForm">
+		      		<form ng-submit="guardaEdicionCaptura()" name="capturaForm" id="capturaForm">
 						<div class="modal-body">
+							<div class="row">
+								<div class="col-md-4">
+									Folio: {{captura.folio}}
+								</div>
+								<div class="col-md-8">
+									Nombre: {{captura.Nombre}}
+								</div>
+							</div>
+							<br>
 							<div class="row">
 
 								<div class="col-md-6">
 									<div class="form-group">
 									    <label for="cedula">Folio de Autorización</label>
-									    <input type="text" class="form-control" ng-model="captura.cedulaElectronica" name="cedula" id="cedula" ng-required="datos.cliente == 19&&sinCedula==true" ng-keyup="validaFolioAutorizacion()" ng-minlength="13" ng-maxlength="13" placeholder="cedula" ng-disabled="datos.cliente == 19&&sinCedula==false" capitalize>
-									    <input type="checkbox" name="sinCedula" id="sinCedula" ng-model="sinCedula" ng-true-value="false" ng-false-value="true" ng-click="validaSinCedula()">Sin Cédula
+									    <input type="text" class="form-control" ng-model="captura.cedulaElectronica" name="cedula" id="cedula" ng-required="datos.cliente == 19&&sinCedula==true" disabled="" ="" ng-minlength="13" ng-maxlength="13" placeholder="cedula" capitalize>									
 									    <div ng-messages="capturaForm.cedula.$error" class="text-danger">
 											<div ng-message="required">Campo obligatorio.</div>
 											<div ng-message="maxlength">El campo no puede ser mayor que 13 digitos.</div>
@@ -91,10 +99,10 @@
 									<div class="form-group">
 									    <label for="RegCompania">Folio Electronico</label>
 											<div ng-if="datos.cliente == 19">
-										    <input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-pattern="/[a-zA-Z0-9]{12,12}/"  ng-required="datos.cliente == 19&&sinCedula==true" placeholder="RegCompania" capitalize ng-disabled="datos.cliente == 19&&sinCedula==true">
+										    <input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-pattern="/[a-zA-Z0-9]{12,12}/" disabled="" placeholder="RegCompania" capitalize disabled="">
 											</div>
 											<div ng-if="datos.cliente != 19">
-												<input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" ng-required="datos.cliente == 19&&sinCedula==true" placeholder="RegCompania" capitalize ng-disabled="datos.cliente == 19&&sinCedula==true">
+												<input type="text" name="RegCompania" class="form-control" ng-model="captura.RegCompania" id="RegCompania" ng-minlength="FolioElecMin" ng-maxlength="FolioElecMax" disabled="">
 											</div>
 									    <div ng-messages="capturaForm.RegCompania.$error" class="text-danger">
 
@@ -127,7 +135,7 @@
 								<div class="col-md-12">
 									<div class="form-group">
 									    <label for="reporte">Lesionado</label>
-									    <input type="text" class="form-control" ng-model="captura.Nombre" id="Reporte" placeholder="Reporte">
+									    <input type="text" class="form-control" ng-model="captura.Nombre" id="Reporte" placeholder="Reporte" disabled="">
 									</div>
 								</div>
 
@@ -137,10 +145,10 @@
 									<div class="form-group">
 									    <label for="siniestro">Siniestro</label>
 											<div ng-if="datos.cliente == 19">
-											    <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true" ng-pattern="/04+(16|17)+(\d{7})$/">
+											    <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" disabled="">
 											</div>
 											<div ng-if="datos.cliente != 19">
-											    <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" ng-disabled="datos.cliente == 19&&sinCedula==true">
+											    <input type="text" class="form-control" name="siniestro"  ng-model="captura.Siniestro" id="siniestro" placeholder="Siniestro" disabled="">
 											</div>
 
 									    <div ng-messages="capturaForm.siniestro.$error" class="text-danger">
@@ -154,7 +162,7 @@
 								<div class="col-md-4">
 									<div class="form-group">
 									    <label for="poliza">Poliza</label>
-									    <input type="text" class="form-control" name="poliza" ng-model="captura.Poliza" id="poliza" ng-minlength="PolizaMin" ng-maxlength="PolizaMax" placeholder="Poliza" ng-disabled="datos.cliente == 19&&sinCedula==true">
+									    <input type="text" class="form-control" name="poliza" ng-model="captura.Poliza" id="poliza" ng-minlength="PolizaMin" ng-maxlength="PolizaMax" placeholder="Poliza" disabled="">
 									    <div ng-messages="capturaForm.poliza.$error" class="text-danger">
 											<div ng-message="required">Campo obligatorio.</div>
 											<div ng-message="maxlength">El campo no puede ser mayor que {{ PolizaMax }} digitos.</div>
@@ -166,10 +174,10 @@
 									<div class="form-group">
 									    <label for="reporte">Reporte</label>
 											<div ng-if="datos.cliente == 19">
-									    	<input type="text" class="form-control" name="reporte" ng-model="captura.Reporte" id="Reporte" ng-minlength="ReporteMin" ng-maxlength="ReporteMax" placeholder="Reporte" ng-disabled="datos.cliente == 19&&sinCedula==true" ng-pattern="/04+(16|17)+(\d{7})$/"  ng-keyup="validaReporte()">
+									    	<input type="text" class="form-control" name="reporte" ng-model="captura.Reporte" id="Reporte" ng-minlength="ReporteMin" ng-maxlength="ReporteMax" placeholder="Reporte" disabled="">
 											</div>
 											<div ng-if="datos.cliente != 19">
-												<input type="text" class="form-control" name="reporte" ng-model="captura.Reporte" id="Reporte" ng-minlength="ReporteMin" ng-maxlength="ReporteMax" placeholder="Reporte" ng-disabled="datos.cliente == 19&&sinCedula==true" ng-keyup="validaReporte()">
+												<input type="text" class="form-control" name="reporte" ng-model="captura.Reporte" id="Reporte" ng-minlength="ReporteMin" ng-maxlength="ReporteMax" placeholder="Reporte" disabled="">
 											</div>
 									    <div ng-messages="capturaForm.reporte.$error" class="text-danger">
 											<div ng-message="required">Campo obligatorio.</div>
@@ -179,6 +187,27 @@
 								        </div>
 									</div>
 								</div>
+							</div>
+							<div class="row">
+								<div class="col-md-5">
+									<label for="">Riesgo</label>
+									<select class="form-control"  ng-model="captura.RIEClave" ng-change="validaCobertura(captura.RIEClave)" ng-options="riesgo.RIE_clave as riesgo.RIE_nombre for riesgo in riesgos" required>
+										<option value="">Riesgo</option>
+									</select>
+								</div>
+
+								<div class="col-md-5">
+									<label for="">Cobertura Qualitas</label>
+									<select class="form-control"  ng-model="cobertura" disabled>
+										<option value="">Sin Cobertura Qualitas Valida</option>
+										<option value="4">04 GM</option>
+										<option value="15">15 RC Pasajero</option>
+										<option value="3">03 RC</option>
+										<option value="18">18 RC Personas</option>
+										<option value="13">13 Ext RC</option>
+									</select>
+								</div>
+
 							</div>
 							<div class="row" ng-show="cargador1">
 								<div class="col-md-offset-8 col-md-4">
@@ -194,19 +223,33 @@
 									</div>
 								</div>
 							</div>									
-							<div class="text-right">
-						        <button type="button" class="btn btn-default" ng-click="vistaCaptura = !vistaCaptura">Cerrar</button>
-						        <button type="submit" id="botonAct" class="btn btn-primary" ng-disabled="verificaDatos()" data-loading-text="Guardando...">Gaurdar Cambios</button>
-						    </div>
+							
 						</div>
 					</form>
 		      	</div>
 		      </div>
 		      <div class="modal-footer">
-		        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        <div class="text-right">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+			        <button type="submit" ng-hide="mensaje" form="capturaForm" id="botonAct" class="btn btn-primary" ng-disabled="verificaDatos()" data-loading-text="Guardando...">Guardar Cambios</button>
+			    </div>
 		      </div>
 		    </div>
 
+		  </div>
+		</div>
+
+
+		<div class="modal fade" id="sinAtencion" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+		  <div class="modal-dialog" role="document">
+		    <div class="modal-content">
+		      <div class="modal-body">
+		       <h2> No existe cédula para este folio.</h2>
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		      </div>
+		    </div>
 		  </div>
 		</div>
 
