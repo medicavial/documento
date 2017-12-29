@@ -532,70 +532,83 @@ $scope.subeXML = function($files){
 
                         if ($scope.PagoG.rfcemisor == courses.comprobante.emisor._rfc){
 
-                            $scope.PagoG.serie = courses.comprobante._serie;
-                            $scope.PagoG.foliointerno = courses.comprobante._folio;
+                            if((courses.comprobante._fecha >= '2018-01-01') && (courses.comprobante._version != '3.3')){
 
-                            var subglobal = courses.comprobante._subtotal;
-                            var subglobal1 = parseFloat(subglobal);
-                            var subglobal2 = subglobal1.toFixed(2);
-                            $scope.PagoG.subtotal = subglobal2;
-
-                            var totalglobal = courses.comprobante._total;
-                            var totalglobal1 = parseFloat(totalglobal);
-                            var totalglobal2 = totalglobal1.toFixed(2);
-                            $scope.PagoG.total = totalglobal2;
-
-                            $scope.PagoG.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
-                            $scope.PagoG.fechaemision = courses.comprobante._fecha;
-                            // $scope.PagoG.descuento = courses.comprobante._descuento;
-                            $scope.PagoG.emisor = courses.comprobante.emisor._nombre;
-                            $scope.PagoG.rfcemisor = courses.comprobante.emisor._rfc;
-                            if(courses.comprobante.impuestos.traslados == undefined){
-
-                                $scope.PagoG.iva = '';
-                                $scope.PagoG.importeiva = '';
-
-                            }else{
-
-                                $scope.PagoG.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
-                                $scope.PagoG.importeiva = courses.comprobante.impuestos.traslados.traslado._importe;
-
-                            }
-
-                            if (courses.comprobante.impuestos.retenciones == undefined) {
-
-                                $scope.PagoG.isr = '';
-                                $scope.PagoG.importeisr = '';
+                                swal('Upss','Revisa la versión de tu xml, solo se acepta 3.3 a partir del 2018','error');
 
 
                             }else{
 
 
-                                $scope.PagoG.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
-                                $scope.PagoG.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                $scope.PagoG.serie = courses.comprobante._serie;
+                                $scope.PagoG.foliointerno = courses.comprobante._folio;
+
+                                var subglobal = courses.comprobante._subtotal;
+                                var subglobal1 = parseFloat(subglobal);
+                                var subglobal2 = subglobal1.toFixed(2);
+                                $scope.PagoG.subtotal = subglobal2;
+
+                                var totalglobal = courses.comprobante._total;
+                                var totalglobal1 = parseFloat(totalglobal);
+                                var totalglobal2 = totalglobal1.toFixed(2);
+                                $scope.PagoG.total = totalglobal2;
+
+                                $scope.PagoG.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
+                                $scope.PagoG.fechaemision = courses.comprobante._fecha;
+                                // $scope.PagoG.descuento = courses.comprobante._descuento;
+                                $scope.PagoG.emisor = courses.comprobante.emisor._nombre;
+                                $scope.PagoG.rfcemisor = courses.comprobante.emisor._rfc;
+                                if(courses.comprobante.impuestos.traslados == undefined){
+
+                                    $scope.PagoG.iva = '';
+                                    $scope.PagoG.importeiva = '';
+
+                                }else{
+
+                                    $scope.PagoG.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
+                                    $scope.PagoG.importeiva = courses.comprobante.impuestos.traslados.traslado._importe;
+
+                                }
+
+                                if (courses.comprobante.impuestos.retenciones == undefined) {
+
+                                    $scope.PagoG.isr = '';
+                                    $scope.PagoG.importeisr = '';
+
+
+                                }else{
+
+
+                                    $scope.PagoG.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
+                                    $scope.PagoG.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+
+                                }
+
+                                if (courses.comprobante._descuento == undefined) {
+
+                                    $scope.PagoG.descuento= 0;
+
+
+                                }else{
+
+
+                                    $scope.PagoG.descuento= courses.comprobante._descuento;
+
+                                }
+                                $scope.PagoG.usuarioentrega = Number($rootScope.id);
+                                // $scope.PagoG.areaentrega =Number(areaEntrega);
+                                // $scope.PagoG.usuariorecibe =Number(usuarioRecibe);
+                                // $scope.PagoG.arearecibe =Number(areaRecibe);
+                                // $scope.PagoG.folio = data.Folios;
+                                $scope.PagoG.tipoorden = 2;
+                                $scope.btndelete = true;
+                                $scope.btnOG = 0;
+
+
 
                             }
 
-                            if (courses.comprobante._descuento == undefined) {
-
-                                $scope.PagoG.descuento= 0;
-
-
-                            }else{
-
-
-                                $scope.PagoG.descuento= courses.comprobante._descuento;
-
-                            }
-                            $scope.PagoG.usuarioentrega = Number($rootScope.id);
-                            // $scope.PagoG.areaentrega =Number(areaEntrega);
-                            // $scope.PagoG.usuariorecibe =Number(usuarioRecibe);
-                            // $scope.PagoG.arearecibe =Number(areaRecibe);
-                            // $scope.PagoG.folio = data.Folios;
-                            $scope.PagoG.tipoorden = 2;
-                            $scope.btndelete = true;
-                            $scope.btnOG = 0;
-                          
+                        
                         }else{
 
                             swal('Upss','Tu Factura no coincide con el Emisor','error');
@@ -896,9 +909,31 @@ console.log($files);
 
                                   }
                             });
-                                // if ($scope.datos.rfc == courses.comprobante.Emisor._rfc){
+                                if ((courses.comprobante._fecha >= '2018-01-01') && (courses.comprobante._version != '3.3')){
 
-                                    var suma1 = 0;                                   
+
+                                    swal('Upss','Revisa la versión de tu xml, solo se acepta 3.3 a partir del 2018','error');
+
+                                    // var archivo = $scope.datos.leexml;
+                                    row.entity.foliofiscal = '';
+                                    row.entity.total = '';
+
+
+                                    // for (var i = 0; i < $scope.selectos.length; i++){
+
+                                    // var valor1 = $scope.selectos[i].total;
+                                    // var numero1 = valor1.replace(",",'');
+                                    // suma1 += parseFloat(numero1);
+                                    // var sumas1 = suma1.toFixed(2);
+                                    // $scope.totalimporte= sumas1;
+
+                                    // console.log($scope.totalimporte);
+
+                                    // }
+                                }else{
+
+
+                                     var suma1 = 0;                                   
 
                                     if(courses.comprobante._serie == undefined){ row.entity.serie = ''; }else{ row.entity.serie = courses.comprobante._serie };
                                     row.entity.foliointerno = courses.comprobante._folio;
@@ -941,34 +976,9 @@ console.log($files);
                                     row.entity.elimina = true;
                                     $scope.btndelete = true;
 
-                                    // for (var i = 0; i < $scope.selectos.length; i++){
 
-                                    // var valor1 = $scope.selectos[i].total;
-                                    // var numero1 = valor1.replace(",",'');
-                                    // suma1 += parseFloat(numero1);
-                                    // var sumas1 = suma1.toFixed(2);
-                                    // $scope.totalimporte= sumas1;
-
-                                    // console.log($scope.totalimporte);
-
-                                    // }
-                                // }else{
-
-                                //     swal('Upss','Tu Factura no coincide con el Emisor','error');
-
-                                //     // var archivo = $scope.datos.leexml;
-                                //     // $scope.elimina_ahora(archivo);
-                                //     $scope.detalles[idx].importe =  '';
-                                //     $scope.detalles[idx].total = '';
-                                //     $scope.detalles[idx].foliofiscal = '';
-                                //     $scope.detalles[idx].fechaemision = '';
-                                //     $scope.detalles[idx].descuento = '';
-                                //     $scope.detalles[idx].emisor = '';
-                                //     $scope.detalles[idx].elimina = false;
-                                //     $scope.btndelete = false;
-
-                                // }
-                                // 
+                                }
+                                
                                 
 
                       });
@@ -1069,7 +1079,7 @@ $scope.FoliosinFactura = function(success){
 
         $http.post(api+'OPFactura/subeFolios', {selecionado:$scope.selectos}).success(function (data){
 
-            swal("Oops...", "No seleccionaste Folios", "success");
+            swal("Oops...", "Tu Folio esta listo para relacionar", "success");
 
 
         }).error( function (data){

@@ -293,72 +293,87 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                         if ($scope.PagoM.rfcemisor == courses.comprobante.emisor._rfc){
 
-                            $scope.PagoM.serie = courses.comprobante._serie;
-                            $scope.PagoM.foliointerno = courses.comprobante._folio;
 
-                            /////  particionar 2 decimales de xml 
-                            // $scope.PagoM.subtotal = courses.comprobante._subTotal;
-
-                            var subglobal = courses.comprobante._subtotal;
-                            var subglobal1 = parseFloat(subglobal);
-                            var subglobal2 = subglobal1.toFixed(2);
-                            $scope.PagoM.subtotal = subglobal2;
-
-                            var totalglobal = courses.comprobante._total;
-                            var totalglobal1 = parseFloat(totalglobal);
-                            var totalglobal2 = totalglobal1.toFixed(2);
-                            $scope.PagoM.total = totalglobal2;
+                            if((courses.comprobante._fecha >= '2018-01-01') && (courses.comprobante._version != '3.3')){
 
 
-                            // $scope.PagoM.total = courses.comprobante._total;
-                            $scope.PagoM.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
-                            $scope.PagoM.fechaemision = courses.comprobante._fecha;
-                            $scope.PagoM.descuento = courses.comprobante._descuento;
-                            $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
-                            $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
-
-                            if(courses.comprobante.impuestos.traslados == undefined){
-
-                                $scope.PagoM.iva = '';
-                                $scope.PagoM.importeiva = '';
-
-                            }else{
-
-
-                                $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
-                                $scope.PagoM.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
-
-                            }
-                            // else{
-
-                            //     $scope.PagoM.iva = courses.comprobante.Impuestos.Traslados.Traslado._impuesto;
-                            //     $scope.PagoM.importeiva = courses.comprobante.Impuestos_totalImpuestosTrasladados;
-
-
-                            // }
-
-
-
-                            if (courses.comprobante.impuestos.retenciones == undefined) {
-
-                                $scope.PagoM.isr = '';
-                                $scope.PagoM.importeisr = '';
+                                swal('Upss','Revisa la versión de tu xml, solo se acepta 3.3 a partir del 2018','error');
 
 
                             }else{
 
 
-                                $scope.PagoM.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
-                                $scope.PagoM.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+
+                                $scope.PagoM.serie = courses.comprobante._serie;
+                                $scope.PagoM.foliointerno = courses.comprobante._folio;
+
+                                /////  particionar 2 decimales de xml 
+                                // $scope.PagoM.subtotal = courses.comprobante._subTotal;
+
+                                var subglobal = courses.comprobante._subtotal;
+                                var subglobal1 = parseFloat(subglobal);
+                                var subglobal2 = subglobal1.toFixed(2);
+                                $scope.PagoM.subtotal = subglobal2;
+
+                                var totalglobal = courses.comprobante._total;
+                                var totalglobal1 = parseFloat(totalglobal);
+                                var totalglobal2 = totalglobal1.toFixed(2);
+                                $scope.PagoM.total = totalglobal2;
+
+
+                                // $scope.PagoM.total = courses.comprobante._total;
+                                $scope.PagoM.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
+                                $scope.PagoM.fechaemision = courses.comprobante._fecha;
+                                $scope.PagoM.descuento = courses.comprobante._descuento;
+                                $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
+                                $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
+
+                                if(courses.comprobante.impuestos.traslados == undefined){
+
+                                    $scope.PagoM.iva = '';
+                                    $scope.PagoM.importeiva = '';
+
+                                }else{
+
+
+                                    $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
+                                    $scope.PagoM.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
+
+                                }
+                                // else{
+
+                                //     $scope.PagoM.iva = courses.comprobante.Impuestos.Traslados.Traslado._impuesto;
+                                //     $scope.PagoM.importeiva = courses.comprobante.Impuestos_totalImpuestosTrasladados;
+
+
+                                // }
+
+
+
+                                if (courses.comprobante.impuestos.retenciones == undefined) {
+
+                                    $scope.PagoM.isr = '';
+                                    $scope.PagoM.importeisr = '';
+
+
+                                }else{
+
+
+                                    $scope.PagoM.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
+                                    $scope.PagoM.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+
+                                }
+                                $scope.PagoM.usuarioentrega = Number($rootScope.id);
+                                // $scope.PagoM.areaentrega =Number(areaEntrega);
+                                // $scope.PagoM.usuariorecibe =Number(usuarioRecibe);
+                                // $scope.PagoM.arearecibe =Number(areaRecibe);
+                                // $scope.PagoM.folio = data.Folios;
+                                $scope.PagoM.tipoorden = 4;
+                                $scope.btndelete = true;
+
 
                             }
-                            $scope.PagoM.usuarioentrega = Number($rootScope.id);
-                            // $scope.PagoM.areaentrega =Number(areaEntrega);
-                            // $scope.PagoM.usuariorecibe =Number(usuarioRecibe);
-                            // $scope.PagoM.arearecibe =Number(areaRecibe);
-                            // $scope.PagoM.folio = data.Folios;
-                            $scope.PagoM.tipoorden = 4;
-                            $scope.btndelete = true;
+
                           
                         }else{
 
@@ -415,56 +430,69 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                         if ($scope.PagoM.rfcemisor == courses.comprobante.emisor._rfc){
 
-                            $scope.PagoM.serie = courses.comprobante._serie;
-                            $scope.PagoM.foliointerno = courses.comprobante._folio;
-
-                            var subglobal = courses.comprobante._subtotal;
-                            var subglobal1 = parseFloat(subglobal);
-                            var subglobal2 = subglobal1.toFixed(2);
-                            $scope.PagoM.subtotal = subglobal2;
-
-                            var totalglobal = courses.comprobante._total;
-                            var totalglobal1 = parseFloat(totalglobal);
-                            var totalglobal2 = totalglobal1.toFixed(2);
-                            $scope.PagoM.total = totalglobal2;
-
-                            $scope.PagoM.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
-                            $scope.PagoM.fechaemision = courses.comprobante._fecha;
-                            $scope.PagoM.descuento = courses.comprobante._descuento;
-                            $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
-                            $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
-                            if(courses.comprobante.Impuestos.Traslados == undefined){
-
-                                $scope.PagoM.iva = '';
-                                $scope.PagoM.importeiva = '';
-
-                            }else{
-
-                                $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
-                                $scope.PagoM.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
-
-                            }
-
-                            if (courses.comprobante.Impuestos.Retenciones == undefined) {
-
-                                $scope.PagoM.isr = '';
-                                $scope.PagoM.importeisr = '';
+                            if((courses.comprobante._fecha >= '2018-01-01') && (courses.comprobante._version != '3.3')){
 
 
-                            }else{
+                                swal('Upss','Revisa la versión de tu xml, solo se acepta 3.3 a partir del 2018','error');
+
+                        }else{
 
 
-                                $scope.PagoM.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
-                                $scope.PagoM.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
 
-                            }
-                            $scope.PagoM.usuarioentrega = Number($rootScope.id);
-                            // $scope.PagoM.areaentrega =Number(areaEntrega);
-                            // $scope.PagoM.usuariorecibe =Number(usuarioRecibe);
-                            // $scope.PagoM.arearecibe =Number(areaRecibe);
-                            // $scope.PagoM.folio = data.Folios;
-                            $scope.PagoM.tipoorden = 4;
-                            $scope.btndelete = true;
+                                $scope.PagoM.serie = courses.comprobante._serie;
+                                $scope.PagoM.foliointerno = courses.comprobante._folio;
+
+                                var subglobal = courses.comprobante._subtotal;
+                                var subglobal1 = parseFloat(subglobal);
+                                var subglobal2 = subglobal1.toFixed(2);
+                                $scope.PagoM.subtotal = subglobal2;
+
+                                var totalglobal = courses.comprobante._total;
+                                var totalglobal1 = parseFloat(totalglobal);
+                                var totalglobal2 = totalglobal1.toFixed(2);
+                                $scope.PagoM.total = totalglobal2;
+
+                                $scope.PagoM.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
+                                $scope.PagoM.fechaemision = courses.comprobante._fecha;
+                                $scope.PagoM.descuento = courses.comprobante._descuento;
+                                $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
+                                $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
+                                if(courses.comprobante.Impuestos.Traslados == undefined){
+
+                                    $scope.PagoM.iva = '';
+                                    $scope.PagoM.importeiva = '';
+
+                                }else{
+
+                                    $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
+                                    $scope.PagoM.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
+
+                                }
+
+                                if (courses.comprobante.Impuestos.Retenciones == undefined) {
+
+                                    $scope.PagoM.isr = '';
+                                    $scope.PagoM.importeisr = '';
+
+
+                                }else{
+
+
+                                    $scope.PagoM.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
+                                    $scope.PagoM.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+
+                                }
+                                $scope.PagoM.usuarioentrega = Number($rootScope.id);
+                                // $scope.PagoM.areaentrega =Number(areaEntrega);
+                                // $scope.PagoM.usuariorecibe =Number(usuarioRecibe);
+                                // $scope.PagoM.arearecibe =Number(areaRecibe);
+                                // $scope.PagoM.folio = data.Folios;
+                                $scope.PagoM.tipoorden = 4;
+                                $scope.btndelete = true;
+
+
+
+                        }
                           
                         }else{
 
@@ -752,62 +780,71 @@ $scope.subeXMLInd = function($files){
 
                         if ($scope.PagoI.rfcemisor == courses.comprobante.emisor._rfc){
 
-
-                            $scope.PagoI.serie = courses.comprobante._serie;
-                            $scope.PagoI.foliointerno = courses.comprobante._folio;
-
-                            //////////  limitar el subtotal del xml 
-                            // $scope.PagoI.subtotal = courses.comprobante._subTotal;
-                            // $scope.PagoI.total = courses.comprobante._total;
-
-                            var subglobal = courses.comprobante._subtotal;
-                            var subglobal1 = parseFloat(subglobal);
-                            var subglobal2 = subglobal1.toFixed(2);
-                            $scope.PagoI.subtotal = subglobal2;
-
-                            var totalglobal = courses.comprobante._total;
-                            var totalglobal1 = parseFloat(totalglobal);
-                            var totalglobal2 = totalglobal1.toFixed(2);
-                            $scope.PagoI.total = totalglobal2;
+                            if((courses.comprobante._fecha >= '2018-01-01') && (courses.comprobante._version != '3.3')){
 
 
-                            $scope.PagoI.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
-                            $scope.PagoI.fechaemision = courses.comprobante._fecha;
-                            $scope.PagoI.descuento = courses.comprobante._descuento;
-                            $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
-                            $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
-
-                            if(courses.comprobante.impuestos.traslados == undefined){
-
-                                $scope.PagoI.iva = '';
-                                $scope.PagoI.importeiva = '';
-
-                            }else{
-
-                                $scope.PagoI.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
-                                $scope.PagoI.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
-
-                            }
-
-                            if (courses.comprobante.impuestos.retenciones == undefined) {
-
-                                $scope.PagoI.isr = '';
-                                $scope.PagoI.importeisr = '';
+                                swal('Upss','Revisa la versión de tu xml, solo se acepta 3.3 a partir del 2018','error');
 
 
                             }else{
 
 
-                                $scope.PagoI.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
-                                $scope.PagoI.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                $scope.PagoI.serie = courses.comprobante._serie;
+                                $scope.PagoI.foliointerno = courses.comprobante._folio;
+
+                                //////////  limitar el subtotal del xml 
+                                // $scope.PagoI.subtotal = courses.comprobante._subTotal;
+                                // $scope.PagoI.total = courses.comprobante._total;
+
+                                var subglobal = courses.comprobante._subtotal;
+                                var subglobal1 = parseFloat(subglobal);
+                                var subglobal2 = subglobal1.toFixed(2);
+                                $scope.PagoI.subtotal = subglobal2;
+
+                                var totalglobal = courses.comprobante._total;
+                                var totalglobal1 = parseFloat(totalglobal);
+                                var totalglobal2 = totalglobal1.toFixed(2);
+                                $scope.PagoI.total = totalglobal2;
+
+
+                                $scope.PagoI.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
+                                $scope.PagoI.fechaemision = courses.comprobante._fecha;
+                                $scope.PagoI.descuento = courses.comprobante._descuento;
+                                $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
+                                $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
+
+                                if(courses.comprobante.impuestos.traslados == undefined){
+
+                                    $scope.PagoI.iva = '';
+                                    $scope.PagoI.importeiva = '';
+
+                                }else{
+
+                                    $scope.PagoI.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
+                                    $scope.PagoI.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
+
+                                }
+
+                                if (courses.comprobante.impuestos.retenciones == undefined) {
+
+                                    $scope.PagoI.isr = '';
+                                    $scope.PagoI.importeisr = '';
+
+
+                                }else{
+
+
+                                    $scope.PagoI.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
+                                    $scope.PagoI.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+
+                                }
+
+                                $scope.PagoI.usuarioentrega = Number($rootScope.id);
+                                $scope.PagoI.tipoorden = 4;
+                                $scope.btndelete = true;
 
                             }
 
-                            $scope.PagoI.usuarioentrega = Number($rootScope.id);
-                            $scope.PagoI.tipoorden = 4;
-                            $scope.btndelete = true;
-
-                          
                         }else{
 
                             swal('Upss','Tu Factura no coincide con el Emisor','error');
@@ -868,71 +905,85 @@ $scope.subeXMLInd = function($files){
 
                         if ($scope.PagoI.rfcemisor == courses.comprobante.emisor._rfc){
 
-                            $scope.PagoI.serie = courses.comprobante._serie;
-                            $scope.PagoI.foliointerno = courses.comprobante._folio;
 
-                            // $scope.PagoI.subtotal = courses.comprobante._subTotal;
-                            // $scope.PagoI.total = courses.comprobante._total;
+                            if((courses.comprobante._fecha >= '2018-01-01') && (courses.comprobante._version != '3.3')){
 
-                            var subglobal = courses.comprobante._subtotal;
-                            var subglobal1 = parseFloat(subglobal);
-                            var subglobal2 = subglobal1.toFixed(2);
-                            $scope.PagoI.subtotal = subglobal2;
-
-                            var totalglobal = courses.comprobante._total;
-                            var totalglobal1 = parseFloat(totalglobal);
-                            var totalglobal2 = totalglobal1.toFixed(2);
-                            $scope.PagoI.total = totalglobal2;
-
-                            $scope.PagoI.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
-                            $scope.PagoI.fechaemision = courses.comprobante._fecha;
-                            $scope.PagoI.descuento = courses.comprobante._descuento;
-                            $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
-                            $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
-
-                            if(courses.comprobante.Impuestos_totalimpuestostrasladados == undefined){
-
-                                $scope.PagoI.iva = '';
-                                $scope.PagoI.importeiva = '';
-
-                            }else{
-
-                                $scope.PagoI.iva = 'IVA';
-                                $scope.PagoI.importeiva = courses.comprobante.impuestos.totalimpuestostrasladados;
-
-                            }
-
-                            if(courses.comprobante.impuestos.traslados == undefined){
-
-                                $scope.PagoI.iva = '';
-                                $scope.PagoI.importeiva = '';
-
-                            }else{
+                                swal('Upss','Revisa la versión de tu xml, solo se acepta 3.3 a partir del 2018','error');
 
 
-                                $scope.PagoI.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
-                                $scope.PagoI.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
+                           }else{
+
+                                
+
+                                $scope.PagoI.serie = courses.comprobante._serie;
+                                $scope.PagoI.foliointerno = courses.comprobante._folio;
+
+                                // $scope.PagoI.subtotal = courses.comprobante._subTotal;
+                                // $scope.PagoI.total = courses.comprobante._total;
+
+                                var subglobal = courses.comprobante._subtotal;
+                                var subglobal1 = parseFloat(subglobal);
+                                var subglobal2 = subglobal1.toFixed(2);
+                                $scope.PagoI.subtotal = subglobal2;
+
+                                var totalglobal = courses.comprobante._total;
+                                var totalglobal1 = parseFloat(totalglobal);
+                                var totalglobal2 = totalglobal1.toFixed(2);
+                                $scope.PagoI.total = totalglobal2;
+
+                                $scope.PagoI.foliofiscal = courses.comprobante.complemento.timbrefiscaldigital._uuid;
+                                $scope.PagoI.fechaemision = courses.comprobante._fecha;
+                                $scope.PagoI.descuento = courses.comprobante._descuento;
+                                $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
+                                $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
+
+                                if(courses.comprobante.Impuestos_totalimpuestostrasladados == undefined){
+
+                                    $scope.PagoI.iva = '';
+                                    $scope.PagoI.importeiva = '';
+
+                                }else{
+
+                                    $scope.PagoI.iva = 'IVA';
+                                    $scope.PagoI.importeiva = courses.comprobante.impuestos.totalimpuestostrasladados;
+
+                                }
+
+                                if(courses.comprobante.impuestos.traslados == undefined){
+
+                                    $scope.PagoI.iva = '';
+                                    $scope.PagoI.importeiva = '';
+
+                                }else{
 
 
-                            }
-
-                            if (courses.comprobante.impuestos.retenciones == undefined) {
-
-                                $scope.PagoI.isr = '';
-                                $scope.PagoI.importeisr = '';
+                                    $scope.PagoI.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
+                                    $scope.PagoI.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
 
 
-                            }else{
+                                }
+
+                                if (courses.comprobante.impuestos.retenciones == undefined) {
+
+                                    $scope.PagoI.isr = '';
+                                    $scope.PagoI.importeisr = '';
 
 
-                                $scope.PagoI.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
-                                $scope.PagoI.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                }else{
 
-                            }
 
-                            $scope.PagoI.usuarioentrega = Number($rootScope.id);
-                            $scope.PagoI.tipoorden = 4;
-                            $scope.btndelete = true;
+                                    $scope.PagoI.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
+                                    $scope.PagoI.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+
+                                }
+
+                                $scope.PagoI.usuarioentrega = Number($rootScope.id);
+                                $scope.PagoI.tipoorden = 4;
+                                $scope.btndelete = true;
+
+
+
+                           }
 
                         }else{
 
