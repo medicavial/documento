@@ -181,7 +181,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             var dd = parseFloat(d) * parseFloat(0.16); 
 
             // agregamos lo odtenido al subtotal
-            var ddd = parseFloat($scope.PagoI.SubtotalF) + parseFloat(d);
+            var ddd = parseFloat($scope.PagoI.SubtotalF) + parseFloat(d) + parseFloat(dd);
             var ddd = ddd.toFixed(2);
 
             $scope.PagoI.SubtotalF = ddd;
@@ -203,7 +203,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
 
             // console.log(ivadd1);
-            $scope.PagoI.TotalF = parseFloat(tt) - parseFloat(dd);
+            $scope.PagoI.TotalF = parseFloat(ddd);
 
         }
 
