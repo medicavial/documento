@@ -74,11 +74,14 @@
 		      		<form ng-submit="guardaEdicionCaptura()" name="capturaForm" id="capturaForm">
 						<div class="modal-body">
 							<div class="row">
-								<div class="col-md-4">
+								<div class="col-md-3">
 									Folio: {{captura.folio}}
 								</div>
-								<div class="col-md-8">
+								<div class="col-md-6">
 									Nombre: {{captura.Nombre}}
+								</div>
+								<div class="col-md-3">
+									<button type="button" data-toggle="modal" ng-click=(vertipoFolio()) data-target="#exampleModal"  id="botonAct" class="btn btn-primary">Ver Imagenes</button>
 								</div>
 							</div>
 							<br>
@@ -248,6 +251,50 @@
 		      </div>
 		      <div class="modal-footer">
 		        <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+		      </div>
+		    </div>
+		  </div>
+		</div>
+
+		<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		  <div class="modal-dialog modal-lg" role="document">
+		    <div class="modal-content">
+		      <div class="modal-header">
+		        <h5 class="modal-title" id="exampleModalLabel">Vista Previa</h5>
+		        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+		          <span aria-hidden="true">&times;</span>
+		        </button>
+		      </div>
+		      <div class="modal-body">
+		        <div ng-hide="verDocsPropias" class="frame-container" ng-repeat="archivo in archivos">
+			        <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo.Arc_archivo+'/'+archivo.Arc_clave) }}" target="_blank">Abrir otra ventana</a>
+			        <button class="btn btn-primary" ng-click=" rotar = !rotar ">Girar</button>
+			     	<h2><b>{{archivo.TID_nombre}}</b></h2>	   
+			        <embed ng-if="file(archivo.Arc_archivo+'/'+archivo.Arc_clave)" ng-src="{{ obtenerFrame(archivo.Arc_archivo+'/'+archivo.Arc_clave) }}" width="100%" id="files">
+			        <img ng-if="imagen(archivo.Arc_archivo+'/'+archivo.Arc_clave)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo.Arc_archivo+'/'+archivo.Arc_clave) }}"
+				        ng-init="zoomWidth = 800;imgStyle = {width:'100%'}"
+				        ng-style="imgStyle"
+						ng-mouse-wheel-up="zoomWidth = zoomWidth + 20; imgStyle.width = zoomWidth +'px'; "
+						ng-mouse-wheel-down="zoomWidth = zoomWidth - 20;imgStyle.width = zoomWidth  +'px'; "
+					/>
+			    </div>
+			    <div ng-show="verDocsPropias" class="frame-container" ng-repeat="archivo in archivos">
+			        <a class="btn btn-info" ng-href="{{ obtenerFrame(archivo.Arc_archivo) }}" target="_blank">Abrir otra ventana</a>
+			        <button class="btn btn-primary" ng-click=" rotar = !rotar ">Girar</button>
+			     	<h2><b>{{archivo.TID_nombre}}</b></h2>	   
+			        <embed ng-if="file(archivo.Arc_archivo)" ng-src="{{ obtenerFrame(archivo.Arc_archivo) }}" width="100%" id="files">
+			        <img ng-if="imagen(archivo.Arc_archivo)" ng-class="{'rotado': rotar}" ng-src="{{ obtenerFrame(archivo.Arc_archivo) }}"
+				        ng-init="zoomWidth = 800;imgStyle = {width:'100%'}"
+				        ng-style="imgStyle"
+						ng-mouse-wheel-up="zoomWidth = zoomWidth + 20; imgStyle.width = zoomWidth +'px'; "
+						ng-mouse-wheel-down="zoomWidth = zoomWidth - 20;imgStyle.width = zoomWidth  +'px'; "
+					/>
+			    </div>
+			   
+
+		      </div>
+		      <div class="modal-footer">
+		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
 		      </div>
 		    </div>
 		  </div>

@@ -1182,6 +1182,7 @@ function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacio
     loading.despedida();
 
     $scope.listado = datos.data.listado;
+    console.log($scope.listado);
 
     $scope.riesgos  = datos.data.riesgo;
 
@@ -1190,6 +1191,7 @@ function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacio
     console.log($scope.usr);
 
     $scope.captura={};
+    $scope.verDocsPropias=true;
 
     var rowTempl = '<div ng-dblClick="onDblClickRow(row)" ng-style="{ \'cursor\': row.cursor   }" ng-repeat="col in renderedColumns" '+'ng-class="col.colIndex()" class="ngCell{{col.cellClass}}"><div class="ngVerticalBar" ng-style="{height:rowHeight}" ng-class"{ngVerticalBarVisible:!$last}">$nbsp;</div><div ng-cell></div></div>';
 
@@ -1231,9 +1233,15 @@ function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacio
     $scope.onDblClickRow = function(row){       
         $scope.mensaje='';        
         if(row.entity.carta=='si'){
+            if(row.entity.SACE=='SACE'){
+                $scope.verDocsPropias=false;
+            }else{
+                $scope.verDocsPropias=true;
+            }
             facturacionExpress.getCedula(row.entity.Exp_folio).success( function (data){
-                $scope.datosCedula = data;
-
+                $scope.datosCedula = data['cedula'];
+                    console.log(data);
+                    $scope.archivos = data['archivos'];
                     if($scope.datosCedula.CQ_folioautorizacion){
 
                         facturacionExpress.DatosCaptura(row.entity.Exp_folio).success( function (data){
@@ -1294,6 +1302,32 @@ function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacio
         
 
     }
+
+     $scope.file = function(archivo){
+        //se obtiene la extension del archivo
+        var extn = archivo.split(".").pop();
+        if (extn == 'pdf' || extn == 'PDF') {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    $scope.imagen = function(archivo){
+        //se obtiene la extension del archivo
+        var extn = archivo.split(".").pop();
+
+        if (extn == 'jpg' || extn == 'jpeg' || extn == 'png' || extn == 'PNG' ) {
+            return true;
+        }else{
+            return false;
+        }
+    }
+
+    $scope.obtenerFrame = function(src) {
+        return 'http://medicavial.net/registro/' + src;
+    };
+
 
     $scope.validaCobertura = function(riesgo){
         
