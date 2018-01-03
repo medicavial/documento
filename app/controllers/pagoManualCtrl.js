@@ -188,9 +188,9 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
             // agregamos lo odtenido al iva
              
-            var dddd = parseFloat($scope.PagoI.IVAF) + parseFloat(dd);
-            var dddd = dddd.toFixed(2);
-            $scope.PagoI.IVAF = dddd;
+            // var dddd = parseFloat($scope.PagoI.IVAF) + parseFloat(dd);
+            // var dddd = dddd.toFixed(2);
+            // $scope.PagoI.IVAF = dddd;
 
             /// sumamos lo que se obtuvo de lo agregado para restarlo al subtotal
 
