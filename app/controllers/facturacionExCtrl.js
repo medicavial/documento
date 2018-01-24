@@ -1204,6 +1204,7 @@ function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacio
         showSelectionCheckbox: false,
         selectWithCheckboxOnly: false,
         enableCellSelection: true,
+        plugins: [new ngGridCsvExportPlugin()],
         selectedItems: $scope.selectos, 
         filterOptions: $scope.filterOptions,
         rowTemplate: rowTempl,
@@ -1230,6 +1231,20 @@ function capturadosSinFacturaCtrl($scope, $rootScope, datos, loading, facturacio
         showFooter: true,
         showFilter:false
     };
+
+
+     $scope.$on('ngGridEventRows', function (newFilterText){
+
+        var filas = newFilterText.targetScope.renderedRows;
+
+        $scope.exportables = [];
+
+        angular.forEach(filas , function(item){
+            $scope.exportables.push(item.entity);
+        });
+
+    });
+
     $scope.onDblClickRow = function(row){       
         $scope.mensaje='';        
         if(row.entity.carta=='si'){
