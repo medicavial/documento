@@ -1050,7 +1050,7 @@ app.factory("PagoManual", function($q,$http,find,api){
         validaUnidad:function(unidad){
             return $http.post(api + 'PagoManual/validaUnidad/'+unidad);
         },
-        proveedores:function(){
+        buscaProveedores:function(){
             return $http.post(api + 'PagoManual/proveedor');
         },
         validaProveedor:function(proveedor){

@@ -795,6 +795,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'pagoManualCtrl'
     });
 
+    // $routeProvider.when('/pagoZima',{
+    //         templateUrl   : 'vistas/pagoZima.html',
+    //         controller    : 'pagoZimaCtrl'
+    // });
+
     $routeProvider.when('/ordenPago',{
             templateUrl   : 'vistas/ordenPago.html',
             controller    : 'ordenPagosCtrl'
@@ -929,6 +934,12 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
     $routeProvider.when('/busquedaPagxFol',{
             templateUrl   : 'vistas/busquedaPagxFol.html',
             controller    : 'busquedaPagxFolCtrl'
+
+    });
+
+    $routeProvider.when('/recibePrefacturas',{
+            templateUrl   : 'vistas/recibePrefacturas.html',
+            controller    : 'recibePrefacturasCtrl'
 
     });
 

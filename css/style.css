@@ -495,6 +495,14 @@ blockquote{
     overflow-x:scroll; 
 }
 
+.gridStyle3 {
+    border: 1px solid rgb(212,212,212);
+    height: 20em;
+    width: 100%!important; 
+    overflow-y:scroll;
+    overflow-x:scroll; 
+}
+
 .padding-cell{
   padding: 5px;
 }
@@ -770,6 +778,15 @@ blockquote{
     font-size: 2em;
     list-style: none;
     padding-right: 0.2em;
+    text-decoration: none;
+
+}
+
+.titulosicon div{
+
+    font-size: 5em;
+    list-style: none;
+    padding-right: 0.4em;
     text-decoration: none;
 
 }

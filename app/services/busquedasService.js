@@ -297,6 +297,15 @@ app.factory("find", function($http,api){
         },
         listadosinRelacion:function(datos){
             return $http.post(api + 'flujopagos/listadosinRelacion',datos);
+        },
+        verificaLesionado:function(folio){
+            return $http.post(api + 'consulta/verificaLesionado/'+ folio);
+        },
+        busquedaPrefacturas:function(){
+            return $http.post(api + 'consulta/busquedaPrefacturas');
+        },
+        busquedaProveedor:function(){
+            return $http.post(api + 'RelacionPagos/proveedores');
         }
     }
 })

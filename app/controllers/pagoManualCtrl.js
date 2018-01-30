@@ -4,14 +4,17 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
     $scope.inicio = function(){
 
+        // $scope.buscaProveedores ={};
         $rootScope.area = 6;
         $scope.tituloPM = "Pagos Manuales";
-        $scope.tipoTramite(); 
+        $scope.listadoPre();
+        $scope.tipoTramite();
+        $scope.buscaProveedores();
         $scope.archivos = [];
         $scope.Pagos = [];
-        // $scope.PagosM = [];
-        $scope.Proveedores();
+        $scope.PagosM = [];
         $scope.eliminaxml();
+
 
 
         $scope.PagoM = {
@@ -75,13 +78,36 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             TotalF: 0.00,
             ndc: 0,
             deducibleF: 0.00,
-            tipoDeducible: 1
+            tipoDeducible: 1,
+            prefactura: '',
+            totalprefactura: ''
 
-
+        
 
         }
 
 
+    }
+
+    $scope.buscaProveedores = function(){
+
+        find.busquedaProveedor().success(function (data){
+                
+            $scope.proveedores = data; 
+                // $scope.datos = [];
+
+        });
+    }
+
+
+    $scope.listadoPre = function(){
+
+        find.busquedaPrefacturas().success(function (data){
+                
+            $scope.listado = data; 
+                // $scope.datos = [];
+
+        });
     }
 
     $scope.limpiaTabla = function(){
@@ -241,6 +267,59 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
         });
     }
+
+    $scope.verificaLesionado = function(){
+
+        find.verificaLesionado($scope.PagoI.folio).success( function (data) {
+
+            $scope.nombreLesionado = data[0].lesionado;
+
+        });
+
+    }
+
+
+    $scope.verificaPrefactura = function(){
+
+            var ruta = api+'consulta/verificaPrefactura/'+ $scope.PagoI.prefactura; 
+
+            $http.post(ruta).success(function (data){
+
+                if (data.length == 0) {
+
+
+                    $scope.mensaje = "La prefactura no se encontro, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-danger';
+                
+                
+                }else if(data[0].cancelado == 'S'){
+
+                    $scope.mensaje = "La prefactura esta CANCELADA, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-warning';
+
+
+                }else if(data[0].pagado == 'S'){
+
+                    $scope.mensaje = "La prefactura esta PAGADA, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-info';
+
+                }else{
+
+                    $scope.PagoI.totalprefactura  = data[0].importe;
+                    $scope.PagoI.totalprefactura = parseFloat($scope.PagoI.totalprefactura,2);
+                    $scope.mensaje = '';
+                    $scope.tipoalerta = true;
+                }
+
+
+            }).error( function (data){
+
+                $scope.mensaje = "Hubo un error de conexión, Verificalo con el Area de Sistemas";
+                $scope.tipoalerta = 'alert-danger';
+
+            });
+    }
+
 
     $scope.subeXML = function($files){
 
@@ -625,13 +704,33 @@ $scope.delete = function(index){
 
 $scope.addRow = function(){
 
+    if ($scope.selectos.length == 0){ 
+
+        var prefactura = '';
+
+    }else{
+
+        var prefactura = $scope.selectos[0].folioprefactura;
+
+    };
+
+    if ($scope.selectos.length == 0){
+
+        var totalprefactura = '';
+    }else{
+
+        var totalprefactura = $scope.selectos[0].totalprefactura;
+    };
+
+
 	$scope.Pagos.push({ 'unidad':$scope.PagoM.unidad, 'folio': $scope.PagoM.folio, 'tramite': $scope.PagoM.tipotramite, 
 		                 'concepto': $scope.PagoM.concepto, 'etapa': $scope.PagoM.etapa, 'entrega': $scope.PagoM.entrega,
 		                 'observacion': $scope.PagoM.observacion, 'serie': $scope.PagoM.serie, 'foliointerno': $scope.PagoM.foliointerno,
 		                 'subtotal': $scope.PagoM.subtotal, 'total': $scope.PagoM.total, 'foliofiscal':$scope.PagoM.foliofiscal, 
 		                 'fechaemision':$scope.PagoM.fechaemision, 'descuento':$scope.PagoM.descuento, 'emisor':$scope.PagoM.emisor,
 		                 'rfcemisor':$scope.PagoM.rfcemisor, 'impuesto': $scope.PagoM.impuesto, 'tasa': $scope.PagoM.tasa, 'SubtotalF':$scope.PagoM.SubtotalF, 'IVAF':  $scope.PagoM.IVAF, 'TotalF': $scope.PagoM.TotalF,
-                         'proveedor': $scope.PagoM.proveedor, 'retencionF': $scope.PagoM.retencionF, 'deducibleF': $scope.PagoM.deducibleF, 'descuentoF': $scope.PagoM.descuentoF});
+                         'proveedor': $scope.PagoM.proveedor, 'retencionF': $scope.PagoM.retencionF, 'deducibleF': $scope.PagoM.deducibleF, 'descuentoF': $scope.PagoM.descuentoF,
+                         'prefactura': prefactura, 'importeprefactura': totalprefactura});
 
     $scope.PagoM.folio = '';
     $scope.PagoM.tipotramite = '';
@@ -713,15 +812,6 @@ $scope.eliminaxml = function(){
 
 }
 
-$scope.Proveedores = function(){
-
-    PagoManual.proveedores().success( function (data){
-
-        $scope.proveedores = data;
-        
-     });
-}
-
 
 $scope.subeXMLInd = function($files){
 
@@ -769,6 +859,9 @@ $scope.subeXMLInd = function($files){
                         $scope.PagoI.serie = '';
                         $scope.PagoI.elimina = false;
                         $scope.PagoI.retencion = '';
+                        $scope.PagoI.subtotal = '';
+                        $scope.PagoI.emisor = '';
+                        $scope.PagoI.foliointerno = '';
 
                     }
                 });
@@ -1030,6 +1123,34 @@ $scope.subeXMLInd = function($files){
 
 $scope.enviaOrdenPagoInd = function(){
 
+    console.log($scope.selectos);
+
+    if($scope.selectos.length >= 2){
+
+        alert('Solo debes seleccionar una prefactura');
+
+    }else{
+
+
+        if ($scope.selectos.length == 0){ 
+
+            var prefactura = '';
+
+        }else{
+
+            var prefactura = $scope.selectos[0].folioprefactura;
+
+        };
+
+        if ($scope.selectos.length == 0){
+
+            var totalprefactura = '';
+        }else{
+
+            var totalprefactura = $scope.selectos[0].totalprefactura;
+        };
+
+
     $scope.OPago = {
 
         seleccionados : $scope.Pagos,
@@ -1042,7 +1163,9 @@ $scope.enviaOrdenPagoInd = function(){
         total: $scope.PagoI.TotalF,
         usuario: $rootScope.id,
         unidad: $scope.PagoI.unidad,
-        proveedor: $scope.PagoI.proveedor
+        proveedor: $scope.PagoI.proveedor,
+        prefactura: prefactura,
+        totalprefactura: totalprefactura
     }
 
     console.log($scope.OPago);
@@ -1094,6 +1217,8 @@ $scope.enviaOrdenPagoInd = function(){
 
            }
                 $scope.eliminaxml();
+                $scope.listadoPre();
+
                 swal("ok","Se Genero una Orden de Pago","success");
 
 
@@ -1105,8 +1230,66 @@ $scope.enviaOrdenPagoInd = function(){
 
         // } 
     // }
+    }
 
 }
+
+    $scope.selectos = [];
+
+    $scope.filterOptions = {
+        filterText: '',
+        useExternalFilter: false
+    };
+
+    var csvOpts = { columnOverrides: { obj: function (o) {
+        return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
+        } },
+        iEUrl: 'downloads/download_as_csv'
+    };
+
+    ////opciones del grid                 
+    $scope.gridOptions = { 
+        data: 'listado', 
+        // enableColumnResize:true,
+        enablePinning: false, 
+        enableRowSelection:true,
+        multiSelect:true,
+        showSelectionCheckbox: true,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: true,
+        selectedItems: $scope.selectos, 
+        enableCellEdit: true,
+        columnDefs: [
+                    { field:'folioprefactura', width: 120,displayName:'Folio Prefactura' },
+                    { field:'foliozima', width: 120 },
+                    { field:'foliomv', width: 120 },
+                    { field:'importe', width: 120 },
+                    { field:'fecharegistro', width: 160 }
+
+
+        ],
+        showFooter: true,
+        showFilter:false,
+
+    };
+
+    $scope.$on('ngGridEventRows', function (newFilterText){
+
+        var filas = newFilterText.targetScope.renderedRows;
+        $scope.exportables = [];
+        allChecked = true;
+
+        angular.forEach(filas , function(item){
+            $scope.exportables.push(item.entity);
+        });
+
+        // if (!$scope.gridOptions.$gridScope.checker)
+        // $scope.gridOptions.$gridScope.checker = {};
+
+        // $scope.gridOptions.$gridScope.checker.checked = allChecked;
+
+    });
+
 
 }
 

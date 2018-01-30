@@ -1,0 +1,104 @@
+<div ng-init="inicio()">
+
+	<div class="titulos">
+		<a href="#/pagoManual" class="icon-arrow-left"></a>
+		<h1> Ingresa Prefacturas  </h1>
+	</div>
+
+	<div class="row">
+
+		<h5 class="text-danger"><strong>*** Selecciona Unidad o Proveedor para recibir una prefactura ***</strong></h5>
+
+		<div class="col-md-3">
+			<select class="form-control"  ng-model="datos.unidad" ng-change="filtra()" ng-options="unidad.id as unidad.nombre for unidad in unidades">
+				<option value=""> Unidad </option>
+			</select>
+		</div>
+
+		<div class="col-md-3">
+			<select class="form-control"  ng-model="datos.proveedor" ng-change="filtra()" ng-options="proveedor.id as proveedor.nombre for proveedor in proveedores">
+				<option value=""> Proveedor </option>
+			</select>
+		</div>
+		
+	</div><br>
+
+	<legend></legend>
+
+	<div class="row">
+
+		<div class="col-md-1">
+			<div class="titulosicon">
+			  <div class="glyphicon glyphicon-barcode"></div>
+		    </div>
+	    </div>
+
+		<div class="col-md-2">
+				<label>Folio Prefactura</label>
+				<input type="text" ng-model="datos.folioPrefactura" class="form-control" ng-change="verificaPrefactura()" mayusculas>
+		</div>
+
+		<div class="col-md-9">
+	           <div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
+	    </div>
+
+	</div><br>
+
+	<div class="row-center">
+
+       <aside class="col-md-10">
+          <!-- START widget-->
+          <div class="panel widget">
+             <div class="panel-body" style="background-color:#D3F9EB">
+                   <H3 class="text-center"><strong>Detalle</strong></H3>
+                <div class="row">
+                	<div class="col-md-6">
+                		<strong>FolioZima: {{ datos.foliozima }}</strong>
+
+                	</div>
+                	<div class="col-md-4">
+                		<strong>Folio MV: {{ datos.foliomv }} </strong>
+
+                	</div>
+                </div>
+                <div class="row">
+                	<div class="col-md-6">
+                		<strong>Lesionado: {{ datos.lesionado }} </strong>
+
+                	</div>
+                	<div class="col-md-6">
+                		<strong>Aseguradora: {{ datos.aseguradora }} </strong>
+
+                	</div>
+                </div>
+                <div class="row">
+                	<div class="col-md-5">
+                		<strong>Importe: {{ datos.totalprefactura }} </strong>
+
+                	</div>
+                	<div class="col-md-4">
+                		<strong>Fecha Prefactura: {{ datos.fechaprefactura }} </strong>
+
+                	</div>
+        			<div class="col-md-3">
+						<button type="button" id="boton" data-loading-text="Procesando..." ng-disabled="btnagrega" class="btn btn-primary glyphicon glyphicon-plus" ng-click="RecibePrefacturas()" > Agregar </button>
+					</div>
+                </div>
+             </div>
+          </div>
+
+       </aside>
+		
+	</div><br>
+
+	<legend></legend>
+
+	<br>
+
+	<div class="row">
+
+		<div class="gridStyle3" ng-grid="gridOptions"></div>
+		
+	</div><br>
+
+</div>
