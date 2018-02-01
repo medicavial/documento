@@ -49,6 +49,8 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
         console.log($scope.datos);
 
             var ruta = api+'consulta/verificaPrefactura/'+ $scope.datos.folioPrefactura; 
+            var ruta2 = api+'consulta/existePrefactura/'+ $scope.datos.folioPrefactura; 
+
 
             $http.post(ruta).success(function (data){
 
@@ -78,32 +80,51 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
                     $scope.tipoalerta = 'alert-info';
                     $scope.btnagrega = true;
 
+                }
 
+                else if(data[0].foliomv == '' || data[0].foliomv == null){
 
-                // }
+                    $scope.mensaje = "Los Folios no estan ASOCIADOS, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-purple';
+                    $scope.btnagrega = true;
 
-                // else if(data[0].foliomv == '' || data[0].foliomv == null){
-
-                //     $scope.mensaje = "Los Folios no estan ASOCIADOS, Verificalo con el Area de Sistemas";
-                //     $scope.tipoalerta = 'alert-purple';
-                //     $scope.btnagrega = true;
-
-
-                // }
 
                 }else{
 
-                    $scope.datos.totalprefactura  = data[0].importe;
-                    $scope.datos.totalprefactura = parseFloat($scope.datos.totalprefactura,2);
-                    $scope.datos.aseguradora = data[0].aseguradora;
-                    $scope.datos.fechaprefactura = data[0].fechaprefactura;
-                    $scope.datos.foliomv = data[0].foliomv;
-                    $scope.datos.foliozima = data[0].foliozima;
-                    $scope.datos.lesionado = data[0].lesionado;
-                    $scope.mensaje = '';
-                    $scope.tipoalerta = true;
-                    $scope.btnagrega = false;
-                    $scope.datos.usuarioRecibe = $rootScope.id;
+
+                    $http.post(ruta2).success(function (data){
+
+
+                        if (data.length == 1) {
+
+
+                            $scope.mensaje = "Esta prefactura ya Existe en sistema";
+                            $scope.tipoalerta = 'alert-pink';
+
+
+                        }else{
+
+                            $scope.datos.totalprefactura  = data[0].importe;
+                            $scope.datos.totalprefactura = parseFloat($scope.datos.totalprefactura,2);
+                            $scope.datos.aseguradora = data[0].aseguradora;
+                            $scope.datos.fechaprefactura = data[0].fechaprefactura;
+                            $scope.datos.foliomv = data[0].foliomv;
+                            $scope.datos.foliozima = data[0].foliozima;
+                            $scope.datos.lesionado = data[0].lesionado;
+                            $scope.mensaje = '';
+                            $scope.tipoalerta = true;
+                            $scope.btnagrega = false;
+                            $scope.datos.usuarioRecibe = $rootScope.id;
+                    
+                        }
+
+
+                    }).error( function (data){
+
+                        $scope.mensaje = "Hubo un error de conexión, Verificalo con el Area de Sistemas";
+                        $scope.tipoalerta = 'alert-danger';
+
+                    });
 
                 }
 

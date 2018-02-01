@@ -279,48 +279,6 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
     }
 
 
-    $scope.verificaPrefactura = function(){
-
-            var ruta = api+'consulta/verificaPrefactura/'+ $scope.PagoI.prefactura; 
-
-            $http.post(ruta).success(function (data){
-
-                if (data.length == 0) {
-
-
-                    $scope.mensaje = "La prefactura no se encontro, Verificalo con el Area de Sistemas";
-                    $scope.tipoalerta = 'alert-danger';
-                
-                
-                }else if(data[0].cancelado == 'S'){
-
-                    $scope.mensaje = "La prefactura esta CANCELADA, Verificalo con el Area de Sistemas";
-                    $scope.tipoalerta = 'alert-warning';
-
-
-                }else if(data[0].pagado == 'S'){
-
-                    $scope.mensaje = "La prefactura esta PAGADA, Verificalo con el Area de Sistemas";
-                    $scope.tipoalerta = 'alert-info';
-
-                }else{
-
-                    $scope.PagoI.totalprefactura  = data[0].importe;
-                    $scope.PagoI.totalprefactura = parseFloat($scope.PagoI.totalprefactura,2);
-                    $scope.mensaje = '';
-                    $scope.tipoalerta = true;
-                }
-
-
-            }).error( function (data){
-
-                $scope.mensaje = "Hubo un error de conexión, Verificalo con el Area de Sistemas";
-                $scope.tipoalerta = 'alert-danger';
-
-            });
-    }
-
-
     $scope.subeXML = function($files){
 
         var aux = $files[0].name.split('.');
@@ -615,6 +573,15 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
 $scope.enviaOrdenPago = function(){
 
+    if ($scope.selectos.length == 0){ 
+
+        var prefacturaSelect = ''
+
+    }else{
+
+        var prefacturaSelect= $scope.selectos
+    }
+
     $scope.OPago = {
 
         seleccionados : $scope.Pagos,
@@ -626,7 +593,8 @@ $scope.enviaOrdenPago = function(){
         importeisr: $scope.PagoM.importeisr,
         total: $scope.totalPago,
         usuario: $rootScope.id,
-        unidad: $scope.PagoM.unidad
+        unidad: $scope.PagoM.unidad,
+        prefacturaSelect: prefacturaSelect
 
     }
 
@@ -682,6 +650,7 @@ $scope.enviaOrdenPago = function(){
                 }
                 $scope.eliminaxml();
                 $scope.Pagos = [];
+                $scope.listadoPre();
     	    	swal("ok","Se Genero una Orden de Pago","success");
 
 
@@ -704,24 +673,6 @@ $scope.delete = function(index){
 
 $scope.addRow = function(){
 
-    if ($scope.selectos.length == 0){ 
-
-        var prefactura = '';
-
-    }else{
-
-        var prefactura = $scope.selectos[0].folioprefactura;
-
-    };
-
-    if ($scope.selectos.length == 0){
-
-        var totalprefactura = '';
-    }else{
-
-        var totalprefactura = $scope.selectos[0].totalprefactura;
-    };
-
 
 	$scope.Pagos.push({ 'unidad':$scope.PagoM.unidad, 'folio': $scope.PagoM.folio, 'tramite': $scope.PagoM.tipotramite, 
 		                 'concepto': $scope.PagoM.concepto, 'etapa': $scope.PagoM.etapa, 'entrega': $scope.PagoM.entrega,
@@ -729,8 +680,7 @@ $scope.addRow = function(){
 		                 'subtotal': $scope.PagoM.subtotal, 'total': $scope.PagoM.total, 'foliofiscal':$scope.PagoM.foliofiscal, 
 		                 'fechaemision':$scope.PagoM.fechaemision, 'descuento':$scope.PagoM.descuento, 'emisor':$scope.PagoM.emisor,
 		                 'rfcemisor':$scope.PagoM.rfcemisor, 'impuesto': $scope.PagoM.impuesto, 'tasa': $scope.PagoM.tasa, 'SubtotalF':$scope.PagoM.SubtotalF, 'IVAF':  $scope.PagoM.IVAF, 'TotalF': $scope.PagoM.TotalF,
-                         'proveedor': $scope.PagoM.proveedor, 'retencionF': $scope.PagoM.retencionF, 'deducibleF': $scope.PagoM.deducibleF, 'descuentoF': $scope.PagoM.descuentoF,
-                         'prefactura': prefactura, 'importeprefactura': totalprefactura});
+                         'proveedor': $scope.PagoM.proveedor, 'retencionF': $scope.PagoM.retencionF, 'deducibleF': $scope.PagoM.deducibleF, 'descuentoF': $scope.PagoM.descuentoF});
 
     $scope.PagoM.folio = '';
     $scope.PagoM.tipotramite = '';
@@ -1147,7 +1097,7 @@ $scope.enviaOrdenPagoInd = function(){
             var totalprefactura = '';
         }else{
 
-            var totalprefactura = $scope.selectos[0].totalprefactura;
+            var totalprefactura = $scope.selectos[0].importe;
         };
 
 
