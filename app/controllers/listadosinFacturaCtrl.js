@@ -84,7 +84,8 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
             emisor: '',
             impuesto: '',
             tasa: '',
-            usuarioentrega: ''
+            usuarioentrega: '',
+            prefactura: ''
 
         }
 
@@ -234,15 +235,17 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         selectWithCheckboxOnly: false,
         selectedItems: $scope.selectos,
         filterOptions: $scope.filterOptions,
-        rowTemplate: rowTempl,
+        // rowTemplate: rowTempl,
         columnDefs: [
+                    { field:'', displayName:'Revisar', width: 130,   cellTemplate: '<label class="btn btn-purple" ng-disabled="subeFactInd != 1 || selectos.length == 0">Analizar Prefc <input type="button" style="display: none;" ng-click="verificaPrefactura(row,row.rowIndex)"></label>'},
                     { field:'Folio',  displayName:'Folio', width: 150, cellTemplate: '<label class="btn btn-primary" ng-disabled="subeFactInd != 1 || selectos.length == 0">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXMLInd(row,row.rowIndex,$files)"></label>'},
                     { field:'foliofiscal', displayName:'Folio Fiscal', width: 200 },
                     { field:'total', displayName:'Total', width: 120 },
-                    { field:'Reserva', displayName:'Reserva', width: 120 },
+                    { field:'prefactura', displayName:'Prefactura', width: 120, enableCellEdit : true },
+                    { field:'Reserva', displayName:'Reserva', width: 120 }, 
                     { field:'DOC_folio', displayName:'Folio', width: 120},
                     { field:'FLD_etapa', displayName:'Etapa', width: 120 },
-                    { field:'FLD_numeroEntrega', displayName:'Entrega', width: 100 },
+                    { field:'FLD_numeroEntrega', displayName:'Entrega', width: 100},
                     { field:'EMP_nombrecorto', displayName:'Empresa', width: 120 },
                     { field:'UNI_nombrecorto', displayName:'Unidad', width: 200 },
                     { field:'Triage', width: 120 },
@@ -274,6 +277,174 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         // $scope.gridOptions.$gridScope.checker.checked = allChecked;
 
     });
+
+
+     $scope.verificaPrefactura = function(row, index){
+
+        console.log(row);
+
+        var pref = row.entity.prefactura;
+
+            var ruta = api+'consulta/verificaPrefactura/'+ pref; 
+            var ruta2 = api+'consulta/existePrefactura/'+ pref; 
+
+
+            $http.post(ruta).success(function (data){
+
+                if (data.length == 0) {
+
+                    $scope.mensaje1 = "La prefactura no se encontro, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-danger';
+                    $scope.btnagrega = true;
+
+                    $scope.borratemporales();
+                    row.entity.importe = '';
+                    row.entity.total = '';
+                    row.entity.foliofiscal = '';
+                    row.entity.fechaemision = '';
+                    row.entity.descuento = '';
+                    row.entity.emisor = '';
+                    row.entity.descuento = '';
+                    row.entity.serie = '';
+                    row.entity.prefactura = '';
+                    row.entity.elimina = false;
+                    $scope.btndelete = false;
+                
+                
+                }else if(data[0].cancelado == 'S'){
+
+                    $scope.mensaje1 = "La prefactura esta CANCELADA, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-warning';
+                    $scope.btnagrega = true;
+
+
+                }else if(data[0].pagado == 'S'){
+
+                    $scope.mensaje1 = "La prefactura esta PAGADA, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-info';
+                    $scope.btnagrega = true;
+
+                    $scope.borratemporales();
+                    row.entity.importe = '';
+                    row.entity.total = '';
+                    row.entity.foliofiscal = '';
+                    row.entity.fechaemision = '';
+                    row.entity.descuento = '';
+                    row.entity.emisor = '';
+                    row.entity.descuento = '';
+                    row.entity.serie = '';
+                    row.entity.prefactura = '';
+                    row.entity.elimina = false;
+                    $scope.btndelete = false;
+
+                }else if (data[0].pagado == 'S'){
+
+                    $scope.mensaje1 = "El Folio no corresponde con la Unidad o Proveedor seleccionado, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-info';
+                    $scope.btnagrega = true;
+
+                    $scope.borratemporales();
+                    row.entity.importe = '';
+                    row.entity.total = '';
+                    row.entity.foliofiscal = '';
+                    row.entity.fechaemision = '';
+                    row.entity.descuento = '';
+                    row.entity.emisor = '';
+                    row.entity.descuento = '';
+                    row.entity.serie = '';
+                    row.entity.prefactura = '';
+                    row.entity.elimina = false;
+                    $scope.btndelete = false;
+
+                }
+
+                else if(data[0].foliomv == '' || data[0].foliomv == null){
+
+                    $scope.mensaje1 = "Los Folios no estan ASOCIADOS, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-purple';
+                    $scope.btnagrega = true;
+
+                    $scope.borratemporales();
+                    row.entity.importe = '';
+                    row.entity.total = '';
+                    row.entity.foliofiscal = '';
+                    row.entity.fechaemision = '';
+                    row.entity.descuento = '';
+                    row.entity.emisor = '';
+                    row.entity.descuento = '';
+                    row.entity.serie = '';
+                    row.entity.prefactura = '';
+                    row.entity.elimina = false;
+                    $scope.btndelete = false;
+
+
+                }else{
+
+
+                    $http.post(ruta2).success(function (data){
+
+                    $scope.mensaje1 = "Correcto, Ingresa tu Factura";
+                    $scope.tipoalerta = 'alert-success';
+
+
+                        // if (data.length == 1) {
+
+
+                        //     $scope.mensaje1 = "Esta prefactura ya Existe en sistema";
+                        //     $scope.tipoalerta = 'alert-pink';
+
+                        //     $scope.borratemporales();
+                        //     row.entity.importe = '';
+                        //     row.entity.total = '';
+                        //     row.entity.foliofiscal = '';
+                        //     row.entity.fechaemision = '';
+                        //     row.entity.descuento = '';
+                        //     row.entity.emisor = '';
+                        //     row.entity.descuento = '';
+                        //     row.entity.serie = '';
+                        //     row.entity.prefactura = '';
+                        //     row.entity.elimina = false;
+                        //     $scope.btndelete = false;
+
+
+                        // }
+                        // else{
+
+                        //     // $scope.datos.totalprefactura  = data[0].importe;
+                        //     // $scope.datos.totalprefactura = parseFloat($scope.datos.totalprefactura,2);
+                        //     // $scope.datos.aseguradora = data[0].aseguradora;
+                        //     // $scope.datos.fechaprefactura = data[0].fechaprefactura;
+                        //     // $scope.datos.foliomv = data[0].foliomv;
+                        //     // $scope.datos.foliozima = data[0].foliozima;
+                        //     // $scope.datos.lesionado = data[0].lesionado;
+                        //     // $scope.mensaje1 = '';
+                        //     // $scope.tipoalerta = true;
+                        //     // $scope.btnagrega = false;
+                        //     // $scope.datos.usuarioRecibe = $rootScope.id;
+                            
+
+                    
+                        // }
+
+
+                    }).error( function (data){
+
+                        $scope.mensaje1 = "Hubo un error de conexión, Verificalo con el Area de Sistemas";
+                        $scope.tipoalerta = 'alert-danger';
+
+                    });
+
+                }
+
+
+            }).error( function (data){
+
+                alert("Hubo un error de conexión, Verificalo con el Area de Sistemas");
+
+
+            });
+    }
+
 
     $scope.filtra = function(){
 
@@ -1002,6 +1173,8 @@ console.log($files);
 }
 
 $scope.enviaOrdenPagoInd = function(){
+
+    console.log($scope.selectos);
 
     $scope.OPago = {
 
