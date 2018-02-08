@@ -61,7 +61,8 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
             emisor: '',
             impuesto: '',
             tasa: '',
-            usuarioentrega: ''
+            usuarioentrega: '',
+            prefactura: ''
 
         }
 
@@ -316,6 +317,18 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
                     $scope.mensaje1 = "La prefactura esta CANCELADA, Verificalo con el Area de Sistemas";
                     $scope.tipoalerta = 'alert-warning';
                     $scope.btnagrega = true;
+                    $scope.borratemporales();
+                    row.entity.importe = '';
+                    row.entity.total = '';
+                    row.entity.foliofiscal = '';
+                    row.entity.fechaemision = '';
+                    row.entity.descuento = '';
+                    row.entity.emisor = '';
+                    row.entity.descuento = '';
+                    row.entity.serie = '';
+                    row.entity.prefactura = '';
+                    row.entity.elimina = false;
+                    $scope.btndelete = false;
 
 
                 }else if(data[0].pagado == 'S'){
@@ -387,44 +400,35 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
                     $scope.tipoalerta = 'alert-success';
 
 
-                        // if (data.length == 1) {
+                        if (data.length == 1) {
 
 
-                        //     $scope.mensaje1 = "Esta prefactura ya Existe en sistema";
-                        //     $scope.tipoalerta = 'alert-pink';
+                            $scope.mensaje1 = "Esta prefactura ya Existe en sistema";
+                            $scope.tipoalerta = 'alert-pink';
 
-                        //     $scope.borratemporales();
-                        //     row.entity.importe = '';
-                        //     row.entity.total = '';
-                        //     row.entity.foliofiscal = '';
-                        //     row.entity.fechaemision = '';
-                        //     row.entity.descuento = '';
-                        //     row.entity.emisor = '';
-                        //     row.entity.descuento = '';
-                        //     row.entity.serie = '';
-                        //     row.entity.prefactura = '';
-                        //     row.entity.elimina = false;
-                        //     $scope.btndelete = false;
+                            $scope.borratemporales();
+                            row.entity.importe = '';
+                            row.entity.total = '';
+                            row.entity.foliofiscal = '';
+                            row.entity.fechaemision = '';
+                            row.entity.descuento = '';
+                            row.entity.emisor = '';
+                            row.entity.descuento = '';
+                            row.entity.serie = '';
+                            row.entity.prefactura = '';
+                            row.entity.elimina = false;
+                            $scope.btndelete = false;
 
 
-                        // }
-                        // else{
+                        }
+                        else{
 
-                        //     // $scope.datos.totalprefactura  = data[0].importe;
-                        //     // $scope.datos.totalprefactura = parseFloat($scope.datos.totalprefactura,2);
-                        //     // $scope.datos.aseguradora = data[0].aseguradora;
-                        //     // $scope.datos.fechaprefactura = data[0].fechaprefactura;
-                        //     // $scope.datos.foliomv = data[0].foliomv;
-                        //     // $scope.datos.foliozima = data[0].foliozima;
-                        //     // $scope.datos.lesionado = data[0].lesionado;
-                        //     // $scope.mensaje1 = '';
-                        //     // $scope.tipoalerta = true;
-                        //     // $scope.btnagrega = false;
-                        //     // $scope.datos.usuarioRecibe = $rootScope.id;
+                            $scope.mensaje1 = "Esta prefactura ya Existe en sistema";
+                            $scope.tipoalerta = 'alert-pink';
                             
 
                     
-                        // }
+                        }
 
 
                     }).error( function (data){
@@ -444,6 +448,105 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
 
             });
     }
+
+
+    $scope.verificaPrefacturaGlo = function(index){
+
+        console.log(index);
+
+            var pref = $scope.detalles[index].prefactura;
+
+            var ruta = api+'consulta/verificaPrefactura/'+ pref; 
+            var ruta2 = api+'consulta/existePrefactura/'+ pref; 
+
+            $http.post(ruta).success(function (data){
+
+                if (data.length == 0) {
+
+                    $scope.mensaje1 = "La prefactura no se encontro, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-danger';
+                    $scope.detalles[index].prefactura = '';
+
+                
+                }else if(data[0].cancelado == 'S'){
+
+                    $scope.mensaje1 = "La prefactura esta CANCELADA, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-warning';
+                    $scope.detalles[index].prefactura = '';
+
+
+                }else if(data[0].pagado == 'S'){
+
+                    $scope.mensaje1 = "La prefactura esta PAGADA, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-info';
+                    $scope.detalles[index].prefactura = '';
+
+
+                }else if (data[0].pagado == 'S'){
+
+                    $scope.mensaje1 = "El Folio no corresponde con la Unidad o Proveedor seleccionado, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-info';
+                    $scope.detalles[index].prefactura = '';
+
+
+                }
+
+                else if(data[0].foliomv == '' || data[0].foliomv == null){
+
+                    $scope.mensaje1 = "Los Folios no estan ASOCIADOS, Verificalo con el Area de Sistemas";
+                    $scope.tipoalerta = 'alert-purple';
+                    $scope.detalles[index].prefactura = '';
+
+                }else{
+
+
+                    $http.post(ruta2).success(function (data){
+
+
+
+
+                        if (data.length == 1) {
+
+
+                            $scope.mensaje1 = "Esta prefactura ya Existe en sistema";
+                            $scope.tipoalerta = 'alert-pink';
+                            $scope.detalles[index].prefactura = '';
+
+
+
+                        }
+                        else{
+
+                        $scope.mensaje1 = "Correcto, Ingresa tu Factura";
+                        $scope.tipoalerta = 'alert-success';
+
+                                    
+
+                    
+                        }
+
+
+                    }).error( function (data){
+
+                        $scope.mensaje1 = "Hubo un error de conexión, Verificalo con el Area de Sistemas";
+                        $scope.tipoalerta = 'alert-danger';
+                        $scope.detalles[index].prefactura = '';
+
+                    });
+
+                }
+
+
+            }).error( function (data){
+
+                        $scope.mensaje1 = "Hubo un error de conexión, Verificalo con el Area de Sistemas";
+                        $scope.tipoalerta = 'alert-danger';
+
+            });
+
+    }
+
+
 
 
     $scope.filtra = function(){
@@ -861,7 +964,7 @@ $scope.enviaOrdenPagoGlo = function(){
 
     // }else{
 
-console.log($scope.OPago );
+// console.log($scope.OPago );
 
         var areaRecibe = 6;
         var areaEntrega = 6;
@@ -908,8 +1011,6 @@ $scope.eliminaxmlGlo = function(){
     });
 
 }
-
-
 
 
 //////////// factura individual //////////////////
