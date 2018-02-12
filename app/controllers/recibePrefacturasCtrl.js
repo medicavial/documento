@@ -92,17 +92,17 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
                 }else{
 
 
-                    $http.post(ruta2).success(function (data){
+                    // $http.post(ruta2).success(function (data){
 
 
-                        if (data.length == 1) {
+                    //     if (data.length == 1) {
 
 
-                            $scope.mensaje = "Esta prefactura ya Existe en sistema";
-                            $scope.tipoalerta = 'alert-pink';
+                    //         $scope.mensaje = "Esta prefactura ya Existe en sistema";
+                    //         $scope.tipoalerta = 'alert-pink';
 
 
-                        }else{
+                    //     }else{
 
                             $scope.datos.totalprefactura  = data[0].importe;
                             $scope.datos.totalprefactura = parseFloat($scope.datos.totalprefactura,2);
@@ -116,15 +116,15 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
                             $scope.btnagrega = false;
                             $scope.datos.usuarioRecibe = $rootScope.id;
                     
-                        }
+                        // }
 
 
-                    }).error( function (data){
+                    // }).error( function (data){
 
-                        $scope.mensaje = "Hubo un error de conexión, Verificalo con el Area de Sistemas";
-                        $scope.tipoalerta = 'alert-danger';
+                    //     $scope.mensaje = "Hubo un error de conexión, Verificalo con el Area de Sistemas";
+                    //     $scope.tipoalerta = 'alert-danger';
 
-                    });
+                    // });
 
                 }
 
