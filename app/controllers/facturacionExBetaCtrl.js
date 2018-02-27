@@ -343,12 +343,22 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                     $scope.verificaTabuladorOrigen($scope.LesMV);
                 }
                 $scope.captura.tipoLes= String($scope.tipLesion);
-                 find.lesiones($scope.captura.tipoLes).success(function (data){
-                    $scope.lesiones = data;
-                    $scope.milesion = $filter('filter')( $scope.lesiones,{'LES_clave': $scope.LESUnidad });
-                    $scope.captura.Lesion = $scope.milesion[0];
-                    console.log($scope.captura.Lesion);
-                });
+                if (data.hospitalario.length > 0 ) {
+                    alert('La Atención Tiene Salida de Paquete');
+                    $scope.captura.tipoLes = '5';
+                    $scope.buscaLesiones('5');
+                    $scope.bloqueoLesion = true;
+                }else{
+                    find.lesiones($scope.captura.tipoLes).success(function (data){
+                        $scope.lesiones = data;
+                        $scope.milesion = $filter('filter')( $scope.lesiones,{'LES_clave': $scope.LESUnidad });
+                        $scope.captura.Lesion = $scope.milesion[0];
+                        console.log($scope.captura.Lesion);
+                    });
+                    
+                }
+                 
+
 
 
                 //$scope.captura.Lesion = $filter('filter')( $scope.lesionesUno,{'LES_claveEmp':'U_ECG1'});
@@ -398,12 +408,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
 
                 }
 
-                if (data.hospitalario.length > 0 ) {
-                    alert('La Atención Tiene Salida de Paquete');
-                    $scope.captura.tipoLes = '5';
-                    $scope.buscaLesiones('5');
-                    $scope.bloqueoLesion = true;
-                };
+               
 
                 $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);
                 loading.despedida();
