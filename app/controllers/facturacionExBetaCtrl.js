@@ -468,7 +468,18 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
 
 
                 //verificamos las lesiones disponibles segun el tipo
-                $scope.buscaTipoLesiones($scope.tipoLes);
+                //
+                if (data.hospitalario.length > 0) {
+
+                    alert('La Atención Tiene Salida de Paquete');
+                    $scope.captura.tipoLes = '5';
+                    $scope.buscaLesiones('5');
+                    $scope.bloqueoLesion = true;
+
+                }else{
+                    $scope.buscaTipoLesiones($scope.tipoLes);
+                }
+                
 
 
                 $scope.cuestionario = {
@@ -553,14 +564,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
 
                 }
 
-                if (data.hospitalario.length > 0) {
-
-                    alert('La Atención Tiene Salida de Paquete');
-                    $scope.captura.tipoLes = '5';
-                    $scope.buscaLesiones('5');
-                    $scope.bloqueoLesion = true;
-
-                };
+                
 
                 $scope.captura.POSClave = data.captura.POSClave == null ? '4' :String(data.captura.POSClave);
                 $scope.procesado = false;

@@ -139,7 +139,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                 if(data.length>0){
                     console.log(data[0].UNI_clave);
                     if(data[0].UNI_clave==118||data[0].UNI_clave==181||data[0].UNI_clave==2183||data[0].UNI_clave==2250||data[0].UNI_clave==2289||data[0].UNI_clave==2250||data[0].UNI_clave==151||data[0].UNI_clave==2182||data[0].UNI_clave==2166||data[0].UNI_clave==2156){
-                        if(data[0].ASE_clave==17||data[0].ASE_clave==20||data[0].ASE_clave==2){
+                        if(data[0].ASE_clave==17||data[0].ASE_clave==20||data[0].ASE_clave==2||data[0].ASE_clave==5){
                             if(data[0].REG_folioMV==null){                                 
                                  data[0].usrWeb=$scope.usrWeb;   
                                  RegistroZimaMV.registraFolio(data[0]).success( function(data){
@@ -161,7 +161,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                                 $scope.cargadorZ=false;
                             }                        
                         }else{
-                            $scope.mensajeRes='Solo se tiene convenio con AIG, AXA y ANA';
+                            $scope.mensajeRes='Solo se tiene convenio con AIG, AXA, ANA y BANORTE';
                             $scope.cargadorZ=false;
                         }                        
                     }else{
