@@ -439,6 +439,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                 $scope.buscaAjustadores(data.captura.EMPClave);
                 $scope.buscaMedicos(data.captura.UNIClave);
 
+
                 $scope.autorizacion = {
                     usuario:$rootScope.userWeb,
                     folio:expediente
@@ -463,22 +464,15 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                     }
                 }
 
+                $scope.buscaTipoLesiones($scope.tipoLes);
+
                 $scope.UniExpticket= data.expediente.uni_clave;
                 $scope.CiaExpticket= data.expediente.claveEmpresa;
 
 
                 //verificamos las lesiones disponibles segun el tipo
-                //
-                if (data.hospitalario.length > 0) {
-
-                    alert('La Atención Tiene Salida de Paquete');
-                    $scope.captura.tipoLes = '5';
-                    $scope.buscaLesiones('5');
-                    $scope.bloqueoLesion = true;
-
-                }else{
-                    $scope.buscaTipoLesiones($scope.tipoLes);
-                }
+                
+                
                 
 
 
@@ -562,6 +556,18 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
 
                     $scope.textoAutorizacion = 'Solicitar Autorización';
 
+                }
+
+                if (data.hospitalario.length > 0) {                    
+                    
+                        alert('La Atención Tiene Salida de Paquete');
+                        $scope.captura.tipoLes = '5';
+                        $scope.buscaLesiones('5');
+                        $scope.bloqueoLesion = true;                        
+                    
+
+                }else{
+                    $scope.buscaTipoLesiones($scope.tipoLes);
                 }
 
                 
