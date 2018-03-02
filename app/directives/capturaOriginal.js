@@ -138,7 +138,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
                 console.log(data);              
                 if(data.length>0){
                     console.log(data[0].UNI_clave);
-                    if(data[0].UNI_clave==118||data[0].UNI_clave==181||data[0].UNI_clave==2183||data[0].UNI_clave==2250||data[0].UNI_clave==2289||data[0].UNI_clave==2250||data[0].UNI_clave==151||data[0].UNI_clave==2182||data[0].UNI_clave==2166||data[0].UNI_clave==2156){
+                    if(data[0].UNI_clave==118||data[0].UNI_clave==181||data[0].UNI_clave==2183||data[0].UNI_clave==2250||data[0].UNI_clave==2289||data[0].UNI_clave==2250||data[0].UNI_clave==151||data[0].UNI_clave==2182||data[0].UNI_clave==2166||data[0].UNI_clave==2156||data[0].UNI_clave==2289){
                         if(data[0].ASE_clave==17||data[0].ASE_clave==20||data[0].ASE_clave==2||data[0].ASE_clave==5){
                             if(data[0].REG_folioMV==null){                                 
                                  data[0].usrWeb=$scope.usrWeb;   
@@ -398,7 +398,7 @@ function controladorOriginal($scope, $rootScope, $filter, $location, $http, find
     //busqueda de referencias por unidad
     $scope.referencia = function(unidad){
         $scope.original.unidad = unidad;
-        if(unidad==28||unidad==278||unidad==243||unidad==247||unidad==1356||unidad==352||unidad==357||unidad==110||unidad==364||unidad==128||unidad==358){
+        if(unidad==28||unidad==278||unidad==243||unidad==247||unidad==1356||unidad==352||unidad==357||unidad==110||unidad==364||unidad==128||unidad==358||unidad==352){
             $scope.veFolZima=true;
         }else{
             $scope.veFolZima=false;
