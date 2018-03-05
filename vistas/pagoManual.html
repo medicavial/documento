@@ -51,6 +51,7 @@
 
            </div>
         </div>
+
     </div>
 
     <legend></legend>
@@ -73,6 +74,14 @@
 				</select>
 			</div>
 
+	        <div class="col-sm-3">
+                <div class="checkbox c-checkbox">
+                     <label>
+                        <input type="checkbox" value="1" ng-model="PagoI.pref">
+                        <span class="glyphicon glyphicon-ok"></span> Prefacturas </label>
+                </div>
+	       </div>
+
 
 
 	    </div><br>
@@ -81,7 +90,7 @@
 
 		</div>
 
-		<div class="row">
+		<div class="row" ng-show="PagoI.pref">
 
 			<div class="gridStyle3" ng-grid="gridOptions"></div>
 			
@@ -287,6 +296,15 @@
 				</select>
 			</div>
 
+		    <div class="col-sm-3">
+                <div class="checkbox c-checkbox">
+                     <label>
+                        <input type="checkbox" value="1" ng-model="PagoM.pref">
+                        <span class="glyphicon glyphicon-ok"></span> Prefacturas </label>
+                </div>
+	        </div>
+
+
 		   <div class="col-md-3">
 
 				<button type="button" ng-hide="edicion" ng-click="addRow()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-plus"> Agrega Pago </button>
@@ -299,7 +317,7 @@
 
 		</div>
 
-	    <div class="row">
+	    <div class="row" ng-show="PagoM.pref">
 
 			<div class="gridStyle3" ng-grid="gridOptions"></div>
 			
