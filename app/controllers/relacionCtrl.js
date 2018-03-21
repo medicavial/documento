@@ -140,7 +140,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
          // $scope.IVANC = '';
          // $scope.totalNC = '';
 
-
+         $scope.busquedaOrdenes();
 
     }
 
@@ -226,12 +226,12 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
     $scope.busquedaOrdenes = function(){
 
-        console.log($scope.norelacion);
+        // console.log($scope.norelacion);
 
-        if ($scope.norelacion.tipoOrden == '') {
+        // if ($scope.norelacion.tipoOrden == '') {
 
-            swal("Oops...", "No seleccionaste Tipo de Facturación", "error")
-        };
+        //     swal("Oops...", "No seleccionaste Tipo de Facturación", "error")
+        // };
 
         loading.cargando('Buscando Folios');
         relaciones.busquedaOrdenes($scope.norelacion).success(function (data){
