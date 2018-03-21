@@ -853,6 +853,9 @@ app.factory("facturacionExpress", function($q,$http,find,api){
         },
         editaCaptura:function(datos){
             return $http.post(api + 'facturacionExpress/guardarEdicionCaptura', datos,{timeout: 10000});
+        },
+        facExpQualitas:function(datos){
+            return $http.post(api + 'facturacionExpressBeta/facExpQualitas', datos,{timeout: 10000});
         }
     }
 });

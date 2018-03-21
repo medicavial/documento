@@ -512,6 +512,10 @@ function controlDocumentosCtrl($scope, $http, loading, find, api, $filter, repor
             PRO_nombre:'',
             Situacion:''
         };
+        $scope.folioCedula='';
+        $scope.mensaje =false;
+        $scope.datosCedula='';
+        $scope.cargador=false;
 
         $('#myModal10').on('hidden.bs.modal', function (e) {
             $scope.foliosxfecha();
@@ -521,6 +525,29 @@ function controlDocumentosCtrl($scope, $http, loading, find, api, $filter, repor
 
     $scope.muestraOriginal = function(){
         $('#myModal10').modal();
+    }
+
+    $scope.reseteVariables = function(){
+        $scope.folioCedula='';
+        $scope.mensaje =false;
+        $scope.datosCedula='';
+        $scope.cargador=false;
+    }
+
+
+    $scope.verificaCedula = function(){
+        $scope.cargador=true;
+        find.cedulaQ($scope.folioCedula).success( function (data) {
+            console.log(data);
+            if(data.length>0){
+                $scope.datosCedula=data[0];
+                $scope.mensaje=false;                
+            }else{
+                $scope.mensaje=true;
+                $scope.datosCedula='';
+            }
+            $scope.cargador=false;
+        });
     }
 
 	//busquedas

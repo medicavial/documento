@@ -20,6 +20,13 @@
 	            <span class="glyphicon glyphicon-file"></span>
 	        </a>
 	    </li>
+	    <li class="rb-span-1" id="color3">
+
+	        <h3>Carta Qualitas</h3>
+	        <a data-toggle="modal" data-target="#cedulaQualitas" ng-click="reseteVariables()" href="">
+	            <span class="glyphicon glyphicon-file"></span>
+	        </a>
+	    </li>
 		
 	</ul>
 	<div class="row">
@@ -123,6 +130,72 @@
 	<!-- directiva para exportar a excel ver app.js mas nfo -->
 	<button ng-click="exporta()" data-loading-text="Generando..." id="boton" class="btn btn-success glyphicon glyphicon-download-alt"> Exportar</button>
 	<!-- <excel info="listado"></excel> -->
+</div>
+
+
+<div class="modal fade" id="cedulaQualitas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Verifica Cédula</h5>        
+      </div>
+      <div class="modal-body">
+      	<form ng-submit="verificaCedula()" id="forma" name="forma">
+	        <div class="row">
+	    		<div class="col-md-5">
+	    			<label for="folioO">Folio</label>
+	    			<input type="text" id="folioO" class="form-control" folioex="validaOriginalA" ng-model="folioCedula">
+	    		</div>
+	    		<div class="col-md-1">
+	    			<br>
+	    			<img ng-show="cargador" src="images/cargando.gif">
+	    		</div>
+	    		
+	    	</div>
+	    	<div class="row" ng-show="datosCedula">
+	    		<div class="col-md-12">
+	    			<table class="table">
+	    				<tr>
+	    					<td>
+	    						<small><b>FOLIO MV: </b></small> <br>{{datosCedula.Exp_folioRelacion}}
+	    					</td>	    					
+	    					<td colspan="2">
+	    						<small><b>Lesionado: </b></small> <br>{{datosCedula.QWS_lesionado}}
+	    					</td>	    					
+	    					<td>
+	    						 <small><b>Poliza: </b></small> <br>{{datosCedula.QWS_poliza}}
+	    					</td>
+	    				</tr>
+	    				<tr>
+	    					<td>
+	    						<small><b>Siniestro: </b></small> <br>{{datosCedula.QWS_siniestro}}
+	    					</td>
+	    					<td>
+	    						<small><b>Reporte: </b> </small> <br>{{datosCedula.QWS_reporte}}
+	    					</td>
+	    					<td>
+	    						<small><b>Folio Electrónico: </b> </small> <br>{{datosCedula.QWS_folioElectronico}}
+	    					</td>
+	    					<td>
+	    						<small><b>Folio Autorización: </b> </small> <br>{{datosCedula.QWS_folioAutorizacion}}
+	    					</td>
+	    				</tr>
+	    			</table>	    			
+	    		</div>
+	    	</div>
+	    	<div class="row" ng-show="mensaje">
+	    		<div class="col-md-12">
+	    			<div class="alert alert-warning">No existe cédula para este folio</div>
+	    		</div>
+	    	</div>
+    	</form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button> 
+        <!-- <button type="hidden" form="forma"></button>        -->
+      </div>
+    </div>
+  </div>
 </div>
 <script type="text/javascript">
 	$.datepicker.setDefaults($.datepicker.regional["es"]);

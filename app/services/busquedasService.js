@@ -19,6 +19,10 @@ app.factory("find", function($http,api){
         categoriaspagos:function(){
             return $http.get(api+'tickets/pagos/categorias');
         },
+        cedulaQ:function(folio){
+            console.log(folio);
+            return $http.get(api+'consulta/cedulaQ/'+ folio);
+        },
         conceptotramite:function(tipoTramite){
             return $http.get(api+'consulta/concepto/'+ tipoTramite);
         },

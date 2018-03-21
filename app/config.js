@@ -238,6 +238,46 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             }
     });
 
+    $routeProvider.when('/facturacionEx/fEQualitas',{
+            templateUrl    :'vistas/fEQualitas.html',
+            controller     :'fEQualitasCtrl',
+            resolve       :{
+                datos:function(facturacionExpress,loading,webStorage,find,$q){
+                    loading.cargando('Cargando Información');
+                    var today = new Date();
+                    var dd = today.getDate();
+                    var mm = today.getMonth()+1; //January is 0!
+
+                    var yyyy = today.getFullYear();
+                    if(dd<10){
+                        dd='0'+dd;
+                    } 
+                    if(mm<10){
+                        mm='0'+mm;
+                    } 
+                    var today = dd+'-'+mm+'-'+yyyy;  
+                    var ini   = '01-'+mm+'-'+yyyy;  
+                    var fechas = [today,ini];   
+
+                    var promesa = $q.defer(),
+                        empresas = find.empresasweb(),
+                        triages = find.triages(),
+                        riesgos = find.riesgos(),
+                        posiciones = find.posiciones();
+                        pendientes = facturacionExpress.facExpQualitas(fechas);
+
+                    $q.all([empresas,triages,posiciones,riesgos,pendientes]).then(function (data){
+                        promesa.resolve(data);
+                    });
+
+                    return promesa.promise;
+
+
+                }
+            }
+    });
+
+
     $routeProvider.when('/facturacionEx/cartas',{
             templateUrl    :'vistas/cartas.html',
             controller     :'cartasCtrl',
