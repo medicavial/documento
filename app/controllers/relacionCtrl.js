@@ -22,6 +22,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         $scope.finrelacion = false;
         $scope.subefactura = false;
         $scope.archivos = [];
+        $scope.busquedaOrdenes();
 
         $scope.activaboton = false;
 
@@ -140,7 +141,7 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
          // $scope.IVANC = '';
          // $scope.totalNC = '';
 
-         $scope.busquedaOrdenes();
+
 
     }
 
@@ -360,10 +361,12 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
                     { field:'Pagado', width: 80 },
                     { field:'Cobrado', width: 80 },
                     { field:'nombreOrden', width: 80 },
-                    { field:'id', width: 80 }
+                    { field:'id', width: 80 },
+                    { field:'claveunidad', width: 80, visible:false },
+                    { field:'claveproveedor', width: 80, visible:false }
         ],
         showFooter: true,
-        showFilter:false,
+        showFilter:true,
 
     };
 
@@ -382,149 +385,41 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
     });
 
-    console.log($scope.selectedRows);
+    // console.log($scope.selectedRows);
 
     $scope.filtra = function(){
 
-        if($scope.unidad == undefined || $scope.unidad == 0){
+        if($scope.norelacion.unidad == undefined || $scope.norelacion.unidad == 0){
             var objeto1 = "";
-            $scope.filtrado.Unidad = '';
+            $scope.filtrado.claveunidad = '';
         }else{
-            var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
-            $scope.filtrado.Unidad = $scope.unidad.nombre;
+            var objeto1 = "claveunidad:" + $scope.norelacion.unidad + "; ";
+            $scope.filtrado.claveunidad = $scope.norelacion.unidad;
             
         }
 
-        if($scope.cliente == undefined || $scope.cliente == 0){
+        if($scope.norelacion.proveedor == undefined || $scope.norelacion.proveedor == 0){
             var objeto2 = "";
-            $scope.filtrado.Cliente = '';
+            $scope.filtrado.claveproveedor = '';
         }else{
-            var objeto2 = "Cliente:" + $scope.cliente.nombre + "; ";
-            $scope.filtrado.Cliente = $scope.cliente.nombre;
-        }
-
-        if($scope.tipo == 'fax'){
-            var objeto3 = "FormaRecep:F; ";
-            // $scope.filtrado.FormaRecep = 'F';
-        }else if($scope.tipo == 'original'){
-            var objeto3 = "FormaRecep:O; ";
-            // $scope.filtrado.FormaRecep = 'O';
-        }else{
-            var objeto3 = "";
-            // $scope.filtrado.FormaRecep = '';
-        }
-
-
-        if($scope.folio.length == 0){
-            var objeto4 = "";
-            $scope.filtrado.Folio = '';  
-        }else{
-            var objeto4 = "Folio:" + $scope.folio + "; "; 
-            $scope.filtrado.Folio = $scope.folio;  
-        }
-
-        if($scope.lesionado.length == 0){
-            var objeto5 = "";
-            // $scope.filtrado.Lesionado = '';
-        }else{
-            var objeto5 = "Lesionado:" + $scope.lesionado + "; "; 
-            // $scope.filtrado.Lesionado = $scope.lesionado;  
-        }
-
-        if($scope.producto == undefined || $scope.producto == 0){
-            var objeto6 = "";
-            // $scope.filtrado.Producto = '';  
-        }else{
-            var objeto6 = "Producto:" + $scope.producto.nombre + "; ";
-            // $scope.filtrado.Producto = $scope.producto.nombre;  
+            var objeto2 = "claveproveedor:" + $scope.norelacion.proveedor + "; ";
+            $scope.filtrado.claveproveedor = $scope.norelacion.proveedor;
             
         }
 
-        if($scope.etapa == undefined || $scope.etapa == 0){
-            var objeto7 = "";
-            $scope.filtrado.Etapa = '';
-        }else{
-            var objeto7 = "Etapa:" + $scope.etapa + "; ";
-            $scope.filtrado.Etapa = $scope.etapa;
-        }
+        var filtro = objeto1 + objeto2;
 
-        if($scope.relacion.length == 0){
-            var objeto8 = "";
-            // $scope.filtrado.Relacion = '';
-        }else{
-            var objeto8 = "Relacion:" + $scope.relacion + "; "; 
-            // $scope.filtrado.Relacion = $scope.relacion;
-        }
-
-        if ($scope.relacionado) {
-            var objeto9 = "RelP:X ; ";  
-            // $scope.filtrado.RelP ='X';
-        }else{
-            var objeto9 = "";
-            // $scope.filtrado.RelP = '';
-        }
-
-        if ($scope.cobrado) {
-            var objeto10 = "Cobrado:1 ; "; 
-            // $scope.filtrado.Cobrado = '1'; 
-        }else{
-            var objeto10 = "";
-            // $scope.filtrado.Cobrado = '';
-        }
-
-        if ($scope.pagado) {
-            var objeto11 = "Pagado:1 ; "; 
-            // $scope.filtrado.Pagado = '1';  
-        }else{
-            var objeto11 = "";
-            // $scope.filtrado.Pagado = '';
-        }
-        var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7 + objeto8 + objeto9 + objeto10 + objeto11;
-
-        
         
         $scope.filterOptions.filterText = filtro;
-
-        // console.log(filtro);
 
     }
 
     $scope.quitafiltro = function(){
 
-        // $scope.filterOptions.filterText = ''; 
+        $scope.filterOptions.filterText = ''; 
         $scope.norelacion.unidad = 0;
-        // $scope.cliente = 0;
-        // $scope.tipo = 0;
-        // $scope.folio = '';
-        // $scope.fechaini = '';
-        // $scope.fechafin = '';
-        // $scope.lesionado = '';
-        // $scope.fechainiPag = '';
-        // $scope.fechafinPag = '';
-        // $scope.fechainiRec = '';
-        // $scope.fechainiRec = '';
+        $scope.norelacion.proveedor = 0;
 
-        // $scope.filtrado = {
-        //     Unidad : '',
-        //     Cliente : '',
-        //     Etapa:''
-        //     // FormaRecep : '',
-        //     // Folio  :'',
-        //     // Lesionado  :'',
-        //     // Producto:'',
-        //     // Relacion:'',
-        //     // RelP:'',
-        //     // Cobrado:'', 
-        //     // Pagado:''
-        // };
-
-        // // console.log($scope.buscarXfecha);
-
-        // if ($scope.buscarXfecha == 1){
-
-        //     $scope.buscarXfecha = 0;
-        //     $scope.foliosxarea();
-        // };
         
     }
 
@@ -605,7 +500,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
             alert('Error, Intentalo de Nuevo');
 
         }); 
-
 
     }
 
