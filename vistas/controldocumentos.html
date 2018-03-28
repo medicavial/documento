@@ -154,12 +154,12 @@
 	    	</div>
 	    	<div class="row" ng-show="datosCedula">
 	    		<div class="col-md-12">
-	    			<table class="table">
+	    			<table class="table" id="formatoCedula">
 	    				<tr>
 	    					<td>
 	    						<small><b>FOLIO MV: </b></small> <br>{{datosCedula.Exp_folioRelacion}}
 	    					</td>	    					
-	    					<td colspan="2">
+	    					<td colspan="3">
 	    						<small><b>Lesionado: </b></small> <br>{{datosCedula.QWS_lesionado}}
 	    					</td>	    					
 	    					<td>
@@ -179,8 +179,16 @@
 	    					<td>
 	    						<small><b>Folio Autorización: </b> </small> <br>{{datosCedula.QWS_folioAutorizacion}}
 	    					</td>
+	    					<td>
+	    						<small><b>Riesgo: </b> </small> <br>{{datosCedula.QWS_riesgo}}
+	    					</td>
 	    				</tr>
 	    			</table>	    			
+	    		</div>
+	    	</div>
+	    	<div class="row" ng-show="datosCedula">
+	    		<div class="col-md-12 text-center">
+	    			<button class="btn btn-success" ng-click="ImprimirPDF(datosCedula.QWS_folioAutorizacion)">Imprimir PDF</button>
 	    		</div>
 	    	</div>
 	    	<div class="row" ng-show="mensaje">

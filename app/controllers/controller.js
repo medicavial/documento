@@ -550,6 +550,22 @@ function controlDocumentosCtrl($scope, $http, loading, find, api, $filter, repor
         });
     }
 
+
+    $scope.ImprimirPDF = function(cedula){
+        html2canvas(document.getElementById('formatoCedula'), {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500,
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download(cedula+".pdf");
+            }
+        });
+    }
+
 	//busquedas
 
 	//busca clientes
