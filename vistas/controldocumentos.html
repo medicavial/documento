@@ -186,17 +186,21 @@
 	    			</table>	    			
 	    		</div>
 	    	</div>
+	    	</form>
 	    	<div class="row" ng-show="datosCedula">
 	    		<div class="col-md-12 text-center">
 	    			<button class="btn btn-success" ng-click="ImprimirPDF(datosCedula.QWS_folioAutorizacion)">Imprimir PDF</button>
+	    			<button class="btn btn-success" ng-click="resetVars()">limpiar</button>
 	    		</div>
+
+
 	    	</div>
 	    	<div class="row" ng-show="mensaje">
 	    		<div class="col-md-12">
 	    			<div class="alert alert-warning">No existe cédula para este folio</div>
 	    		</div>
 	    	</div>
-    	</form>
+    	
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button> 

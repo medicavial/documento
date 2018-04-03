@@ -551,6 +551,14 @@ function controlDocumentosCtrl($scope, $http, loading, find, api, $filter, repor
     }
 
 
+     $scope.resetVars = function(){
+        $scope.folioCedula='';
+        $scope.mensaje =false;
+        $scope.datosCedula='';
+        $scope.cargador=true;
+        $scope.cargador=false;
+    }
+
     $scope.ImprimirPDF = function(cedula){
         html2canvas(document.getElementById('formatoCedula'), {
             onrendered: function (canvas) {
