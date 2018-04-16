@@ -836,7 +836,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
         //se obtiene la extension del archivo
         var extn = archivo.split(".").pop();
 
-        if (extn == 'jpg' || extn == 'jpeg' || extn == 'png' || extn == 'PNG' ) {
+        if (extn == 'jpg' || extn == 'jpeg' || extn == 'JPG' || extn == 'png' || extn == 'PNG' ) {
             return true;
         }else{
             return false;
