@@ -137,40 +137,49 @@
 				<input type="text" ng-model="relacion" class="form-control" ng-change="filtra()" capitalize>
 
 		</div>
-		<div class="col-md-3">
-			<br>
-			<br>
-			<div class="row">
-				<div class="col-md-5">
-					<div class="checkbox-inline">
-					  <label>
-					    <input type="checkbox"  ng-change="filtra()" ng-model="relacionado" value="">
-					    Relacionado
-					  </label>
-					</div>
+		
+	</div>
+
+	<div class="row">
+            <br>
+			<div class="col-md-3">
+				<div class="checkbox-inline">
+				  <label>
+				    <input type="checkbox"  ng-change="filtra()" ng-model="relacionado" value="">
+				    Relacionado
+				  </label>
 				</div>
-				<div class="col-md-3">
-					<div class="checkbox-inline">
-					  <label>
-					    <input type="checkbox"  ng-change="filtra()" ng-model="pagado" value="">
-					    Pagado
-					  </label>
-					</div>
+
+			</div>
+			<div class="col-md-3">
+				<div class="checkbox-inline">
+				  <label>
+				    <input type="checkbox"  ng-change="filtra()" ng-model="norelacionado" value="">
+				    No Relacionado
+				  </label>
 				</div>
-				<div class="col-md-4">
-					<div class="checkbox-inline">
-					  <label>
-					    <input type="checkbox"  ng-change="filtra()" ng-model="cobrado" value="">
-					    Cobrado
-					  </label>
-					</div>
+
+			</div>
+			<div class="col-md-3">
+				<div class="checkbox-inline">
+				  <label>
+				    <input type="checkbox"  ng-change="filtra()" ng-model="pagado" value="">
+				    Pagado
+				  </label>
 				</div>
 			</div>
-        </div>
-		
+			<div class="col-md-3">
+				<div class="checkbox-inline">
+				  <label>
+				    <input type="checkbox"  ng-change="filtra()" ng-model="cobrado" value="">
+				    Cobrado
+				  </label>
+				</div>
+			</div>
 	</div>
 	
 	<div class="row">
+		<br>
 		<div class="col-md-2">
 			<select class="form-control"  ng-model="cliente" ng-options="cliente as cliente.nombre for cliente in clientes" ng-change="filtra()">
 				<option value="">Cliente</option>

@@ -201,7 +201,9 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter,$location,$h
                     { field:'FacDoc', width: 80 },
                     { field:'RelP', width: 80 },
                     { field:'Pagado', width: 80 },
-                    { field:'Cobrado', width: 80 }
+                    { field:'Cobrado', width: 80 },
+                    { field:'Facturado', width: 80 },
+                    { field:'Rel', width: 80, visible:false }
         ],
         showFooter: true,
         showFilter:false,
@@ -305,6 +307,14 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter,$location,$h
             // $scope.filtrado.RelP = '';
         }
 
+        if ($scope.norelacionado) {
+            var objeto12 = "Rel:X ; ";  
+            // $scope.filtrado.RelP ='X';
+        }else{
+            var objeto12 = "";
+            // $scope.filtrado.RelP = '';
+        }
+
         if ($scope.cobrado) {
             var objeto10 = "Cobrado:1 ; "; 
             // $scope.filtrado.Cobrado = '1'; 
@@ -320,7 +330,7 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter,$location,$h
             var objeto11 = "";
             // $scope.filtrado.Pagado = '';
         }
-        var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7 + objeto8 + objeto9 + objeto10 + objeto11;
+        var filtro = objeto1 + objeto2 + objeto3 + objeto4 + objeto5 + objeto6 + objeto7 + objeto8 + objeto9 + objeto10 + objeto11 + objeto12;
 
         
         

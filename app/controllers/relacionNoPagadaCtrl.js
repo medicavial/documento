@@ -100,8 +100,10 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
 
     $scope.fRegistro = function(){
 
+        console.log($rootScope.id);
+
         loading.cargando('Buscando Folio');
-        find.listaRelacionReg($scope.datosRegistro).success(function (data){
+        find.listaRelacionReg($scope.datosRegistro,$rootScope.id).success(function (data){
 
             if(data){
 
@@ -167,7 +169,7 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
                     { field:'unidad',displayName:'Unidad', width: 160 },
                     { field:'proveedor',displayName:'Proveedor', width: 160 },
                     { field:'fecha',displayName:'Fecha Registro', width: 150 },
-                    { field:'',displayName:' ', width: 170, cellTemplate: '<label class="btn btn-danger"> Cancela Relacion <input type="button" style="display: none;" ng-click="CancelaRelacion(row.entity.relacion)"></label>' },
+                    { field:'',displayName:' ', width: 170, cellTemplate: '<label class="btn btn-danger" ng-show="{{id == 78}}"> Cancela Relacion <input type="button" style="display: none;" ng-click="CancelaRelacion(row.entity.relacion)"></label>' },
 
         ],
         showFooter: true,
