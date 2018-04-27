@@ -325,39 +325,20 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
         columnDefs: [
                     { field:'',displayName:'', width: 50, pinned: true,  cellTemplate: '<label class="btn btn-link" > NC <input type="button" style="display: none;" ng-click="pedirNC(row)"></label>'},
                     { field:'',displayName:'', width: 100, pinned: true,  cellTemplate: '<label class="btn btn-danger"> Cancela OP <input type="button" style="display: none;" ng-click="cancelaORP(row)"></label>'},
-                    { field:'Unidad',displayName:'Unidad', width: 200, pinned: true},
+                    { field:'Unidad',displayName:'Unidad', width: 150, pinned: true},
                     { field:'Proveedor',displayName:'Proveedor', width: 200, pinned: true},
                     { field:'Folio', displayName:'Folio' , width: 120 , pinned: true},
                     { field:'total', width: 120, pinned: true  },
-                    { field:'Etapa', width: 120, pinned: true },
+                    { field:'Etapa', width: 80, pinned: true },
                     { field:'Entrega', width: 80 , pinned: true},
                     { field:'Factura', width: 80 , pinned: true},
                     { field:'foliofiscal', displayName:'Folio Fiscal', width: 120 },
-                    // { field:'Lesionado', width: 330, pinned: true },
                     { field:'nombreOrden', width: 120 },
                     { field:'nombreEmisor', width: 120 },
                     { field:'rfcemisor', width: 120 },
-                    { field:'Producto', width: 120 },
-                    { field:'Triage', width: 120 },
                     { field:'Cliente', width: 100 },
-                    { field:'Unidad', width: 220 },
-                    { field:'FAtencion', width: 120},
-                    { field:'FormaRecep', width: 90 },
-                    { field:'fechaRecepcion', width: 120},
-                    { field:'FechaRecepPag', width: 120,  cellFilter: 'date:\'dd/MM/yyyy\'' },
-                    { field:'Tipo', width: 120 },
-                    { field:'Lesion', width: 120 },
-                    { field:'Relacion', width: 120 },
-                    { field:'FRelacion', displayName:'F.relacion', width: 120 },
-                    { field:'FRelPago', displayName:'F.Pago.Rel.', width: 120 },
-                    { field:'FRelPagoReg', displayName:'F.Pago.Rel.Reg.', width: 120 },
                     { field:'PasC', width: 120 },
                     { field:'FPasCobrado', width: 120 },
-                    { field:'Pago', width: 120 },
-                    { field:'Reserva', width: 120 },
-                    { field:'FacturaRelacion', width: 80 },
-                    { field:'FacDoc', width: 80 },
-                    { field:'RelP', width: 80 },
                     { field:'Pagado', width: 80 },
                     { field:'Cobrado', width: 80 },
                     { field:'nombreOrden', width: 80 },
@@ -506,8 +487,8 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
     $scope.exporta = function(){
 
-        $scope.selectos = $filter('filter')($scope.listado, $scope.filtrado);
-        JSONToCSVConvertor($scope.selectos,'Reporte',true);        
+        $scope.listado = $filter('filter')($scope.listado, $scope.filtrado);
+        JSONToCSVConvertor($scope.selectedRows,'Reporte',true);        
     }
 
     $scope.relacionaFolios = function(success){

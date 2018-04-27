@@ -1290,7 +1290,6 @@ $scope.enviaOrdenPagoInd = function(){
         unidad: $scope.unidad
 
     }
-console.log($scope.OPago);
 
         var areaRecibe = 6;
         var areaEntrega = 6;
