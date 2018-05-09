@@ -715,7 +715,7 @@
 					<div class="col-md-6">
 						<div class="form-group">
 						    <label for="cedula">Folio de Autorización</label>
-						    <input type="text" class="form-control" ng-model="captura.cedulaElectronica" name="cedula" id="cedula" ng-required="datos.cliente == 19&&sinCedula==true" ng-keyup="validaFolioAutorizacion()" ng-minlength="13" ng-maxlength="13" placeholder="cedula" ng-disabled="datos.cliente == 19&&sinCedula==false" capitalize>
+						    <input type="text" class="form-control" ng-model="captura.cedulaElectronica" name="cedula" id="cedula" ng-required="datos.cliente == 19&&sinCedula==true" ng-keyup="validaFolioAutorizacion()" ng-minlength="13" ng-maxlength="14" placeholder="cedula" ng-disabled="datos.cliente == 19&&sinCedula==false" capitalize>
 						    <input type="checkbox" name="sinCedula" id="sinCedula" ng-model="sinCedula" ng-true-value="false" ng-false-value="true" ng-click="validaSinCedula()">Sin Cédula
 						    <div ng-messages="capturaForm.cedula.$error" class="text-danger">
 								<div ng-message="required">Campo obligatorio.</div>
