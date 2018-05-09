@@ -1134,7 +1134,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
         $scope.msjAlerta = '';
         if($scope.captura.cedulaElectronica!=undefined){
 
-            if($scope.captura.cedulaElectronica.length==13){
+            if($scope.captura.cedulaElectronica.length==13||$scope.captura.cedulaElectronica.length==14){
 
                 console.log($scope.cargador);
                 find.consultaCedula($scope.captura.cedulaElectronica,$scope.captura.Nombre).success(function (data){
