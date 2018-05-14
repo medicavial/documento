@@ -555,8 +555,10 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
             var objeto1 = "";
             $scope.filtrado.Unidad = '';
         }else{
-            var objeto1 = "Unidad:" + $scope.unidad.nombre + "; ";
-            $scope.filtrado.Unidad = $scope.unidad.nombre;
+            var objeto1 = "claveunidad:" + $scope.unidad.id + "; ";
+            $scope.filtrado.Unidad = $scope.unidad.id;
+
+            console.log($scope.filtrado);
             
         }
 
@@ -650,7 +652,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         
         $scope.filterOptions.filterText = filtro;
 
-        // console.log(filtro);
+        console.log($scope.filterOptions.filterText);
 
     }
 
