@@ -287,6 +287,12 @@ app.factory("find", function($http,api){
         busquedaDoctos:function(datos){
             return $http.post(api+'consulta/buscaDatos',datos);
         },
+        busquedaDoctosQualitas:function(datos){
+            return $http.post(api+'consulta/buscaDatosQualitas',datos);
+        },
+        descargaDoctosQualitas:function(datos){
+            return $http.post(api+'consulta/descargaDatosQualitas',datos);
+        },
         busquedaDigitalesFolio:function(folio){
             return $http.get(api+'consulta/buscaDocumentosFolio/'+folio);
         },

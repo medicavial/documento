@@ -959,6 +959,12 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     });
 
+    $routeProvider.when('/digitalesQualitas',{
+            templateUrl   : 'vistas/digitalesQualitas.html',
+            controller    : 'digitalesQualitasCtrl'
+
+    });
+
     $routeProvider.when('/listadoRecepcionPagos',{
             templateUrl   : 'vistas/reporteRecepcionPagos.html',
             controller    : 'listadoRecepcionPagoCtrl'
