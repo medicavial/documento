@@ -22,7 +22,32 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
 
     }
 
+    $scope.ReactivaPrefacturas = function(){
 
+            console.log($scope.datos.folioPrefactura);
+
+            var ruta = api+'PagoManual/reactivaPrefacturas/'+ $scope.datos.folioPrefactura; 
+
+            $http.post(ruta).success(function (data){
+
+                if(data){
+                    swal("OK...", "Tu prefactura se reingreso", "success");
+                    
+
+                }
+
+                $scope.listadoPre();
+
+
+
+            }).error( function (data){
+
+                alert("Hubo un error de conexión, Verificalo con el Area de Sistemas");
+
+
+            });
+
+    }
     $scope.listadoPre = function(){
 
         find.busquedaPrefacturas().success(function (data){

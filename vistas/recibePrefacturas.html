@@ -38,6 +38,11 @@
 				<input type="text" ng-model="datos.folioPrefactura" class="form-control" ng-change="verificaPrefactura()" mayusculas>
 		</div>
 
+		<div class="col-md-3">
+		      <label>  </label>
+		   <button type="button" id="boton" class="btn btn-purple glyphicon glyphicon-plus" ng-click="ReactivaPrefacturas()" > Reactivar </button>
+		</div>
+
 		<div class="col-md-9">
 	           <div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
 	    </div>
