@@ -1,4 +1,4 @@
-function digitalesQualitasCtrl($scope, $rootScope,  loading, $filter, $timeout, find, upload){
+function digitalesQualitasCtrl($scope, $rootScope,  loading, $filter, $timeout, find, upload, operacion){
 
     $scope.inicio = function()
     {
@@ -21,9 +21,15 @@ function digitalesQualitasCtrl($scope, $rootScope,  loading, $filter, $timeout, 
     {
         loading.cargando('Cargando Información');
         find.busquedaDoctosQualitas($scope.digitales).success(function (data){
-          console.log(data);
           if(data.respuesta =='error'){
             $scope.mensaje = 'No se encontraron imagenes';
+          }
+          else if(data.respuesta =='sinImgs'){
+            $scope.mensaje = 'No existen imagenes generadas';
+            operacion.guardaImagenes($scope.digitales.folio);
+            find.busquedaDoctosQualitas($scope.digitales).success(function (data){
+                console.log(data);
+            });
           }else{
             $scope.mensaje = '';
             $scope.listadoImagenes = data.imagenes; 
@@ -99,5 +105,5 @@ function digitalesQualitasCtrl($scope, $rootScope,  loading, $filter, $timeout, 
         }
     }
 }
-subirDocumentosCtrl.$inject =['$scope', '$rootScope', 'loading','$filter','$timeout','find','upload'];
+subirDocumentosCtrl.$inject =['$scope', '$rootScope', 'loading','$filter','$timeout','find','upload', 'operacion'];
 app.controller('digitalesQualitasCtrl',digitalesQualitasCtrl);
