@@ -23,12 +23,20 @@ function digitalesQualitasCtrl($scope, $rootScope,  loading, $filter, $timeout, 
         find.busquedaDoctosQualitas($scope.digitales).success(function (data){
           if(data.respuesta =='error'){
             $scope.mensaje = 'No se encontraron imagenes';
+            operacion.guardaImagenes($scope.digitales.folio);
+            find.busquedaDoctosQualitas($scope.digitales).success(function (data){
+                if(data.respuesta =='error'){
+                    $scope.mensaje = 'No se encontraron imagenes';                    
+                  }
+            });
           }
           else if(data.respuesta =='sinImgs'){
             $scope.mensaje = 'No existen imagenes generadas';
             operacion.guardaImagenes($scope.digitales.folio);
             find.busquedaDoctosQualitas($scope.digitales).success(function (data){
-                console.log(data);
+                if(data.respuesta =='error'){
+                    $scope.mensaje = 'No se encontraron imagenes';                    
+                  }
             });
           }else{
             $scope.mensaje = '';
