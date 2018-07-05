@@ -856,6 +856,9 @@ app.factory("facturacionExpress", function($q,$http,find,api){
         },
         facExpQualitas:function(datos){
             return $http.post(api + 'facturacionExpressBeta/facExpQualitas', datos,{timeout: 10000});
+        },
+        cencelaCedula:function(cedula){
+            return $http.get(api + 'facturacionExpress/cancelaCedula/'+cedula);
         }
     }
 });

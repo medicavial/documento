@@ -41,6 +41,7 @@
 					<td>{{cedula.CQ_siniestro}}</td>
 					<td>{{cedula.CQ_reporte}}</td>
 					<td><button class="btn btn-primary" ng-click="buscaRelacion(cedula)">Relacionar</button></td>
+					<td><button class="btn btn-danger" ng-click="confirmarCancelarCedula(cedula)">Eliminar</button></td>
 				</tr>
 			</table>			
 		</div>
@@ -229,6 +230,30 @@
 
 	  </div>
 	</div>
+
+
+<div class="modal fade"  id="modalCancel" tabindex="-1" role="dialog">
+  <div class="modal-dialog modal-sm  modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Cancelar Cédula</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <p>Confirmar que deseas cancelar la Cédula: <b>{{cedulaCancel}}</b> Lesionado: <b>{{nombreCancel}}</b></p>
+      </div>
+      <div class="modal-footer">        
+        <button type="button"  class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+        <button type="button" ng-disabled="mensajeBorrado" ng-click="cancelarCedula(cedulaCancel)" class="btn btn-primary">Confirmar</button>
+        <div  ng-show='mensajeBorrado'>
+			<label for="" class="alert alert-success">{{mensajeBorrado}}</label>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 
 
 

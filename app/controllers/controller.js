@@ -537,6 +537,7 @@ function controlDocumentosCtrl($scope, $http, loading, find, api, $filter, repor
 
     $scope.verificaCedula = function(){
         $scope.cargador=true;
+        $scope.datosCedula='';
         find.cedulaQ($scope.folioCedula).success( function (data) {
             console.log(data);
             if(data.length>0){

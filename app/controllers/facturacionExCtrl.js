@@ -1032,6 +1032,7 @@ function relacionCartasQualitasCtrl($scope, $rootScope, datos, loading, facturac
 
 
         $scope.conusultaFolioSinCeluda();
+        $scope.mensajeBorrado = '';
     }
 
 
@@ -1063,6 +1064,32 @@ function relacionCartasQualitasCtrl($scope, $rootScope, datos, loading, facturac
         $scope.cedula =cedula; 
         console.log($scope.cedula);
         $scope.datosFolio.nombre = $scope.cedula.CQ_paciente;  
+    }
+
+    $scope.confirmarCancelarCedula = function(cedula){
+        $('#modalCancel').modal();
+        $scope.mensajeBorrado = '';
+        $scope.cedulaCancel =cedula.CQ_folioautorizacion; 
+        $scope.nombreCancel =cedula.CQ_paciente; 
+        console.log(cedula);        
+    }
+
+    $scope.cancelarCedula = function(ced){        
+        $scope.mensajeBorrado = '';
+        loading.cargando('Cancelando cédula');
+         facturacionExpress.cencelaCedula(ced).success( function (data){
+
+            if(data=='cancelado'){
+                $scope.mensajeBorrado = 'La cédula se canceló correctamente.';
+                facturacionExpress.cedulasSinRelacion().success( function (data){
+                    $scope.listadoCartas = data;       
+                });
+            }else{
+                $scope.mensajeBorrado = 'No se pudo cancelar, inténtelo nuevamente.';
+            }  
+            loading.despedida();
+        
+        });  
     }
 
     $scope.busquedaFolio = function(){
