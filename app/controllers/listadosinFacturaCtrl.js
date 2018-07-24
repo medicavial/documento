@@ -1352,7 +1352,7 @@ $scope.FoliosinFactura = function(success){
             location.reload();
         };
 
-        $http.post(api+'OPFactura/subeFolios', {selecionado:$scope.selectos}).success(function (data){
+        $http.post(api+'OPFactura/subeFolios', {selecionado:$scope.selectos, usuario: $rootScope.id}).success(function (data){
 
             swal("Oops...", "Tu Folio esta listo para relacionar", "success");
 

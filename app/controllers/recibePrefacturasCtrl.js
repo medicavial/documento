@@ -28,7 +28,7 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
 
             var ruta = api+'PagoManual/reactivaPrefacturas/'+ $scope.datos.folioPrefactura; 
 
-            $http.post(ruta).success(function (data){
+            $http.post(ruta, {usuario:$rootScope.id}).success(function (data){
 
                 if(data){
                     swal("OK...", "Tu prefactura se reingreso", "success");
