@@ -273,6 +273,9 @@ app.factory("find", function($http,api){
         listaRelacionReg:function(datos){
             return $http.post(api+'RelacionNP/fechaRegistro',datos);
         },
+        relaciones:function(datos){
+            return $http.post(api+'RelacionNP/relaciones');
+        },
         cartas:function(fecha,fecha1){
             fecha = fecha.replace(/\//g,'-');
             fecha1 = fecha1.replace(/\//g,'-');

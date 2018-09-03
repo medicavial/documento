@@ -1114,6 +1114,9 @@ app.factory("OPFactura", function($q,$http,find,api){
 
         listado:function(datos){
             return $http.post(api + 'OPFactura/listado', datos);
+        },
+        listadoInicio:function(){
+            return $http.post(api + 'OPFactura/listadoInicio');
         }
 
     }

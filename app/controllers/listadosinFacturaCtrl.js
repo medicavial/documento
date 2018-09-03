@@ -7,6 +7,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         $scope.listado = [];
 
 
+
         $scope.datosRegistro = {
 
             fechainiReg : FechaAct,
@@ -25,6 +26,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         $scope.empresas();
         $scope.Altaunidades();
         $scope.productos();
+        $scope.listadoInicio();
         $scope.PagoG = [];
 
         $scope.filtrado = {
@@ -102,6 +104,29 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         }
 
         $scope.archivos = [];
+
+    }
+
+    $scope.listadoInicio = function(){
+
+        loading.cargando('Buscando Folio');
+        OPFactura.listadoInicio().success(function (data){
+
+            if(data){
+
+                $scope.listado = data;
+                $scope.cantidad = data.length -1;
+
+            }else{
+
+                loading.despedida();
+                $scope.listado = [];
+                
+            }
+
+            loading.despedida();
+
+        });
 
     }
 

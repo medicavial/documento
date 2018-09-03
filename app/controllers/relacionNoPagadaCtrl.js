@@ -31,6 +31,7 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
         $scope.empresas();
         $scope.Altaunidades();
         $scope.productos();
+        $scope.relaciones();
 
         $scope.filtrado = {
             Unidad : '',
@@ -123,6 +124,29 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
 
     }
 
+    $scope.relaciones = function(){
+
+        loading.cargando('Buscando Folio');
+        find.relaciones().success(function (data){
+
+            if(data){
+
+                $scope.listado = data;
+                $scope.cantidad = data.length -1;
+
+            }else{
+
+                loading.despedida();
+                $scope.listado = [];
+                
+            }
+
+            loading.despedida();
+
+        });
+
+    }
+
     //////LLena el grid y toma filtros
 
     ///filtros
@@ -170,6 +194,7 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
                     { field:'proveedor',displayName:'Proveedor', width: 160 },
                     { field:'fecha',displayName:'Fecha Registro', width: 150 },
                     { field:'',displayName:' ', width: 170, cellTemplate: '<label class="btn btn-danger" ng-show="{{id == 78}}"> Cancela Relacion <input type="button" style="display: none;" ng-click="CancelaRelacion(row.entity.relacion)"></label>' },
+                    { field:'transferencia',displayName:'Pagada', width: 150 },
 
         ],
         showFooter: true,
@@ -351,16 +376,16 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
                 swal('Upss','No puedes Eliminar una Relacion que esta Pagada','error');
             }else{
 
-            $http.post(api+'RelacionPagos/eliminaRelacion/'+ row).success(function (data){
+            $http.post(api+'RelacionPagos/eliminaRelacion/'+ row,{ usuario: $rootScope.id }).success(function (data){
 
-                swal('Upss','No puedes Eliminar una Relacion que esta Pagada','error');
-                location.reload();
+                swal('Ok','Relacion Eliminada','success');
+                // location.reload();
 
 
 
             }).error( function (data){
 
-                alert('Relacion Borrada!!');
+                alert('Ocurrio un error, Verificalo con el Area de Sistemas');
 
             }); 
 
