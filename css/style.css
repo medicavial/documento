@@ -1169,3 +1169,8 @@ blockquote{
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
+
+.chartdiv {
+  width: 100%;
+  height: 500px;
+}                   

@@ -319,6 +319,11 @@ app.factory("find", function($http,api){
         },
         busquedaProveedor:function(){
             return $http.post(api + 'RelacionPagos/proveedores');
+        },
+        eliminatxt:function(usuario){
+            return $http.post(api + 'Complementos/eliminatxt/'+ usuario);
         }
+
+
     }
 })

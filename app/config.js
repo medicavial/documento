@@ -989,6 +989,35 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     });
 
+    $routeProvider.when('/graficasPago',{
+            templateUrl   : 'vistas/graficaPago.html',
+            controller    : 'graficasPagoCtrl'
+
+    });
+
+    $routeProvider.when('/complemento',{
+            templateUrl   : 'vistas/complemento.html',
+            controller    : 'complementoCtrl'
+
+    });
+
+    $routeProvider.when('/complemento',{
+            templateUrl   : 'vistas/complemento.html',
+            controller    : 'complementoCtrl'
+
+    });
+
+    $routeProvider.when('/listadoComplementos',{
+            templateUrl: 'vistas/listadoComplementos.html',
+            controller: 'listadoComplementosCtrl'
+    });
+
+    $routeProvider.when('/guardaArchivos',{
+            templateUrl: 'vistas/guardaArchivos.html',
+            controller: 'guardaArchivosCtrl'
+    });
+
+
 
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
 

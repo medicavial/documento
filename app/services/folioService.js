@@ -914,6 +914,12 @@ app.factory("relaciones", function($q,$http,find,api){
         revisaRelacion:function(relacion){
 
             return $http.post(api + 'RelacionPagos/revisaRelacion/'+relacion);
+        },
+        listadoCom:function(){
+            return $http.post(api + 'Complementos/listadoComplemento');
+        },
+        detalleComp:function(foliofiscal){
+            return $http.post(api + 'Complementos/detalleComp/'+ foliofiscal);
         }
     }
 
@@ -1134,5 +1140,6 @@ app.factory("listadoManual", function($q,$http,find,api){
     }
 
 });
+
 
 

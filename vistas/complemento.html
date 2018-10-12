@@ -1,0 +1,151 @@
+<div id="contenedor"  ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/pagos" class="icon-arrow-left"></a>
+        <h1>{{titulo}}</h1>
+    </div>
+
+    <legend></legend>
+
+    	<ul id="rb-grid-small" class="rb-grid-small clearfix">
+
+		    <li class="rb-span-1" id="color1">
+		        <h3> REP </h3>
+		        <a href="#/listadoComplementos">
+		            <span class="glyphicon glyphicon-align-justify"></span>
+		        </a>
+		    </li>
+
+		</ul><br>
+
+    <div class="panel panel-primary">
+
+	      <div class="panel-heading">  <!-- Heading panel -->
+	          <h4> FACTURA DE RECEPCIÓN DE PAGOS </h4>   
+	        
+	      </div> <!-- Fin Heading panel -->  <!--inicia el formulario, se declara nuestra funcion de el submit para realizar busqueda-->
+		  <div class="row" >
+				<div class="col-md-4">
+					<br>
+
+<!-- 					<input class="btn btn-primary" type="file" ng-file-select="subeXML($files)" ng-model="complementoPago" multiple> -->
+
+                <input class="btn btn-primary" type="file" webkitdirectory directory ng-file-select="subeXML($files)" multiple />
+
+					<!-- <input type="file" file-input="files" multiple /> -->
+				</div>
+
+				<div class="col-md-2" id="btnvalidar">
+					<br>
+					<button class="btn btn-warning btn-lg btn-block glyphicon glyphicon-ok" ng-click="valida()"> 	Procesar </button>
+				</div>
+				<div class="col-md-2" id="btndescarga">
+					<br>
+					<button class="btn btn-lg btn-info glyphicon glyphicon-cloud-download" ng-click="descarga()"> Descarga txt </button>
+
+
+				</div>
+
+		  </div><br>
+
+		  <div class="row">
+
+		  	<div class="col-md-12">
+
+		  	  <div ng-show="mensaje" class="alert  animate-show text-center" ng-class="tipoalerta"><strong><h3>{{mensaje}} </h3></strong></div>
+
+		  	</div>
+		  	
+		  </div><br><br>
+
+		  <div class="row">
+
+		  	<div class="col-md-4">
+		  	</div>
+
+  		     <div class="col-md-2">
+		        <!-- START widget-->
+	           <div class="panel-body bg-primary text-center">
+	            
+	            <a href="#/detalleGuia" class="text-white">
+	              <em class="glyphicon glyphicon-ok-sign"></em></a>
+	            <p><strong> Procesados </strong></p>
+	            <p>{{ numArchivos }}</p>
+
+	           </div>
+
+		     </div>
+
+		     <div class="col-md-2">
+		        <!-- START widget-->
+	           <div class="panel-body bg-primary text-center">
+	            
+	            <a href="#/detalleGuia" class="text-white">
+	              <em class="glyphicon glyphicon-remove-sign"></em></a>
+	            <p><strong> Sin Proocesar </strong></p>
+	            <p>{{ numNoprocesado }}</p>
+
+	           </div>
+
+		     </div>
+
+		  	 <div class="col-md-4">
+		  	 </div>
+
+
+		  </div>
+
+		  <div class="row">
+
+			  	<div class="col-md-4">
+			  	</div>
+		  	
+				<div id="cargador" class="col-md-4">
+					<div class="loading-container"  >
+						    <div class="loading"></div>
+						    <div id="loading-text">Cargando</div>
+					</div>
+				</div>
+
+
+			  	<div class="col-md-4">
+			  	</div>
+		  </div>
+
+		  <legend class="text-primary"></legend>
+
+
+<!-- 		  <div class="row">
+                  <div class="col-md-2"></div>
+		          <div class="col-md-8">
+
+		                <table  class="table table-primary table-hover table-condensed table-responsive" >
+
+		                    <tr>          
+
+		                        <th><b>N°</b></th>
+		                        <th><b>Tipo Archivo</b></th>         
+		                        <th><b>Nombre Archivo</b></th>
+		                        <th><b>Descripción</b></th>
+
+		                    </tr>
+
+		                    <tr ng-repeat="listado in listadoArchivos">                            
+
+		                        <td> </td>
+		                        <td>{{ listadoArchivos.nombre}} </td>
+		                        <td>trh</td>  
+		                        <td>tr</td>                            
+		                        <td>t</td>
+
+		                    </tr>
+
+		                </table>
+
+		        </div>
+		        <div class="col-md-2"></div>
+
+	    </div><br><br> -->
+    </div>
+
+   
+</div>
