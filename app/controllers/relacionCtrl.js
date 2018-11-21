@@ -121,7 +121,8 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
             tipoOrden: '',
             unidad: '',
-            proveedor: ''
+            proveedor: '',
+            usuario: $rootScope.id
 
          }
 
@@ -976,11 +977,12 @@ $scope.guardaRelacionGlo = function(success){
     }); 
 }
 
-    $scope.verificaReferencia = function(){
+$scope.verificaReferencia = function(){
 
         $scope.relaciones = {
 
-            numrelacion : $scope.referencia +'_'+$scope.numreferencia
+            numrelacion : $scope.referencia +'_'+$scope.numreferencia,
+            seleccionados : $scope.detalles
         }
 
         if ($scope.numreferencia != ''){
@@ -990,6 +992,7 @@ $scope.guardaRelacionGlo = function(success){
                 relaciones.buscaRelacion($scope.relaciones).success( function (data){
 
                     $('#consecutivo').removeClass('loadinggif');
+
                     if (data.respuesta != '') {
                         $scope.mensaje = "La Relacion ya existe";
                         $scope.tipoalerta = 'alert-danger';
@@ -999,8 +1002,30 @@ $scope.guardaRelacionGlo = function(success){
                         $scope.tipoalerta = 'alert-success';
 
                     }
+                }); 
 
-            });   
+                ////////// se verifica si tiene prefactura y si esta cancelada ///////
+
+                for (var i = 0; i < $scope.relaciones.seleccionados.length; i++) {
+
+                    relaciones.buscaPrefacturaCan($scope.relaciones.seleccionados[i].id).success( function (data){
+
+                        if (data.cancelado == 'S'){
+
+                            $('#btnguardar').hide();
+                            $scope.mensaje1 = "Verifica tus Prefacturas Asociadas, alguna esta cancelada en sistema PU";
+                            $scope.tipoalerta1 = 'alert-danger';
+
+
+                        };
+
+
+
+                    });   
+
+
+                };
+
 
         }else{
 
@@ -1008,7 +1033,6 @@ $scope.guardaRelacionGlo = function(success){
 
 
         }
-
 
 }
 }

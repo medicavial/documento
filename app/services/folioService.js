@@ -920,7 +920,11 @@ app.factory("relaciones", function($q,$http,find,api){
         },
         detalleComp:function(foliofiscal){
             return $http.post(api + 'Complementos/detalleComp/'+ foliofiscal);
+        },
+        buscaPrefacturaCan:function(id){
+            return $http.post(api + 'RelacionPagos/buscaPrefCancelada/'+ id);
         }
+
     }
 
 });

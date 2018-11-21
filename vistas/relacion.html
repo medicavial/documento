@@ -65,10 +65,18 @@
   </div>
   <div class="row">
 
-      <div class="col-md-4">
-           <div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
+      <div class="col-md-12">
+           <div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show"><strong><h3>{{mensaje}}</h3></strong></div>
       </div>
   	
+
+  </div>
+  <div class="row">
+
+      <div class="col-md-12">
+           <div ng-show="mensaje1" ng-class="tipoalerta1" class="alert animate-show"><strong><h3>{{mensaje1}}</h3></strong></div>
+      </div>
+    
 
   </div>
   <br>
@@ -174,7 +182,7 @@
 
 	   <div class="col-md-4">
 			<label></label>
-		   <button type="button" class="btn btn-lg btn-primary" ng-click="guardaRelacion()" ng-disabled="factguardada">Guardar Relación</button>
+		   <button id="btnguardar" type="button" class="btn btn-lg btn-primary" ng-click="guardaRelacion()" ng-disabled="factguardada">Guardar Relación</button>
 	   </div>
 
 <!-- 	  <div ng-show="subefacturaglo" class="col-md-4">
