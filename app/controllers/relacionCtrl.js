@@ -5,13 +5,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
     $scope.recibidos = datos.recepcion;
 
-    // datos.activos.success(function (data){
-
-    //     $scope.listado = data;
-    //     $scope.cantidad = data.length -1;
-
-    // });
-
     $scope.inicio = function(){
 
         $rootScope.area = 6;
@@ -519,15 +512,18 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
             if ($scope.relacionesFol[0].referencia == null) {
                 
                 $scope.referencia = $scope.relacionesFol[0].ref_proveedor;
-                console.log($scope.relacionesFol[0].ref_proveedor);
+
 
             }else{
 
-                $scope.referencia = $scope.relacionesFol[0].referencia;
-                console.log($scope.relacionesFol[0].referencia);
+                $scope.referencia       = $scope.relacionesFol[0].referencia;
+                $scope.ejecutivo        = $scope.relacionesFol[0].ejecutivo;
+                $scope.celularEjecutivo = $scope.relacionesFol[0].celular;
+                $scope.correoEjecutivo  = $scope.relacionesFol[0].correo;
+
+
 
             }
-            console.log($scope.referencia);
 
             var suma = 0;
             var suma1 = 0;
@@ -561,27 +557,6 @@ function relacionCtrl($scope, $rootScope, find , loading,datos,$filter,$location
 
                 }
 
-                // if ($scope.detalles[i].tasa != ''){
-
-                //     var valor4 = $scope.detalles[i].tasa;
-                //     var numero4 = valor4.replace(",",'');
-                //     suma4 += parseFloat(numero4);
-                //     var sumas4 = suma4.toFixed(2);
-
-                //     $scope.totaltasa = sumas4;
-
-                // }
-
-                // if ($scope.detalles[i].retencion != ''){
-
-                //     var valor5 = $scope.detalles[i].retencion;
-                //     var numero5 = valor5.replace(",",'');
-                //     suma5 += parseFloat(numero5);
-                //     var sumas5 = suma5.toFixed(2);
-
-                //     $scope.totalretencion = sumas5;
-
-                // }
 
             }
 
@@ -906,7 +881,6 @@ $scope.eliminaxmlInd = function(idx){
 
 $scope.guardaRelacion = function(success){
 
-
     $scope.relaciones = {
 
         seleccionados : $scope.detalles,
@@ -1003,7 +977,6 @@ $scope.verificaReferencia = function(){
 
                     }
                 }); 
-
                 ////////// se verifica si tiene prefactura y si esta cancelada ///////
 
                 for (var i = 0; i < $scope.relaciones.seleccionados.length; i++) {
@@ -1013,7 +986,7 @@ $scope.verificaReferencia = function(){
                         if (data.cancelado == 'S'){
 
                             $('#btnguardar').hide();
-                            $scope.mensaje1 = "Verifica tus Prefacturas Asociadas, alguna esta cancelada en sistema PU";
+                            $scope.mensaje1 = "Verifica tu Prefactura"+ " " + data.prefactura + " " + "asociada al folio" + " " + data.folioMv + " " +"MV";
                             $scope.tipoalerta1 = 'alert-danger';
 
 

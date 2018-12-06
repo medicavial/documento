@@ -58,9 +58,35 @@
 
 <div ng-show="finrelacion">
 
-  <div class="titulos">
-	  <h1>{{tituloFinRelacion}}</h1><br>
-	  <strong><h3>{{ referencia }}_{{numreferencia}}</h3></strong>
+  <div class="row">
+
+    <div class="titulos">
+  	  <h1>{{tituloFinRelacion}}</h1><br>
+  	  <strong><h3>{{ referencia }}_{{numreferencia}}</h3></strong>
+
+    </div>
+    <div class="col-md-6">
+
+      <strong><label>Ejecutivo Asignado:<div class="text-danger">{{ejecutivo}}</div></label></strong>
+
+    </div>
+
+  </div>
+    <div class="row">
+
+    <div class="col-md-6">
+
+      <strong><label>Telefono:<div class="text-danger">{{celularEjecutivo}}</div></label></strong>
+
+
+    </div>
+    <div class="col-md-6">
+
+      <strong><label>Correo:<div class="text-danger">{{correoEjecutivo}}</div></label></strong>
+
+
+
+    </div>
 
   </div>
   <div class="row">

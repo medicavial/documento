@@ -879,6 +879,12 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     });
 
+    $routeProvider.when('/redmedica',{
+            templateUrl   : 'vistas/redmedica.html',
+            controller    : 'redmedicaCtrl'
+
+    });
+
     $routeProvider.when('/pagoPropias',{
             templateUrl   : 'vistas/pagoPropias.html',
             controller    : 'pagoPropiasCtrl'

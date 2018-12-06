@@ -1,0 +1,26 @@
+<div ng-init="inicio()" id="contenedor">
+	<div class="titulos">
+		<a href="#/" class="icon-arrow-left"></a>
+ 		<h1>{{tituloUni}}</h1>
+	</div>
+		<div class="row">
+			<div class="col-md-12">
+				<fieldset>
+					<legend>Busqueda</legend>
+					<div class="row">
+						<div class="col-md-8">
+							<div class="input-group">
+								<div class="input-group-addon">
+							        <i class="glyphicon glyphicon-search"></i>
+							    </div>
+								<input type="text" ng-model="criterio" ng-change="filtra()" class="form-control" capitalize placeholder="Buscar"/>
+							</div>
+						</div>
+					</div>
+				</fieldset>
+			</div>
+		</div>
+
+		<div class="gridStyle" ng-grid="gridOptions"></div>
+		<br>
+</div>

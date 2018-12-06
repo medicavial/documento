@@ -1,0 +1,85 @@
+<div id="contenedor"  ng-init="inicio()">
+    <div class="titulos">
+        <a href="#/" class="icon-arrow-left"></a>
+        <h1>{{titulo}}</h1>
+    </div>
+
+    <legend></legend>
+
+    <div class="panel panel-primary">
+
+	      <div class="panel-heading">  <!-- Heading panel -->
+	          <h4> Sube tu Directorio </h4>   
+	        
+	      </div> <!-- Fin Heading panel -->  <!--inicia el formulario, se declara nuestra funcion de el submit para realizar busqueda-->
+		  <div class="row" >
+				<div class="col-md-4">
+				<br>
+
+                <input class="btn btn-primary" type="file" webkitdirectory directory ng-file-select="subeXML($files)" multiple />
+
+				</div>
+			  	<div class="col-md-8"><br>
+
+				<div class="row">
+
+				    <div class="col-md-4">
+						<button type="button" id="edicion" ng-click="valida()" ng-disabled="formAut.$invalid" class="btn btn-primary btn-lg btn-block glyphicon glyphicon-floppy-disk"> Procesar </button>
+						<br>
+					</div>
+
+				  	<div id="btnexport" class="col-md-3">
+
+				  	   <excel info="complemento"></excel>
+				  	   
+				    </div>
+						  	
+				</div>
+
+			  	</div>
+
+		  </div><br>
+		  <legend></legend>
+		  <div class="row">
+
+		  	<div class="col-md-12">
+
+		  	  <div ng-show="mensaje" class="alert  animate-show text-center" ng-class="tipoalerta"><strong><h3>{{mensaje}} </h3></strong></div>
+
+		  	</div>
+		  	
+		  </div><br><br>
+
+		  <div class="row">
+
+			  	<div class="col-md-4">
+			  	</div>
+		  	
+				<div id="cargador" class="col-md-4">
+					<div class="loading-container"  >
+						    <div class="loading"></div>
+						    <div id="loading-text">Cargando</div>
+					</div>
+				</div>
+			  	<div class="col-md-4">
+
+			  	</div>
+		  </div>
+  		  <div class="row padding text-center">
+  		  	<div class="col-md-4">
+  		  	</div>
+			<div class="col-md-4">
+				<a href="" ng-click="borratemporales()" class="btn btn-default btn-lg btn-block glyphicon glyphicon-book"> Limpiar</a>
+				<br>
+			</div>
+			<div class="col-md-4">
+  		  	</div>
+
+		  </div>
+
+		  <legend class="text-primary"></legend>
+
+    </div>
+
+   
+</div>
