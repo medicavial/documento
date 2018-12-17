@@ -3,31 +3,35 @@ function buscaFacturaCtrl($scope, $rootScope, find ,loading,$filter,$location,$h
     $scope.inicio = function(){
 
         $scope.tituloR = "Busqueda de Facturas";
-
-
         $scope.busqueda = {
 
             foliofiscal:'',
-            foliomv: ''
-
+            foliomv: '',
+            prefactura: ''
 
         }
-
     }
 
-    $scope.buscar = function(){
 
-        console.log($scope.busqueda);
+
+
+    $scope.buscar = function(){
 
     	$http.post(api+'consulta/buscaFolioFiscal',$scope.busqueda)
         .success( function (data){
 
-            $scope.accion = true;
-            $scope.resultados = data;
+            if (data.length == 0) {
 
-        	
+                $scope.mensaje = 'No hubo coincidencia en Sistema';
+                $scope.tipoalerta = 'alert-warning';
+
+            }else{
+
+                $scope.accion = true;
+                $scope.resultados = data;
+            }
+
 		});
-
     }
 
     $scope.limpiar = function(){

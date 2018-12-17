@@ -11,27 +11,38 @@
 
         </div>
         <div class="row">
-              <div class="col-md-6">
+
+              <div class="col-md-4">
                     <label> Folio Fiscal </label>
                     <input type="text" ng-model="busqueda.foliofiscal" class="form-control" >
 
               </div>
+
               <div class="col-md-4">
                     <label> FolioMV </label>
                     <input type="text" ng-model="busqueda.foliomv" class="form-control" >
 
               </div>
+
+              <div class="col-md-4">
+                    <label> Prefactura </label>
+                    <input type="text" ng-model="busqueda.prefactura" class="form-control" mayusculas>
+
+              </div>
+        <div class="row">
               <div class="col-md-3">
                 <br>
                 <button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="buscar()">   Buscar </button>
               </div>
               <div class="col-md-3">
                 <br>
-                <button type="submit" class="btn btn-default btn-lg btn-block" ng-click="limpiar()">   Buscar </button>
+                <button type="submit" class="btn btn-default btn-lg btn-block" ng-click="limpiar()">   Limpiar </button>
               </div>
         </div><br>
 
         <LEGEND style="color:#64A8C2">Resultados:</LEGEND>
+
+        <div ng-show="mensaje " class="alert alert-warning animate-show text-center">{{mensaje}}</div> 
 
         <div class="row">
 
@@ -55,10 +66,16 @@
                   Etapa: <strong>{{ dato.etapa }}</strong> //  Entrega:<strong>{{ dato.entrega }}</strong> //  Tipo Factura: <strong>{{ dato.tipofactura }}</strong>
                 </div>
 
+                <div class="wish-display resultado">
+                  Prefactura: <strong>{{ dato.prefactura }}</strong>
+                </div>
+
               </div>
             </div>
           
         </div>
+
+
 
 
 
