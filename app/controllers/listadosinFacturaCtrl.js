@@ -88,7 +88,8 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
             impuesto: '',
             tasa: '',
             usuarioentrega: '',
-            prefactura: ''
+            prefactura: '',
+            deducible: ''
 
         }
 
@@ -194,7 +195,6 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
             var mm1 = suma1.toFixed(2);
             $scope.PagoG.TotalS = mm1;
 
-
         }
 
     }
@@ -267,8 +267,9 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
                     { field:'Folio',  displayName:'Folio', width: 150, cellTemplate: '<label class="btn btn-primary" ng-disabled="subeFactInd != 1 || selectos.length == 0">Sube Factura <input type="file" style="display: none;" ng-file-select="subeXMLInd(row,row.rowIndex,$files)"></label>'},
                     { field:'foliofiscal', displayName:'Folio Fiscal', width: 200 },
                     { field:'total', displayName:'Total', width: 120 },
+                    { field:'deducible', displayName:'Deducible', width: 120, enableCellEdit : true },
                     { field:'prefactura', displayName:'Prefactura', width: 120, enableCellEdit : true },
-                    { field:'Reserva', displayName:'Reserva', width: 120 }, 
+                    { field:'Reserva', displayName:'Reserva', width: 120 },
                     { field:'DOC_folio', displayName:'Folio', width: 120},
                     { field:'FLD_etapa', displayName:'Etapa', width: 120 },
                     { field:'FLD_numeroEntrega', displayName:'Entrega', width: 100},
@@ -285,7 +286,8 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
                     { field:'ARO_porRecibir', width: 100, visible:false },
                     { field:'FLD_AROent', width: 100, visible:false },
                     { field:'USU_ent', width: 100, visible:false },
-                    { field:'UNI_claveint', displayName:'claveunidad',width: 100}
+                    { field:'UNI_claveint', displayName:'claveunidad',width: 100},
+                    { field:'rfcemisor', displayName:'rfcemisor',width: 100, visible:false}
 
         ]
     };
@@ -839,8 +841,7 @@ $scope.subeXML = function($files){
 
 
                             }else{
-
-
+                                
                                 $scope.PagoG.serie = courses.comprobante._serie;
                                 $scope.PagoG.foliointerno = courses.comprobante._folio;
 
@@ -952,6 +953,8 @@ $scope.subeXML = function($files){
                alert('La extensión debe ser xml');
         }
 }
+
+
 
 $scope.enviaOrdenPagoGlo = function(){
 
@@ -1208,6 +1211,18 @@ console.log($files);
 
                                   }
                             });
+
+                           // console.log(row.entity.claveunidad);
+                           // console.log(courses.comprobante.emisor._rfc);
+
+                           if (row.entity.rfcemisor != courses.comprobante.emisor._rfc){
+
+
+                                swal('Upss','Tu Factura no coincide con el Emisor','error');
+
+
+                            }else{
+
                                 if ((courses.comprobante._fecha >= '2018-01-01') && (courses.comprobante._version != '3.3')){
 
 
@@ -1277,6 +1292,8 @@ console.log($files);
 
 
                                 }
+
+                        }
                                 
                                 
 
