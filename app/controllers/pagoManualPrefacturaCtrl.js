@@ -1,4 +1,4 @@
-function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,checkFolios,api, find, $upload, leexml, PagoManual){
+function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,$http,checkFolios,api, find, $upload, leexml, PagoManual){
 
     loading.despedida();
 
@@ -6,7 +6,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
         // $scope.buscaProveedores ={};
         $rootScope.area = 6;
-        $scope.tituloPM = "Orden Manual";
+        $scope.tituloPM = "Pagos Manuales";
         $scope.listadoPre();
         $scope.tipoTramite();
         $scope.buscaProveedores();
@@ -14,8 +14,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
         $scope.Pagos = [];
         $scope.PagosM = [];
         $scope.eliminaxml();
-        $scope.envia = true;
-        $scope.agrega = true;
+        $scope.enviaI = true;
         $scope.enviaPG = true;
 
 
@@ -273,24 +272,11 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
     $scope.verificaLesionado = function(){
 
-        if ($scope.PagoI.folio == '') {
+        find.verificaLesionado($scope.PagoI.folio).success( function (data) {
 
-            find.verificaLesionado($scope.PagoM.folio).success( function (data) {
+            $scope.nombreLesionado = data[0].lesionado;
 
-                $scope.nombreLesionado = data[0].lesionado;
-
-            });
-
-        }else{
-
-            find.verificaLesionado($scope.PagoI.folio).success( function (data) {
-
-                $scope.nombreLesionado = data[0].lesionado;
-
-            });
-
-        }
-
+        });
 
     }
 
@@ -310,12 +296,6 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                 data: $scope.PagoM,
                 file: file // or list of files ($files) for html5 only
         }).success(function (data){
-
-            if ($scope.PagoM.proveedor == '' && $scope.PagoM.unidad == '') {
-
-                swal('Error','Selecciona Unidad o Proveedor','error');
-
-            }
 
             if ($scope.PagoM.proveedor == '' || $scope.PagoM.proveedor == undefined){
 
@@ -549,7 +529,8 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                                 // $scope.PagoM.folio = data.Folios;
                                 $scope.PagoM.tipoorden = 4;
                                 $scope.btndelete = true;
-                                $scope.enviaPG = false;
+                                $scope.enviaPG =  false;
+
 
 
 
@@ -693,10 +674,10 @@ $scope.delete = function(index){
 
     $scope.Pagos.splice(index,1);
 
-
 };
 
 $scope.addRow = function(){
+
 
     if ($scope.PagoM.folio == '') {
 
@@ -774,9 +755,6 @@ $scope.eliminaxml = function(){
       $scope.PagoM.total = '';
       $scope.PagoM.fechaemision = '';
 
-      $scope.totalPago =  $scope.totalPago -  $scope.totalPago;
-      $scope.subtotalPago =  $scope.subtotalPago -  $scope.subtotalPago;
-
       $scope.PagoI.foliointerno = '';
       $scope.PagoI.serie = '';
       $scope.PagoI.foliofiscal = '';
@@ -786,8 +764,8 @@ $scope.eliminaxml = function(){
       $scope.PagoI.tasa = '';
       $scope.PagoI.total = '';
       $scope.PagoI.fechaemision = '';
-
-      $scope.envia = true;
+      $scope.enviaI = true;
+      $scope.enviaPG = true;
 
 
 
@@ -818,11 +796,12 @@ $scope.subeXMLInd = function($files){
                 file: file // or list of files ($files) for html5 only
         }).success(function (data){
 
-            if ($scope.PagoI.proveedor == '' && $scope.PagoI.unidad == '') {
+                if ($scope.PagoI.proveedor == '' && $scope.PagoI.unidad == '') {
 
-                swal('Error','Selecciona Unidad o Proveedor','error');
+                    swal('Error','Selecciona Unidad o Proveedor','error');
 
-            }
+                }
+
 
             if ($scope.PagoI.proveedor == '') {
 
@@ -835,8 +814,6 @@ $scope.subeXMLInd = function($files){
                 var courses =  x2js.json2xml_str($.parseJSON(prueba));
                 courses  = x2js.xml_str2json(courses);
                 // console.log(prueba);
-                console.log(courses);
-
 
                 PagoManual.consultaFolioFiscal(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
                     if (data[0].count != 0){
@@ -928,7 +905,7 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.usuarioentrega = Number($rootScope.id);
                                 $scope.PagoI.tipoorden = 4;
                                 $scope.btndelete = true;
-                                $scope.envia = false;
+                                $scope.enviaI = false;
 
                             }
 
@@ -1067,7 +1044,7 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.usuarioentrega = Number($rootScope.id);
                                 $scope.PagoI.tipoorden = 4;
                                 $scope.btndelete = true;
-                                $scope.envia = false;
+                                $scope.enviaI = false;
 
 
 
@@ -1089,14 +1066,12 @@ $scope.subeXMLInd = function($files){
 
                     }
 
-
                 });
 
 
 
             });
 }
-
 
                 $scope.archivos = data.ruta;
 
@@ -1290,5 +1265,5 @@ $scope.enviaOrdenPagoInd = function(){
 
 }
 
-pagoManualCtrl.$inject = ['$scope', '$rootScope',  'loading','$filter','$location','$http','checkFolios','api','find', '$upload', 'leexml', 'PagoManual'];
-app.controller('pagoManualCtrl',pagoManualCtrl);
+pagoManualPrefacturaCtrl.$inject = ['$scope', '$rootScope',  'loading','$filter','$location','$http','checkFolios','api','find', '$upload', 'leexml', 'PagoManual'];
+app.controller('pagoManualPrefacturaCtrl',pagoManualPrefacturaCtrl);

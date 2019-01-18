@@ -18,8 +18,8 @@
 	        <a href="#/listadoManual">
 	            <span class="icon-list"></span>
 	        </a>
-	    </li>
- -->
+	    </li> -->
+
 <!-- 	    <li class="rb-span-1" id="color3">
 	        <h3> Nota de Credito </h3>
 	        <a href="#/notaCredito">
@@ -51,6 +51,7 @@
 
            </div>
         </div>
+
     </div>
 
     <legend></legend>
@@ -73,7 +74,18 @@
 				</select>
 			</div>
 
+
 	    </div><br>
+	    <div class="row">
+            <h5 class="text-danger"><strong>*** Selecciona prefactura *** </strong></h5>
+
+		</div>
+
+		<div class="row" >
+
+			<div class="gridStyle3" ng-grid="gridOptions"></div>
+			
+		</div><br>
 
 		<div class="row">
             <h4 class="text-success"><strong>*** Nombre del Lesionado:  {{ nombreLesionado }}  </strong></h4>
@@ -124,6 +136,7 @@
 
 		    <div class="form-group">
                 <h5 class="text-danger"><strong>*** Tipo de Deducible ***</strong></h5>
+                <h6 class="text-danger"><strong>*** NOTA: Debes seleccionar el tipo de deducible ***</strong></h6>
                <div class="col-sm-12">
                   <label class="radio-inline c-radio">
                      <input id="deducible1" type="radio" name="i-radio1" ng-model="PagoI.tipoDeducible" value="1" checked>
@@ -249,7 +262,7 @@
 
 		   <div class="col-md-3">
 
-				<button type="button" ng-disabled="envia" ng-click="enviaOrdenPagoInd()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-arrow-right"> Enviar </button>
+				<button type="button" ng-disabled="enviaI"  ng-click="enviaOrdenPagoInd()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-arrow-right"> Enviar </button>
 			</div>
 			
 		</div>
@@ -274,19 +287,21 @@
 				</select>
 			</div>
 
-			
 	    </div><br>
-	    <br>
 
 	    <div class="row">
-            <h4 class="text-success"><strong>*** Nombre del Lesionado:  {{ nombreLesionado }}  </strong></h4>
+            <h5 class="text-danger"><strong>*** Selecciona prefactura *** </strong></h5>
 
 		</div>
 
+		<div class="gridStyle3" ng-grid="gridOptions"></div>
+			
+
+	    <br>
 	    <div class="row">
 	    	<div class="col-md-2">
 					<label>Folio</label>
-					<input type="text" ng-model="PagoM.folio" class="form-control" folio ng-change="verificaLesionado()" >
+					<input type="text" ng-model="PagoM.folio" class="form-control" folio>
 			</div>
 
 			<div class="col-md-2">
@@ -350,6 +365,7 @@
 					<input type="text" ng-model="PagoM.TotalF" class="form-control" disabled>
 			</div>
 	    </div>
+
 	    <div class="row">
 			<div class="col-md-12">
 			
@@ -358,25 +374,13 @@
 				
 			</div>
 		</div><br>
-        <br>
-	    <div class="row">
+		<div class="row">
 		    <div class="col-md-3">
 
-				<button type="button" ng-click="addRow()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-plus"> Agrega O.P </button>
+				<button type="button" ng-hide="edicion" ng-click="addRow()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-plus"> Agrega Pago </button>
 			</div>
 		</div>
 
-
-		<br>
-<!--         <div class="row">
-        	<div class="col-md-2">
-
-	        	<button type="button" ng-hide="edicion" ng-click="limpiaTabla()"  class="btn btn-danger btn-lg btn-block glyphicon glyphicon-trash"> Limpiar 
-	        	</button>
-
-            </div>
-
-        </div> -->
 
 	    <div class="col-md-12">
 
@@ -385,6 +389,7 @@
 					<table class="table">
 					    <thead>
 					        <tr>
+					            <th>Unidad</th>
 					            <th>Folio</th>
 					            <th>Etapa</th>
 					            <th>Entrega</th>
@@ -396,6 +401,7 @@
 					    <tbody>
         					<tr ng-repeat="Pago in Pagos">
 
+					            <td>{{ Pago.unidad}}</td>
 					            <td>{{ Pago.folio}}</td>
 					            <td>{{ Pago.etapa}}</td>
 					            <td>{{ Pago.entrega}}</td>
@@ -407,7 +413,7 @@
 					        </tr>
 					        <tr>
 
-					            
+					            <td></td>
 					            <td></td>
 					            <td></td>
 					            <td><STRONG>TOTAL:</STRONG></td>
