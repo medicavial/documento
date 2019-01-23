@@ -1013,11 +1013,6 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     });
 
-    $routeProvider.when('/listadoComplementos',{
-            templateUrl: 'vistas/listadoComplementos.html',
-            controller: 'listadoComplementosCtrl'
-    });
-
     $routeProvider.when('/guardaArchivos',{
             templateUrl: 'vistas/guardaArchivos.html',
             controller: 'guardaArchivosCtrl'
