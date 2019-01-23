@@ -1,6 +1,8 @@
-function complementoCtrl($scope, $rootScope, find ,loading,$filter,$location,$http,checkFolios,api,complementos, $upload, leexml){
+function complementoCtrl($scope, $rootScope, find ,loading,$filter,$location,$http,checkFolios,api,complementos, $upload, leexml, relaciones){
 
     $scope.inicio = function(){
+
+
 
         $scope.titulo = "Factura de Recepción de Pago";
 
@@ -8,15 +10,20 @@ function complementoCtrl($scope, $rootScope, find ,loading,$filter,$location,$ht
         $scope.listadoArchivos= [];
         $scope.archivo = [];
         $scope.borratemporales();
+        $scope.borratemporales3();
         $("#cargador").hide();
         $("#btnvalidar").hide();
         $("#btndescarga").hide();
+        $("#btndescargaXLS").hide();
         $scope.eliminatxt();
         $scope.numNoprocesado = 0;
         $scope.numArchivos = 0;
         $scope.complemento = [];
         $scope.doctorelacionado = [];
-
+        $scope.ruta = [];
+        $scope.conteoPago = 0;
+        $scope.conteoIngreso = 0;
+        $scope.conteoEgreso = 0;
 
             $scope.complementoP = {
 
@@ -29,29 +36,42 @@ function complementoCtrl($scope, $rootScope, find ,loading,$filter,$location,$ht
                 fechaEmision: '',
                 rfcEmisor: '',
                 facturasRel: '',
-                nombreEmisor: ''
+                nombreEmisor: '',
+                serie: '',
+                folio: '',
+                metodoPago: ''
             }
 
     }
 
+
 $scope.subeXML = function($files){
+
+        $scope.borratemporales();
+        $scope.borratemporales3();
+        $scope.archivo = 0;
 
         $("#cargador").hide();
         $("#btnvalidar").hide();
-        $("#btndescarga").hide(); 
+        $("#btndescarga").hide();
+        $("#btndescargaXLS").hide(); 
 
         $scope.eliminatxt();
         $scope.numNoprocesado = 0;
         $scope.numArchivos = 0;
-
+        var a = 0;
 
     setInterval($("#cargador").show(),90000);
 
     var aux = $files[0].name.split('.');
 
-    if(aux[aux .length-1] == 'xml' || aux[aux .length-1] == 'XML'){
+    var otrosArchivos = 0;
+
 
         for (var i = 0; i < $files.length; i++){
+
+            if(aux[aux .length-1] == 'xml' || aux[aux .length-1] == 'XML'){
+
 
                 var file = $files[i];
                 var amt = 0;
@@ -63,49 +83,87 @@ $scope.subeXML = function($files){
                 file: file // or list of files ($files) for html5 only
                 }).success(function (data){
 
-                    $scope.archivo = data.archivo;
-                    $("#cargador").hide();
-                    $("#btnvalidar").show();
+                if (i == $files.length){
 
-                    $scope.mensaje = "Tus"+ " "+ data.numArch+ " " +"archivos solo fueron almacenados temporalmente, Aun no son Procesados.";
-                    $scope.tipoalerta = 'alert-success';
+                        $scope.archivo = data.archivo;
+                        $scope.ruta    =data.ruta;
+                        $("#cargador").hide();
+                        $("#btnvalidar").show();
+
+                        // $scope.mensaje = "Tus"+ " "+ data.numArch+ " " +"archivos solo fueron almacenados temporalmente, Aun no son Procesados.";
+                        // $scope.tipoalerta = 'alert-success';
+
+                    if (data.numArch == $files) {
+
+                        $("#cargador").hide();
+                        $("#btnvalidar").show();
+                    };
+
+                }
 
                 });
 
-        }
-       
-    }else{
+            }else{
 
-        $scope.mensaje = "Verifica que tu carpeta contenga solo archivos XML.";
-        $scope.tipoalerta = 'alert-danger';
-        $scope.borratemporales();
-        $("#cargador").hide();
-    }
+                $scope.mensaje = "Verifica que tu carpeta contenga solo archivos XML.";
+                $scope.tipoalerta = 'alert-danger';
+                $scope.borratemporales();
+                $("#cargador").hide();
+
+                a= a +1;
+                $scope.numNoprocesado = a;
+            }
+
+        }
 }
+
+
+//////////////////////// SE EMPIEZA A VALIDAR EL XML DE EGRESO ///////////////////////////////
 
 $scope.valida = function(archivo){
 
        setInterval($("#cargador").show(),90000);
        var archivo = $scope.archivo;
+       var rutaArchivo    = $scope.ruta;
        var a = 0;
        var e = 0;
-
+       var excel = [];
+       // var numArchivos;
        for (var i = 0; i < archivo.length; i++) {
+
+           var conteo = 0;
+           var conteoPago = 1;
+           var conteoIngreso = 1;
+           var conteoNotaCred = 0;
+           var conteoEgreso = 0;
+           var otros = 0;
 
 
        leexml.getxmltemporal($rootScope.user,archivo[i]).success(function(data){
+            conteo = conteo +1;
 
             var xml = JSON.stringify(x2js.xml_str2json(data));
             var prueba = xml.replace(/"([^"]+)":/g,function($0,$1){return ('"'+$1.toLowerCase()+'":');});
             var courses =  x2js.json2xml_str($.parseJSON(prueba));
             courses  = x2js.xml_str2json(courses);
+
+            numArchivos = archivo[conteo-1];
                     
             var ruta = api+'Complementos/insertaComplemento';
+
+            ////// REVISO QUE NO SE DUPLIQUE FOLIO FISCAL DE COMPLEMENTOS ////////////////////////////////
+
+                find.consultaFolioFiscal(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
+                    if (data[0].count != 0){
+
+                        swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
+
+                    }
+                });
 
             if(courses.comprobante == undefined){
                 e= e +1;
                 $scope.numNoprocesado = e;
-
 
             }else if(courses.comprobante.complemento == undefined){
 
@@ -130,108 +188,130 @@ $scope.valida = function(archivo){
                         $scope.tipoalerta = 'alert-danger';
 
                     });
-
             }
 
             if (courses.comprobante._tipodecomprobante == 'P'){
 
+                $scope.conteoPago = conteoPago ++;
                 if(courses.comprobante._tipodecomprobante == undefined){
-
                   $scope.complementoP.tipoComprobante =  '';
-
-
                 }else{
-
                   $scope.complementoP.tipoComprobante =  courses.comprobante._tipodecomprobante;
-
                 }
 
 
                 if (courses.comprobante.complemento.timbrefiscaldigital._uuid == undefined) {
-
                   $scope.complementoP.folioFiscal =  '';
-
                 }else{
-
                   $scope.complementoP.folioFiscal =  courses.comprobante.complemento.timbrefiscaldigital._uuid;
-
-                }
-
-                if (courses.comprobante.complemento.pagos == undefined) {
-
-                  $scope.complementoP.monto =  courses.comprobante._total;
-
-                }else{
-
-                  $scope.complementoP.monto =  courses.comprobante.complemento.pagos.pago._monto;
-
                 }
 
                 if (courses.comprobante._fecha == undefined) {
-
                   $scope.complementoP.fechaEmision =  '';
-
                 }else{
-
                   $scope.complementoP.fechaEmision =  courses.comprobante._fecha;
-
                 }
+
+                $scope.complementoP.folio      =  courses.comprobante._folio;
+                $scope.complementoP.serie      =  courses.comprobante._serie;
+                $scope.complementoP.metodoPago =  courses.comprobante._metodopago;
+                $scope.complementoP.subtotal   =  courses.comprobante._subtotal;
+                $scope.complementoP.monto      =  courses.comprobante._total;
+
 
                 $scope.complementoP.rfcEmisor =  courses.comprobante.emisor._rfc;
                 $scope.complementoP.nombreEmisor =  courses.comprobante.emisor._nombre;
-
                 $scope.doctorelacionado = courses.comprobante.complemento.pagos.pago.doctorelacionado;
+                find.moverArchPago($rootScope.user, 'P' ,{file:numArchivos}).success(function (data){
+
+                });
 
 
             }else if(courses.comprobante._tipodecomprobante == 'I' || courses.comprobante._tipodecomprobante == 'ingreso'){
-
-
+               
+               $scope.conteoIngreso = conteoIngreso ++;
                 if(courses.comprobante._tipodecomprobante == undefined){
-
                   $scope.complementoP.tipoComprobante =  '';
-
-
                 }else{
-
                   $scope.complementoP.tipoComprobante =  courses.comprobante._tipodecomprobante;
-
                 }
 
 
                 if (courses.comprobante.complemento.timbrefiscaldigital._uuid == undefined) {
-
                   $scope.complementoP.folioFiscal =  '';
-
                 }else{
-
                   $scope.complementoP.folioFiscal =  courses.comprobante.complemento.timbrefiscaldigital._uuid;
-
                 }
-
-                if (courses.comprobante.complemento.pagos == undefined) {
-
+                  $scope.complementoP.subtotal =  courses.comprobante._subtotal;
                   $scope.complementoP.monto =  courses.comprobante._total;
 
-                }else{
-
-                  $scope.complementoP.monto =  courses.comprobante.complemento.pagos.pago._monto;
-
-                }
 
                 if (courses.comprobante._fecha == undefined) {
-
                   $scope.complementoP.fechaEmision =  '';
-
                 }else{
-
                   $scope.complementoP.fechaEmision =  courses.comprobante._fecha;
-
                 }
+                $scope.complementoP.folio      =  courses.comprobante._folio;
+                $scope.complementoP.serie      =  courses.comprobante._serie;
+                $scope.complementoP.metodoPago =  courses.comprobante._metodopago;
+                $scope.complementoP.descuento =  courses.comprobante._descuento;
+
 
                 $scope.complementoP.rfcEmisor =  courses.comprobante.emisor._rfc;
+                find.moverArchPago($rootScope.user, 'I' ,{file:numArchivos}).success(function (data){
 
+                });
 
             }
+
+            // }else if(courses.comprobante._tipodecomprobante == 'E' || courses.comprobante._tipodecomprobante == 'Egreso'){
+               
+            //    $scope.conteoEgreso = conteoEgreso ++;
+
+            //     if(courses.comprobante._tipodecomprobante == undefined){
+            //       $scope.complementoP.tipoComprobante =  '';
+            //     }else{
+            //       $scope.complementoP.tipoComprobante =  courses.comprobante._tipodecomprobante;
+            //     }
+
+
+            //     if (courses.comprobante.complemento.timbrefiscaldigital._uuid == undefined) {
+            //       $scope.complementoP.folioFiscal =  '';
+            //     }else{
+            //       $scope.complementoP.folioFiscal =  courses.comprobante.complemento.timbrefiscaldigital._uuid;
+            //     }
+
+            //     $scope.complementoP.subtotal   =  courses.comprobante._subtotal;
+            //     $scope.complementoP.monto      =  courses.comprobante._total;
+            //     $scope.complementoP.metodoPago =  courses.comprobante._metodopago;
+            //     $scope.complementoP.folio      =  courses.comprobante._folio;
+            //     $scope.complementoP.serie      =  courses.comprobante._serie;
+                
+
+            //     if (courses.comprobante._fecha == undefined) {
+            //       $scope.complementoP.fechaEmision =  '';
+            //     }else{
+            //       $scope.complementoP.fechaEmision =  courses.comprobante._fecha;
+            //     }
+
+            //     $scope.complementoP.rfcEmisor =  courses.comprobante.emisor._rfc;
+            //     $scope.doctorelacionado = courses.comprobante.cfdirelacionados.cfdirelacionado;
+
+            //     find.moverArchPago($rootScope.user, 'E' ,{file:numArchivos}).success(function (data){
+
+            //     });
+
+            // }
+
+            // excel.push({tipocomprobante: $scope.complementoP.tipoComprobante,
+            //      foliofiscal: $scope.complementoP.folioFiscal,
+            //      monto: $scope.complementoP.monto,
+            //      fechaemision: $scope.complementoP.fechaEmision,
+            //      nombreemision: $scope.complementoP.nombreEmisor,
+            //      doctorelacionado: $scope.doctorelacionado
+
+
+            //  });
 
             $scope.complemento = {
 
@@ -248,14 +328,15 @@ $scope.valida = function(archivo){
                     
                     $("#btndescarga").show();
                     $("#cargador").hide();
+                    $("#btndescargaXLS").show();
                     $scope.numArchivos = a;
-                    $scope.borratemporales();
+                    // $scope.borratemporales();
 
 
                 }).error( function (data){
 
-                    a= a +1;
-                    $scope.numNoprocesado = a;
+                    // a= a +1;
+                    // $scope.numNoprocesado = a;
                     $scope.mensaje1 = "Hubo un error de conexión, Verificalo con el Area de Sistemas";
                     $scope.tipoalerta = 'alert-danger';
 
@@ -271,17 +352,24 @@ $scope.valida = function(archivo){
         }).error( function (xhr,status,data){
 
                 alert('Ocurrio un error');
-                a= a +1;
-                $scope.numNoprocesado = a;
 
         });
 
-    }
+}
+
 }
 
 $scope.borratemporales = function(){
 
   find.borratemporales($rootScope.user).success(function (data){
+
+  });
+
+}
+
+$scope.borratemporales3 = function(){
+
+  find.borratemporales3($rootScope.user).success(function (data){
 
   });
 
@@ -302,7 +390,6 @@ $scope.descarga = function(){
         link.click();
         document.body.removeChild(link);
 
-
 }
 
 $scope.eliminatxt = function(){
@@ -313,10 +400,29 @@ $scope.eliminatxt = function(){
 
 }
 
+$scope.listadoComplemento = function(){
+
+    loading.cargando('Buscando Folio');
+
+    relaciones.listadoCom().success(function (data){
+        if(data){
+
+            $scope.listado = data;
+            $scope.cantidad = data.length -1;
+
+        }else{
+
+            loading.despedida();
+            $scope.listado = [];
+        }
+        loading.despedida();
+    });
+}
+
 };
 
 
-complementoCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading','$filter','$location','$http','checkFolios','api','complementos','$upload', 'leexml'];
+complementoCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading','$filter','$location','$http','checkFolios','api','complementos','$upload', 'leexml', 'relaciones'];
 // flujoPagosCtrl.$inject = ['$scope','$rootScope', 'find','loading', '$http', 'api','datos','$filter'];
 
 app.controller('complementoCtrl',complementoCtrl);

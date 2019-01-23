@@ -313,6 +313,7 @@ function listadoPagosCtrl($scope, $rootScope, find , loading){
     }
 
     $scope.buscaPagos = function(){
+
             loading.cargando('Buscando Factura(s)');
 						console.log($scope.datos);
             find.listadoPagos($scope.datos).success(function (data){
@@ -358,7 +359,10 @@ function listadoPagosCtrl($scope, $rootScope, find , loading){
 								{ field:'EXP_PagadoRelacionET1', displayName:'Pagado Relación', width: 130 },
 								{ field:'EXP_PagadoFechaRelacionET1', displayName:'Pagado Fecha Relación', width: 130, visible:true },
 								{ field:'Transf', displayName:'Transferencia', width: 130, visible:true },
-                                { field:'foliofiscal', displayName:'Folio Fiscal', width: 130, visible:true }
+                                { field:'foliofiscal', displayName:'Folio Fiscal', width: 130, visible:true },
+                                { field:'metodo_pago', displayName:'Metodo Pago', width: 130, visible:true },
+                                { field:'fecha_emision', displayName:'Fecha Emision', width: 130, visible:true },
+                                { field:'requerido', displayName:'Requiere Rep', width: 130, visible:true }
         ],
         showFooter: true,
         showFilter:true

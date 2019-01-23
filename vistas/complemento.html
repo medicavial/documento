@@ -45,6 +45,47 @@
 
 				</div>
 
+<!-- 				<div class="col-md-2" id="btndescargaXLS">
+					<button ng-json-export-excel data="listado"
+						report-fields="{
+										'CMI_foliofiscal':	'FOLIO FISCAL I',
+										'CMI_rfcEmisor': 'RFC I',
+										'CMI_tipocomprobante': 'TIPO COMPROBANTE I',	
+										'CMI_metodopago': 'METODO PAGO I',
+										'CMI_folio': 'FOLIO  I',	
+										'CMI_serie': 'SERIE FISCAL I',	
+										'CMI_subtotal':	'SUBTOTAL I',
+										'CMI_monto': 'MONTO I',	
+										'CMI_fechaEmision': 'FECHA EMISION I',	
+										'CMI_fechareg':	'FECHA REGISTRO I',
+										'CME_foliofiscal':	'FOLIO FISCAL E',
+										'CME_rfcEmisor': 'RFC E',	
+										'CME_tipocomprobante': 'TIPO COMPROBANTE E',	
+										'CME_metodopago': 'METODO PAGO E',	
+										'CME_folio': 'FOLIO E',	
+										'CME_serie': 'SERIE E',	
+										'CME_subtotal':	'SUBTOTAL E',
+										'CME_monto': 'MONTO E',	
+										'CME_fechaEmision': 'FECHA EMISION E',	
+										'CME_fechareg':	'FECHA REGISTRO E', 
+										'DEC_foliofiscal': 'FOLIO FISCAL P',
+										'DEC_impPagado': 'FOLIO FISCAL P',	
+										'DEC_saldoAnte': 'SALDO ANTERIOR P',	
+										'DEC_saldoInsoluto': 'SALDO INSOLUTO P',	 
+										'DEC_metodoPago': 'METODO PAGO P',	
+										'DEC_moneda': 'MONEDA P',	
+										'DEC_numParcialidad': 'NUM PARCIALIDAD P',	
+										'DEC_serie': 'SERIE P',	
+										'DEC_folio': 'FOLIO P',	
+										'DEC_foliofiscalRel': 'FOLIO FISCAL REL I'
+
+						}"
+						filename =" 'ListadoComplementos' "
+						class="btn btn-lg btn-success"> Exportar
+				    </button>
+
+				</div> -->
+
 		  </div><br>
 
 		  <div class="row">
@@ -59,38 +100,59 @@
 
 		  <div class="row">
 
-		  	<div class="col-md-4">
+		  	<div class="col-md-2">
 		  	</div>
 
   		     <div class="col-md-2">
 		        <!-- START widget-->
-	           <div class="panel-body bg-primary text-center">
+	           <div class="panel-body bg-warning text-center">
 	            
-	            <a href="#/detalleGuia" class="text-white">
+	            <a href="" class="text-white">
 	              <em class="glyphicon glyphicon-ok-sign"></em></a>
-	            <p><strong> Procesados </strong></p>
-	            <p>{{ numArchivos }}</p>
+	            <p><strong> Pago </strong></p>
+	            <p>{{ conteoPago }}</p>
 
 	           </div>
 
 		     </div>
 
 		     <div class="col-md-2">
-		        <!-- START widget-->
+
 	           <div class="panel-body bg-primary text-center">
 	            
-	            <a href="#/detalleGuia" class="text-white">
+	            <a href="" class="text-white">
 	              <em class="glyphicon glyphicon-remove-sign"></em></a>
-	            <p><strong> Sin Proocesar </strong></p>
-	            <p>{{ numNoprocesado }}</p>
+	            <p><strong> Ingresos </strong></p>
+	            <p>{{ conteoIngreso }}</p>
+
+	           </div>
+
+		     </div>
+<!--
+		     <div class="col-md-2">
+
+	           <div class="panel-body bg-purple text-center">
+	            
+	            <a href="" class="text-white">
+	              <em class="glyphicon glyphicon-remove-sign"></em></a>
+	            <p><strong> Nota Cred </strong></p>
+	            <p>{{ conteoEgreso }}</p>
 
 	           </div>
 
 		     </div>
 
-		  	 <div class="col-md-4">
-		  	 </div>
+		  	 <div class="col-md-2">
+ 		       <div class="panel-body bg-danger text-center">
+	            
+		            <a href="" class="text-white">
+		              <em class="glyphicon glyphicon-remove-sign"></em></a>
+		            <p><strong> Otros </strong></p>
+		            <p>{{ numNoprocesado }}</p>
 
+	           </div>
+		  	 </div>
+-->
 
 		  </div>
 
