@@ -24,6 +24,7 @@ function complementoCtrl($scope, $rootScope, find ,loading,$filter,$location,$ht
         $scope.conteoPago = 0;
         $scope.conteoIngreso = 0;
         $scope.conteoEgreso = 0;
+        $("#mensajefolio").hide();
 
             $scope.complementoP = {
 
@@ -50,6 +51,9 @@ $scope.subeXML = function($files){
         $scope.borratemporales();
         $scope.borratemporales3();
         $scope.archivo = 0;
+        $scope.foliopagos = [];
+        $scope.folioingresos = [];
+       // var numArchivos;
 
         $("#cargador").hide();
         $("#btnvalidar").hide();
@@ -128,6 +132,8 @@ $scope.valida = function(archivo){
        var a = 0;
        var e = 0;
        var excel = [];
+       $scope.foliopagos = [];
+       $scope.folioingresos = [];
        // var numArchivos;
        for (var i = 0; i < archivo.length; i++) {
 
@@ -137,7 +143,6 @@ $scope.valida = function(archivo){
            var conteoNotaCred = 0;
            var conteoEgreso = 0;
            var otros = 0;
-
 
        leexml.getxmltemporal($rootScope.user,archivo[i]).success(function(data){
             conteo = conteo +1;
@@ -151,15 +156,25 @@ $scope.valida = function(archivo){
                     
             var ruta = api+'Complementos/insertaComplemento';
 
-            ////// REVISO QUE NO SE DUPLIQUE FOLIO FISCAL DE COMPLEMENTOS ////////////////////////////////
+            find.consultaFolioFiscalP(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
 
-                find.consultaFolioFiscal(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
-                    if (data[0].count != 0){
+                if (data.countPago != undefined && data.countPago != ''){
 
-                        swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
+                    $scope.foliopagos.push(data.folioPago);
+                    console.log($scope.foliopagos);
 
-                    }
-                });
+                }
+            });
+
+            find.consultaFolioFiscalI(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
+
+                if (data.countIngreso != undefined && data.countIngreso != ''){
+
+                    $scope.folioingresos.push(data.folioIngreso);
+                    console.log($scope.folioingresos);
+
+                }
+            });
 
             if(courses.comprobante == undefined){
                 e= e +1;
@@ -326,9 +341,7 @@ $scope.valida = function(archivo){
 
                     a= a +1;
                     
-                    $("#btndescarga").show();
                     $("#cargador").hide();
-                    $("#btndescargaXLS").show();
                     $scope.numArchivos = a;
                     // $scope.borratemporales();
 

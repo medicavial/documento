@@ -1,0 +1,220 @@
+<div ng-init="inicio()" id="contenedor">
+    <div class="titulos">
+        <a href="#/complemento" class="icon-arrow-left"></a>
+        <h1>{{titulo}}</h1>
+    </div>
+
+    <legend></legend>
+	<div class="row">
+		
+		<div class="col-md-6">
+
+				<label>Fecha Registro</label>
+				<div class="row">
+					<div class="col-md-6">
+						<input type="text" ng-model="datosRegistro.fechaini" class="form-control" id="fechainiReg" placeholder="inicial">
+					</div>
+					<div class="col-md-6">
+						<div class="input-group">
+							<input type="text" ng-model="datosRegistro.fechafin" class="form-control" id="fechafinReg" placeholder="Final">
+							<span class="input-group-btn">
+					        	<button class="btn btn-default" ng-disabled="datosRegistro.fechainiReg == ''|| datosRegistro.fechafinReg == '' " ng-click="listadoManual()" type="button"><i class="icon-search"></i></button>
+					      	</span>
+					    </div>
+					</div>
+				</div>
+
+		</div>
+		
+	</div>
+	<br>
+	
+	<div class="row">
+		<div class="col-md-2">
+				<select class="form-control"  ng-model="unidad" ng-change="filtra()" ng-options="unidad.id as unidad.nombre for unidad in unidades">
+					<option value="">Unidad</option>
+				</select>
+		</div>
+		<div class="col-md-2">
+			<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
+		</div>
+
+	</div>
+	<br>
+
+	<div class="gridStyle" ng-grid="gridOptions"></div>
+	<br>
+
+	<div class="row">
+		<div class="col-md-2">
+	<button ng-json-export-excel data="listado"
+		report-fields="{
+						'CMI_foliofiscal':	'FOLIO FISCAL I',
+						'CMI_rfcEmisor': 'RFC I',
+						'CMI_tipocomprobante': 'TIPO COMPROBANTE I',	
+						'CMI_metodopago': 'METODO PAGO I',
+						'CMI_folio': 'FOLIO  I',	
+						'CMI_serie': 'SERIE FISCAL I',	
+						'CMI_subtotal':	'SUBTOTAL I',
+						'CMI_descuento':	'DESCUENTO I',
+						'CMI_monto': 'MONTO I',	
+						'CMI_fechaEmision': 'FECHA EMISION I',	
+						'CMI_fechareg':	'FECHA REGISTRO I',
+						'CME_foliofiscal':	'FOLIO FISCAL E',
+						'CME_rfcEmisor': 'RFC E',	
+						'CME_tipocomprobante': 'TIPO COMPROBANTE E',	
+						'CME_metodopago': 'METODO PAGO E',	
+						'CME_folio': 'FOLIO E',	
+						'CME_serie': 'SERIE E',	
+						'CME_subtotal':	'SUBTOTAL E',
+						'CME_monto': 'MONTO E',	
+						'CME_fechaEmision': 'FECHA EMISION E',	
+						'CME_fechareg':	'FECHA REGISTRO E', 
+						'DEC_foliofiscalRel': 'FOLIO FISCAL REL P',
+						'DEC_impPagado': 'SALDO PAGADO P',	
+						'DEC_saldoAnte': 'SALDO ANTERIOR P',	
+						'DEC_saldoInsoluto': 'SALDO INSOLUTO P',	 
+						'DEC_metodoPago': 'METODO PAGO P',	
+						'DEC_moneda': 'MONEDA P',	
+						'DEC_numParcialidad': 'NUM PARCIALIDAD P',	
+						'DEC_serie': 'SERIE P',	
+						'DEC_folio': 'FOLIO P',	
+						'CMP_fechaEmision': 'FECHA EMISION P',
+						'DEC_foliofiscal': 'FOLIO FISCAL REL I'
+
+		}"
+		filename =" 'ListadoComplementos' "
+		class="btn btn-lg btn-success"> Exportar
+	</button>
+</div>
+</div>
+
+	
+</div>
+
+
+    <div class="modal fade bd-example-modal-lg" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-lg">
+        <div class="modal-content">
+          <div class="modal-header">
+            <strong><h3 class="modal-title text-center" id="exampleModalLabel"> Detalle Complemento de Pago </h3></strong>
+
+          </div>
+          <div class="modal-body">
+
+          	    <div class="row">
+          	    		<ul id="rb-grid-small" class="rb-grid-small clearfix">
+
+						    <li class="rb-span-1" id="color3">
+						        <h3>Facturas</h3>
+						        <a href="#/">
+						            <span class="glyphicon glyphicon-qrcode text-center"></span>
+						        </a>
+						    </li>
+
+						    <li class="rb-span-1" id="color3">
+						        <h3>Nota de Credito</h3>
+						        <a href="#/">
+						            <span class="glyphicon glyphicon-file text-center"></span>
+						        </a>
+						    </li>
+						</ul>
+          	    </div>
+          	    <br>
+
+	          	<div class="row">
+	          		<div class="col-md-5">
+	                  <strong><h4> RFC:  </h4><div class="text-primary">{{ detalle.rfc }}</div></strong>
+	                </div>
+
+	                <div class="col-md-5">
+	                  <strong><h4> Razón Social:  </h4><div class="text-primary">{{ detalle.nombreEmisor }}</div></strong>
+	                </div>
+	          	</div><br>
+	          	<div class="row">
+	                <div class="col-md-5">
+	                  <strong><h4> Folio Fiscal:  </h4><div class="text-primary">{{ detalle.foliofiscal }}</div></strong>
+	                </div>
+
+	                <div class="col-md-3">
+	                  <strong><h4> Monto:  </h4><div class="text-primary">{{ detalle.total }}</div></strong>
+	                </div>
+	          	</div>
+                <br><br>
+
+                <div class="row" id="facturas">
+
+		          	<legend>Facturas Incluidas </legend>
+
+			      	<table class="table table-responsive">
+					  <thead >
+					    <tr class="table-primary">
+					      <th scope="col">Folio Fiscal</th>
+					      <th scope="col">Folio</th>
+					      <th scope="col">Serie</th>
+					      <th scope="col">Total Factura</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr ng-repeat="listadofactura in listadosfacturas">
+					      <td>{{ listadofactura.DEC_foliofiscal }}</td>
+					      <td>{{ listadofactura.DEC_serie }}</td>
+					      <td>{{ listadofactura.DEC_folio }}</td>
+					      <td>{{ listadofactura.DEC_impPagado }}</td>
+					    </tr>
+					    <tr>
+					      <th><strong><h4> Total </h4></strong></th>
+					      <td></td>
+					      <td></td>
+					      <td><strong><h4>$ {{ sumaImportes }}</h4></strong></td>
+					    </tr>
+					  </tbody>
+					</table>
+				</div>
+
+
+<!--                 <div class="row" id="notacredito">
+
+		          	<legend>Facturas Incluidas </legend>
+
+			      	<table class="table table-responsive">
+					  <thead >
+					    <tr class="table-primary">
+					      <th scope="col">Folio Fiscal</th>
+					      <th scope="col">Folio</th>
+					      <th scope="col">Serie</th>
+					      <th scope="col">Total Factura</th>
+					    </tr>
+					  </thead>
+					  <tbody>
+					    <tr ng-repeat="listadofactura in listadosfacturas">
+					      <td>{{ listadofactura.DEC_foliofiscal }}</td>
+					      <td>{{ listadofactura.DEC_serie }}</td>
+					      <td>{{ listadofactura.DEC_folio }}</td>
+					      <td>{{ listadofactura.DEC_impPagado }}</td>
+					    </tr>
+					    <tr>
+					      <th><strong><h4> Total </h4></strong></th>
+					      <td></td>
+					      <td></td>
+					      <td><strong><h4>{{ sumaImportes }}</h4></strong></td>
+					    </tr>
+					  </tbody>
+					</table>
+				</div> -->
+
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-primary" data-dismiss="modal">Cerrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+
+<script type="text/javascript">
+	$.datepicker.setDefaults($.datepicker.regional["es"]);
+	$( "#fechainiReg" ).datepicker({showButtonPanel: true});
+	$( "#fechafinReg" ).datepicker({showButtonPanel: true});
+
+</script>

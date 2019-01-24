@@ -333,8 +333,11 @@ app.factory("find", function($http,api){
 
             return $http.get(api+'consulta/contacto');
         },
-        consultaFolioFiscal:function(foliofiscal){
-            return $http.post(api + 'Complementos/consultaFolioFiscalComplemento/'+foliofiscal);
+        consultaFolioFiscalP:function(foliofiscal){
+            return $http.post(api + 'Complementos/consultaFolioFiscalComplementoP/'+foliofiscal);
+        },
+        consultaFolioFiscalI:function(foliofiscal){
+            return $http.post(api + 'Complementos/consultaFolioFiscalComplementoI/'+foliofiscal);
         }
 
 

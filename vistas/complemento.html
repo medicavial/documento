@@ -20,14 +20,12 @@
     <div class="panel panel-primary">
 
 	      <div class="panel-heading">  <!-- Heading panel -->
-	          <h4> FACTURA DE RECEPCIÓN DE PAGOS </h4>   
+	          <h4> FACTURA DE RECEPCIÓN DEC PAGOS </h4>   
 	        
 	      </div> <!-- Fin Heading panel -->  <!--inicia el formulario, se declara nuestra funcion de el submit para realizar busqueda-->
 		  <div class="row" >
 				<div class="col-md-4">
 					<br>
-
-<!-- 					<input class="btn btn-primary" type="file" ng-file-select="subeXML($files)" ng-model="complementoPago" multiple> -->
 
                 <input class="btn btn-primary" type="file" webkitdirectory directory ng-file-select="subeXML($files)" multiple />
 
@@ -38,65 +36,8 @@
 					<br>
 					<button class="btn btn-warning btn-lg btn-block glyphicon glyphicon-ok" ng-click="valida()"> 	Procesar </button>
 				</div>
-				<div class="col-md-2" id="btndescarga">
-					<br>
-					<button class="btn btn-lg btn-info glyphicon glyphicon-cloud-download" ng-click="descarga()"> Descarga txt </button>
-
-
-				</div>
-
-<!-- 				<div class="col-md-2" id="btndescargaXLS">
-					<button ng-json-export-excel data="listado"
-						report-fields="{
-										'CMI_foliofiscal':	'FOLIO FISCAL I',
-										'CMI_rfcEmisor': 'RFC I',
-										'CMI_tipocomprobante': 'TIPO COMPROBANTE I',	
-										'CMI_metodopago': 'METODO PAGO I',
-										'CMI_folio': 'FOLIO  I',	
-										'CMI_serie': 'SERIE FISCAL I',	
-										'CMI_subtotal':	'SUBTOTAL I',
-										'CMI_monto': 'MONTO I',	
-										'CMI_fechaEmision': 'FECHA EMISION I',	
-										'CMI_fechareg':	'FECHA REGISTRO I',
-										'CME_foliofiscal':	'FOLIO FISCAL E',
-										'CME_rfcEmisor': 'RFC E',	
-										'CME_tipocomprobante': 'TIPO COMPROBANTE E',	
-										'CME_metodopago': 'METODO PAGO E',	
-										'CME_folio': 'FOLIO E',	
-										'CME_serie': 'SERIE E',	
-										'CME_subtotal':	'SUBTOTAL E',
-										'CME_monto': 'MONTO E',	
-										'CME_fechaEmision': 'FECHA EMISION E',	
-										'CME_fechareg':	'FECHA REGISTRO E', 
-										'DEC_foliofiscal': 'FOLIO FISCAL P',
-										'DEC_impPagado': 'FOLIO FISCAL P',	
-										'DEC_saldoAnte': 'SALDO ANTERIOR P',	
-										'DEC_saldoInsoluto': 'SALDO INSOLUTO P',	 
-										'DEC_metodoPago': 'METODO PAGO P',	
-										'DEC_moneda': 'MONEDA P',	
-										'DEC_numParcialidad': 'NUM PARCIALIDAD P',	
-										'DEC_serie': 'SERIE P',	
-										'DEC_folio': 'FOLIO P',	
-										'DEC_foliofiscalRel': 'FOLIO FISCAL REL I'
-
-						}"
-						filename =" 'ListadoComplementos' "
-						class="btn btn-lg btn-success"> Exportar
-				    </button>
-
-				</div> -->
 
 		  </div><br>
-
-		  <div class="row">
-
-		  	<div class="col-md-12">
-
-		  	  <div ng-show="mensaje" class="alert  animate-show text-center" ng-class="tipoalerta"><strong><h3>{{mensaje}} </h3></strong></div>
-
-		  	</div>
-		  	
-		  </div><br><br>
 
 		  <div class="row">
 
@@ -129,33 +70,47 @@
 
 		     </div>
 
-		     <div class="col-md-2">
-		        <!-- START widget-->
-	           <div class="panel-body bg-purple text-center">
-	            
-	            <a href="" class="text-white">
-	              <em class="glyphicon glyphicon-remove-sign"></em></a>
-	            <p><strong> Nota Cred </strong></p>
-	            <p>{{ conteoEgreso }}</p>
+		  </div><br><br>
+		  <div class="row">
+              <div class="col-md-2"></div>
+	          <div class="col-md-8">
 
-	           </div>
+	                <table  class="table table-primary table-hover table-condensed table-responsive" >
 
-		     </div>
+	                    <tr>          
+	                        <td colspan='3' class='text-center text-danger'><h3><b>Encontrados en sitema</b></h3></td>         
+	                    </tr>
+	                    <tr>          
+	                        <th><b></b></th>
+	                        <th class='text-primary'><b>Folio Fiscal TC: Pago</b></th>         
+	                    </tr>
 
-		  	 <div class="col-md-2">
- 		       <div class="panel-body bg-danger text-center">
-	            
-		            <a href="" class="text-white">
-		              <em class="glyphicon glyphicon-remove-sign"></em></a>
-		            <p><strong> Otros </strong></p>
-		            <p>{{ numNoprocesado }}</p>
+	                    <tr ng-repeat="foliopago in foliopagos">                            
 
-	           </div>
-		  	 </div>
+	                        <td> </td>
+	                        <td> </td>
+	                        <td >{{ foliopago }} </td>
 
+	                    </tr>
+	                    <tr>          
+	                        <th><b></b></th>
+	                        <th class='text-primary'><b>Folio Fiscal TC: Ingreso</b></th>         
+	                    </tr>
+	                    <tr ng-repeat="folioingreso in folioingresos">                            
 
-		  </div>
+	                        <td> </td>
+	                        <td> </td>
+	                        <td class='text-warning'>{{ folioingreso }} </td>
 
+	                    </tr>
+
+	                </table>
+
+	        </div>
+	        <div class="col-md-2"></div>
+
+		    </div><br><br>
+					  	
 		  <div class="row">
 
 			  	<div class="col-md-4">
@@ -176,37 +131,7 @@
 		  <legend class="text-primary"></legend>
 
 
-<!-- 		  <div class="row">
-                  <div class="col-md-2"></div>
-		          <div class="col-md-8">
 
-		                <table  class="table table-primary table-hover table-condensed table-responsive" >
-
-		                    <tr>          
-
-		                        <th><b>N°</b></th>
-		                        <th><b>Tipo Archivo</b></th>         
-		                        <th><b>Nombre Archivo</b></th>
-		                        <th><b>Descripción</b></th>
-
-		                    </tr>
-
-		                    <tr ng-repeat="listado in listadoArchivos">                            
-
-		                        <td> </td>
-		                        <td>{{ listadoArchivos.nombre}} </td>
-		                        <td>trh</td>  
-		                        <td>tr</td>                            
-		                        <td>t</td>
-
-		                    </tr>
-
-		                </table>
-
-		        </div>
-		        <div class="col-md-2"></div>
-
-	    </div><br><br> -->
     </div>
 
    
