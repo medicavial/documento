@@ -29,7 +29,7 @@ function reportesTicketsCtrl($scope, $rootScope, find , loading, datos){
                 ],
                 "dataProvider": $scope.actualClinicas
             });
-
+                
 	var chartCategoriaActual = AmCharts.makeChart("chartdiv-2",{
                 "type": "serial",
                 "startDuration": 1,

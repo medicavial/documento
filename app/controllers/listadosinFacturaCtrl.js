@@ -1208,6 +1208,15 @@ console.log($files);
 
                                   }
                             });
+
+                           if (row.entity.rfcemisor != courses.comprobante.emisor._rfc){
+
+
+                                swal('Upss','Tu Factura no coincide con el Emisor','error');
+
+
+                            }else{
+
                                 if ((courses.comprobante._fecha >= '2018-01-01') && (courses.comprobante._version != '3.3')){
 
 
@@ -1278,7 +1287,7 @@ console.log($files);
 
                                 }
                                 
-                                
+                            } 
 
                       });
                    // }

@@ -322,7 +322,21 @@ app.factory("find", function($http,api){
         },
         eliminatxt:function(usuario){
             return $http.post(api + 'Complementos/eliminatxt/'+ usuario);
+        },
+        moverArchPago:function(usuario, tipocomprobante ,files){
+            return $http.post(api + 'Complementos/moverArchPago/'+ usuario + "/" + tipocomprobante, files);
+        },
+        borratemporales3:function(usuario){
+            return $http.get(api+'RelacionPagos/borratemporales3/' + usuario);
+        },
+        contactoRedMedica:function(){
+
+            return $http.get(api+'consulta/contacto');
+        },
+        consultaFolioFiscal:function(foliofiscal){
+            return $http.post(api + 'Complementos/consultaFolioFiscalComplemento/'+foliofiscal);
         }
+
 
 
     }
