@@ -835,6 +835,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller    : 'pagoManualCtrl'
     });
 
+    $routeProvider.when('/pagoManualPrefactura',{
+            templateUrl   : 'vistas/pagoManualPrefactura.html',
+            controller    : 'pagoManualPrefacturaCtrl'
+    });
+
     // $routeProvider.when('/pagoZima',{
     //         templateUrl   : 'vistas/pagoZima.html',
     //         controller    : 'pagoZimaCtrl'
