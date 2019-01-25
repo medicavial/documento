@@ -65,7 +65,6 @@ $scope.subeXML = function($files){
         $scope.numArchivos = 0;
         var a = 0;
 
-    setInterval($("#cargador").show(),90000);
 
     var aux = $files[0].name.split('.');
 
@@ -126,7 +125,7 @@ $scope.subeXML = function($files){
 
 $scope.valida = function(archivo){
 
-       setInterval($("#cargador").show(),90000);
+       setInterval($("#cargador").show(),120000);
        var archivo = $scope.archivo;
        var rutaArchivo    = $scope.ruta;
        var a = 0;
@@ -339,10 +338,19 @@ $scope.valida = function(archivo){
 
                 $http.post(ruta,$scope.complemento).success(function (data){
 
-                    a= a +1;
-                    
-                    $("#cargador").hide();
-                    $scope.numArchivos = a;
+                    function funcAvisa(){
+
+                        a= a +1;
+                        
+                        $("#cargador").hide();
+                        $scope.numArchivos = a;
+                        swal('Ok','Se ingresaron ' + ' '+ $scope.numArchivos + ' '+ 'xml al sistema','success');
+
+
+
+                    }
+                    /*se la llama a los 5 minutos*/
+                    setInterval($("#cargador").hide(),240000);
                     // $scope.borratemporales();
 
 
