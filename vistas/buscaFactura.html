@@ -10,6 +10,8 @@
           <legend><h2>Buscar x</h2></legend>
 
         </div>
+        </div>
+        <form role="form" ng-submit="buscar()">
         <div class="row">
 
               <div class="col-md-4">
@@ -18,27 +20,35 @@
 
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-3">
                     <label> FolioMV </label>
                     <input type="text" ng-model="busqueda.foliomv" class="form-control" >
 
               </div>
 
-              <div class="col-md-4">
+              <div class="col-md-2">
                     <label> Prefactura </label>
                     <input type="text" ng-model="busqueda.prefactura" class="form-control" mayusculas>
 
               </div>
+
+              <div class="col-md-2">
+                    <label> Relación </label>
+                    <input type="text" ng-model="busqueda.relacion" class="form-control" mayusculas>
+
+              </div>
+        </div>
         <div class="row">
               <div class="col-md-3">
                 <br>
-                <button type="submit" class="btn btn-primary btn-lg btn-block" ng-click="buscar()">   Buscar </button>
-              </div>
-              <div class="col-md-3">
-                <br>
-                <button type="submit" class="btn btn-default btn-lg btn-block" ng-click="limpiar()">   Limpiar </button>
+                <button type="submit" class="btn btn-primary btn-lg btn-block">   Buscar </button>
               </div>
         </div><br>
+        </form>
+<!--               <div class="col-md-3">
+                <br>
+                <button type="submit" class="btn btn-default btn-lg btn-block"  ng-click="limpiar()">   Limpiar </button>
+              </div> -->
 
         <LEGEND style="color:#64A8C2">Resultados:</LEGEND>
 
@@ -55,7 +65,7 @@
                   FolioMV: <strong>{{ dato.folio }}</strong>
                 </div>
                 <div class="wish-display resultado">
-                  N° Relación: <strong>{{ dato.relacion }}</strong>
+                  N° Relación: <strong>{{ dato.relacion }}</strong> // Estatus: <strong ng-if="dato.aplicada == '1'" class="text-danger"> Pagada </strong><strong ng-if="dato.aplicada == '0'" class="text-danger"> No Pagada </strong>
                 </div>
 
                 <div class="wish-display resultado">

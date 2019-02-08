@@ -1,4 +1,4 @@
-function complementoCtrl($scope, $rootScope, find ,loading,$filter,$location,$http,checkFolios,api,complementos, $upload, leexml, relaciones){
+function complementoCtrl($scope, $rootScope, find ,loading,$filter,$location,$http,checkFolios,api,complementos, $upload, leexml, relaciones,$timeout){
 
     $scope.inicio = function(){
 
@@ -83,26 +83,28 @@ $scope.subeXML = function($files){
                 url: api+'Complementos/uploadComplementoP/'+$rootScope.user, //upload.php script, node.js route, or servlet url
                 method: 'POST',
                 // data: $scope.PagoG,
-                file: file // or list of files ($files) for html5 only
+                file: file, // or list of files ($files) for html5 only
+
                 }).success(function (data){
 
-                if (i == $files.length){
+                    var progreso = 0;
+                    var idIterval = setInterval(function(){
+                      // Aumento en 10 el progeso
+                      progreso +=0.5;
+                      $('#bar').css('width', progreso + '%');
+                         
+                      //Si llegó a 100 elimino el interval
+                      if(progreso == 100){
 
+                        clearInterval(idIterval);
                         $scope.archivo = data.archivo;
                         $scope.ruta    =data.ruta;
-                        $("#cargador").hide();
                         $("#btnvalidar").show();
+                        $('#bar').hide();
 
-                        // $scope.mensaje = "Tus"+ " "+ data.numArch+ " " +"archivos solo fueron almacenados temporalmente, Aun no son Procesados.";
-                        // $scope.tipoalerta = 'alert-success';
+                      }
+                    },1000);
 
-                    if (data.numArch == $files) {
-
-                        $("#cargador").hide();
-                        $("#btnvalidar").show();
-                    };
-
-                }
 
                 });
 
@@ -125,7 +127,8 @@ $scope.subeXML = function($files){
 
 $scope.valida = function(archivo){
 
-       setInterval($("#cargador").show(),120000);
+       $("#cargador").show();
+       $('#bar').hide();
        var archivo = $scope.archivo;
        var rutaArchivo    = $scope.ruta;
        var a = 0;
@@ -203,6 +206,7 @@ $scope.valida = function(archivo){
 
                     });
             }
+            $("#cargador").show();
 
             if (courses.comprobante._tipodecomprobante == 'P'){
 
@@ -338,20 +342,22 @@ $scope.valida = function(archivo){
 
                 $http.post(ruta,$scope.complemento).success(function (data){
 
-                    function funcAvisa(){
 
-                        a= a +1;
-                        
-                        $("#cargador").hide();
-                        $scope.numArchivos = a;
-                        swal('Ok','Se ingresaron ' + ' '+ $scope.numArchivos + ' '+ 'xml al sistema','success');
+                    var progreso1 = 0;
+                    var idIterval1 = setInterval(function(){
+                      // Aumento en 10 el progeso
+                      progreso1 += 0.1;
+                      $('#bar1').css('width', progreso1 + '%');
+                         
+                      //Si llegó a 100 elimino el interval
+                      if(progreso1 == 100){
 
+                        clearInterval(idIterval1);
+                        $scope.archivo = data.archivo;
+                        $scope.ruta    =data.ruta;
 
-
-                    }
-                    /*se la llama a los 5 minutos*/
-                    setInterval($("#cargador").hide(),240000);
-                    // $scope.borratemporales();
+                      }
+                    },1000);
 
 
                 }).error( function (data){
@@ -365,8 +371,7 @@ $scope.valida = function(archivo){
             // $scope.complemento.push($scope.complementoP);
 
             // console.log($scope.complemento);
-    
-        
+            // 
 
         // $scope.listadoArchivos = $files;
         
@@ -443,7 +448,7 @@ $scope.listadoComplemento = function(){
 };
 
 
-complementoCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading','$filter','$location','$http','checkFolios','api','complementos','$upload', 'leexml', 'relaciones'];
+complementoCtrl.$inject = ['$scope', '$rootScope', 'find' , 'loading','$filter','$location','$http','checkFolios','api','complementos','$upload', 'leexml', 'relaciones','$timeout'];
 // flujoPagosCtrl.$inject = ['$scope','$rootScope', 'find','loading', '$http', 'api','datos','$filter'];
 
 app.controller('complementoCtrl',complementoCtrl);
