@@ -1,31 +1,10 @@
-<div id="contenedor" class="main" ng-init="inicio()">
+<div  id="contenedor"  ng-init="inicio()">
     <div class="titulos">
         <a href="#/pagos" class="icon-arrow-left"></a>
         <h1>{{tituloPM}}</h1>
     </div>
 
 	<ul id="rb-grid-small" class="rb-grid-small clearfix">
-
-	    <li class="rb-span-1" id="color3" ng-class="{'inactivo': id != 78}">
-	        <h3> Proveedores </h3>
-	        <a href="#/altaproveedor">
-	            <span class="icon-user"></span>
-	        </a>
-	    </li>
-
-<!-- 	    <li class="rb-span-1" id="color3" >
-	        <h3> Pendientes </h3>
-	        <a href="#/listadoManual">
-	            <span class="icon-list"></span>
-	        </a>
-	    </li> -->
-
-<!-- 	    <li class="rb-span-1" id="color3">
-	        <h3> Nota de Credito </h3>
-	        <a href="#/notaCredito">
-	            <span class="icon-list"></span>
-	        </a>
-	    </li> -->
 
 	    <li class="rb-span-1" id="color3">
 	        <h3> Recibe Prefact </h3>
@@ -51,12 +30,11 @@
 
            </div>
         </div>
-
     </div>
 
     <legend></legend>
 
-<div class="row" ng-show="tipo == 1">
+<div ng-if="tipo == 1">
 
 	    <div class="row">
 
@@ -74,26 +52,15 @@
 				</select>
 			</div>
 
-
 	    </div><br>
-	    <div class="row">
-            <h5 class="text-danger"><strong>*** Selecciona prefactura *** </strong></h5>
 
-		</div>
-
-		<div class="row" >
-
-			<div class="gridStyle3" ng-grid="gridOptions"></div>
-			
-		</div><br>
+	    <div class="row gridStyle" ng-grid="gridOptions"></div><br><br>
 
 		<div class="row">
             <h4 class="text-success"><strong>*** Nombre del Lesionado:  {{ nombreLesionado }}  </strong></h4>
 
 		</div>
 
-
-			
 	    <div class="row">
 
 	    	<div class="col-md-2">
@@ -130,58 +97,46 @@
 					<input type="text" ng-model="PagoI.entrega" class="form-control">
 			</div>
 	    </div>
-	    <br><br>
+	    <br>
 
-	    <div class="row">
+<!-- 	    <div class="row">
 
 		    <div class="form-group">
-                <h5 class="text-danger"><strong>*** Tipo de Deducible ***</strong></h5>
-                <h6 class="text-danger"><strong>*** NOTA: Debes seleccionar el tipo de deducible ***</strong></h6>
                <div class="col-sm-12">
                   <label class="radio-inline c-radio">
                      <input id="deducible1" type="radio" name="i-radio1" ng-model="PagoI.tipoDeducible" value="1" checked>
                      <span class="icon-cancel-circle"></span> Descuento del Total </label>
-                  <label class="radio-inline c-radio">
-                     <input id="deducible2" type="radio" name="i-radio1" value="2" ng-model="PagoI.tipoDeducible">
-                     <span class="icon-cancel-circle"></span> Como concepto sin IVA </label>
-                  <label class="radio-inline c-radio">
-                     <input id="deducible3" type="radio" name="i-radio1" value="3" ng-model="PagoI.tipoDeducible">
-                     <span class="icon-cancel-circle"></span> Como concepto con IVA (desglosado) </label>
-                  <label class="radio-inline c-radio">
-                     <input id="deducible3" type="radio" name="i-radio1" value="4" ng-model="PagoI.tipoDeducible">
-                     <span class="icon-cancel-circle"></span> Como concepto con IVA (sin desglosar IVA) 
-                 </label>
                </div>
 	        </div>
-	    </div>
+	    </div> -->
 	    <br><br><br>
 
 		<div class="row">
 		    <div class="col-md-2">
 					<label>Subtotal</label>
-					<input type="text" ng-model="PagoI.SubtotalF" class="form-control">
+					<input type="text" ng-model="PagoI.SubtotalF" class="form-control" ng-change="calculaTotalInd()">
 			</div>
 
 			<div class="col-md-2">
 					<label>IVA</label>
-					<input type="text" ng-model="PagoI.IVAF" class="form-control">
+					<input type="text" ng-model="PagoI.IVAF" class="form-control" ng-change="calculaTotalInd()">
 			</div>
 
 			<div class="col-md-2">
 					<label>Deducible</label>
-					<input type="text" ng-model="PagoI.deducibleF" class="form-control" >
+					<input type="text" ng-model="PagoI.deducibleF" class="form-control" ng-change="calculaTotalInd()">
 			</div>
 
 
 			<div class="col-md-2">
 					<label>Descuento</label>
-					<input type="text" ng-model="PagoI.descuentoF" class="form-control" >
+					<input type="text" ng-model="PagoI.descuentoF" class="form-control" ng-change="calculaTotalInd()">
 			</div>
 
 
 		    <div class="col-md-2">
 					<label>Retención</label>
-					<input type="text" ng-model="PagoI.retencionF" class="form-control">
+					<input type="text" ng-model="PagoI.retencionF" class="form-control" ng-change="calculaTotalInd()">
 			</div>
 
 		    <div class="col-md-2">
@@ -191,16 +146,19 @@
 
 		</div>
 		<br>
-
 		<div class="row">
 
-			<div class="col-md-2">
+<!-- 			<div class="col-md-2">
 				<label>  </label>
 					<button type="button" ng-click="calculaTotalInd()"  class="btn btn-success btn-blockglyphicon glyphicon-equalizer"> Calcular </button>
+			</div> -->
+
+			<div class="col-md-6">
+					<label class="text-danger"><H2><strong>Total a Pagar:{{PagoI.TotalFN | currency}}</strong></H2></label>
 			</div>
 
-			<div class="col-md-2">
-					<label><H2><strong>Total:{{PagoI.TotalF | currency}}</strong></H2></label>
+		    <div class="col-md-6">
+					<label class="text-danger"><H2><strong>Nota Credito:{{PagoI.TotalFV | currency}}</strong></H2></label>
 			</div>
 
 	    </div>
@@ -251,13 +209,71 @@
 
 	    <div class="row">
 			<div class="col-md-12">
-			
-				<label for="descripcion">Observación</label>
-				<textarea name="descripcion" id="observacion" class="form-control " ng-model="PagoI.observacion" rows="5" ng-disabled="editafactura" mayusculas required></textarea>
+
+                <a href="" ng-value="siNC == si"><h3>Quieres Ingresar Nota de Credito?</h3></a>
+                <label class="radio-inline c-radio">
+                <input id="inlineradio1" type="radio" name="i-radio" ng-model="NC"  value="1">
+                <span class="icon-cancel-circle"></span> SI </label>
+
+                <label class="radio-inline c-radio">
+                <input id="inlineradio1" type="radio" name="i-radio" ng-model="NC"  value="0">
+                <span class="icon-cancel-circle"></span> NO </label>
 				
+			
 			</div>
 		</div><br><br>
 
+	    <div class="row"  ng-if="NC == '1'">
+			<div class="col-md-12">
+
+				<div class="panel panel-info">
+				  <div class="panel-heading">Nota de Crédito</div>
+				  <div class="panel-body">
+
+					  	<table style="max-height: auto;
+								    overflow-y: auto; 
+								    overflow-x: auto;
+								    width: 100%; background: #edebeb ">
+				        <tr style="background-color:#E9E9E9;">
+				          <th colspan="12" class="text-center"><h4>Datos de la Nota de Credito</h4></th>
+				        </tr>
+				        <tr style="background-color:#F0FFFF">
+				          <th></th>
+				          <th>Serie</th>
+				          <th>Folio Fiscal</th>
+				          <th>Emisor</th>
+				          <th>RFC Emisor</th>
+				          <th>Subtotal</th>
+				          <th>IVA</th>
+				          <th>Total</th>
+				          <th>Fecha Emisión</th>
+				          <th></th>
+				        </tr>
+				        <tr>
+				          <td>
+				          	<label class="btn btn-primary">Sube Factura <input type="file" style="display: none;" ng-file-select="subeNCI($files)">
+		                    </label>
+		                  </td>
+				          <td>{{ NCI.serie }}</td>
+				          <td>{{ NCI.foliofiscal }}</td>
+				          <td>{{ NCI.emisor }}</td>
+				          <td>{{ NCI.rfcemisor }}</td>
+				          <td>{{ NCI.subtotal }}</td>
+				          <td>{{ NCI.tasa }}</td>
+				          <td>{{ NCI.total }}</td>
+				          <td>{{ NCI.fechaemision }}</td>
+				          <td ng-show="btndelete"><button ng-click="eliminaxmlNC()" class="btn btn-small btn-danger" type="button">Eliminar</button></td>
+				        </tr>
+				      </table>
+
+
+				  </div>
+				</div>
+
+			</div>
+		</div><br><br>
+
+ 
 		<div class="row-center">
 
 		   <div class="col-md-3">
@@ -268,10 +284,12 @@
 		</div>
 
 
+
+
+
 </div>
 
-
-	<div ng-show="tipo == 2">
+	<div ng-if="tipo == 2">
 
 		<div class="row">
 
@@ -287,21 +305,20 @@
 				</select>
 			</div>
 
+			
 	    </div><br>
+	    <div class="row gridStyle" ng-grid="gridOptions"></div><br><br>
+	    <br>
 
 	    <div class="row">
-            <h5 class="text-danger"><strong>*** Selecciona prefactura *** </strong></h5>
+            <h4 class="text-success"><strong>*** Nombre del Lesionado:  {{ nombreLesionado }}  </strong></h4>
 
 		</div>
 
-		<div class="gridStyle3" ng-grid="gridOptions"></div>
-			
-
-	    <br>
 	    <div class="row">
 	    	<div class="col-md-2">
 					<label>Folio</label>
-					<input type="text" ng-model="PagoM.folio" class="form-control" folio>
+					<input type="text" ng-model="PagoM.folio" class="form-control" folio ng-change="verificaLesionado()" >
 			</div>
 
 			<div class="col-md-2">
@@ -365,68 +382,129 @@
 					<input type="text" ng-model="PagoM.TotalF" class="form-control" disabled>
 			</div>
 	    </div>
+        <br>
 
 	    <div class="row">
 			<div class="col-md-12">
-			
-				<label for="descripcion">Observación</label>
-				<textarea name="descripcion" id="observacion" class="form-control " ng-model="PagoM.observacion" rows="5" ng-disabled="editafactura" mayusculas required></textarea>
-				
-			</div>
-		</div><br>
-		<div class="row">
-		    <div class="col-md-3">
 
-				<button type="button" ng-hide="edicion" ng-click="addRow()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-plus"> Agrega Pago </button>
+                <a href=""><h3>Quieres Ingresar Nota de Credito?</h3></a>
+                <label class="radio-inline c-radio">
+                <input id="inlineradio1" type="radio" name="i-radio" ng-model="NC2"  value="1">
+                <span class="icon-cancel-circle"></span> SI </label>
+
+                <label class="radio-inline c-radio">
+                <input id="inlineradio1" type="radio" name="i-radio" ng-model="NC2"  value="0">
+                <span class="icon-cancel-circle"></span> NO </label>
+				
+			
 			</div>
+		</div><br><br>
+
+	    <div class="row"  ng-if="NC2 == '1'">
+			<div class="col-md-12">
+
+				<div class="panel panel-info">
+				  <div class="panel-heading">Nota de Crédito</div>
+				  <div class="panel-body">
+
+					  	<table style="max-height: auto;
+								    overflow-y: auto; 
+								    overflow-x: auto;
+								    width: 100%; background: #edebeb ">
+				        <tr style="background-color:#E9E9E9;">
+				          <th colspan="12" class="text-center"><h4>Datos de la Nota de Credito</h4></th>
+				        </tr>
+				        <tr style="background-color:#F0FFFF">
+				          <th></th>
+				          <th>Folio Fiscal</th>
+				          <th>Emisor</th>
+				          <th>RFC Emisor</th>
+				          <th>Subtotal</th>
+				          <th>Total</th>
+				          <th>Fecha Emisión</th>
+				          <th></th>
+				        </tr>
+				        <tr>
+				          <td>
+				          	<label class="btn btn-primary">Sube Factura <input type="file" style="display: none;" ng-file-select="subeNCG($files)">
+		                    </label>
+		                  </td>
+				          <td>{{ NCG.foliofiscal }}</td>
+				          <td>{{ NCG.emisor }}</td>
+				          <td>{{ NCG.rfcemisor }}</td>
+				          <td>{{ NCG.subtotal }}</td>
+				          <td>{{ NCG.total }}</td>
+				          <td>{{ NCG.fechaemision }}</td>
+				          <td ng-show="btndelete"><button ng-click="eliminaxmlNC()" class="btn btn-small btn-danger" type="button">Eliminar</button></td>
+				        </tr>
+				      </table>
+
+
+				  </div>
+				</div>
+
+			</div>
+		</div><br><br>
+
+	    <div class="row">
+
+		    <div class="col-md-3">
+				<button type="button" ng-click="addRow()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-plus"> Agrega O.P </button>
+			</div>
+
+			<div class="col-md-5">
+				<label class="text-danger"><H2><strong>Total Nota Credito:{{ PagoM.acumuladoTNC | currency}}</strong></H2></label>
+			</div>
+
+
+			<div class="col-md-4">
+			    <label class="text-danger"><H2><strong>Total a Pagar:{{ PagoM.acumuladoT  | currency}}</strong></H2></label>
+			</div>
+
+
 		</div>
 
 
+		<br>
+
 	    <div class="col-md-12">
 
-			   <div class="table-responsive">
+			   <div  class="table table-editable table-bordered table condensed table-hover table-responsive ">
 
-					<table class="table">
+					<table class="table" >
 					    <thead>
 					        <tr>
-					            <th>Unidad</th>
-					            <th>Folio</th>
+					        	<th>Folio Fiscal NC</th>
+					        	<th>TotalNC</th>
+					            <th>FolioMv</th>
 					            <th>Etapa</th>
 					            <th>Entrega</th>
 					            <th>Subtotal</th>
 					            <th>IVA</th>
 					            <th>Total</th>
+					            <th>Acción</th>
 					        </tr>
 					    </thead>
 					    <tbody>
         					<tr ng-repeat="Pago in Pagos">
-
-					            <td>{{ Pago.unidad}}</td>
-					            <td>{{ Pago.folio}}</td>
-					            <td>{{ Pago.etapa}}</td>
-					            <td>{{ Pago.entrega}}</td>
-					            <td>{{ Pago.SubtotalF}}</td>
-					            <td>{{ Pago.IVAF}}</td>
-					            <td>{{ Pago.TotalF}}</td>
+								<td>{{ Pago.foliofiscalNC }}</td>
+								<td>{{ Pago.calculoNC }}</td>
+					            <td>{{ Pago.folio }}</td>
+					            <td>{{ Pago.etapa }}</td>
+					            <td>{{ Pago.entrega }}</td>
+					            <td>{{ Pago.SubtotalF }}</td>
+					            <td>{{ Pago.IVAF }}</td>
+					            <td>{{ Pago.TotalF }}</td>
 					            <td><button class="btn btn-danger" ng-click="delete($index)"> Eliminar </button></td>
 
 					        </tr>
-					        <tr>
 
-					            <td></td>
-					            <td></td>
-					            <td></td>
-					            <td><STRONG>TOTAL:</STRONG></td>
-					            <td>{{subtotalPago}}</td>
-					            <td>{{ivaPago}}</td>
-					            <td><STRONG>{{totalPago}}</STRONG></td>
-
-					        </tr>
 					    </tbody>
 					</table>
 				</div>
 			
 		</div>
+		<br>
 	    	
 		<div class="row">
 			    <div class="col-md-12">
@@ -469,7 +547,6 @@
 			      </table>
 			      </div>
 	    </div><br><br>
-
 	    <div class="row">
 
 	    	<div class="col-md-3">

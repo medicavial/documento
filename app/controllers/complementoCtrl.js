@@ -20,6 +20,7 @@ function complementoCtrl($scope, $rootScope, find ,loading,$filter,$location,$ht
         $scope.numArchivos = 0;
         $scope.complemento = [];
         $scope.doctorelacionado = [];
+        $scope.cfdirel = [];
         $scope.ruta = [];
         $scope.conteoPago = 0;
         $scope.conteoIngreso = 0;
@@ -43,7 +44,14 @@ function complementoCtrl($scope, $rootScope, find ,loading,$filter,$location,$ht
                 metodoPago: ''
             }
 
+        $scope.datosRegistro = {
+
+                fechaini: FechaAct,
+                fechafin: FechaAct
+        }
+
     }
+
 
 
 $scope.subeXML = function($files){
@@ -90,7 +98,7 @@ $scope.subeXML = function($files){
                     var progreso = 0;
                     var idIterval = setInterval(function(){
                       // Aumento en 10 el progeso
-                      progreso +=0.5;
+                      progreso +=20;
                       $('#bar').css('width', progreso + '%');
                          
                       //Si llegó a 100 elimino el interval
@@ -240,6 +248,14 @@ $scope.valida = function(archivo){
                 $scope.complementoP.rfcEmisor =  courses.comprobante.emisor._rfc;
                 $scope.complementoP.nombreEmisor =  courses.comprobante.emisor._nombre;
                 $scope.doctorelacionado = courses.comprobante.complemento.pagos.pago.doctorelacionado;
+
+                // if(courses.comprobante.cfdirelacionados.cfdirelacionado == undefined){
+
+                //   $scope.cfdirel  =  '';
+                // }else{
+                //   $scope.cfdirel=  courses.comprobante.cfdirelacionados.cfdirelacionado;
+                // }
+
                 find.moverArchPago($rootScope.user, 'P' ,{file:numArchivos}).success(function (data){
 
                 });
@@ -280,65 +296,66 @@ $scope.valida = function(archivo){
 
                 });
 
-            }
-
-            // }else if(courses.comprobante._tipodecomprobante == 'E' || courses.comprobante._tipodecomprobante == 'Egreso'){
-               
-            //    $scope.conteoEgreso = conteoEgreso ++;
-
-            //     if(courses.comprobante._tipodecomprobante == undefined){
-            //       $scope.complementoP.tipoComprobante =  '';
-            //     }else{
-            //       $scope.complementoP.tipoComprobante =  courses.comprobante._tipodecomprobante;
-            //     }
-
-
-            //     if (courses.comprobante.complemento.timbrefiscaldigital._uuid == undefined) {
-            //       $scope.complementoP.folioFiscal =  '';
-            //     }else{
-            //       $scope.complementoP.folioFiscal =  courses.comprobante.complemento.timbrefiscaldigital._uuid;
-            //     }
-
-            //     $scope.complementoP.subtotal   =  courses.comprobante._subtotal;
-            //     $scope.complementoP.monto      =  courses.comprobante._total;
-            //     $scope.complementoP.metodoPago =  courses.comprobante._metodopago;
-            //     $scope.complementoP.folio      =  courses.comprobante._folio;
-            //     $scope.complementoP.serie      =  courses.comprobante._serie;
-                
-
-            //     if (courses.comprobante._fecha == undefined) {
-            //       $scope.complementoP.fechaEmision =  '';
-            //     }else{
-            //       $scope.complementoP.fechaEmision =  courses.comprobante._fecha;
-            //     }
-
-            //     $scope.complementoP.rfcEmisor =  courses.comprobante.emisor._rfc;
-            //     $scope.doctorelacionado = courses.comprobante.cfdirelacionados.cfdirelacionado;
-
-            //     find.moverArchPago($rootScope.user, 'E' ,{file:numArchivos}).success(function (data){
-
-            //     });
-
             // }
 
-            // excel.push({tipocomprobante: $scope.complementoP.tipoComprobante,
-            //      foliofiscal: $scope.complementoP.folioFiscal,
-            //      monto: $scope.complementoP.monto,
-            //      fechaemision: $scope.complementoP.fechaEmision,
-            //      nombreemision: $scope.complementoP.nombreEmisor,
-            //      doctorelacionado: $scope.doctorelacionado
+            }else if(courses.comprobante._tipodecomprobante == 'E' || courses.comprobante._tipodecomprobante == 'Egreso'){
+               
+               $scope.conteoEgreso = conteoEgreso ++;
+
+                if(courses.comprobante._tipodecomprobante == undefined){
+                  $scope.complementoP.tipoComprobante =  '';
+                }else{
+                  $scope.complementoP.tipoComprobante =  courses.comprobante._tipodecomprobante;
+                }
 
 
-            //  });
+                if (courses.comprobante.complemento.timbrefiscaldigital._uuid == undefined) {
+                  $scope.complementoP.folioFiscal =  '';
+                }else{
+                  $scope.complementoP.folioFiscal =  courses.comprobante.complemento.timbrefiscaldigital._uuid;
+                }
+
+                $scope.complementoP.subtotal   =  courses.comprobante._subtotal;
+                $scope.complementoP.monto      =  courses.comprobante._total;
+                $scope.complementoP.metodoPago =  courses.comprobante._metodopago;
+                $scope.complementoP.folio      =  courses.comprobante._folio;
+                $scope.complementoP.serie      =  courses.comprobante._serie;
+                
+
+                if (courses.comprobante._fecha == undefined) {
+                  $scope.complementoP.fechaEmision =  '';
+                }else{
+                  $scope.complementoP.fechaEmision =  courses.comprobante._fecha;
+                }
+
+                $scope.complementoP.rfcEmisor =  courses.comprobante.emisor._rfc;
+                $scope.doctorelacionado = courses.comprobante.cfdirelacionados.cfdirelacionado;
+
+                find.moverArchPago($rootScope.user, 'E' ,{file:numArchivos}).success(function (data){
+
+                });
+
+            }
+
+            excel.push({tipocomprobante: $scope.complementoP.tipoComprobante,
+                 foliofiscal: $scope.complementoP.folioFiscal,
+                 monto: $scope.complementoP.monto,
+                 fechaemision: $scope.complementoP.fechaEmision,
+                 nombreemision: $scope.complementoP.nombreEmisor,
+                 doctorelacionado: ''
+                 
+             });
 
             $scope.complemento = {
 
                 facturasRel: $scope.doctorelacionado,
-                complementoP : $scope.complementoP
+                complementoP : $scope.complementoP,
+                otroDoc: $scope.cfdirel
+
 
             }
 
-            // console.log($scope.complementoP);
+            console.log($scope.complemento);
 
                 $http.post(ruta,$scope.complemento).success(function (data){
 
@@ -346,7 +363,7 @@ $scope.valida = function(archivo){
                     var progreso1 = 0;
                     var idIterval1 = setInterval(function(){
                       // Aumento en 10 el progeso
-                      progreso1 += 0.1;
+                      progreso1 += 10;
                       $('#bar1').css('width', progreso1 + '%');
                          
                       //Si llegó a 100 elimino el interval

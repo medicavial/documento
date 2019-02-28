@@ -1,16 +1,17 @@
-app.factory('leexml',function($http,xml,xmlFE){
+app.factory('leexml',function($http,xml,xmlNC){
 
       var factory = [];
       factory.getxmltemporal = function(usuario,archivo){
 
-      		return $http.get(xml+usuario+ '/' +archivo);
+      	return $http.get(xml+usuario+ '/' +archivo);
 
       },
 
-      factory.getxmlFE = function(archivo, usuario){
+      factory.getxmlNC = function(usuario,archivo){
+
       	
-      		return $http.get(xmlFE+usuario+'/'+archivo);
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                 l 
+            return $http.get(xmlNC+usuario+'/'+archivo);
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                
       },
 
       factory.getxmltemporal2 = function(usuario,archivo){

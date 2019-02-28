@@ -33,6 +33,7 @@
 		
 	</div>
 	<div class="row">
+
 		<div class="col-md-2">
 				<label>Folio</label>
 				<input type="text" ng-model="folio" class="form-control" folio>
@@ -106,7 +107,7 @@
 
 <div class="titulos">
 	<a href="#/{{area}}" class="icon-arrow-left"></a>
-	<h1>Ingresa tu Facturas</h1>
+	<h1>Ingresa tus Facturas</h1>
 </div>
 <div class="row">
   <h5 class="text-danger"><strong>*** Selecciona un tipo de Tramite para generar una Orden de Págo ***</strong></h5>
@@ -137,6 +138,12 @@
   
 </div>
 
+<div class="row">
+  <div class="col-md-2">
+            <button type="button"  ng-click="planchaValor()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-arrow-right"> Replica Valor </button>
+  </div>
+</div><br>
+
  <div class="col-lg-12">
 
      <div class="table-responsive">
@@ -153,6 +160,7 @@
                <th>Etapa</th>
                <th>Entrega</th>
                <th>Subtotal</th>
+               <th>IVA</th>
                <th>Total</th>
                <th>Prefactura</th>
                <th>Empresa</th>
@@ -163,13 +171,15 @@
          </thead>
          <tbody>
 
+
             <tr ng-repeat="detalle in detalles">
 
               <td>{{detalle.DOC_folio}}</td>
               <td>{{detalle.FLD_etapa}}</td>
               <td>{{detalle.FLD_numeroEntrega}}</td>
-              <td><input type="text" ng-model="detalle.Subtotal" class="form-control" ng-blur="calculaSubtotal()"></td>
-              <td><input type="text" ng-model="detalle.Total" class="form-control" ng-blur="calculaSubtotal()"></td>
+              <td><input id="nombre1"  type="text" ng-model="detalle.Subtotal" class="form-control" ></td>
+              <td><input id="nombre2"  type="text" ng-model="detalle.iva" class="form-control" ng-blur="calculaSubtotal()"></td>
+              <td><input id="nombre3"  type="text" ng-model="detalle.Total" class="form-control" ></td>
               <td><input type="text" ng-model="detalle.prefactura" class="form-control" ng-blur="verificaPrefacturaGlo($index)" mayusculas></td>
               <td>{{detalle.EMP_nombrecorto}}</td>
               <td>{{detalle.UNI_nombrecorto}}</td>
@@ -181,7 +191,9 @@
               <td></td>
               <td><h3>Total:</h3></td>
               <td><h3><STRONG>{{ PagoG.SubtotalS | currency }}</STRONG></h3></td>
-              <td><h3><STRONG>{{ PagoG.TotalS | currency }}</STRONG></h3></td>
+              <td><h3><STRONG>{{ PagoG.ivaS      | currency }}</STRONG></h3></td>
+              <td><h3><STRONG>{{ PagoG.TotalS    | currency }}</STRONG></h3></td>
+              <td></td>
               <td></td>
               <td></td>
               <td></td>

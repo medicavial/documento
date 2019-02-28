@@ -32,7 +32,8 @@ function listadoComplementosCtrl($scope, $rootScope, find ,loading,$filter,$loca
             total: ''
         }
     }
-    //busca unidades
+
+    //busca complementos
     $scope.listadoComplemento = function(){
 
         loading.cargando('Buscando Folio');
@@ -51,6 +52,30 @@ function listadoComplementosCtrl($scope, $rootScope, find ,loading,$filter,$loca
             loading.despedida();
         });
     }
+
+    $scope.fRegistro = function(){
+
+      loading.cargando('Buscando Facturas');
+
+        find.buscacomplemento($scope.datosRegistro).success(function (data){
+
+            if(data){
+
+                $scope.listado = data;
+
+            }else{
+
+                loading.despedida();
+                $scope.listado = [];
+                
+            }
+
+            loading.despedida();
+
+        });
+
+    }
+
     //////LLena el grid y toma filtros
     ///filtros
     $scope.selectos = [];

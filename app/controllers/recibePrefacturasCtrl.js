@@ -240,14 +240,22 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
 
             if(data){
                 
-                $scope.listado = data; 
-                $scope.datos = [];
-                swal("OK...", "Prefacturas Recibidas", "success")
+                // $scope.listado = data; 
+               
+                $scope.datos = {
+
+                    prefactura: '',
+                    unidad: '',
+                    proveedor: '',
+                    foliomv: ''
+
+                }
+                swal("OK...", "Prefacturas Recibidas", "success");
 
             }
             
-            find.busquedaPrefacturas().success(function (data){
-           });
+           //  find.busquedaPrefacturas().success(function (data){
+           // });
 
 
         }).error( function (data){

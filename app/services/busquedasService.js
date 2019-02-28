@@ -338,7 +338,10 @@ app.factory("find", function($http,api){
         },
         consultaFolioFiscalI:function(foliofiscal){
             return $http.post(api + 'Complementos/consultaFolioFiscalComplementoI/'+foliofiscal);
-        }
+        },
+        buscacomplemento:function(datos){
+            return $http.post(api + 'Complementos/buscacomplemento',datos);
+        },
 
 
 

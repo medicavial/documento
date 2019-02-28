@@ -1,27 +1,9 @@
 <div ng-init="inicio()">
 
 	<div class="titulos">
-		<a href="#/pagoManual" class="icon-arrow-left"></a>
-		<h1> Ingresa Prefacturas  </h1>
+		<a href="#/pagoManualPrefactura" class="icon-arrow-left"></a>
+		<h1> Recibe Prefacturas  </h1>
 	</div>
-
-	<div class="row">
-
-		<h5 class="text-danger"><strong>*** Selecciona Unidad o Proveedor para recibir una prefactura ***</strong></h5>
-
-		<div class="col-md-3">
-			<select class="form-control"  ng-model="datos.unidad" ng-change="filtra()" ng-options="unidad.id as unidad.nombre for unidad in unidades">
-				<option value=""> Unidad </option>
-			</select>
-		</div>
-
-		<div class="col-md-3">
-			<select class="form-control"  ng-model="datos.proveedor" ng-change="filtra()" ng-options="proveedor.id as proveedor.nombre for proveedor in proveedores">
-				<option value=""> Proveedor </option>
-			</select>
-		</div>
-		
-	</div><br>
 
 	<legend></legend>
 
@@ -85,9 +67,19 @@
                 		<strong>Fecha Prefactura: {{ datos.fechaprefactura }} </strong>
 
                 	</div>
-        			<div class="col-md-3">
-						<button type="button" id="boton" data-loading-text="Procesando..." ng-disabled="btnagrega" class="btn btn-primary glyphicon glyphicon-plus" ng-click="RecibePrefacturas()" > Agregar </button>
-					</div>
+                  <div class="col-md-4">
+                    <strong>Estatus Prefactura: {{  }} </strong>
+
+                  </div>
+
+      					 </div>
+                 <br>
+
+                 <div class="row">
+                   
+                  <div class="col-md-3">
+                  <button type="button" id="boton" data-loading-text="Procesando..." ng-disabled="btnagrega" class="btn btn-primary glyphicon glyphicon-plus" ng-click="RecibePrefacturas()" > Agregar </button>
+                 </div>
                 </div>
              </div>
           </div>
@@ -99,11 +91,5 @@
 	<legend></legend>
 
 	<br>
-
-	<div class="row">
-
-		<div class="gridStyle3" ng-grid="gridOptions"></div>
-		
-	</div><br>
 
 </div>

@@ -18,7 +18,7 @@
 						<div class="input-group">
 							<input type="text" ng-model="datosRegistro.fechafin" class="form-control" id="fechafinReg" placeholder="Final">
 							<span class="input-group-btn">
-					        	<button class="btn btn-default" ng-disabled="datosRegistro.fechainiReg == ''|| datosRegistro.fechafinReg == '' " ng-click="listadoManual()" type="button"><i class="icon-search"></i></button>
+					        	<button class="btn btn-default" ng-disabled="datosRegistro.fechainiReg == ''|| datosRegistro.fechafinReg == '' " ng-click="fRegistro()" type="button"><i class="icon-search"></i></button>
 					      	</span>
 					    </div>
 					</div>
@@ -29,7 +29,7 @@
 	</div>
 	<br>
 	
-	<div class="row">
+<!-- 	<div class="row">
 		<div class="col-md-2">
 				<select class="form-control"  ng-model="unidad" ng-change="filtra()" ng-options="unidad.id as unidad.nombre for unidad in unidades">
 					<option value="">Unidad</option>
@@ -39,7 +39,7 @@
 			<button class="btn btn-danger btn-block icon-close" ng-click="quitafiltro()"> Quitar Filtros</button>
 		</div>
 
-	</div>
+	</div> -->
 	<br>
 
 	<div class="gridStyle" ng-grid="gridOptions"></div>

@@ -379,6 +379,7 @@ function relacionNoPagadaCtrl($scope, $rootScope, find ,loading,datos,$filter,$l
             $http.post(api+'RelacionPagos/eliminaRelacion/'+ row,{ usuario: $rootScope.id }).success(function (data){
 
                 swal('Ok','Relacion Eliminada','success');
+                $scope.fRegistro();
                 // location.reload();
 
 

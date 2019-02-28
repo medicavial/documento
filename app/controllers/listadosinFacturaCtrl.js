@@ -105,7 +105,41 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
 
         $scope.archivos = [];
 
+
     }
+
+
+    $scope.planchaValor = function(){
+
+        var suma0 = 0;
+        var suma = 0;
+        var suma1 = 0;
+        /////////  PLANCHAMOS LA INFORMACION DE UNA FACTURA GLOBAL ///////
+        for (var i = 0; i < $scope.detalles.length; i++) {
+
+            $scope.detalles[i].Subtotal = document.getElementById("nombre1").value;
+            $scope.detalles[i].iva      = document.getElementById("nombre2").value;
+            $scope.detalles[i].Total    = document.getElementById("nombre3").value;
+
+
+            suma+= parseFloat($scope.detalles[i].Subtotal);
+            var mm = suma.toFixed(2);
+            $scope.PagoG.SubtotalS = mm;
+
+            suma0+= parseFloat($scope.detalles[i].iva);
+            var mm0 = suma0.toFixed(2);
+            $scope.PagoG.ivaS = mm0;
+
+            suma1+= parseFloat($scope.detalles[i].Total);
+            var mm1 = suma1.toFixed(2);
+            $scope.PagoG.TotalS = mm1;
+
+        };
+
+
+    }
+
+
 
     $scope.listadoInicio = function(){
 
@@ -176,24 +210,26 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
 
     $scope.calculaSubtotal = function(){
 
+        var suma0 = 0;
         var suma = 0;
         var suma1 = 0;
-        var IVA = 0.16;
 
-      
         for (var i = 0; i < $scope.detalles.length; i++) {
                   
             suma+= parseFloat($scope.detalles[i].Subtotal);
             var mm = suma.toFixed(2);
             $scope.PagoG.SubtotalS = mm;
 
-            var calculoIVA = parseFloat($scope.detalles[i].Subtotal)*parseFloat(IVA);
-            $scope.detalles[i].Total= parseFloat($scope.detalles[i].Subtotal)+parseFloat(calculoIVA);
-            
+            // var calculoIVA = parseFloat($scope.detalles[i].Subtotal)+parseFloat($scope.detalles[i].iva);
+            $scope.detalles[i].Total= parseFloat($scope.detalles[i].Subtotal)+parseFloat($scope.detalles[i].iva);
+           
+            suma0+= parseFloat($scope.detalles[i].iva);
+            var mm0 = suma0.toFixed(2);
+            $scope.PagoG.ivaS = mm0;
+
             suma1+= parseFloat($scope.detalles[i].Total);
             var mm1 = suma1.toFixed(2);
             $scope.PagoG.TotalS = mm1;
-
 
         }
 
@@ -833,6 +869,17 @@ $scope.subeXML = function($files){
 
                         if ($scope.PagoG.rfcemisor == courses.comprobante.emisor._rfc){
 
+                            if (courses.comprobante.impuestos.traslados.traslado._importe != $scope.detalles[0].iva) {
+
+                                
+                                $scope.eliminaxmlGlo();
+                                $scope.btnOG = 1;
+                                $scope.archivos = [];
+
+                                swal('Upss','Revisa el IVA de tus folios','error');
+
+                            }
+
                             if((courses.comprobante._fecha >= '2018-01-01') && (courses.comprobante._version != '3.3')){
 
                                 swal('Upss','Revisa la versión de tu xml, solo se acepta 3.3 a partir del 2018','error');
@@ -1371,6 +1418,22 @@ $scope.eliminaxmlInd = function(idx){
     });
 }
 
+// $scope.FoliosinFactura = function(success){
+
+///////////// agrega tus facturas /////////////////
+
+        $scope.skills = [];
+
+        $scope.addSkill = function() {
+            $scope.skills.push({'title': $scope.newSkill, 'done':false})
+            $scope.newSkill = ''
+        }
+
+        $scope.deleteSkill = function(index) {  
+            $scope.skills.splice(index, 1);
+        }
+
+// }
 
 $scope.FoliosinFactura = function(success){
 
