@@ -868,6 +868,7 @@ $scope.subeXML = function($files){
                             $scope.PagoG.unidad = data[0].unidad;
 
                         if ($scope.PagoG.rfcemisor == courses.comprobante.emisor._rfc){
+                               console.log($scope.PagoG.ivaS);
 
                             if (courses.comprobante.impuestos.traslados.traslado._importe != $scope.PagoG.ivaS ) {
 
@@ -876,9 +877,10 @@ $scope.subeXML = function($files){
                                 $scope.btnOG = 1;
                                 $scope.archivos = [];
 
-                                console.log($scope.PagoG.ivaS);
 
                                 swal('Upss','Revisa el IVA de tus folios','error');
+
+
 
                             }
 
