@@ -869,12 +869,14 @@ $scope.subeXML = function($files){
 
                         if ($scope.PagoG.rfcemisor == courses.comprobante.emisor._rfc){
 
-                            if (courses.comprobante.impuestos.traslados.traslado._importe != $scope.detalles[0].iva) {
+                            if (courses.comprobante.impuestos.traslados.traslado._importe != $scope.PagoG.ivaS ) {
 
                                 
                                 $scope.eliminaxmlGlo();
                                 $scope.btnOG = 1;
                                 $scope.archivos = [];
+
+                                console.log($scope.PagoG.ivaS);
 
                                 swal('Upss','Revisa el IVA de tus folios','error');
 
