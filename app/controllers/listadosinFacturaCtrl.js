@@ -64,7 +64,8 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
             impuesto: '',
             tasa: '',
             usuarioentrega: '',
-            prefactura: ''
+            prefactura: '',
+            tipoiva: ''
 
         }
 
@@ -215,12 +216,16 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
         var suma1 = 0;
 
         for (var i = 0; i < $scope.detalles.length; i++) {
+
+            $scope.detalles[i].iva = $scope.PagoG.tipoiva;
+
+            console.log($scope.PagoG.iva);
                   
             suma+= parseFloat($scope.detalles[i].Subtotal);
             var mm = suma.toFixed(2);
             $scope.PagoG.SubtotalS = mm;
 
-            // var calculoIVA = parseFloat($scope.detalles[i].Subtotal)+parseFloat($scope.detalles[i].iva);
+            $scope.detalles[i].iva = parseFloat($scope.detalles[i].Subtotal)*parseFloat($scope.detalles[i].iva);
             $scope.detalles[i].Total= parseFloat($scope.detalles[i].Subtotal)+parseFloat($scope.detalles[i].iva);
            
             suma0+= parseFloat($scope.detalles[i].iva);

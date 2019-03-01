@@ -128,6 +128,15 @@
             <option value=""> Subtipo Tramite </option>
           </select>
   </div>
+  
+  <div class="col-md-4">
+    <label>Selecciona IVA</label>
+          <select class="form-control"  ng-model="PagoG.tipoiva"  ng-disabled="editafactura" required>
+            <option value=""> IVA </option>
+            <option value="0.16"> 0.16 </option>
+            <option value="0.08"> 0.08 </option>
+          </select>
+  </div>
 </div><br><br>
 
 <div class="row">
@@ -177,8 +186,8 @@
               <td>{{detalle.DOC_folio}}</td>
               <td>{{detalle.FLD_etapa}}</td>
               <td>{{detalle.FLD_numeroEntrega}}</td>
-              <td><input id="nombre1"  type="text" ng-model="detalle.Subtotal" class="form-control" ></td>
-              <td><input id="nombre2"  type="text" ng-model="detalle.iva" class="form-control" ng-blur="calculaSubtotal()"></td>
+              <td><input id="nombre1"  type="text" ng-model="detalle.Subtotal" class="form-control" ng-blur="calculaSubtotal()"></td>
+              <td><input id="nombre2"  type="text" ng-model="detalle.iva" class="form-control"  ng-disabled="true"></td>
               <td><input id="nombre3"  type="text" ng-model="detalle.Total" class="form-control" ></td>
               <td><input type="text" ng-model="detalle.prefactura" class="form-control" ng-blur="verificaPrefacturaGlo($index)" mayusculas></td>
               <td>{{detalle.EMP_nombrecorto}}</td>
