@@ -735,6 +735,28 @@ $scope.enviaOrdenPago = function(){
 
  }else{
 
+        var areaRecibe = 6;
+        var areaEntrega = 6;
+        var usuarioRecibe = $rootScope.id;
+
+        if ($scope.NCG.foliofiscal != ""){ $scope.PagoM.tipoorden = 5;};
+
+            $scope.OPago = {
+
+                seleccionados : $scope.Pagos,
+                archivos : $scope.archivos,
+                usucarpeta: $rootScope.user,
+                factura: $scope.PagoM,
+                subtotaltotal: $scope.subtotalPago,
+                importeiva: $scope.PagoM.importeiva,
+                importeisr: $scope.PagoM.importeisr,
+                total: $scope.totalPago,
+                usuario: $rootScope.id,
+                unidad: $scope.PagoM.unidad,
+                NC: $scope.NCG,
+                prefactura: ''
+            }
+
 
         var ruta = api+'PagoManual/ordenPago'; 
 
@@ -1368,6 +1390,25 @@ $scope.enviaOrdenPagoInd = function(){
                     var areaRecibe = 6;
                     var areaEntrega = 6;
                     var usuarioRecibe = $rootScope.id;
+
+                    if ($scope.NCI.foliofiscal != ""){ $scope.PagoI.tipoorden = 5;};
+
+                    $scope.OPago = {
+
+                        seleccionados : $scope.Pagos,
+                        archivos : $scope.archivos,
+                        usucarpeta: $rootScope.user,
+                        factura: $scope.PagoI,
+                        subtotaltotal: $scope.PagoI.SubtotalF,
+                        importeiva: $scope.PagoI.importeiva,
+                        importeisr: $scope.PagoI.importeisr,
+                        total: $scope.PagoI.TotalF,
+                        usuario: $rootScope.id,
+                        unidad: $scope.PagoI.unidad,
+                        proveedor: $scope.PagoI.proveedor,
+                        NC: $scope.NCI,
+                        prefactura: ''
+                    }
 
                     var ruta = api+'PagoManual/ordenPagoIndividual'; 
 
