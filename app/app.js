@@ -22,7 +22,7 @@ var app = angular.module('app', [
 // app.constant('xml','http://172.17.10.58/apimv/public/FacturasPagos/')
 // app.constant('xmlFE','http://172.17.10.58/apimv/public/FacturasPagos/xmltemporal/')
 
-// app.constant('api','http://localhost/apimv/public/api/'),
+// app.constant('api','http://localhost/apimv/public/api/');
 // app.constant('publicfiles','http://localhost/apimv/public/exports/');
 // app.constant('complementos','http://localhost/apimv/public/');
 // app.constant('xml','http://localhost/apimv/public/FacturasPagos/');

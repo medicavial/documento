@@ -99,9 +99,9 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
           foliofiscal:'',
           emisor:'',
           rfcemisor :'',
-          subtotal: null,
-          iVA: null,
-          total: null,
+          subtotal: 0,
+          iVA: 0,
+          total: 0,
           fechaemision: '',
           metodopago: ''
 
@@ -113,9 +113,9 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
           foliofiscal:'',
           emisor:'',
           rfcemisor :'',
-          subtotal: null,
-          iVA: null,
-          total: null,
+          subtotal: 0,
+          iVA: 0,
+          total: 0,
           fechaemision: '',
           metodopago: ''
 
@@ -170,7 +170,6 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             var t = parseFloat($scope.PagoI.SubtotalF) - parseFloat($scope.PagoI.deducibleF) -  parseFloat($scope.PagoI.descuentoF)  + parseFloat($scope.PagoI.IVAF) - parseFloat($scope.PagoI.retencionF);
             var tt = t.toFixed(2);
             $scope.PagoI.TotalF = tt;
-            $scope.PagoI.TotalFN = tt;
 
         // }
 
@@ -432,6 +431,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                                 $scope.PagoM.tipoorden = 4;
                                 $scope.btndelete = true;
 
+
                                 if ($scope.PagoM.foliofiscal != '') {
 
                                     $scope.enviaPG = false;
@@ -606,11 +606,18 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
 $scope.enviaOrdenPago = function(){
 
-    var suma = parseFloat($scope.PagoM.acumuladoTNC) + parseFloat($scope.PagoM.acumuladoT);
-    var restSuma = suma.toFixed(2);
+console.log($scope.PagoM.acumuladoTNC);
+console.log($scope.PagoM.total);
+
+    var resta =  parseFloat($scope.PagoM.total) - parseFloat($scope.PagoM.acumuladoTNC);
+    var restResta = resta.toFixed(2);
+
+    console.log(restResta);
+
+    console.log($scope.PagoM.acumuladoT);
 
 
-    if($scope.PagoM.total > restSuma || $scope.PagoM.total < restSuma){
+    if(restResta != $scope.PagoM.acumuladoT){
 
     swal({
           title: "Monto diferente a tu Factura", 
@@ -1070,6 +1077,10 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.tipoorden = 4;
                                 $scope.btndelete = true;
 
+                                $scope.PagoI.TotalFSN = parseFloat($scope.PagoI.TotalF) - parseFloat($scope.PagoI.total);
+
+                                console.log($scope.PagoI.TotalFN);
+
                                 if ($scope.PagoI.foliofiscal != '') {
 
                                     $scope.envia = false;
@@ -1210,6 +1221,10 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.usuarioentrega = Number($rootScope.id);
                                 $scope.PagoI.tipoorden = 4;
                                 $scope.btndelete = true;
+
+                                $scope.PagoI.TotalFSN = parseFloat($scope.PagoI.TotalF) - parseFloat($scope.PagoI.total);
+
+                                console.log($scope.PagoI.TotalFN);
                                 if ($scope.PagoI.foliofiscal != '') {
 
                                     $scope.envia = false;
@@ -1263,7 +1278,10 @@ $scope.subeXMLInd = function($files){
 
 $scope.enviaOrdenPagoInd = function(){
 
-    if($scope.PagoI.total > $scope.PagoI.TotalFN || $scope.PagoI.total < $scope.PagoI.TotalFN){
+    console.log($scope.PagoI.TotalFSN);
+    console.log($scope.PagoI.TotalFCN);
+
+    if($scope.PagoI.TotalFSN != 0 || $scope.PagoI.TotalFCN != 0){
 
     swal({
       title: "Monto diferente a tu Factura", 
@@ -1636,6 +1654,15 @@ $scope.subeNCI = function($files){
                                 $scope.NCI.usuarioentrega = Number($rootScope.id);
                                 $scope.btndelete = true;
 
+                                $scope.PagoI.TotalFV = $scope.NCI.total;
+                                
+                                var totalfv =  parseFloat($scope.PagoI.total) - parseFloat($scope.NCI.total);
+                                var tt      = totalfv.toFixed(2);
+
+                                $scope.PagoI.TotalFCN = parseFloat($scope.PagoI.TotalF) - parseFloat(tt);
+                                $scope.PagoI.TotalFSN = 0;
+
+
                                 if ($scope.NCI.foliofiscal != '') {
 
                                     $scope.envia = false;
@@ -1775,11 +1802,13 @@ $scope.subeNCI = function($files){
                                 $scope.NCI.tipoorden = 4;
                                 $scope.btndelete = true;
 
-                                var totalfv =  parseFloat($scope.NCI.total) - parseFloat($scope.PagoI.TotalF);
-                                var tt = totalfv.toFixed(2);
-                                $scope.PagoI.TotalFV = tt;
-                                $scope.PagoI.TotalFN = parseFloat($scope.PagoI.TotalFV) + parseFloat($scope.PagoI.TotalF);
+                                $scope.PagoI.TotalFV = $scope.NCI.total;
                                 
+                                var totalfv =  parseFloat($scope.PagoI.total) - parseFloat($scope.NCI.total);
+                                var tt      = totalfv.toFixed(2);
+
+                                $scope.PagoI.TotalFCN = parseFloat($scope.PagoI.TotalF) - parseFloat(tt);
+                                $scope.PagoI.TotalFSN = 0;
 
                                 if ($scope.NCI.foliofiscal != '') {
 
@@ -1957,9 +1986,7 @@ $scope.subeNCG = function($files, index){
                                 var totalglobal2 = totalglobal1.toFixed(2);
                                 $scope.NCG.total = totalglobal2;
 
-                                var restanc =  parseFloat($scope.NCG.total) - parseFloat($scope.PagoM.TotalF);
-                                var tt = restanc.toFixed(2);
-                                $scope.NCG.valorNC = tt;
+                                $scope.NCG.valorNC = totalglobal2;
 
                                 /////// AGREGO DATOS DE LA NOTA DE CREDITO A LOS RENGLONES DE LOS PAGOS DE FACTURA GLOBAL ///
 
@@ -2089,9 +2116,7 @@ $scope.subeNCG = function($files, index){
                                 $scope.NCG.total = totalglobal2;
 
 
-                                var restanc =  parseFloat($scope.NCG.total) - parseFloat($scope.PagoM.TotalF);
-                                var tt = restanc.toFixed(2);
-                                $scope.NCG.valorNC = tt;
+                                $scope.NCG.valorNC = totalglobal2;
 
                                 /////// AGREGO DATOS DE LA NOTA DE CREDITO A LOS RENGLONES DE LOS PAGOS DE FACTURA GLOBAL ///
 
