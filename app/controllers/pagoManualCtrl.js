@@ -88,7 +88,8 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             prefactura: '',
             totalprefactura: '',
             TotalFV: 0.00,
-            clavemaestra: ''
+            clavemaestra: '',
+            TotalFCN : 0
 
     
         }
@@ -1078,7 +1079,7 @@ $scope.subeXMLInd = function($files){
                                 $scope.btndelete = true;
 
                                 $scope.PagoI.TotalFSN = parseFloat($scope.PagoI.TotalF) - parseFloat($scope.PagoI.total);
-
+                                $scope.PagoI.TotalFCN = 0;
                                 console.log($scope.PagoI.TotalFN);
 
                                 if ($scope.PagoI.foliofiscal != '') {
@@ -1223,7 +1224,7 @@ $scope.subeXMLInd = function($files){
                                 $scope.btndelete = true;
 
                                 $scope.PagoI.TotalFSN = parseFloat($scope.PagoI.TotalF) - parseFloat($scope.PagoI.total);
-
+                                $scope.PagoI.TotalFCN = 0;
                                 console.log($scope.PagoI.TotalFN);
                                 if ($scope.PagoI.foliofiscal != '') {
 
