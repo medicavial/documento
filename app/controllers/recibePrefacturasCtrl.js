@@ -77,7 +77,7 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
 
             $http.post(ruta).success(function (data){
 
-                console.log(data[0]);
+                console.log(data);
 
                 // if (data.length = 0) {
 
@@ -87,26 +87,25 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
                 
                 
                 // }else 
-                if(data[0].cancelado == 'S'){
+                if(data[0].cancelado == 'cancelada'){
 
                     $scope.mensaje = "La prefactura esta CANCELADA, Verificalo con el Area de Sistemas";
                     $scope.tipoalerta = 'alert-warning';
                     $scope.btnagrega = true;
 
 
-                }else if(data[0].pagado == 'S'){
+                }
+
+                if(data[0].pagado == 'Pagada'){
 
                     $scope.mensaje = "La prefactura esta PAGADA, Verificalo con el Area de Sistemas";
                     $scope.tipoalerta = 'alert-info';
                     $scope.btnagrega = true;
 
-                }else if (data[0].pagado == 'S'){
 
-                    $scope.mensaje = "El Folio no corresponde con la Unidad o Proveedor seleccionado, Verificalo con el Area de Sistemas";
-                    $scope.tipoalerta = 'alert-info';
-                    $scope.btnagrega = true;
+                }
 
-                }else if(data[0].foliomv == '' || data[0].foliomv == null){
+                if(data[0].foliomv == '' || data[0].foliomv == null){
 
                     $scope.mensaje = "Los Folios no estan ASOCIADOS, Verificalo con el Area de Sistemas";
                     $scope.tipoalerta = 'alert-purple';
@@ -137,6 +136,7 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
                         $scope.tipoalerta = true;
                         $scope.btnagrega = false;
                         $scope.datos.usuarioRecibe = $rootScope.id;
+                        $scope.datos.cancelado = data[0].cancelado;
                 
                     }
 

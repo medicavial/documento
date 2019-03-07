@@ -33,7 +33,7 @@
 
 	<div class="row-center">
 
-       <aside class="col-md-10">
+       <aside class="col-md-12">
           <!-- START widget-->
           <div class="panel widget">
              <div class="panel-body" style="background-color:#D3F9EB">
@@ -63,16 +63,22 @@
                 		<strong>Importe: {{ datos.totalprefactura }} </strong>
 
                 	</div>
-                	<div class="col-md-4">
-                		<strong>Fecha Prefactura: {{ datos.fechaprefactura }} </strong>
-
-                	</div>
-                  <div class="col-md-4">
-                    <strong>Estatus Prefactura: {{  }} </strong>
-
-                  </div>
 
       					 </div>
+                 <div class="row">
+
+                    <div class="col-md-4">
+                      <strong>Estatus Prefactura: <h3 class="text-danger">{{ datos.cancelado }}</h3> </strong>
+
+                    </div>
+
+                    <div class="col-md-4">
+
+                      <strong>Prefactura Pagado: <h3 class="text-danger">{{ datos.pagado }}</h3> </strong>
+
+                    </div>
+                   
+                 </div>
                  <br>
 
                  <div class="row">

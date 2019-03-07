@@ -922,6 +922,7 @@ $scope.eliminaxml = function(){
       $scope.PagoM.tasa = '';
       $scope.PagoM.total = '';
       $scope.PagoM.fechaemision = '';
+      $scope.PagoM.descuento = '';
 
       $scope.totalPago =  $scope.totalPago -  $scope.totalPago;
       $scope.subtotalPago =  $scope.subtotalPago -  $scope.subtotalPago;
@@ -935,6 +936,7 @@ $scope.eliminaxml = function(){
       $scope.PagoI.tasa = '';
       $scope.PagoI.total = '';
       $scope.PagoI.fechaemision = '';
+      $scope.PagoI.descuento = '';
 
       $scope.envia = true;
 
@@ -1042,7 +1044,8 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
 
-                                if(courses.comprobante.impuestos.traslados == undefined){
+                                
+                                if(courses.comprobante.impuestos == undefined){
 
                                     $scope.PagoI.iva = '';
                                     $scope.PagoI.importeiva = '';
@@ -1054,7 +1057,7 @@ $scope.subeXMLInd = function($files){
 
                                 }
 
-                                if (courses.comprobante.impuestos.retenciones == undefined) {
+                                if (courses.comprobante.impuestos == undefined) {
 
                                     $scope.PagoI.isr = '';
                                     $scope.PagoI.importeisr = '';
@@ -1072,10 +1075,13 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.tipoorden = 4;
                                 $scope.btndelete = true;
 
+                                console.log($scope.PagoI.TotalF);
+                                console.log($scope.PagoI.total);
+
                                 $scope.PagoI.TotalFSN = parseFloat($scope.PagoI.TotalF) - parseFloat($scope.PagoI.total);
                                 $scope.PagoI.TotalFCN = 0;
-console.log($scope.PagoI.TotalF);
-console.log($scope.PagoI.total);
+console.log($scope.PagoI.TotalFSN);
+console.log($scope.PagoI.TotalFCN);
                                 console.log($scope.PagoI.TotalFSN);
 
                                 if ($scope.PagoI.foliofiscal != '') {
@@ -1175,19 +1181,19 @@ console.log($scope.PagoI.total);
                                 $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
 
-                                if(courses.comprobante.Impuestos_totalimpuestostrasladados == undefined){
+                                // if(courses.comprobante.Impuestos_totalimpuestostrasladados == undefined){
 
-                                    $scope.PagoI.iva = '';
-                                    $scope.PagoI.importeiva = '';
+                                //     $scope.PagoI.iva = '';
+                                //     $scope.PagoI.importeiva = '';
 
-                                }else{
+                                // }else{
 
-                                    $scope.PagoI.iva = 'IVA';
-                                    $scope.PagoI.importeiva = courses.comprobante.impuestos.totalimpuestostrasladados;
+                                //     $scope.PagoI.iva = 'IVA';
+                                //     $scope.PagoI.importeiva = courses.comprobante.impuestos.totalimpuestostrasladados;
 
-                                }
+                                // }
 
-                                if(courses.comprobante.impuestos.traslados == undefined){
+                                if(courses.comprobante.impuestos == undefined){
 
                                     $scope.PagoI.iva = '';
                                     $scope.PagoI.importeiva = '';
@@ -1201,7 +1207,7 @@ console.log($scope.PagoI.total);
 
                                 }
 
-                                if (courses.comprobante.impuestos.retenciones == undefined) {
+                                if (courses.comprobante.impuestos == undefined) {
 
                                     $scope.PagoI.isr = '';
                                     $scope.PagoI.importeisr = '';
