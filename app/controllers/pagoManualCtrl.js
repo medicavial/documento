@@ -396,20 +396,22 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.traslados == undefined) {
+
+
+                                    $scope.PagoM.iva = '';
+                                    $scope.PagoM.importeiva = '';
+
+                                    }else{
+
 
                                     $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
                                     $scope.PagoM.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
 
+                                    }
+
+
                                 }
-                                // else{
-
-                                //     $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
-                                //     $scope.PagoM.importeiva = courses.comprobante.impuestos_totalimpuestostrasladados;
-
-
-                                // }
-
-
 
                                 if (courses.comprobante.impuestos == undefined) {
 
@@ -419,9 +421,19 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.retenciones == undefined) {
+
+
+                                    $scope.PagoM.isr = '';
+                                    $scope.PagoM.importeisr = '';
+                                    
+                                    }else{
+
 
                                     $scope.PagoM.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
                                     $scope.PagoM.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                    }
+
 
                                 }
                                 $scope.PagoM.usuarioentrega = Number($rootScope.id);
@@ -532,8 +544,20 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.traslados == undefined) {
+
+
+                                    $scope.PagoM.iva = '';
+                                    $scope.PagoM.importeiva = '';
+
+                                    }else{
+
+
                                     $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
                                     $scope.PagoM.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
+
+                                    }
+
 
                                 }
 
@@ -545,9 +569,19 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.retenciones == undefined) {
+
+
+                                    $scope.PagoM.isr = '';
+                                    $scope.PagoM.importeisr = '';
+                                    
+                                    }else{
+
 
                                     $scope.PagoM.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
                                     $scope.PagoM.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                    }
+
 
                                 }
                                 $scope.PagoM.usuarioentrega = Number($rootScope.id);
@@ -1055,8 +1089,20 @@ $scope.subeXMLInd = function($files){
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.traslados == undefined) {
+
+
+                                    $scope.PagoI.iva = '';
+                                    $scope.PagoI.importeiva = '';
+
+                                    }else{
+
+
                                     $scope.PagoI.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
                                     $scope.PagoI.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
+
+                                    }
+
 
                                 }
 
@@ -1068,12 +1114,21 @@ $scope.subeXMLInd = function($files){
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.retenciones == undefined) {
+
+
+                                    $scope.PagoI.isr = '';
+                                    $scope.PagoI.importeisr = '';
+                                    
+                                    }else{
+
 
                                     $scope.PagoI.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
                                     $scope.PagoI.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                    }
+
 
                                 }
-
                                 $scope.PagoI.usuarioentrega = Number($rootScope.id);
                                 $scope.PagoI.tipoorden = 4;
                                 $scope.btndelete = true;
@@ -1179,18 +1234,6 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
 
-                                // if(courses.comprobante.Impuestos_totalimpuestostrasladados == undefined){
-
-                                //     $scope.PagoI.iva = '';
-                                //     $scope.PagoI.importeiva = '';
-
-                                // }else{
-
-                                //     $scope.PagoI.iva = 'IVA';
-                                //     $scope.PagoI.importeiva = courses.comprobante.impuestos.totalimpuestostrasladados;
-
-                                // }
-
                                 if(courses.comprobante.impuestos == undefined){
 
                                     $scope.PagoI.iva = '';
@@ -1198,9 +1241,19 @@ $scope.subeXMLInd = function($files){
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.traslados == undefined) {
+
+
+                                    $scope.PagoI.iva = '';
+                                    $scope.PagoI.importeiva = '';
+
+                                    }else{
+
 
                                     $scope.PagoI.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
                                     $scope.PagoI.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
+
+                                    }
 
 
                                 }
@@ -1213,12 +1266,21 @@ $scope.subeXMLInd = function($files){
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.retenciones == undefined) {
+
+
+                                    $scope.PagoI.isr = '';
+                                    $scope.PagoI.importeisr = '';
+                                    
+                                    }else{
+
 
                                     $scope.PagoI.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
                                     $scope.PagoI.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                    }
+
 
                                 }
-
                                 $scope.PagoI.usuarioentrega = Number($rootScope.id);
                                 $scope.PagoI.tipoorden = 4;
                                 $scope.btndelete = true;
