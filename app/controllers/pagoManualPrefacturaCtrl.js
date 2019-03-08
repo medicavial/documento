@@ -390,29 +390,31 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
                                 $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
 
-                                if(courses.comprobante.impuestos.traslados == undefined){
+                                if(courses.comprobante.impuestos == undefined){
 
                                     $scope.PagoM.iva = '';
                                     $scope.PagoM.importeiva = '';
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.traslados == undefined) {
+
+
+                                    $scope.PagoM.iva = '';
+                                    $scope.PagoM.importeiva = '';
+
+                                    }else{
+
 
                                     $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
                                     $scope.PagoM.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
 
+                                    }
+
+
                                 }
-                                // else{
 
-                                //     $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
-                                //     $scope.PagoM.importeiva = courses.comprobante.impuestos_totalimpuestostrasladados;
-
-
-                                // }
-
-
-
-                                if (courses.comprobante.impuestos.retenciones == undefined) {
+                                if (courses.comprobante.impuestos == undefined) {
 
                                     $scope.PagoM.isr = '';
                                     $scope.PagoM.importeisr = '';
@@ -420,9 +422,19 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.retenciones == undefined) {
+
+
+                                    $scope.PagoM.isr = '';
+                                    $scope.PagoM.importeisr = '';
+                                    
+                                    }else{
+
 
                                     $scope.PagoM.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
                                     $scope.PagoM.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                    }
+
 
                                 }
                                 $scope.PagoM.usuarioentrega = Number($rootScope.id);
@@ -524,20 +536,31 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
                                 $scope.PagoM.descuento = courses.comprobante._descuento;
                                 $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
-
-                                if(courses.comprobante.impuestos.traslados == undefined){
+                                if(courses.comprobante.impuestos == undefined){
 
                                     $scope.PagoM.iva = '';
                                     $scope.PagoM.importeiva = '';
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.traslados == undefined) {
+
+
+                                    $scope.PagoM.iva = '';
+                                    $scope.PagoM.importeiva = '';
+
+                                    }else{
+
+
                                     $scope.PagoM.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
                                     $scope.PagoM.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
 
+                                    }
+
+
                                 }
 
-                                if (courses.comprobante.impuestos.retenciones == undefined) {
+                                if (courses.comprobante.impuestos == undefined) {
 
                                     $scope.PagoM.isr = '';
                                     $scope.PagoM.importeisr = '';
@@ -545,9 +568,19 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.retenciones == undefined) {
+
+
+                                    $scope.PagoM.isr = '';
+                                    $scope.PagoM.importeisr = '';
+                                    
+                                    }else{
+
 
                                     $scope.PagoM.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
                                     $scope.PagoM.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                    }
+
 
                                 }
                                 $scope.PagoM.usuarioentrega = Number($rootScope.id);
@@ -1051,8 +1084,20 @@ $scope.subeXMLInd = function($files){
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.traslados == undefined) {
+
+
+                                    $scope.PagoI.iva = '';
+                                    $scope.PagoI.importeiva = '';
+
+                                    }else{
+
+
                                     $scope.PagoI.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
                                     $scope.PagoI.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
+
+                                    }
+
 
                                 }
 
@@ -1064,9 +1109,19 @@ $scope.subeXMLInd = function($files){
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.retenciones == undefined) {
+
+
+                                    $scope.PagoI.isr = '';
+                                    $scope.PagoI.importeisr = '';
+                                    
+                                    }else{
+
 
                                     $scope.PagoI.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
                                     $scope.PagoI.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                    }
+
 
                                 }
 
