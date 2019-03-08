@@ -1043,7 +1043,6 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.descuento = courses.comprobante._descuento;
                                 $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
-
                                 
                                 if(courses.comprobante.impuestos == undefined){
 
@@ -1200,9 +1199,19 @@ console.log($scope.PagoI.TotalFCN);
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.traslados == undefined) {
+
+
+                                    $scope.PagoI.iva = '';
+                                    $scope.PagoI.importeiva = '';
+
+                                    }else{
+
 
                                     $scope.PagoI.iva = courses.comprobante.impuestos.traslados.traslado._impuesto;
                                     $scope.PagoI.importeiva = courses.comprobante.impuestos._totalimpuestostrasladados;
+
+                                    }
 
 
                                 }
@@ -1215,9 +1224,19 @@ console.log($scope.PagoI.TotalFCN);
 
                                 }else{
 
+                                    if (courses.comprobante.impuestos.retenciones == undefined) {
+
+
+                                    $scope.PagoI.isr = '';
+                                    $scope.PagoI.importeisr = '';
+                                    
+                                    }else{
+
 
                                     $scope.PagoI.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
                                     $scope.PagoI.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                    }
+
 
                                 }
 
