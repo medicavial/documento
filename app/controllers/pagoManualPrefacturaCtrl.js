@@ -1301,6 +1301,7 @@ console.log($scope.PagoI.TotalFCN);
 
                                 $scope.PagoI.TotalFSN = parseFloat($scope.PagoI.TotalF) - parseFloat($scope.PagoI.total);
                                 $scope.PagoI.TotalFCN = 0;
+
 console.log($scope.PagoI.TotalF);
 console.log($scope.PagoI.total);
                                 console.log($scope.PagoI.TotalFN);

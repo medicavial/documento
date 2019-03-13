@@ -247,7 +247,16 @@ $scope.valida = function(archivo){
 
                 $scope.complementoP.rfcEmisor =  courses.comprobante.emisor._rfc;
                 $scope.complementoP.nombreEmisor =  courses.comprobante.emisor._nombre;
-                $scope.doctorelacionado = courses.comprobante.complemento.pagos.pago.doctorelacionado;
+                if (courses.comprobante.complemento.pagos.pago.doctorelacionado == undefined) {
+
+                  $scope.doctorelacionado = courses.comprobante.complemento.pagos.pago;
+
+                }else{
+
+                  $scope.doctorelacionado = courses.comprobante.complemento.pagos.pago.doctorelacionado;
+
+                }
+                console.log(courses.comprobante.complemento.pagos.pago.pago);
 
                 // if(courses.comprobante.cfdirelacionados.cfdirelacionado == undefined){
 
@@ -345,6 +354,8 @@ $scope.valida = function(archivo){
                  doctorelacionado: ''
                  
              });
+
+            console.log($scope.complemento);
 
             $scope.complemento = {
 
