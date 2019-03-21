@@ -208,22 +208,34 @@
 	    </div><br><br><br>
 
 	    <div class="row">
+	    	<div class="col-md-12">
+	    	<a href="" ><h3>¿Quieres Ingresar otro Documento?</h3></a>
+                <label class="radio-inline c-radio">
+	    	    <input id="inlineradio1" type="radio" name="i-radio" ng-model="doc"  value="1">
+                <span class="icon-cancel-circle"></span> Si </label>
+
+                <label class="radio-inline c-radio">
+                <input id="inlineradio1" type="radio" name="i-radio" ng-model="doc"  value="0">
+                <span class="icon-cancel-circle"></span> No </label>
+            </div>
+	    </div>
+
+	    <div class="row" ng-if="doc == '1'">
 			<div class="col-md-12">
 
-                <a href="" ng-value="siNC == si"><h3>Quieres Ingresar Nota de Credito?</h3></a>
+                <a href="" ><h3>Tipo de Documento</h3><H5><strong class="text-danger">Nota: Es importante especificar el tipo de documento para hacer un tramite exitoso</strong></H5></a>
                 <label class="radio-inline c-radio">
-                <input id="inlineradio1" type="radio" name="i-radio" ng-model="NC"  value="1">
-                <span class="icon-cancel-circle"></span> SI </label>
+                <input id="inlineradio2" type="radio" name="i-radio1" ng-model="PagoI.NC"  value="1" checked="checked" >
+                <span class="icon-cancel-circle"></span> Nota Credito </label>
 
                 <label class="radio-inline c-radio">
-                <input id="inlineradio1" type="radio" name="i-radio" ng-model="NC"  value="0">
-                <span class="icon-cancel-circle"></span> NO </label>
-				
+                <input id="inlineradio2" type="radio" name="i-radio1" ng-model="PagoI.NC"  value="2">
+                <span class="icon-cancel-circle"></span> Deducible </label>
 			
 			</div>
 		</div><br><br>
 
-	    <div class="row"  ng-if="NC == '1'">
+	    <div class="row" ng-if="doc == '1'">
 			<div class="col-md-12">
 
 				<div class="panel panel-info">
