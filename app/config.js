@@ -982,6 +982,12 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
 
     });
 
+    $routeProvider.when('/Medicos',{
+            templateUrl   : 'vistas/pagoMedicos.html',
+            controller    : 'listadopagoMedicosCtrl'
+
+    });
+
     $routeProvider.when('/pagosSinrelacion',{
             templateUrl   : 'vistas/listadosinRelacion.html',
             controller    : 'listadosinRelacionCtrl'

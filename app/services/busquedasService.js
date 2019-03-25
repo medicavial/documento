@@ -342,6 +342,9 @@ app.factory("find", function($http,api){
         buscacomplemento:function(datos){
             return $http.post(api + 'Complementos/buscacomplemento',datos);
         },
+        listadopagoMedicos:function(datos){
+            return $http.post(api + 'flujopagos/listadopagoMedicos',datos);
+        },
 
 
 

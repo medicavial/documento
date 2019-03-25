@@ -2933,6 +2933,99 @@ function listadosinRelacionCtrl($scope, $rootScope, $routeParams, find, loading 
         JSONToCSVConvertor($scope.selectos,'Reporte',true);        
     }
 
+};
+
+
+function listadopagoMedicosCtrl($scope, $rootScope, $routeParams, find, loading , $http, carga, checkFolios){
+
+    // $scope.listadoRecepcion = datos.data;
+    loading.despedida();
+    //Carga Configuracion Inicial
+	$scope.inicio = function(){
+
+		// $scope.altaunidades();
+		$scope.datos = {
+
+			fechaini: FechaAct,
+			fechafin: FechaAct,
+			unidad: ''
+
+		}
+
+	}
+	//Carga la lista de archivos a Recibir de otras areas
+	$scope.cargapagoMedicos = function(){
+		
+		loading.cargando('Buscando Folio'); 
+
+		find.listadopagoMedicos($scope.datos).success( function (data){
+
+        	if(data.length>0){
+        		loading.despedida();
+        		$scope.listadoMedicos = data;
+            }else{
+                $scope.listadoMedicos = [];
+        	}
+
+		});
+	}
+
+
+    var csvOpts = { columnOverrides: { obj: function (o) {
+	    return o.no + '|' + o.timeOfDay + '|' + o.E + '|' + o.S+ '|' + o.I+ '|' + o.pH+ '|' + o.v;
+	    } },
+	    iEUrl: 'downloads/download_as_csv'
+	};
+
+	//Cargamos el grid con los datos
+$scope.gridOptions = { 
+        data: 'listadoMedicos', 
+        enableColumnResize:true,
+        enablePinning: true, 
+        enableRowSelection:true,
+        multiSelect:true,
+        showSelectionCheckbox: true,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: true,
+        selectedItems: $scope.selectedRows, 
+        filterOptions: $scope.filterOptions,
+        enableCellEdit: true,
+        columnDefs: [
+                    { field:'CLAVE_MEDICO', width: 120, pinned: true},
+                    { field:'MEDICO', width: 200, pinned: true},
+                    { field:'FOLIOMV', width: 150, pinned: true},
+                    { field:'FECHA_REGISTRO', width: 150, pinned: true},
+                    { field:'FECHA_NOTAMEDICA', width: 170, pinned: true},
+                    { field:'NOMBRE_LESIONADO', width: 200, pinned: true},
+                    { field:'COMPANIA', width: 120, pinned: true},
+                    { field:'UNIDAD', width: 120, pinned: true},
+                    { field:'BIT_NO_PAGO', width: 120, pinned: true}],
+
+        showFooter: true,
+        showFilter:false,
+
+    };
+
+    $scope.$on('ngGridEventRows', function (newFilterText){
+
+    	var filas = newFilterText.targetScope.renderedRows;
+
+    	$scope.exportables = [];
+
+    	angular.forEach(filas , function(item){
+    		$scope.exportables.push(item.entity);
+    	});
+
+    });
+
+    $scope.exportar = function(){
+
+        $scope.selectos = $scope.listadoMedicos;
+        JSONToCSVConvertor($scope.selectos,'Pago_Medicos',true);        
+    }
+
+
+
 
 
 };
@@ -2948,6 +3041,7 @@ listadoRecepcionCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 
 listadoRecepcionAreaCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios','datos'];
 listadoRecepcionPagoCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios'];
 listadosinRelacionCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios'];
+listadopagoMedicosCtrl.$inject = ['$scope', '$rootScope', '$routeParams', 'find', 'loading' , '$http', 'carga', 'checkFolios'];
 
 
 app.controller('rechazosCtrl',rechazosCtrl);
@@ -2960,3 +3054,4 @@ app.controller('listadoRecepcionCtrl', listadoRecepcionCtrl);
 app.controller('listadoRecepcionAreaCtrl', listadoRecepcionAreaCtrl);
 app.controller('listadoRecepcionPagoCtrl', listadoRecepcionPagoCtrl);
 app.controller('listadosinRelacionCtrl', listadosinRelacionCtrl);
+app.controller('listadopagoMedicosCtrl', listadopagoMedicosCtrl);
