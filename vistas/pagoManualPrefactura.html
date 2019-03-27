@@ -396,76 +396,16 @@
 	    </div>
         <br>
 
-	    <div class="row">
-			<div class="col-md-12">
-
-                <a href=""><h3>Quieres Ingresar Nota de Credito?</h3></a>
-                <label class="radio-inline c-radio">
-                <input id="inlineradio1" type="radio" name="i-radio" ng-model="NC2"  value="1">
-                <span class="icon-cancel-circle"></span> SI </label>
-
-                <label class="radio-inline c-radio">
-                <input id="inlineradio1" type="radio" name="i-radio" ng-model="NC2"  value="0">
-                <span class="icon-cancel-circle"></span> NO </label>
-				
-			
-			</div>
-		</div><br><br>
-
-	    <div class="row"  ng-if="NC2 == '1'">
-			<div class="col-md-12">
-
-				<div class="panel panel-info">
-				  <div class="panel-heading">Nota de Crédito</div>
-				  <div class="panel-body">
-
-					  	<table style="max-height: auto;
-								    overflow-y: auto; 
-								    overflow-x: auto;
-								    width: 100%; background: #edebeb ">
-				        <tr style="background-color:#E9E9E9;">
-				          <th colspan="12" class="text-center"><h4>Datos de la Nota de Credito</h4></th>
-				        </tr>
-				        <tr style="background-color:#F0FFFF">
-				          <th></th>
-				          <th>Folio Fiscal</th>
-				          <th>Emisor</th>
-				          <th>RFC Emisor</th>
-				          <th>Subtotal</th>
-				          <th>Total</th>
-				          <th>Fecha Emisión</th>
-				          <th></th>
-				        </tr>
-				        <tr>
-				          <td>
-				          	<label class="btn btn-primary">Sube Factura <input type="file" style="display: none;" ng-file-select="subeNCG($files)">
-		                    </label>
-		                  </td>
-				          <td>{{ NCG.foliofiscal }}</td>
-				          <td>{{ NCG.emisor }}</td>
-				          <td>{{ NCG.rfcemisor }}</td>
-				          <td>{{ NCG.subtotal }}</td>
-				          <td>{{ NCG.total }}</td>
-				          <td>{{ NCG.fechaemision }}</td>
-				          <td ng-show="btndelete"><button ng-click="eliminaxmlNC()" class="btn btn-small btn-danger" type="button">Eliminar</button></td>
-				        </tr>
-				      </table>
-
-
-				  </div>
-				</div>
-
-			</div>
-		</div><br><br>
-
-	    <div class="row">
-
-		    <div class="col-md-3">
+        <div class="row">
+            <div class="col-md-3">
 				<button type="button" ng-click="addRow()"  class="btn btn-warning btn-lg btn-block glyphicon glyphicon-plus"> Agrega O.P </button>
 			</div>
+        </div>
+
+	    <div class="row">
 
 			<div class="col-md-5">
-				<label class="text-danger"><H2><strong>Total Nota Credito:{{ PagoM.acumuladoTNC | currency}}</strong></H2></label>
+				<label class="text-danger"><H2><strong>Total Nota Credito:{{ NCG.total  | currency}}</strong></H2></label>
 			</div>
 
 
@@ -476,7 +416,6 @@
 
 		</div>
 
-
 		<br>
 
 	    <div class="col-md-12">
@@ -486,8 +425,6 @@
 					<table class="table" >
 					    <thead>
 					        <tr>
-					        	<th>Folio Fiscal NC</th>
-					        	<th>TotalNC</th>
 					            <th>FolioMv</th>
 					            <th>Etapa</th>
 					            <th>Entrega</th>
@@ -499,8 +436,6 @@
 					    </thead>
 					    <tbody>
         					<tr ng-repeat="Pago in Pagos">
-								<td>{{ Pago.foliofiscalNC }}</td>
-								<td>{{ Pago.calculoNC }}</td>
 					            <td>{{ Pago.folio }}</td>
 					            <td>{{ Pago.etapa }}</td>
 					            <td>{{ Pago.entrega }}</td>
@@ -559,6 +494,84 @@
 			      </table>
 			      </div>
 	    </div><br><br>
+
+	    <div class="row">
+	    	<div class="col-md-12">
+	    	<a href="" ><h3>¿Quieres Ingresar otro Documento?</h3></a>
+                <label class="radio-inline c-radio">
+	    	    <input id="inlineradio1" type="radio" name="i-radio" ng-model="doc"  value="1">
+                <span class="icon-cancel-circle"></span> Si </label>
+
+                <label class="radio-inline c-radio">
+                <input id="inlineradio1" type="radio" name="i-radio" ng-model="doc"  value="0">
+                <span class="icon-cancel-circle"></span> No </label>
+            </div>
+	    </div>
+
+	    <div class="row" ng-if="doc == '1'">
+			<div class="col-md-12">
+
+                <a href="" ><h3>Tipo de Documento</h3><H5><strong class="text-danger">Nota: Es importante especificar el tipo de documento para hacer un tramite exitoso</strong></H5></a>
+                <label class="radio-inline c-radio">
+                <input id="inlineradio2" type="radio" name="i-radio1" ng-model="PagoM.NC"  value="1" checked="checked" >
+                <span class="icon-cancel-circle"></span> Nota Credito </label>
+
+                <label class="radio-inline c-radio">
+                <input id="inlineradio2" type="radio" name="i-radio1" ng-model="PagoM.NC"  value="2">
+                <span class="icon-cancel-circle"></span> Deducible </label>
+			
+			</div>
+		</div><br><br>
+
+	    <div class="row" ng-if="doc == '1'">
+			<div class="col-md-12">
+
+				<div class="panel panel-info">
+				  <div class="panel-heading">Nota de Crédito</div>
+				  <div class="panel-body">
+
+					  	<table style="max-height: auto;
+								    overflow-y: auto; 
+								    overflow-x: auto;
+								    width: 100%; background: #edebeb ">
+				        <tr style="background-color:#E9E9E9;">
+				          <th colspan="12" class="text-center"><h4>Datos de la Nota de Credito</h4></th>
+				        </tr>
+				        <tr style="background-color:#F0FFFF">
+				          <th></th>
+				          <th>Serie</th>
+				          <th>Folio Fiscal</th>
+				          <th>Emisor</th>
+				          <th>RFC Emisor</th>
+				          <th>Subtotal</th>
+				          <th>IVA</th>
+				          <th>Total</th>
+				          <th>Fecha Emisión</th>
+				          <th></th>
+				        </tr>
+				        <tr>
+				          <td>
+				          	<label class="btn btn-primary">Sube Factura <input type="file" style="display: none;" ng-file-select="subeNCG($files)">
+		                    </label>
+		                  </td>
+				          <td>{{ NCG.serie }}</td>
+				          <td>{{ NCG.foliofiscal }}</td>
+				          <td>{{ NCG.emisor }}</td>
+				          <td>{{ NCG.rfcemisor }}</td>
+				          <td>{{ NCG.subtotal }}</td>
+				          <td>{{ NCG.tasa }}</td>
+				          <td>{{ NCG.total }}</td>
+				          <td>{{ NCG.fechaemision }}</td>
+				          <td ng-show="btndelete"><button ng-click="eliminaxmlNC()" class="btn btn-small btn-danger" type="button">Eliminar</button></td>
+				        </tr>
+				      </table>
+
+
+				  </div>
+				</div>
+
+			</div>
+		</div><br><br>
 	    <div class="row">
 
 	    	<div class="col-md-3">

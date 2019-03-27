@@ -52,8 +52,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
             TotalF: 0.00,
             deducibleF: 0.00,
             descuento: 0.00,
-            acumuladoTNC: 0.00,
-            acumuladoT: 0.00
+            // acumuladoT: 0.00
 
         }
 
@@ -641,10 +640,10 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
 
 $scope.enviaOrdenPago = function(){
 
-console.log($scope.PagoM.acumuladoTNC);
-console.log($scope.PagoM.total);
+    console.log($scope.NCG.total);
+    console.log($scope.PagoM.total);
 
-    var resta =  parseFloat($scope.PagoM.total) - parseFloat($scope.PagoM.acumuladoTNC);
+    var resta =  parseFloat($scope.PagoM.total) - parseFloat($scope.NCG.total);
     var restResta = resta.toFixed(2);
 
     console.log(restResta);
@@ -700,7 +699,7 @@ console.log($scope.PagoM.total);
                             clavemaestra: typedPassword,
                             NC: $scope.NCG,
                             prefactura: $scope.selectos,
-                            tipoconcepto: $scope.NC
+                            tipoconcepto: $scope.PagoM.NC
                         }
 
                         // console.log($scope.OPago);
@@ -793,7 +792,7 @@ console.log($scope.PagoM.total);
                 unidad: $scope.PagoM.unidad,
                 NC: $scope.NCG,
                 prefactura: $scope.selectos,
-                tipoconcepto: $scope.NC
+                tipoconcepto: $scope.PagoM.NC
             }
 
         var ruta = api+'PagoManual/ordenPago'; 
@@ -862,8 +861,8 @@ $scope.delete = function(index){
     var valor = $scope.Pagos[index].TotalF;
     $scope.PagoM.acumuladoT  = parseFloat($scope.PagoM.acumuladoT) - parseFloat(valor);
 
-    var valor1 = $scope.Pagos[index].calculoNC;
-    $scope.PagoM.acumuladoTNC  = parseFloat($scope.PagoM.acumuladoTNC) - parseFloat(valor1);
+    // var valor1 = $scope.Pagos[index].calculoNC;
+    // $scope.PagoM.acumuladoTNC  = parseFloat($scope.PagoM.acumuladoTNC) - parseFloat(valor1);
 
     $scope.Pagos.splice(index,1);
 
@@ -872,18 +871,23 @@ $scope.delete = function(index){
 
 $scope.addRow = function(){
 
+
+    //// se van agregando las ordenes para una factura global
+
     if ($scope.PagoM.folio == '') {
 
         swal("Upss", "No tienes O.P para agregar", "error");
 
-    }else{
+    }
 
-        if ($scope.NCG.foliofiscal == '' || $scope.NCG.foliofiscal == undefined) {
-            $scope.NCG.foliofiscal = "";
-            $scope.NCG.valorNC     = 0.00;
-            $scope.NCG.importeiva  = 0.00;
-            $scope.NCG.importeisr  = 0.00;
-        };
+    // else{
+
+    //     if ($scope.NCG.foliofiscal == '' || $scope.NCG.foliofiscal == undefined) {
+    //         $scope.NCG.foliofiscal = "";
+    //         $scope.NCG.valorNC     = 0.00;
+    //         $scope.NCG.importeiva  = 0.00;
+    //         $scope.NCG.importeisr  = 0.00;
+    //     };
 
     $scope.Pagos.push({ 'unidad':$scope.PagoM.unidad, 'folio': $scope.PagoM.folio, 'tramite': $scope.PagoM.tipotramite, 
                          'concepto': $scope.PagoM.concepto, 'etapa': $scope.PagoM.etapa, 'entrega': $scope.PagoM.entrega,
@@ -891,11 +895,7 @@ $scope.addRow = function(){
                          'subtotal': $scope.PagoM.subtotal, 'total': $scope.PagoM.total, 'foliofiscal':$scope.PagoM.foliofiscal, 
                          'fechaemision':$scope.PagoM.fechaemision, 'descuento':$scope.PagoM.descuento, 'emisor':$scope.PagoM.emisor,
                          'rfcemisor':$scope.PagoM.rfcemisor, 'impuesto': $scope.PagoM.impuesto, 'tasa': $scope.PagoM.tasa, 'SubtotalF':$scope.PagoM.SubtotalF, 'IVAF':  $scope.PagoM.IVAF, 'TotalF': $scope.PagoM.TotalF,
-                         'proveedor': $scope.PagoM.proveedor, 'retencionF': $scope.PagoM.retencionF, 'deducibleF': $scope.PagoM.deducibleF, 'descuentoF': $scope.PagoM.descuentoF,
-                         'foliofiscalNC': $scope.NCG.foliofiscal, 'calculoNC': $scope.NCG.valorNC,
-                         'subtotalNC': $scope.NCG.subtotal, 'totalNC': $scope.NCG.total, 'rfcemisprNC': $scope.NCG.rfcemisor,
-                         'metodopagoNC': 'E', 'folioNC': $scope.NCG.foliointerno, 'serieNC': $scope.NCG.serie,
-                         'ivaNC': $scope.NCG.importeiva, 'isrNC': $scope.NCG.importeisr, 'fechaeemisionNC': $scope.NCG.fechaemision });
+                         'proveedor': $scope.PagoM.proveedor, 'retencionF': $scope.PagoM.retencionF, 'deducibleF': $scope.PagoM.deducibleF, 'descuentoF': $scope.PagoM.descuentoF});
 
     $scope.PagoM.folio = '';
     $scope.PagoM.tipotramite = '';
@@ -912,15 +912,15 @@ $scope.addRow = function(){
 
     ///// limpia cuadro de nota de credito //////
     $scope.eliminaxmlNC();
-    $scope.NCG.foliofiscal = '';
-    $scope.NCG.serie = '';
-    $scope.NCG.emisor ='';                        
-    $scope.NCG.rfcemisor  ='';                        
-    $scope.NCG.subtotal = '';
-    $scope.NCG.iVA = '';
-    $scope.NCG.total = '';
-    $scope.NCG.fechaemision = '';
-    $scope.NC2 = 0;
+    // $scope.NCG.foliofiscal = '';
+    // $scope.NCG.serie = '';
+    // $scope.NCG.emisor ='';                        
+    // $scope.NCG.rfcemisor  ='';                        
+    // $scope.NCG.subtotal = '';
+    // $scope.NCG.iVA = '';
+    // $scope.NCG.total = '';
+    // $scope.NCG.fechaemision = '';
+    // $scope.NC2 = 0;
 
 
     var sumaTotal = 0;
@@ -928,18 +928,19 @@ $scope.addRow = function(){
 
     for (var i = 0; i < $scope.Pagos.length; i++){
 
+/// suma de las ordenes
         var valor = $scope.Pagos[i].TotalF;
         sumaTotal += parseFloat(valor);
         var sumas = sumaTotal.toFixed(2);
         $scope.PagoM.acumuladoT  = sumas;
 
-        var valor1 = $scope.Pagos[i].calculoNC;
-        sumaTotal1 += parseFloat(valor1);
-        var sumas1 = sumaTotal1.toFixed(2);
-        $scope.PagoM.acumuladoTNC  = sumas1;
+        // var valor1 = $scope.Pagos[i].calculoNC;
+        // sumaTotal1 += parseFloat(valor1);
+        // var sumas1 = sumaTotal1.toFixed(2);
+        // $scope.PagoM.acumuladoTNC  = sumas1;
 
     }
-}
+// }
 
 
 }
