@@ -641,10 +641,32 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
 $scope.enviaOrdenPago = function(){
 
+   if($scope.NCG.total == ''){ $scope.NCG.total = 0;}
+
 console.log($scope.PagoM.acumuladoTNC);
 console.log($scope.PagoM.total);
 
-    var resta =  parseFloat($scope.PagoM.total) - parseFloat($scope.PagoM.acumuladoTNC);
+                        $scope.OPago = {
+
+                            seleccionados : $scope.Pagos,
+                            archivos : $scope.archivos,
+                            usucarpeta: $rootScope.user,
+                            factura: $scope.PagoM,
+                            subtotaltotal: $scope.subtotalPago,
+                            importeiva: $scope.PagoM.importeiva,
+                            importeisr: $scope.PagoM.importeisr,
+                            total: $scope.totalPago,
+                            usuario: $rootScope.id,
+                            unidad: $scope.PagoM.unidad,
+                            // clavemaestra: typedPassword,
+                            NC: $scope.NCG,
+                            prefactura: '',
+                            tipoconcepto: $scope.PagoM.NC
+                        }
+
+                        console.log($scope.OPago);
+
+    var resta =  parseFloat($scope.PagoM.total) - parseFloat($scope.NCG.total);
     var restResta = resta.toFixed(2);
 
     console.log(restResta);
@@ -699,7 +721,8 @@ console.log($scope.PagoM.total);
                             unidad: $scope.PagoM.unidad,
                             clavemaestra: typedPassword,
                             NC: $scope.NCG,
-                            prefactura: ''
+                            prefactura: '',
+                            tipoconcepto: $scope.PagoM.NC
                         }
 
                         console.log($scope.OPago);
@@ -796,7 +819,8 @@ console.log($scope.PagoM.total);
                 usuario: $rootScope.id,
                 unidad: $scope.PagoM.unidad,
                 NC: $scope.NCG,
-                prefactura: ''
+                prefactura: '',
+                tipoconcepto: $scope.PagoM.NC
             }
 
 
@@ -1344,6 +1368,7 @@ $scope.enviaOrdenPagoInd = function(){
     console.log($scope.PagoI.TotalFSN);
     console.log($scope.PagoI.TotalFCN);
 
+
     if($scope.PagoI.TotalFSN != 0 || $scope.PagoI.TotalFCN != 0){
 
     swal({
@@ -1392,7 +1417,8 @@ $scope.enviaOrdenPagoInd = function(){
                         proveedor: $scope.PagoI.proveedor,
                         clavemaestra: typedPassword,
                         NC: $scope.NCI,
-                        prefactura: ''
+                        prefactura: '',
+                        tipoconcepto: $scope.PagoI.NC
                     }
 
                     var ruta = api+'PagoManual/ordenPagoIndividual'; 
@@ -1488,7 +1514,8 @@ $scope.enviaOrdenPagoInd = function(){
                         unidad: $scope.PagoI.unidad,
                         proveedor: $scope.PagoI.proveedor,
                         NC: $scope.NCI,
-                        prefactura: ''
+                        prefactura: '',
+                        tipoconcepto: $scope.PagoI.NC
                     }
 
                     var ruta = api+'PagoManual/ordenPagoIndividual'; 
