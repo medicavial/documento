@@ -203,7 +203,9 @@ function pagosCtrl($scope, $rootScope, find , loading,datos,$filter,$location,$h
                     { field:'Pagado', width: 80 },
                     { field:'Cobrado', width: 80 },
                     { field:'Facturado', width: 80 },
-                    { field:'Rel', width: 80, visible:false }
+                    { field:'Rel', width: 80, visible:false },
+                    { field:'metodoPago', width: 80 },
+                    { field:'fechaEmision', width: 80}
         ],
         showFooter: true,
         showFilter:false,

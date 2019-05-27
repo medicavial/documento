@@ -231,17 +231,12 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
     $scope.RecibePrefacturas = function(){
 
         console.log($scope.datos);
-
-
+ 
         var ruta = api+'PagoManual/insertaPrefacturas'; 
-
-
         $http.post(ruta,$scope.datos).success(function (data){
 
             if(data){
-                
                 // $scope.listado = data; 
-               
                 $scope.datos = {
 
                     prefactura: '',

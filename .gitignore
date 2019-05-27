@@ -1,2 +1,4 @@
 *.ts
 vistas/reporteRecepcionPagos.html
+app/controllers/pagoManualCtrl.js
+app/controllers/pagoManualPrefacturaCtrl.js

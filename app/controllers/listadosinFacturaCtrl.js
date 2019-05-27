@@ -109,7 +109,7 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
 
     }
 
-
+///// es un boton que ayuda a replicar los valores de las ordenes de pago globales
     $scope.planchaValor = function(){
 
         var suma0 = 0;
