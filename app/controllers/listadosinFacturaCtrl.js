@@ -65,7 +65,8 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
             tasa: '',
             usuarioentrega: '',
             prefactura: '',
-            tipoiva: ''
+            tipoiva: '',
+            metodoPago: ''
 
         }
 
@@ -89,7 +90,8 @@ function listadosinFacturaCtrl($scope, $rootScope, find ,loading,$filter,$locati
             impuesto: '',
             tasa: '',
             usuarioentrega: '',
-            prefactura: ''
+            prefactura: '',
+            metodoPago: ''
 
         }
 
@@ -915,6 +917,9 @@ $scope.subeXML = function($files){
                                 // $scope.PagoG.descuento = courses.comprobante._descuento;
                                 $scope.PagoG.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoG.rfcemisor = courses.comprobante.emisor._rfc;
+                                $scope.PagoG.metodoPago = courses.comprobante._metodopago;
+
+
                                 if(courses.comprobante.impuestos.traslados == undefined){
 
                                     $scope.PagoG.iva = '';
@@ -960,6 +965,8 @@ $scope.subeXML = function($files){
                                 $scope.PagoG.tipoorden = 2;
                                 $scope.btndelete = true;
                                 $scope.btnOG = 0;
+
+                                console.log($scope.PagoG);
 
 
 
@@ -1053,7 +1060,7 @@ $scope.enviaOrdenPagoGlo = function(){
         var areaEntrega = 6;
         var usuarioRecibe = $rootScope.id;
 
-        var ruta = api+'OPFactura/ordenPago';
+        // var ruta = api+'OPFactura/ordenPago';
 
             $http.post(ruta,$scope.OPago).success(function (data){
 
@@ -1260,6 +1267,7 @@ console.log($files);
                                     row.entity.descuento = '';
                                     row.entity.serie = '';
                                     row.entity.elimina = false;
+                                    row.entity.metodoPago = '';
                                     $scope.btndelete = false;
 
                                   }
@@ -1308,6 +1316,7 @@ console.log($files);
                                     row.entity.descuento = courses.comprobante._descuento;
                                     row.entity.emisor = courses.comprobante.emisor._nombre;
                                     row.entity.rfcemisor = courses.comprobante.emisor._rfc;
+                                    row.entity.metodoPago = courses.comprobante._metodopago;
                                     // row.entity.impuesto = courses.comprobante.Impuestos.Traslados.Traslado._impuesto;
                                     // row.entity.tasa = courses.comprobante.Impuestos.Traslados.Traslado._tasa;
                                     row.entity.usuarioentrega = Number($rootScope.id);
@@ -1339,6 +1348,8 @@ console.log($files);
                                     }
                                     row.entity.elimina = true;
                                     $scope.btndelete = true;
+
+                                    console.log();
 
 
                                 }

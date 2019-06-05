@@ -52,7 +52,8 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
             TotalF: 0.00,
             deducibleF: 0.00,
             descuento: 0.00,
-            acumuladoT: 0.00
+            acumuladoT: 0.00,
+            metodoPago: ''
 
         }
 
@@ -90,7 +91,8 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
             totalprefactura: '',
             TotalFV: 0.00,
             clavemaestra: '',
-            TotalFCN : 0
+            TotalFCN : 0,
+            metodopago: ''
 
     
         }
@@ -389,6 +391,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
                                 $scope.PagoM.descuento = courses.comprobante._descuento;
                                 $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
+                                $scope.PagoM.metodopago = courses.comprobante._metodopago;
 
                                 if(courses.comprobante.impuestos == undefined){
 
@@ -536,6 +539,9 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
                                 $scope.PagoM.descuento = courses.comprobante._descuento;
                                 $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
+                                $scope.PagoM.metodopago = courses.comprobante._metodopago;
+
+
                                 if(courses.comprobante.impuestos == undefined){
 
                                     $scope.PagoM.iva = '';
@@ -898,7 +904,7 @@ $scope.addRow = function(){
                          'subtotal': $scope.PagoM.subtotal, 'total': $scope.PagoM.total, 'foliofiscal':$scope.PagoM.foliofiscal, 
                          'fechaemision':$scope.PagoM.fechaemision, 'descuento':$scope.PagoM.descuento, 'emisor':$scope.PagoM.emisor,
                          'rfcemisor':$scope.PagoM.rfcemisor, 'impuesto': $scope.PagoM.impuesto, 'tasa': $scope.PagoM.tasa, 'SubtotalF':$scope.PagoM.SubtotalF, 'IVAF':  $scope.PagoM.IVAF, 'TotalF': $scope.PagoM.TotalF,
-                         'proveedor': $scope.PagoM.proveedor, 'retencionF': $scope.PagoM.retencionF, 'deducibleF': $scope.PagoM.deducibleF, 'descuentoF': $scope.PagoM.descuentoF});
+                         'proveedor': $scope.PagoM.proveedor, 'retencionF': $scope.PagoM.retencionF, 'deducibleF': $scope.PagoM.deducibleF, 'descuentoF': $scope.PagoM.descuentoF, 'metodopago': $scope.PagoM.metodopago});
 
     $scope.PagoM.folio = '';
     $scope.PagoM.tipotramite = '';
@@ -912,6 +918,7 @@ $scope.addRow = function(){
     $scope.PagoM.serie = '';
     $scope.PagoM.retencionF = 0.00;
     $scope.PagoM.deducibleF = 0.00;
+    $scope.PagoM.metodopago = '';
 
     ///// limpia cuadro de nota de credito //////
     $scope.eliminaxmlNC();
@@ -1083,6 +1090,7 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.descuento = courses.comprobante._descuento;
                                 $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
+                                $scope.PagoI.metodopago = courses.comprobante._metodopago;
                                 
                                 if(courses.comprobante.impuestos == undefined){
 
@@ -1240,6 +1248,7 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.descuento = courses.comprobante._descuento;
                                 $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
+                                $scope.PagoI.metodopago = courses.comprobante._metodopago;
 
                                 // if(courses.comprobante.Impuestos_totalimpuestostrasladados == undefined){
 
@@ -1359,6 +1368,7 @@ $scope.subeXMLInd = function($files){
 }
 
 $scope.enviaOrdenPagoInd = function(){
+    console.log($scope.PagoI);
 
     if ($scope.PagoI.TotalFSN == undefined) {$scope.PagoI.TotalFSN = 0;};
 
@@ -2091,6 +2101,7 @@ $scope.subeNCG = function($files, index){
                                 $scope.NCG.descuento = courses.comprobante._descuento;
                                 $scope.NCG.emisor = courses.comprobante.emisor._nombre;
                                 $scope.NCG.rfcemisor = courses.comprobante.emisor._rfc;
+                                $scope.NCG.metodopago = courses.comprobante._metodopago;
 
                                 if(courses.comprobante.impuestos.traslados == undefined){
 

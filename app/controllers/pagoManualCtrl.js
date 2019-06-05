@@ -51,7 +51,8 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             deducibleF: 0.00,
             descuento: 0.00,
             acumuladoTNC: 0.00,
-            acumuladoT: 0.00
+            acumuladoT: 0.00,
+            metodoPago: ''
 
         }
 
@@ -89,7 +90,8 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
             totalprefactura: '',
             TotalFV: 0.00,
             clavemaestra: '',
-            TotalFCN : 0
+            TotalFCN : 0,
+            metodoPago: ''
 
     
         }
@@ -388,6 +390,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                                 $scope.PagoM.descuento = courses.comprobante._descuento;
                                 $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
+                                $scope.PagoM.metodoPago = courses.comprobante._metodopago;
 
                                 if(courses.comprobante.impuestos == undefined){
 
@@ -536,6 +539,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                                 $scope.PagoM.descuento = courses.comprobante._descuento;
                                 $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
+                                $scope.PagoM.metodoPago = courses.comprobante._metodopago;
 
                                 if(courses.comprobante.impuestos == undefined){
 
@@ -1105,6 +1109,7 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.descuento = courses.comprobante._descuento;
                                 $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
+                                $scope.PagoI.metodoPago = courses.comprobante._metodopago;
 
                                 if(courses.comprobante.impuestos == undefined){
 
@@ -1257,6 +1262,7 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.descuento = courses.comprobante._descuento;
                                 $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
+                                $scope.PagoI.metodoPago = courses.comprobante._metodopago;
 
                                 if(courses.comprobante.impuestos == undefined){
 
