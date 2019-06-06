@@ -92,7 +92,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
             TotalFV: 0.00,
             clavemaestra: '',
             TotalFCN : 0,
-            metodopago: ''
+            metodoPago: ''
 
     
         }
@@ -391,7 +391,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
                                 $scope.PagoM.descuento = courses.comprobante._descuento;
                                 $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
-                                $scope.PagoM.metodopago = courses.comprobante._metodopago;
+                                $scope.PagoM.metodoPago = courses.comprobante._metodopago;
 
                                 if(courses.comprobante.impuestos == undefined){
 
@@ -539,7 +539,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
                                 $scope.PagoM.descuento = courses.comprobante._descuento;
                                 $scope.PagoM.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoM.rfcemisor = courses.comprobante.emisor._rfc;
-                                $scope.PagoM.metodopago = courses.comprobante._metodopago;
+                                $scope.PagoM.metodoPago = courses.comprobante._metodopago;
 
 
                                 if(courses.comprobante.impuestos == undefined){
@@ -918,7 +918,7 @@ $scope.addRow = function(){
     $scope.PagoM.serie = '';
     $scope.PagoM.retencionF = 0.00;
     $scope.PagoM.deducibleF = 0.00;
-    $scope.PagoM.metodopago = '';
+    $scope.PagoM.metodoPago = '';
 
     ///// limpia cuadro de nota de credito //////
     $scope.eliminaxmlNC();
