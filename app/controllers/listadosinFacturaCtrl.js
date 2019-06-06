@@ -1060,7 +1060,7 @@ $scope.enviaOrdenPagoGlo = function(){
         var areaEntrega = 6;
         var usuarioRecibe = $rootScope.id;
 
-        // var ruta = api+'OPFactura/ordenPago';
+        var ruta = api+'OPFactura/ordenPago';
 
             $http.post(ruta,$scope.OPago).success(function (data){
 
