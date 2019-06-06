@@ -904,7 +904,7 @@ $scope.addRow = function(){
                          'subtotal': $scope.PagoM.subtotal, 'total': $scope.PagoM.total, 'foliofiscal':$scope.PagoM.foliofiscal, 
                          'fechaemision':$scope.PagoM.fechaemision, 'descuento':$scope.PagoM.descuento, 'emisor':$scope.PagoM.emisor,
                          'rfcemisor':$scope.PagoM.rfcemisor, 'impuesto': $scope.PagoM.impuesto, 'tasa': $scope.PagoM.tasa, 'SubtotalF':$scope.PagoM.SubtotalF, 'IVAF':  $scope.PagoM.IVAF, 'TotalF': $scope.PagoM.TotalF,
-                         'proveedor': $scope.PagoM.proveedor, 'retencionF': $scope.PagoM.retencionF, 'deducibleF': $scope.PagoM.deducibleF, 'descuentoF': $scope.PagoM.descuentoF, 'metodopago': $scope.PagoM.metodopago});
+                         'proveedor': $scope.PagoM.proveedor, 'retencionF': $scope.PagoM.retencionF, 'deducibleF': $scope.PagoM.deducibleF, 'descuentoF': $scope.PagoM.descuentoF});
 
     $scope.PagoM.folio = '';
     $scope.PagoM.tipotramite = '';
@@ -1090,7 +1090,7 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.descuento = courses.comprobante._descuento;
                                 $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
-                                $scope.PagoI.metodopago = courses.comprobante._metodopago;
+                                $scope.PagoI.metodoPago = courses.comprobante._metodopago;
                                 
                                 if(courses.comprobante.impuestos == undefined){
 
@@ -1248,7 +1248,7 @@ $scope.subeXMLInd = function($files){
                                 $scope.PagoI.descuento = courses.comprobante._descuento;
                                 $scope.PagoI.emisor = courses.comprobante.emisor._nombre;
                                 $scope.PagoI.rfcemisor = courses.comprobante.emisor._rfc;
-                                $scope.PagoI.metodopago = courses.comprobante._metodopago;
+                                $scope.PagoI.metodoPago = courses.comprobante._metodopago;
 
                                 // if(courses.comprobante.Impuestos_totalimpuestostrasladados == undefined){
 
