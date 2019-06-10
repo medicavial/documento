@@ -77,22 +77,12 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
 
             $http.post(ruta).success(function (data){
 
-                console.log(data);
-
-                // if (data.length = 0) {
-
-                //     $scope.mensaje = "La prefactura no se encontro, Verificalo con el Area de Sistemas";
-                //     $scope.tipoalerta = 'alert-danger';
-                //     $scope.btnagrega = true;
-                
-                
-                // }else 
+                 
                 if(data[0].cancelado == 'cancelada'){
 
                     $scope.mensaje = "La prefactura esta CANCELADA, Verificalo con el Area de Sistemas";
                     $scope.tipoalerta = 'alert-warning';
                     $scope.btnagrega = true;
-
 
                 }
 
@@ -102,7 +92,6 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
                     $scope.tipoalerta = 'alert-info';
                     $scope.btnagrega = true;
 
-
                 }
 
                 if(data[0].foliomv == '' || data[0].foliomv == null){
@@ -111,8 +100,10 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
                     $scope.tipoalerta = 'alert-purple';
                     $scope.btnagrega = true;
 
-
                 }
+
+
+
 
                 $http.post(ruta2).success(function (data1){
 
@@ -122,6 +113,19 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
                         $scope.mensaje = "Esta prefactura ya Existe en sistema";
                         $scope.tipoalerta = 'alert-pink';
 
+
+                    }else if (data[0].cancelado == 'Activa' && data[0].tipoAdmin == 'T') {
+
+                        
+                        $scope.mensaje = "La prefactura tiene excesos de TTL, No pagar hasta cobrar";
+                        $scope.tipoalerta = 'alert-danger';
+                        $scope.btnagrega = true;
+                        
+                    }else if(data[0].cancelado == 'Activa' && data[0].tipoAdmin == 'P'){
+
+                        $scope.mensaje = "La prefactura tiene excesos de Paquete";
+                        $scope.tipoalerta = 'alert-danger';
+                        $scope.btnagrega = false;
 
                     }else{
 
@@ -137,6 +141,7 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
                         $scope.btnagrega = false;
                         $scope.datos.usuarioRecibe = $rootScope.id;
                         $scope.datos.cancelado = data[0].cancelado;
+                        $scope.datos.tipoAdmin = data[0].tipoAdmin;
                 
                     }
 

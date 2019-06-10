@@ -8,7 +8,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
         // $scope.buscaProveedores ={};
         $rootScope.area = 6;
         $scope.tituloPM = "Orden Pago Manual c/n Prefactura";
-        $scope.listadoPre();
+        // $scope.listadoPre();
         $scope.tipoTramite();
         $scope.buscaProveedores();
         $scope.archivos = [];
@@ -139,15 +139,53 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
     }
 
 
-    $scope.listadoPre = function(){
+    $scope.listadoPre = function(folio){
 
-        find.busquedaPrefacturas().success(function (data){
+        find.busquedaPrefacturas(folio).success(function (data){
                 
-            $scope.listado = data; 
-                // $scope.datos = [];
+            if (data.length == 0){
 
+                $scope.PagoI.folio = '';
+                $scope.listado = [];
+
+                $scope.mensaje = "No hay prefacturas, para este Folio, realiza la orden en el modulo correcto";
+                $scope.tipoalerta = "alert-danger";
+
+
+            }else{
+
+                $scope.listado = data;
+
+            }
+
+            $scope.verificaLesionado(folio);
+
+                // $scope.datos = [];
         });
+
     }
+
+    $scope.verificaLesionado = function(folio){
+
+        find.verificaLesionado(folio).success( function (data) {
+
+            if (data.length == 0) {
+
+                $scope.nombreLesionado = "NO ESTA CAPTURADO";
+                $scope.tipoalerta1 = "alert.danger";
+
+            }else{
+
+                $scope.nombreLesionado = data[0].lesionado;
+
+            }
+
+        
+        });
+
+
+    }
+
 
     $scope.limpiaTabla = function(){
 
@@ -279,28 +317,6 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
             $scope.tipostramites = data;
 
         });
-    }
-
-    $scope.verificaLesionado = function(){
-
-        if ($scope.PagoI.folio == '') {
-
-            find.verificaLesionado($scope.PagoM.folio).success( function (data) {
-
-                $scope.nombreLesionado = data[0].lesionado;
-
-            });
-
-        }else{
-
-            find.verificaLesionado($scope.PagoI.folio).success( function (data) {
-
-                $scope.nombreLesionado = data[0].lesionado;
-
-            });
-
-        }
-
     }
 
 
@@ -742,6 +758,8 @@ $scope.enviaOrdenPago = function(){
                     retencion: ''
 
                 }
+
+                $scope.nombreLesionado = '';
 
                 $scope.NCG = {
 
@@ -1458,6 +1476,8 @@ $scope.enviaOrdenPagoInd = function(){
 
 
                            }
+
+                           $scope.nombreLesionado = "";
 
                            $scope.NCI = {
 

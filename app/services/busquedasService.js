@@ -314,8 +314,8 @@ app.factory("find", function($http,api){
         verificaLesionado:function(folio){
             return $http.post(api + 'consulta/verificaLesionado/'+ folio);
         },
-        busquedaPrefacturas:function(){
-            return $http.post(api + 'consulta/busquedaPrefacturas');
+        busquedaPrefacturas:function(folio){
+            return $http.post(api + 'consulta/busquedaPrefacturas/'+ folio);
         },
         busquedaProveedor:function(){
             return $http.post(api + 'RelacionPagos/proveedores');

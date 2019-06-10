@@ -54,19 +54,49 @@
 
 	    </div><br>
 
-	    <div class="row gridStyle" ng-grid="gridOptions"></div><br><br>
+	    <div class="row">
 
-		<div class="row">
+	    	<div class="col-md-4">
+
+					<input type="text" ng-model="PagoI.folio" class="form-control" folio ng-blur="listadoPre(PagoI.folio)" placeholder = "FolioMV">
+			</div>
+
+			<div class="col-md-8">
+
+				    <h4 class="text-success" ng-class="tipoalerta1"><strong>*** Nombre del Lesionado:  {{ nombreLesionado }}  </strong></h4>
+
+			</div>
+
+		</div><br><br>
+        <div class="row">
+
+		<div class="col-md-9">
+	           <div ng-show="mensaje" ng-class="tipoalerta" class="alert animate-show">{{mensaje}}</div>
+	    </div>
+        	
+        </div>
+
+        <div class="row">
+
+        	<div class="col-md-12">
+
+        	   <div class="row gridStyle2" ng-grid="gridOptions"></div><br><br>
+
+            </div>
+        	
+        </div>
+
+<!-- 		<div class="row">
             <h4 class="text-success"><strong>*** Nombre del Lesionado:  {{ nombreLesionado }}  </strong></h4>
 
-		</div>
+		</div> -->
 
 	    <div class="row">
 
-	    	<div class="col-md-2">
+<!-- 	    	<div class="col-md-2">
 					<label>Folio</label>
 					<input type="text" ng-model="PagoI.folio" class="form-control" folio ng-change="verificaLesionado()" >
-			</div>
+			</div> -->
 
 			<div class="col-md-2">
 				<label></label>
@@ -319,19 +349,35 @@
 
 			
 	    </div><br>
-	    <div class="row gridStyle" ng-grid="gridOptions"></div><br><br>
-	    <br>
 
 	    <div class="row">
-            <h4 class="text-success"><strong>*** Nombre del Lesionado:  {{ nombreLesionado }}  </strong></h4>
 
-		</div>
+	    	<div class="col-md-4">
 
-	    <div class="row">
-	    	<div class="col-md-2">
-					<label>Folio</label>
-					<input type="text" ng-model="PagoM.folio" class="form-control" folio ng-change="verificaLesionado()" >
+					<input type="text" ng-model="PagoM.folio" class="form-control" folio ng-blur="listadoPre(PagoM.folio)" placeholder = "FolioMV">
 			</div>
+
+			<div class="col-md-8">
+
+				    <h4 class="text-success" ng-class="tipoalerta1"><strong>*** Nombre del Lesionado:  {{ nombreLesionado }}  </strong></h4>
+
+			</div>
+
+		</div><br><br>
+
+
+        <div class="row">
+
+        	<div class="col-md-12">
+
+        	   <div class="row gridStyle2" ng-grid="gridOptions"></div><br><br>
+
+            </div>
+        	
+        </div>
+	    
+
+	    <div class="row">
 
 			<div class="col-md-2">
 				<label></label>
