@@ -127,6 +127,20 @@ function recibePrefacturasCtrl($scope, $rootScope, loading,$filter,$location,$ht
                         $scope.tipoalerta = 'alert-danger';
                         $scope.btnagrega = false;
 
+                        $scope.datos.totalprefactura  = data[0].importe;
+                        $scope.datos.totalprefactura = parseFloat($scope.datos.totalprefactura,2);
+                        $scope.datos.aseguradora = data[0].aseguradora;
+                        $scope.datos.fechaprefactura = data[0].fechaprefactura;
+                        $scope.datos.foliomv = data[0].foliomv;
+                        $scope.datos.foliozima = data[0].foliozima;
+                        $scope.datos.lesionado = data[0].lesionado;
+                        $scope.mensaje = '';
+                        $scope.tipoalerta = true;
+                        $scope.btnagrega = false;
+                        $scope.datos.usuarioRecibe = $rootScope.id;
+                        $scope.datos.cancelado = data[0].cancelado;
+                        $scope.datos.tipoAdmin = data[0].tipoAdmin;
+
                     }else{
 
                         $scope.datos.totalprefactura  = data[0].importe;
