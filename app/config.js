@@ -238,6 +238,18 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             }
     });
 
+    $routeProvider.when('/listadoCartasQualitas',{
+        templateUrl    :'vistas/listadoCartasQualitas.html',
+        controller     :'listadoCartasQualitasCtrl',
+        resolve       :{
+            datos:function(facturacionExpress,loading,webStorage){
+                loading.cargando('Cargando Información');
+                var datos = JSON.parse( webStorage.local.get('facturacionExpressData') );                    
+                return facturacionExpress.listadoCedulas();
+            }
+        }
+});
+
     $routeProvider.when('/facturacionEx/fEQualitas',{
             templateUrl    :'vistas/fEQualitas.html',
             controller     :'fEQualitasCtrl',

@@ -836,6 +836,9 @@ app.factory("facturacionExpress", function($q,$http,find,api){
         cedulasSinRelacion:function(){
             return $http.get(api + 'facturacionExpress/cedulasSinRelacion');
         },
+        listadoCedulas:function(){
+            return $http.get(api + 'facturacionExpress/listadoCedulas');
+        },
         buscaPorNombre:function(nombre){            
             return $http.get(api + 'facturacionExpress/buscaPorNombre/'+nombre);
         },

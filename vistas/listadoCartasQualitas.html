@@ -1,0 +1,134 @@
+<div ng-init="inicio()" id="contenedor">
+	<div class="titulos">
+		<a href="#/facturacionExBeta" class="icon-arrow-left"></a>
+		<h1>Listado de cartas qualitas</h1>
+	</div>
+	<br>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="input-group">
+				<span class="input-group-addon" id="basic-addon1">Buscar</span>
+				<input type="text" ng-model="searchText" class="form-control" capitalize placeholder="Nombre / cédula" aria-describedby="basic-addon1">
+			</div>
+			
+		</div>
+	</div>
+	<br><br>
+	<div class="row">
+		<div class="col-md-12">			
+			<table class="table table-hover table-striped">
+				<tr>
+					<th>
+						Folio MV
+					</th>
+					<th>
+						Folio de autorizacion
+					</th>
+					<th>
+						Nombre Paciente
+					</th>
+					<th>
+						Poliza
+					</th>
+					<th>
+						Siniestro
+					</th>
+					<th>
+						Reporte
+					</th>
+					<th>
+						Riesgo
+					</th>
+					<th>
+						Imprimir 
+					</th>
+				</tr>
+				<tr ng-repeat="cedula in listadoCartas | filter:searchText"">
+					<td>{{cedula.CQ_folRelacion}}</td>
+					<td>{{cedula.CQ_folioautorizacion}}</td>
+					<td>{{cedula.CQ_paciente}}</td>
+					<td>{{cedula.CQ_poliza}}</td>
+					<td>{{cedula.CQ_siniestro}}</td>
+					<td>{{cedula.CQ_reporte}}</td>
+					<td>{{cedula.CQ_riesgo}}</td>
+					<td><button class="btn btn-primary" ng-click="modalConCarta(cedula)">Imprimir</button></td>
+				</tr>
+			</table>			
+		</div>
+	</div>
+
+
+
+<div class="modal fade" id="cedulaQualitas" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div class="modal-dialog" role="document">
+		  <div class="modal-content">
+			<div class="modal-header">
+			  <h5 class="modal-title" id="exampleModalLabel">Verifica Cédula</h5>        
+			</div>
+			<div class="modal-body">				
+				  <div class="row" ng-show="datosCedula">
+					  <div class="col-md-12">
+						  <table class="table" id="formatoCedula">
+							  <tr>
+								  <td>
+									  <small><b>FOLIO MV: </b></small> <br>{{datosCedula.CQ_folRelacion}}
+								  </td>	    					
+								  <td colspan="3">
+									  <small><b>Lesionado: </b></small> <br>{{datosCedula.CQ_paciente}}
+								  </td>	    					
+								  <td>
+									   <small><b>Poliza: </b></small> <br>{{datosCedula.CQ_poliza}}
+								  </td>
+							  </tr>
+							  <tr>
+								  <td>
+									  <small><b>Siniestro: </b></small> <br>{{datosCedula.CQ_siniestro}}
+								  </td>
+								  <td>
+									  <small><b>Reporte: </b> </small> <br>{{datosCedula.CQ_reporte}}
+								  </td>
+								  <td>
+									  <small><b>Folio Electrónico: </b> </small> <br>{{datosCedula.CQ_folioelectronico}}
+								  </td>
+								  <td>
+									  <small><b>Folio Autorización: </b> </small> <br>{{datosCedula.CQ_folioautorizacion}}
+								  </td>
+								  <td>
+									  <small><b>Riesgo: </b> </small> <br>{{datosCedula.CQ_riesgo}}
+								  </td>
+							  </tr>
+							  <tr>
+								  <td colspan="5"><small>	<b>fecha Cédula</b></small><br>{{datosCedula.CQ_fechareg}}</td>
+							  </tr>
+						  </table>	    			
+					  </div>
+				  </div>
+				  <div class="row" ng-show="datosCedula">
+					  <div class="col-md-12 text-center">
+						  <button class="btn btn-success" ng-click="ImprimirPDF(datosCedula.QWS_folioAutorizacion)">Imprimir PDF</button>						  
+					  </div>
+	  
+	  
+				  </div>
+				  <div class="row" ng-show="mensaje">
+					  <div class="col-md-12">
+						  <div class="alert alert-warning">No existe cédula para este folio</div>
+					  </div>
+				  </div>
+			  
+			</div>
+			<div class="modal-footer">
+			  <button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button> 
+			  <!-- <button type="hidden" form="forma"></button>        -->
+			</div>
+		  </div>
+		</div>
+	  </div>
+
+
+
+</div>
+
+<SCRIPT>
+
+</SCRIPT>

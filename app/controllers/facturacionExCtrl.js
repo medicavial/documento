@@ -946,7 +946,9 @@ function cancelacionCtrl($scope, $rootScope, loading,facturacionExpress,find,web
     }
 
     $scope.enviaDatosCancelacion = function(){  
-        loading.cargando('Cargando Información');      
+        $scope.datos.usr_login=$scope.usr;
+        loading.cargando('Cargando Información'); 
+        console.log($scope.datos);    
         facturacionExpress.cancelaFolio($scope.datos).success( function (data){
              loading.despedida();         
              console.log('Se canceló correctamente');    
@@ -1486,6 +1488,98 @@ function rechazadosCtrl($scope, $rootScope, datos, loading,facturacionExpress){
 };
 
 
+function listadoCartasQualitasCtrl($scope, $rootScope, datos, loading,facturacionExpress){
+
+    console.log(datos);
+
+    console.log(datos.data);
+        $scope.listadoCartas    = datos.data;
+        $scope.folioBusqueda    = '';
+        $scope.nombreBusqueda   = '';
+        $scope.cargador         = false;  
+        $scope.cargador1        = false; 
+        $scope.mensaje='';  
+        $scope.datosCedula=''; 
+
+    $scope.autorizar = function(){
+
+        $('#boton').button('loading');
+
+        $scope.mensaje = '';
+
+        var datos = {
+            folio:$scope.selectos,
+            usuario:$rootScope.id
+        }
+        console.log(datos);
+
+        facturacionExpress.solicitarAutorizacionRechazos(datos).success( function (data){
+            $scope.tipoalerta = 'alert-success';
+            $scope.mensaje = data.respuesta;
+            $('#boton').button('reset');
+        }).error(function (data){
+            $scope.tipoalerta = 'alert-warning';
+            $scope.mensaje = 'Algo salio mal intentalo nuevamente';
+            $('#boton').button('reset');
+        })
+    }
+
+
+    
+    $scope.modalConCarta = function(carta){
+
+        $scope.datosCedula='';
+
+        $scope.datosCedula=carta;
+
+        console.log($scope.datosCedula);
+        if($scope.datosCedula){
+            $('#cedulaQualitas').modal();
+        }
+        
+    }
+
+    $rootScope.tituloFER = 'Folios Rechazados';
+    loading.despedida();
+
+    $scope.selectos = [];
+
+    $scope.listado = datos.data;
+
+    $scope.gridOptions = { 
+        data: 'listado', 
+        enableColumnResize:true,
+        enablePinning: true, 
+        enableRowSelection:true,
+        multiSelect:true,
+        showSelectionCheckbox: true,
+        selectWithCheckboxOnly: false,
+        enableCellSelection: true,
+        selectedItems: $scope.selectos, 
+        filterOptions: $scope.filterOptions,
+        // rowTemplate: rowTempl,
+        columnDefs: [
+                    { field:'Exp_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: false },
+                    { field:'Exp_motivoRechazo', displayName:'Motivo Rechazo', width: 400, pinned:false },
+                    { field:'Exp_fechaRechazo', displayName:'Fecha Rechazo', width: 120, pinned:false },
+                    { field:'Exp_fecreg', displayName:'Fecha Atención', width: 120, pinned:false },
+                    { field:'UNI_nombreMV', displayName:'Unidad', width: 180, pinned:false },
+                    { field:'EXP_fechaCaptura', displayName:'Fecha Captura', width: 120, pinned:false },
+                    { field:'Exp_poliza', displayName:'Poliza', width: 120, pinned:false, enableCellEdit: true },
+                    { field:'Exp_siniestro', displayName:'Siniestro', width: 120, pinned:false,  enableCellEdit: true },
+                    { field:'Exp_reporte', displayName:'Reporte', width: 120, pinned:false,  enableCellEdit: true },
+                    { field:'Exp_completo', displayName:'Lesionado', width: 250, pinned:false },
+                    { field:'RIE_nombre', displayName:'Riesgo', width: 120, pinned:false },
+                    { field:'Triage_nombre', displayName:'Triage', width: 120, pinned:false },
+                    { field:'EXP_costoEmpresa', displayName:'Costo', width: 120, pinned:false },
+                    { field:'UNI_propia', width: 120,visible:false}
+        ],
+        showFooter: true,
+        showFilter:false
+    };
+};
+
+
 function popitup(url)
 {
     newwindow=window.open(url,'name','height=500,width=800,left=200, top=200'); 
@@ -1499,6 +1593,7 @@ autorizadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading'];
 cartasCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress','find'];
 cancelacionCtrl.$inject =['$scope', '$rootScope','loading','facturacionExpress','find','webStorage'];
 rechazadosCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
+listadoCartasQualitasCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
 capturadosSinFacturaCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress','webStorage'];
 relacionCartasQualitasCtrl.$inject =['$scope', '$rootScope', 'datos','loading','facturacionExpress'];
 
@@ -1511,3 +1606,4 @@ app.controller('cartasCtrl',cartasCtrl);
 app.controller('cancelacionCtrl',cancelacionCtrl);
 app.controller('capturadosSinFacturaCtrl',capturadosSinFacturaCtrl);
 app.controller('relacionCartasQualitasCtrl',relacionCartasQualitasCtrl);
+app.controller('listadoCartasQualitasCtrl',listadoCartasQualitasCtrl);

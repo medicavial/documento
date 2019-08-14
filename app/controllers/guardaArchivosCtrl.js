@@ -17,6 +17,8 @@ function guardaArchivosCtrl($scope, $rootScope, find ,loading,$filter,$location,
         $scope.numArchivos = 0;
         $scope.complemento = [];
         $scope.doctorelacionado = [];
+        $scope.conceptos = [];
+        $scope.datos = [];
         $scope.complementosP = [];
         $("#btnexport").hide();
 
@@ -176,6 +178,54 @@ if (courses.comprobante._tipodecomprobante == 'P'){
 
                 $scope.complementoP.rfcEmisor =  courses.comprobante.emisor._rfc;
 
+                var concepto1 = courses.comprobante.conceptos.concepto;
+
+                // var contadorconcep = concepto.length;
+                // console.log(concepto);
+
+                for (var i = 0; i < concepto1.length; i++) {
+
+                  var con=[];
+                  var con1=[];
+
+                  con.push(concepto1[i]._noidentificacion);
+                  con1.push(courses.comprobante.complemento.timbrefiscaldigital._uuid);
+
+                  
+                   complemento.push({
+
+                                   folio: con1,
+                                   concepto: con
+
+                   });
+
+ 
+                }
+
+                // console.log(con);
+
+
+                    // complemento.push({
+                    //          // foliofiscal: $scope.complementoP.folioFiscal,
+                    //          // subtotal: $scope.complementoP.subtotal,
+                    //          // total: $scope.complementoP.monto,
+                    //          // metodoPago: $scope.complementoP.metodoPago,
+                    //          folio: $scope.complementoP.folio,
+                    //          // serie: $scope.complementoP.serie,  
+                    //          // fechaemision: $scope.complementoP.fechaEmision,
+                    //          // nombreemision: $scope.complementoP.nombreEmisor,
+                    //          concepto: $scope.conceptos
+                    //          // doctorelacionado: $scope.doctorelacionado
+
+
+                    // });
+
+
+                // };
+
+              
+                // console.log($scope.datos);
+
 
             }else if(courses.comprobante._tipodecomprobante == 'E' || courses.comprobante._tipodecomprobante == 'Egreso'){
                
@@ -213,19 +263,22 @@ if (courses.comprobante._tipodecomprobante == 'P'){
             }
 
         
-            complemento.push({tipocomprobante: $scope.complementoP.tipoComprobante,
-                             foliofiscal: $scope.complementoP.folioFiscal,
-                             subtotal: $scope.complementoP.subtotal,
-                             total: $scope.complementoP.monto,
-                             metodoPago: $scope.complementoP.metodoPago,
-                             folio: $scope.complementoP.folio,
-                             serie: $scope.complementoP.serie,  
-                             fechaemision: $scope.complementoP.fechaEmision,
-                             nombreemision: $scope.complementoP.nombreEmisor
-                             // doctorelacionado: $scope.doctorelacionado
+            // complemento.push({tipocomprobante: $scope.complementoP.tipoComprobante,
+            //                  foliofiscal: $scope.complementoP.folioFiscal,
+            //                  subtotal: $scope.complementoP.subtotal,
+            //                  total: $scope.complementoP.monto,
+            //                  metodoPago: $scope.complementoP.metodoPago,
+            //                  folio: $scope.complementoP.folio,
+            //                  serie: $scope.complementoP.serie,  
+            //                  fechaemision: $scope.complementoP.fechaEmision,
+            //                  nombreemision: $scope.complementoP.nombreEmisor,
+            //                  concepto: $scope.conceptos
+            //                  // doctorelacionado: $scope.doctorelacionado
 
 
-                         });
+            //              });
+
+
 
             $("#cargador").hide();     
 

@@ -22,6 +22,7 @@ function complementoCtrl($scope, $rootScope, find ,loading,$filter,$location,$ht
         $scope.doctorelacionado = [];
         $scope.cfdirel = [];
         $scope.ruta = [];
+        $scope.conceptos = [];
         $scope.conteoPago = 0;
         $scope.conteoIngreso = 0;
         $scope.conteoEgreso = 0;
@@ -301,6 +302,10 @@ $scope.valida = function(archivo){
 
 
                 $scope.complementoP.rfcEmisor =  courses.comprobante.emisor._rfc;
+
+                $scope.conceptos = courses.comprobante.conceptos.concepto;
+
+
                 find.moverArchPago($rootScope.user, 'I' ,{file:numArchivos}).success(function (data){
 
                 });
@@ -339,6 +344,7 @@ $scope.valida = function(archivo){
 
                 $scope.complementoP.rfcEmisor =  courses.comprobante.emisor._rfc;
                 $scope.doctorelacionado = courses.comprobante.cfdirelacionados.cfdirelacionado;
+
 
                 find.moverArchPago($rootScope.user, 'E' ,{file:numArchivos}).success(function (data){
 

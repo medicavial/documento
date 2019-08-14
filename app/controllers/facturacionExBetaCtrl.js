@@ -100,6 +100,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
         rowTemplate: rowTempl,
     	columnDefs: [
                     { field:'Exp_folio', displayName:'Folio', width: 120, pinned:true, enableCellEdit: false },
+                    { field:'carta', displayName:'Carta', width: 120, pinned:true, enableCellEdit: false },
                     { field:'Exp_completo', displayName:'Lesionado', width: 250, pinned:false },
                     { field:'EXP_fechaCaptura', displayName:'Fecha Captura', width: 120, pinned:false },
                     { field:'Exp_fecreg', displayName:'Fecha Atención', width: 120, pinned:false },
@@ -256,6 +257,7 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                         $scope.dx=data.anotaciones[i].ANT_valor;
                     }
                 }
+                
 
                 $scope.buscaAjustadores(data.captura.EMPClave);
                 $scope.buscaMedicos(data.captura.UNIClave);
@@ -1136,8 +1138,9 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
 
             if($scope.captura.cedulaElectronica.length==13||$scope.captura.cedulaElectronica.length==14){
 
-                console.log($scope.cargador);
-                find.consultaCedula($scope.captura.cedulaElectronica,$scope.captura.Nombre).success(function (data){
+                console.log($scope.captura.Nombre);
+
+                find.consultaCedula(String($scope.captura.cedulaElectronica),String($scope.captura.Nombre)).success(function (data){
                     console.log(data);
                     if(data==0){
                         $scope.captura.RegCompania='';
@@ -1166,11 +1169,11 @@ function facturacionExBetaCtrl($scope, $rootScope, $filter, find , loading, chec
                         $scope.cargador=false;
                     }
                     else{
-                        $scope.captura.RegCompania=data.CQ_folioelectronico;
-                        $scope.captura.Nombre = data.CQ_paciente;
-                        $scope.captura.Siniestro = data.CQ_siniestro;
-                        $scope.captura.Poliza = data.CQ_poliza;
-                        $scope.captura.Reporte = data.CQ_reporte;
+                        $scope.captura.RegCompania=data[0].CQ_folioelectronico;
+                        $scope.captura.Nombre = data[0].CQ_paciente;
+                        $scope.captura.Siniestro = data[0].CQ_siniestro;
+                        $scope.captura.Poliza = data[0].CQ_poliza;
+                        $scope.captura.Reporte = data[0].CQ_reporte;
                         $scope.cargador=false;
                     }
                 });

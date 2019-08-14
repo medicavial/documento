@@ -139,9 +139,12 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
     }
 
 
-    $scope.listadoPre = function(folio){
+    $scope.listadoPre = function(){
+                    // console.log($scope.PagoI.folio);
 
-        find.busquedaPrefacturas(folio).success(function (data){
+        find.busquedaPrefacturas($scope.PagoI.folio).success(function (data){
+
+
                 
             if (data.length == 0){
 
@@ -158,7 +161,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
 
             }
 
-            $scope.verificaLesionado(folio);
+            $scope.verificaLesionado($scope.PagoI.folio);
 
                 // $scope.datos = [];
         });
