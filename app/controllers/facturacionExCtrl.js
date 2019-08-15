@@ -1539,6 +1539,21 @@ function listadoCartasQualitasCtrl($scope, $rootScope, datos, loading,facturacio
         
     }
 
+    $scope.ImprimirPDF = function(cedula){
+        html2canvas(document.getElementById('formatoCedula'), {
+            onrendered: function (canvas) {
+                var data = canvas.toDataURL();
+                var docDefinition = {
+                    content: [{
+                        image: data,
+                        width: 500,
+                    }]
+                };
+                pdfMake.createPdf(docDefinition).download(cedula+".pdf");
+            }
+        });
+    }
+
     $rootScope.tituloFER = 'Folios Rechazados';
     loading.despedida();
 
