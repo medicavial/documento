@@ -143,7 +143,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
                     console.log($scope.PagoI.folio);
                     console.log($scope.PagoM.folio);
 
-     if($scope.PagoI.folio == null){
+     if($scope.PagoI.folio != null || $scope.PagoI.folio != ""){
 
         find.busquedaPrefacturas($scope.PagoI.folio).success(function (data){
 
@@ -163,16 +163,17 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
             $scope.verificaLesionado($scope.PagoI.folio);
                 // $scope.datos = [];
         });
+    }
 
 
+    if($scope.PagoM.folio != null || $scope.PagoM.folio != ""){
 
-     }else{
 
         find.busquedaPrefacturas($scope.PagoM.folio).success(function (data){
 
             if (data.length == 0){
 
-                $scope.PagoI.folio = '';
+                $scope.PagoM.folio = '';
                 $scope.listado = [];
 
                 $scope.mensaje = "No hay prefacturas, para este Folio, realiza la orden en el modulo correcto";
