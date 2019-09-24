@@ -345,8 +345,12 @@ app.factory("find", function($http,api){
         listadopagoMedicos:function(datos){
             return $http.post(api + 'flujopagos/listadopagoMedicos',datos);
         },
-
-
+        docs:function(){
+            return $http.post(api + 'consulta/documentos');
+        },
+        subcarpetas:function(carpeta){
+            return $http.post(api + 'consulta/subcarpetas/'+ carpeta);
+        }
 
     }
 })

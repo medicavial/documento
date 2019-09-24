@@ -1047,6 +1047,11 @@ app.config(function($routeProvider, $idleProvider, $keepaliveProvider, $sceDeleg
             controller: 'guardaArchivosCtrl'
     });
 
+    $routeProvider.when('/documentos',{
+            templateUrl: 'vistas/documentos.html',
+            controller: 'documentosCtrl'
+    });
+
 
 
     // ngClipProvider.setPath("lib/ZeroClipboard.swf");
