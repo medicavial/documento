@@ -1116,6 +1116,9 @@ app.factory("FacturaNormal", function($q,$http,find,api){
         validaUnidad:function(unidad){
             return $http.post(api + 'entregas/validaUnidad/'+unidad);
         },
+        rfcCondonado:function(rfc){
+            return $http.post(api + 'entregas/rfcCondonado/'+rfc);
+        }
 
     }
 

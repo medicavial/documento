@@ -1018,26 +1018,93 @@ $scope.subeXML = function($files){
 
 $scope.enviaOrdenPagoGlo = function(){
 
-    $scope.OPago = {
+    FacturaNormal.rfcCondonado($scope.PagoG.rfcemisor).success(function (data){
 
-        seleccionados : $scope.detalles,
-        archivos : $scope.archivos,
-        usucarpeta: $rootScope.user,
-        factura: $scope.PagoG,
-        subtotaltotal: parseFloat($scope.PagoG.subtotal) - parseFloat($scope.PagoG.descuento),
-        // importeiva: $scope.PagoG.importeiva,
-        // importeisr: $scope.PagoG.importeisr,
-        total: $scope.PagoG.total,
-        usuario: $rootScope.id,
-        unidad: $scope.PagoG.unidad
+    swal({
+      title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+      text: "Clave Maestra", 
+      type: "input",
+      inputType: "password",
+      showCancelButton: true,
+      closeOnConfirm: false
+    }, function(typedPassword){
 
-    }
+        if (typedPassword === ""){
+            swal.showInputError("Debes escribir alguna clave!");
+            return false;
+        }
 
-    console.log($scope.OPago);
+        var rutaClave = api+'PagoManual/claveMaestra';
 
-    var valor = $scope.OPago.subtotaltotal;
-    var mm = valor.toFixed(2);
-    $scope.OPago.subtotaltotal = mm;
+        $.ajax({
+            url: rutaClave,
+            data: { password: typedPassword },
+            type: "POST"
+        })
+        .done(function(data){
+
+            if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+               
+                $scope.OPago = {
+
+                    seleccionados : $scope.detalles,
+                    archivos : $scope.archivos,
+                    usucarpeta: $rootScope.user,
+                    factura: $scope.PagoG,
+                    subtotaltotal: parseFloat($scope.PagoG.subtotal) - parseFloat($scope.PagoG.descuento),
+                    // importeiva: $scope.PagoG.importeiva,
+                    // importeisr: $scope.PagoG.importeisr,
+                    total: $scope.PagoG.total,
+                    usuario: $rootScope.id,
+                    unidad: $scope.PagoG.unidad,
+                    clavemaestra: typedPassword
+
+                }
+
+                console.log($scope.OPago);
+
+                var valor = $scope.OPago.subtotaltotal;
+                var mm = valor.toFixed(2);
+                $scope.OPago.subtotaltotal = mm;
+
+                var areaRecibe = 6;
+                var areaEntrega = 6;
+                var usuarioRecibe = $rootScope.id;
+
+                var ruta = api+'OPFactura/ordenPago';
+
+                $http.post(ruta,$scope.OPago).success(function (data){
+
+                    // $scope.borratemporales();
+                    swal("ok","Se Genero una Orden de Pago","success");
+                    location.reload();
+
+
+                }).error( function (data){
+
+                    alert('Error, Intentalo de Nuevo');
+
+                });
+
+            }else{
+
+                swal("Upss", "Clave incorrecta", "error");
+
+
+            }
+
+})
+
+    .error(function(data) {
+        swal.showInputError("Tu clave es incorrecta!");
+    });
+  
+});
+
+});
+
+
+
 
 // console.log($scope.OPago.subtotaltotal);
 // console.log($scope.PagoG.SubtotalS);
@@ -1056,24 +1123,7 @@ $scope.enviaOrdenPagoGlo = function(){
 
 // console.log($scope.OPago );
 
-        var areaRecibe = 6;
-        var areaEntrega = 6;
-        var usuarioRecibe = $rootScope.id;
 
-        var ruta = api+'OPFactura/ordenPago';
-
-            $http.post(ruta,$scope.OPago).success(function (data){
-
-                // $scope.borratemporales();
-                swal("ok","Se Genero una Orden de Pago","success");
-                location.reload();
-
-
-            }).error( function (data){
-
-                alert('Error, Intentalo de Nuevo');
-
-            });
     // }
 
 }
@@ -1273,6 +1323,7 @@ console.log($files);
                                   }
                             });
 
+
                            if (row.entity.rfcemisor != courses.comprobante.emisor._rfc){
 
 
@@ -1378,40 +1429,119 @@ console.log($files);
 
 $scope.enviaOrdenPagoInd = function(){
 
-    console.log($scope.selectos);
+    FacturaNormal.rfcCondonado($scope.selectos[0].rfcemisor).success(function (data){
 
-    $scope.OPago = {
+        swal({
+          title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+          text: "Clave Maestra", 
+          type: "input",
+          inputType: "password",
+          showCancelButton: true,
+          closeOnConfirm: false
+        }, function(typedPassword){
 
-        seleccionados : $scope.selectos,
-        archivos : $scope.archivos,
-        usucarpeta: $rootScope.user,
-        factura: $scope.selectos,
-        subtotaltotal: $scope.totalsubtotal,
-        iva: $scope.totaltasa,
-        total: $scope.totalimporte,
-        usuario: $rootScope.id,
-        unidad: $scope.unidad
+            if (typedPassword === "") {
+                swal.showInputError("Debes escribir alguna clave!");
+                return false;
+            }
 
-    }
+            var rutaClave = api+'PagoManual/claveMaestra';
 
-        var areaRecibe = 6;
-        var areaEntrega = 6;
-        var usuarioRecibe = $rootScope.id;
+            $.ajax({
+                url: rutaClave,
+                data: { password: typedPassword },
+                type: "POST"
+            })
+            .done(function(data){
 
-        var ruta = api+'OPFactura/ordenPagoIndividual';
+                if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+                   
+                    $scope.OPago = {
 
-        $http.post(ruta,$scope.OPago).success(function (data){
+                        seleccionados : $scope.selectos,
+                        archivos : $scope.archivos,
+                        usucarpeta: $rootScope.user,
+                        factura: $scope.selectos,
+                        subtotaltotal: $scope.totalsubtotal,
+                        iva: $scope.totaltasa,
+                        total: $scope.totalimporte,
+                        usuario: $rootScope.id,
+                        unidad: $scope.unidad,
+                        clavemaestra: typedPassword
 
-            $scope.borratemporales();
-            swal("ok","Se Genero una Orden de Pago","success");
-            location.reload();
+                    }
+
+                    var areaRecibe = 6;
+                    var areaEntrega = 6;
+                    var usuarioRecibe = $rootScope.id;
+
+                    var ruta = api+'OPFactura/ordenPagoIndividual';
+
+                    $http.post(ruta,$scope.OPago).success(function (data){
+
+                        $scope.borratemporales();
+                        swal("ok","Se Genero una Orden de Pago","success");
+                        location.reload();
 
 
-        }).error( function (data){
+                    }).error( function (data){
 
-            alert('Error, Intentalo de Nuevo');
+                        alert('Error, Intentalo de Nuevo');
 
+                    });
+
+
+
+                }else{
+
+                    swal("Upss", "Clave incorrecta", "error");
+
+
+                }
+
+    })
+
+        .error(function(data) {
+            swal.showInputError("Tu clave es incorrecta!");
         });
+      
+    });
+
+    });
+
+
+    // $scope.OPago = {
+
+    //     seleccionados : $scope.selectos,
+    //     archivos : $scope.archivos,
+    //     usucarpeta: $rootScope.user,
+    //     factura: $scope.selectos,
+    //     subtotaltotal: $scope.totalsubtotal,
+    //     iva: $scope.totaltasa,
+    //     total: $scope.totalimporte,
+    //     usuario: $rootScope.id,
+    //     unidad: $scope.unidad
+
+    // }
+
+    //     var areaRecibe = 6;
+    //     var areaEntrega = 6;
+    //     var usuarioRecibe = $rootScope.id;
+
+    //     var ruta = api+'OPFactura/ordenPagoIndividual';
+
+    //     $http.post(ruta,$scope.OPago).success(function (data){
+
+    //         $scope.borratemporales();
+    //         swal("ok","Se Genero una Orden de Pago","success");
+    //         location.reload();
+
+
+    //     }).error( function (data){
+
+    //         alert('Error, Intentalo de Nuevo');
+
+    //     });
 }
 
 $scope.eliminaxmlInd = function(idx){

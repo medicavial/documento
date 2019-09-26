@@ -1,4 +1,4 @@
-function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,checkFolios,api, find, $upload, leexml, PagoManual){
+function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,checkFolios,api, find, $upload, leexml, PagoManual, FacturaNormal){
 
     loading.despedida();
 
@@ -350,6 +350,74 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                     }
                 });
+
+///////////////////
+//////////////////        VERIFICAMOS QUE LA UNIDAD NO SE ENCUENTRE EN LA LISTA DE CONDONADOS
+//////////////////                
+
+               FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
+
+                    swal({
+                      title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+                      text: "Clave Maestra", 
+                      type: "input",
+                      inputType: "password",
+                      showCancelButton: true,
+                      closeOnConfirm: false
+                    }, function(typedPassword){
+
+                        if (typedPassword === ""){
+                            swal.showInputError("Debes escribir alguna clave!");
+                            return false;
+                        }
+
+                        var rutaClave = api+'PagoManual/claveMaestra';
+
+                        $.ajax({
+                            url: rutaClave,
+                            data: { password: typedPassword },
+                            type: "POST"
+                        })
+                        .done(function(data){
+
+                            if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+                               
+                                swal("OK", "Clave correcta", "success");
+
+
+
+                            }else{
+
+                                swal("Upss", "Clave incorrecta", "error");
+
+                                $scope.PagoM.importe = '';
+                                $scope.PagoM.total = '';
+                                $scope.PagoM.foliofiscal = '';
+                                $scope.PagoM.fechaemision = '';
+                                $scope.PagoM.descuento = '';
+                                $scope.PagoM.rfcemisor = '';
+                                $scope.PagoM.descuento = "";
+                                $scope.PagoM.serie = '';
+                                $scope.PagoM.elimina = false;
+                                $scope.PagoM.retencion = '';
+                                $scope.PagoM.subtotal = '';
+                                $scope.PagoM.emisor = '';
+                                $scope.PagoM.foliointerno = '';
+
+
+                            }
+
+                })
+
+                    .error(function(data) {
+                        swal.showInputError("Error, Verificalo con el Area de sistemas");
+                    });
+                  
+                });
+
+                });
+
+
                 PagoManual.validaUnidad($scope.PagoM.unidad).success(function (data){ 
                         if (data.length > 0){
 
@@ -506,6 +574,78 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                     }
 
                 });
+
+
+                ///////////////////
+//////////////////        VERIFICAMOS QUE LA UNIDAD NO SE ENCUENTRE EN LA LISTA DE CONDONADOS
+//////////////////                
+
+               FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
+
+                    swal({
+                      title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+                      text: "Clave Maestra", 
+                      type: "input",
+                      inputType: "password",
+                      showCancelButton: true,
+                      closeOnConfirm: false
+                    }, function(typedPassword){
+
+                        if (typedPassword === ""){
+                            swal.showInputError("Debes escribir alguna clave!");
+                            return false;
+                        }
+
+                        var rutaClave = api+'PagoManual/claveMaestra';
+
+                        $.ajax({
+                            url: rutaClave,
+                            data: { password: typedPassword },
+                            type: "POST"
+                        })
+                        .done(function(data){
+
+                            if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+                               
+                                swal("OK", "Clave correcta", "success");
+
+
+
+                            }else{
+
+                                swal("Upss", "Clave incorrecta", "error");
+
+                                $scope.PagoM.importe = '';
+                                $scope.PagoM.total = '';
+                                $scope.PagoM.foliofiscal = '';
+                                $scope.PagoM.fechaemision = '';
+                                $scope.PagoM.descuento = '';
+                                $scope.PagoM.rfcemisor = '';
+                                $scope.PagoM.descuento = "";
+                                $scope.PagoM.serie = '';
+                                $scope.PagoM.elimina = false;
+                                $scope.PagoM.retencion = '';
+                                $scope.PagoM.subtotal = '';
+                                $scope.PagoM.emisor = '';
+                                $scope.PagoM.foliointerno = '';
+
+
+                            }
+
+                })
+
+                    .error(function(data) {
+                        swal.showInputError("Error, Verificalo con el Area de sistemas");
+                    });
+                  
+                });
+
+                });
+
+/////////////////////
+/////////////////////            VALIDAMOS PROVEEDOR 
+/////////////////////
+
                 PagoManual.validaProveedor($scope.PagoM.proveedor).success(function (data){ 
                         if (data.length > 0){
 
@@ -650,25 +790,25 @@ $scope.enviaOrdenPago = function(){
 console.log($scope.PagoM.acumuladoTNC);
 console.log($scope.PagoM.total);
 
-                        $scope.OPago = {
+    $scope.OPago = {
 
-                            seleccionados : $scope.Pagos,
-                            archivos : $scope.archivos,
-                            usucarpeta: $rootScope.user,
-                            factura: $scope.PagoM,
-                            subtotaltotal: $scope.subtotalPago,
-                            importeiva: $scope.PagoM.importeiva,
-                            importeisr: $scope.PagoM.importeisr,
-                            total: $scope.totalPago,
-                            usuario: $rootScope.id,
-                            unidad: $scope.PagoM.unidad,
-                            // clavemaestra: typedPassword,
-                            NC: $scope.NCG,
-                            prefactura: '',
-                            tipoconcepto: $scope.PagoM.NC
-                        }
+        seleccionados : $scope.Pagos,
+        archivos : $scope.archivos,
+        usucarpeta: $rootScope.user,
+        factura: $scope.PagoM,
+        subtotaltotal: $scope.subtotalPago,
+        importeiva: $scope.PagoM.importeiva,
+        importeisr: $scope.PagoM.importeisr,
+        total: $scope.totalPago,
+        usuario: $rootScope.id,
+        unidad: $scope.PagoM.unidad,
+        // clavemaestra: typedPassword,
+        NC: $scope.NCG,
+        prefactura: '',
+        tipoconcepto: $scope.PagoM.NC
+    }
 
-                        console.log($scope.OPago);
+    console.log($scope.OPago);
 
     var resta =  parseFloat($scope.PagoM.total) - parseFloat($scope.NCG.total);
     var restResta = resta.toFixed(2);
@@ -1049,6 +1189,10 @@ $scope.subeXMLInd = function($files){
                 var courses =  x2js.json2xml_str($.parseJSON(prueba));
                 courses  = x2js.xml_str2json(courses);
 
+//////////////////////////////
+/////////////////////////////        VERIFICAMOS QUE EL FOLIO FISCAL NO ESTE REPETIDO
+////////////////////////////
+
                 PagoManual.consultaFolioFiscal(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
                     if (data[0].count != 0){
 
@@ -1069,6 +1213,82 @@ $scope.subeXMLInd = function($files){
 
                     }
                 });
+
+////////////////
+////////////////              VERIFICAMOS A PROVEEDOR O UNIDAD QUE ESTAN CONDONADOS 
+////////////////
+
+                FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
+
+                    swal({
+                      title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+                      text: "Clave Maestra", 
+                      type: "input",
+                      inputType: "password",
+                      showCancelButton: true,
+                      closeOnConfirm: false
+                    }, function(typedPassword){
+
+                        if (typedPassword === ""){
+                            swal.showInputError("Debes escribir alguna clave!");
+                            return false;
+                        }
+
+                        var rutaClave = api+'PagoManual/claveMaestra';
+
+                        $.ajax({
+                            url: rutaClave,
+                            data: { password: typedPassword },
+                            type: "POST"
+                        })
+                        .done(function(data){
+
+                            if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+                               
+                                swal("OK", "Clave correcta", "success");
+
+
+
+                            }else{
+
+                                swal("Upss", "Clave incorrecta", "error");
+
+                                $scope.PagoI.importe = '';
+                                $scope.PagoI.total = '';
+                                $scope.PagoI.foliofiscal = '';
+                                $scope.PagoI.fechaemision = '';
+                                $scope.PagoI.descuento = '';
+                                $scope.PagoI.rfcemisor = '';
+                                $scope.PagoI.descuento = "";
+                                $scope.PagoI.serie = '';
+                                $scope.PagoI.elimina = false;
+                                $scope.PagoI.retencion = '';
+                                $scope.PagoI.subtotal = '';
+                                $scope.PagoI.emisor = '';
+                                $scope.PagoI.foliointerno = '';
+
+
+                            }
+
+
+
+
+                })
+
+                    .error(function(data) {
+                        swal.showInputError("Error, Verificalo con el Area de sistemas");
+                    });
+                  
+                });
+
+                });
+
+//////////////////////////////
+/////////////////////////////      VERIFICAMOS LA UNIDAD  SI COINCIDE CON FACTURA A PAGAR
+/////////////////////////////
+
+
+
                 PagoManual.validaUnidad($scope.PagoI.unidad).success(function (data){ 
                         if (data.length > 0){
 
@@ -1226,6 +1446,76 @@ $scope.subeXMLInd = function($files){
 
                     }
                 });
+
+/////////////////
+////////////////    VERIFICA SI EL PROVEEDOR NO ESTA EN LA LISTA DE CONDONADOS
+////////////////
+
+                FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
+
+                    swal({
+                      title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+                      text: "Clave Maestra", 
+                      type: "input",
+                      inputType: "password",
+                      showCancelButton: true,
+                      closeOnConfirm: false
+                    }, function(typedPassword){
+
+                        if (typedPassword === ""){
+                            swal.showInputError("Debes escribir alguna clave!");
+                            return false;
+                        }
+
+                        var rutaClave = api+'PagoManual/claveMaestra';
+
+                        $.ajax({
+                            url: rutaClave,
+                            data: { password: typedPassword },
+                            type: "POST"
+                        })
+                        .done(function(data){
+
+                            if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+                               
+                                swal("OK", "Clave correcta", "success");
+
+
+
+                            }else{
+
+                                swal("Upss", "Clave incorrecta", "error");
+
+                                $scope.PagoI.importe = '';
+                                $scope.PagoI.total = '';
+                                $scope.PagoI.foliofiscal = '';
+                                $scope.PagoI.fechaemision = '';
+                                $scope.PagoI.descuento = '';
+                                $scope.PagoI.rfcemisor = '';
+                                $scope.PagoI.descuento = "";
+                                $scope.PagoI.serie = '';
+                                $scope.PagoI.elimina = false;
+                                $scope.PagoI.retencion = '';
+                                $scope.PagoI.subtotal = '';
+                                $scope.PagoI.emisor = '';
+                                $scope.PagoI.foliointerno = '';
+
+
+                            }
+
+                })
+
+                    .error(function(data) {
+                        swal.showInputError("Error, Verificalo con el Area de sistemas");
+                    });
+                  
+                });
+
+                });
+
+
+
+
                 PagoManual.validaProveedor($scope.PagoI.proveedor).success(function (data){ 
                         if (data.length > 0){
 
@@ -1686,6 +1976,77 @@ $scope.subeNCI = function($files){
                         $scope.NCI.fechaemision = '';
                     }
                 });
+
+
+
+
+                /////////////////
+////////////////         VERIFICAMOS QUE NO ESTE EN LA LISTA DE CONDONADOS
+////////////////
+
+               FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
+
+                    swal({
+                      title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+                      text: "Clave Maestra", 
+                      type: "input",
+                      inputType: "password",
+                      showCancelButton: true,
+                      closeOnConfirm: false
+                    }, function(typedPassword){
+
+                        if (typedPassword === ""){
+                            swal.showInputError("Debes escribir alguna clave!");
+                            return false;
+                        }
+
+                        var rutaClave = api+'PagoManual/claveMaestra';
+
+                        $.ajax({
+                            url: rutaClave,
+                            data: { password: typedPassword },
+                            type: "POST"
+                        })
+                        .done(function(data){
+
+                            if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+                               
+                                swal("OK", "Clave correcta", "success");
+
+
+
+                            }else{
+
+                                swal("Upss", "Clave incorrecta", "error");
+
+                                $scope.NCI.importe = '';
+                                $scope.NCI.total = '';
+                                $scope.NCI.foliofiscal = '';
+                                $scope.NCI.fechaemision = '';
+                                $scope.NCI.descuento = '';
+                                $scope.NCI.rfcemisor = '';
+                                $scope.NCI.descuento = "";
+                                $scope.NCI.serie = '';
+                                $scope.NCI.elimina = false;
+                                $scope.NCI.retencion = '';
+                                $scope.NCI.subtotal = '';
+                                $scope.NCI.emisor = '';
+                                $scope.NCI.foliointerno = '';
+
+
+                            }
+
+                })
+
+                    .error(function(data) {
+                        swal.showInputError("Error, Verificalo con el Area de sistemas");
+                    });
+                  
+                });
+
+                });
+
+
                 PagoManual.validaUnidad($scope.PagoI.unidad).success(function (data){ 
                         if (data.length > 0){
 
@@ -1816,6 +2177,74 @@ $scope.subeNCI = function($files){
                         $scope.NCI.fechaemision = '';
                     }
                 });
+
+
+/////////////////
+////////////////         VERIFICAMOS QUE NO ESTE EN LA LISTA DE CONDONADOS
+////////////////
+
+               FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
+
+                    swal({
+                      title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+                      text: "Clave Maestra", 
+                      type: "input",
+                      inputType: "password",
+                      showCancelButton: true,
+                      closeOnConfirm: false
+                    }, function(typedPassword){
+
+                        if (typedPassword === ""){
+                            swal.showInputError("Debes escribir alguna clave!");
+                            return false;
+                        }
+
+                        var rutaClave = api+'PagoManual/claveMaestra';
+
+                        $.ajax({
+                            url: rutaClave,
+                            data: { password: typedPassword },
+                            type: "POST"
+                        })
+                        .done(function(data){
+
+                            if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+                               
+                                swal("OK", "Clave correcta", "success");
+
+
+
+                            }else{
+
+                                swal("Upss", "Clave incorrecta", "error");
+
+                                $scope.NCI.importe = '';
+                                $scope.NCI.total = '';
+                                $scope.NCI.foliofiscal = '';
+                                $scope.NCI.fechaemision = '';
+                                $scope.NCI.descuento = '';
+                                $scope.NCI.rfcemisor = '';
+                                $scope.NCI.descuento = "";
+                                $scope.NCI.serie = '';
+                                $scope.NCI.elimina = false;
+                                $scope.NCI.retencion = '';
+                                $scope.NCI.subtotal = '';
+                                $scope.NCI.emisor = '';
+                                $scope.NCI.foliointerno = '';
+
+
+                            }
+
+                })
+
+                    .error(function(data) {
+                        swal.showInputError("Error, Verificalo con el Area de sistemas");
+                    });
+                  
+                });
+
+                });
+
                 PagoManual.validaProveedor($scope.PagoI.proveedor).success(function (data){ 
 
                         if (data.length > 0){
@@ -2054,6 +2483,75 @@ $scope.subeNCG = function($files, index){
                         $scope.NCG.fechaemision = '';
                     }
                 });
+
+/////////////////
+////////////////         VERIFICAMOS QUE NO ESTE EN LA LISTA DE CONDONADOS
+////////////////
+
+               FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
+
+                    swal({
+                      title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+                      text: "Clave Maestra", 
+                      type: "input",
+                      inputType: "password",
+                      showCancelButton: true,
+                      closeOnConfirm: false
+                    }, function(typedPassword){
+
+                        if (typedPassword === ""){
+                            swal.showInputError("Debes escribir alguna clave!");
+                            return false;
+                        }
+
+                        var rutaClave = api+'PagoManual/claveMaestra';
+
+                        $.ajax({
+                            url: rutaClave,
+                            data: { password: typedPassword },
+                            type: "POST"
+                        })
+                        .done(function(data){
+
+                            if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+                               
+                                swal("OK", "Clave correcta", "success");
+
+
+
+                            }else{
+
+                                swal("Upss", "Clave incorrecta", "error");
+
+                                $scope.NCG.importe = '';
+                                $scope.NCG.total = '';
+                                $scope.NCG.foliofiscal = '';
+                                $scope.NCG.fechaemision = '';
+                                $scope.NCG.descuento = '';
+                                $scope.NCG.rfcemisor = '';
+                                $scope.NCG.descuento = "";
+                                $scope.NCG.serie = '';
+                                $scope.NCG.elimina = false;
+                                $scope.NCG.retencion = '';
+                                $scope.NCG.subtotal = '';
+                                $scope.NCG.emisor = '';
+                                $scope.NCG.foliointerno = '';
+
+
+                            }
+
+                })
+
+                    .error(function(data) {
+                        swal.showInputError("Error, Verificalo con el Area de sistemas");
+                    });
+                  
+                });
+
+                });
+
+
+
                 PagoManual.validaUnidad($scope.PagoM.unidad).success(function (data){ 
                         if (data.length > 0){
 
@@ -2179,6 +2677,73 @@ $scope.subeNCG = function($files, index){
                     }
 
                 });
+
+                /////////////////
+////////////////         VERIFICAMOS QUE NO ESTE EN LA LISTA DE CONDONADOS
+////////////////
+
+               FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
+
+                    swal({
+                      title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+                      text: "Clave Maestra", 
+                      type: "input",
+                      inputType: "password",
+                      showCancelButton: true,
+                      closeOnConfirm: false
+                    }, function(typedPassword){
+
+                        if (typedPassword === ""){
+                            swal.showInputError("Debes escribir alguna clave!");
+                            return false;
+                        }
+
+                        var rutaClave = api+'PagoManual/claveMaestra';
+
+                        $.ajax({
+                            url: rutaClave,
+                            data: { password: typedPassword },
+                            type: "POST"
+                        })
+                        .done(function(data){
+
+                            if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+                               
+                                swal("OK", "Clave correcta", "success");
+
+
+
+                            }else{
+
+                                swal("Upss", "Clave incorrecta", "error");
+
+                                $scope.NCG.importe = '';
+                                $scope.NCG.total = '';
+                                $scope.NCG.foliofiscal = '';
+                                $scope.NCG.fechaemision = '';
+                                $scope.NCG.descuento = '';
+                                $scope.NCG.rfcemisor = '';
+                                $scope.NCG.descuento = "";
+                                $scope.NCG.serie = '';
+                                $scope.NCG.elimina = false;
+                                $scope.NCG.retencion = '';
+                                $scope.NCG.subtotal = '';
+                                $scope.NCG.emisor = '';
+                                $scope.NCG.foliointerno = '';
+
+
+                            }
+
+                })
+
+                    .error(function(data) {
+                        swal.showInputError("Error, Verificalo con el Area de sistemas");
+                    });
+                  
+                });
+
+                });
+
                 PagoManual.validaProveedor($scope.PagoM.proveedor).success(function (data){ 
 
                         if (data.length > 0){
@@ -2300,5 +2865,5 @@ $scope.subeNCG = function($files, index){
 
 }
 
-pagoManualCtrl.$inject = ['$scope', '$rootScope',  'loading','$filter','$location','$http','checkFolios','api','find', '$upload', 'leexml', 'PagoManual'];
+pagoManualCtrl.$inject = ['$scope', '$rootScope',  'loading','$filter','$location','$http','checkFolios','api','find', '$upload', 'leexml', 'PagoManual', 'FacturaNormal'];
 app.controller('pagoManualCtrl',pagoManualCtrl);
