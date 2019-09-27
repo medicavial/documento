@@ -1090,8 +1090,7 @@ $scope.enviaOrdenPagoGlo = function(){
             // importeisr: $scope.PagoG.importeisr,
             total: $scope.PagoG.total,
             usuario: $rootScope.id,
-            unidad: $scope.PagoG.unidad,
-            clavemaestra: typedPassword
+            unidad: $scope.PagoG.unidad
 
         }
 
@@ -1521,9 +1520,7 @@ $scope.enviaOrdenPagoInd = function(){
         iva: $scope.totaltasa,
         total: $scope.totalimporte,
         usuario: $rootScope.id,
-        unidad: $scope.unidad,
-        clavemaestra: typedPassword
-
+        unidad: $scope.unidad
     }
 
     var areaRecibe = 6;
