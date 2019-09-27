@@ -357,6 +357,8 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
 
+                    if (data[0].count != 0){
+
                     swal({
                       title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
                       text: "Clave Maestra", 
@@ -414,6 +416,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                     });
                   
                 });
+            }
 
                 });
 
@@ -582,6 +585,8 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 
                FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
 
+                  if (data[0].count != 0){
+
                     swal({
                       title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
                       text: "Clave Maestra", 
@@ -639,6 +644,7 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                     });
                   
                 });
+              }
 
                 });
 
@@ -1220,6 +1226,8 @@ $scope.subeXMLInd = function($files){
 
                 FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
 
+                    if (data[0].count != 0){ 
+
                     swal({
                       title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
                       text: "Clave Maestra", 
@@ -1280,6 +1288,8 @@ $scope.subeXMLInd = function($files){
                     });
                   
                 });
+
+              }
 
                 });
 
@@ -1453,6 +1463,8 @@ $scope.subeXMLInd = function($files){
 
                 FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
 
+                  if (data[0].count != 0){
+
                     swal({
                       title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
                       text: "Clave Maestra", 
@@ -1510,6 +1522,7 @@ $scope.subeXMLInd = function($files){
                     });
                   
                 });
+              }
 
                 });
 
@@ -1986,6 +1999,8 @@ $scope.subeNCI = function($files){
 
                FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
 
+                  if (data[0].count != 0){
+
                     swal({
                       title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
                       text: "Clave Maestra", 
@@ -2043,6 +2058,7 @@ $scope.subeNCI = function($files){
                     });
                   
                 });
+              }
 
                 });
 
@@ -2185,6 +2201,8 @@ $scope.subeNCI = function($files){
 
                FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
 
+                  if (data[0].count != 0){
+
                     swal({
                       title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
                       text: "Clave Maestra", 
@@ -2242,6 +2260,7 @@ $scope.subeNCI = function($files){
                     });
                   
                 });
+              }
 
                 });
 
@@ -2490,6 +2509,8 @@ $scope.subeNCG = function($files, index){
 
                FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
 
+                  if (data[0].count != 0){
+
                     swal({
                       title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
                       text: "Clave Maestra", 
@@ -2547,6 +2568,7 @@ $scope.subeNCG = function($files, index){
                     });
                   
                 });
+              }
 
                 });
 
@@ -2684,6 +2706,8 @@ $scope.subeNCG = function($files, index){
 
                FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
 
+                  if (data[0].count != 0){
+
                     swal({
                       title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
                       text: "Clave Maestra", 
@@ -2741,6 +2765,7 @@ $scope.subeNCG = function($files, index){
                     });
                   
                 });
+              }
 
                 });
 

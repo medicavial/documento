@@ -866,6 +866,66 @@ $scope.subeXML = function($files){
                                           
                     }else{
 
+                        ///////////////////
+//////////////////        VERIFICAMOS QUE LA UNIDAD NO SE ENCUENTRE EN LA LISTA DE CONDONADOS
+//////////////////                
+
+                   FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
+
+                    if (data[0].count != 0){
+
+                        swal({
+                          title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+                          text: "Clave Maestra", 
+                          type: "input",
+                          inputType: "password",
+                          showCancelButton: true,
+                          closeOnConfirm: false
+                        }, function(typedPassword){
+
+                            if (typedPassword === ""){
+                                swal.showInputError("Debes escribir alguna clave!");
+                                return false;
+                            }
+
+                            var rutaClave = api+'PagoManual/claveMaestra';
+
+                            $.ajax({
+                                url: rutaClave,
+                                data: { password: typedPassword },
+                                type: "POST"
+                            })
+                            .done(function(data){
+
+                                if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+                                   
+                                    swal("OK", "Clave correcta", "success");
+
+
+
+                                }else{
+
+                                    swal("Upss", "Clave incorrecta", "error");
+
+                                   $scope.eliminaxmlGlo();
+                                   $scope.btnOG = 0;
+                                   $scope.archivos = [];
+
+
+                                }
+
+                    })
+
+                        .error(function(data) {
+                            swal.showInputError("Error, Verificalo con el Area de sistemas");
+                        });
+                      
+                    });
+                }
+
+                    });
+
+
                     FacturaNormal.validaUnidad($scope.unidad.id).success(function (data){ 
                         if (data.length > 0){
 
@@ -1018,92 +1078,47 @@ $scope.subeXML = function($files){
 
 $scope.enviaOrdenPagoGlo = function(){
 
-    FacturaNormal.rfcCondonado($scope.PagoG.rfcemisor).success(function (data){
 
-    swal({
-      title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
-      text: "Clave Maestra", 
-      type: "input",
-      inputType: "password",
-      showCancelButton: true,
-      closeOnConfirm: false
-    }, function(typedPassword){
+        $scope.OPago = {
 
-        if (typedPassword === ""){
-            swal.showInputError("Debes escribir alguna clave!");
-            return false;
+            seleccionados : $scope.detalles,
+            archivos : $scope.archivos,
+            usucarpeta: $rootScope.user,
+            factura: $scope.PagoG,
+            subtotaltotal: parseFloat($scope.PagoG.subtotal) - parseFloat($scope.PagoG.descuento),
+            // importeiva: $scope.PagoG.importeiva,
+            // importeisr: $scope.PagoG.importeisr,
+            total: $scope.PagoG.total,
+            usuario: $rootScope.id,
+            unidad: $scope.PagoG.unidad,
+            clavemaestra: typedPassword
+
         }
 
-        var rutaClave = api+'PagoManual/claveMaestra';
+        console.log($scope.OPago);
 
-        $.ajax({
-            url: rutaClave,
-            data: { password: typedPassword },
-            type: "POST"
-        })
-        .done(function(data){
+        var valor = $scope.OPago.subtotaltotal;
+        var mm = valor.toFixed(2);
+        $scope.OPago.subtotaltotal = mm;
 
-            if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
-               
-                $scope.OPago = {
+        var areaRecibe = 6;
+        var areaEntrega = 6;
+        var usuarioRecibe = $rootScope.id;
 
-                    seleccionados : $scope.detalles,
-                    archivos : $scope.archivos,
-                    usucarpeta: $rootScope.user,
-                    factura: $scope.PagoG,
-                    subtotaltotal: parseFloat($scope.PagoG.subtotal) - parseFloat($scope.PagoG.descuento),
-                    // importeiva: $scope.PagoG.importeiva,
-                    // importeisr: $scope.PagoG.importeisr,
-                    total: $scope.PagoG.total,
-                    usuario: $rootScope.id,
-                    unidad: $scope.PagoG.unidad,
-                    clavemaestra: typedPassword
+        var ruta = api+'OPFactura/ordenPago';
 
-                }
+        $http.post(ruta,$scope.OPago).success(function (data){
 
-                console.log($scope.OPago);
-
-                var valor = $scope.OPago.subtotaltotal;
-                var mm = valor.toFixed(2);
-                $scope.OPago.subtotaltotal = mm;
-
-                var areaRecibe = 6;
-                var areaEntrega = 6;
-                var usuarioRecibe = $rootScope.id;
-
-                var ruta = api+'OPFactura/ordenPago';
-
-                $http.post(ruta,$scope.OPago).success(function (data){
-
-                    // $scope.borratemporales();
-                    swal("ok","Se Genero una Orden de Pago","success");
-                    location.reload();
+            // $scope.borratemporales();
+            swal("ok","Se Genero una Orden de Pago","success");
+            location.reload();
 
 
-                }).error( function (data){
+        }).error( function (data){
 
-                    alert('Error, Intentalo de Nuevo');
+            alert('Error, Intentalo de Nuevo');
 
-                });
-
-            }else{
-
-                swal("Upss", "Clave incorrecta", "error");
-
-
-            }
-
-})
-
-    .error(function(data) {
-        swal.showInputError("Tu clave es incorrecta!");
-    });
-  
-});
-
-});
-
-
+        });
 
 
 // console.log($scope.OPago.subtotaltotal);
@@ -1323,6 +1338,72 @@ console.log($files);
                                   }
                             });
 
+//////////////////        VERIFICAMOS QUE LA UNIDAD NO SE ENCUENTRE EN LA LISTA DE CONDONADOS
+//////////////////                
+
+                           FacturaNormal.rfcCondonado(courses.comprobante.emisor._rfc).success(function (data){
+
+                            if (data[0].count != 0){
+
+                                swal({
+                                  title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
+                                  text: "Clave Maestra", 
+                                  type: "input",
+                                  inputType: "password",
+                                  showCancelButton: true,
+                                  closeOnConfirm: false
+                                }, function(typedPassword){
+
+                                    if (typedPassword === ""){
+                                        swal.showInputError("Debes escribir alguna clave!");
+                                        return false;
+                                    }
+
+                                    var rutaClave = api+'PagoManual/claveMaestra';
+
+                                    $.ajax({
+                                        url: rutaClave,
+                                        data: { password: typedPassword },
+                                        type: "POST"
+                                    })
+                                    .done(function(data){
+
+                                        if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
+                                           
+                                            swal("OK", "Clave correcta", "success");
+
+
+
+                                        }else{
+
+                                            swal("Upss", "Clave incorrecta", "error");
+
+                                                $scope.borratemporales();
+                                                row.entity.importe = '';
+                                                row.entity.total = '';
+                                                row.entity.foliofiscal = '';
+                                                row.entity.fechaemision = '';
+                                                row.entity.descuento = '';
+                                                row.entity.emisor = '';
+                                                row.entity.descuento = '';
+                                                row.entity.serie = '';
+                                                row.entity.elimina = false;
+                                                row.entity.metodoPago = '';
+                                                $scope.btndelete = false;
+
+                                        }
+
+                            })
+
+                                .error(function(data) {
+                                    swal.showInputError("Error, Verificalo con el Area de sistemas");
+                                });
+                              
+                            });
+                        }
+
+                            });
+
 
                            if (row.entity.rfcemisor != courses.comprobante.emisor._rfc){
 
@@ -1429,86 +1510,40 @@ console.log($files);
 
 $scope.enviaOrdenPagoInd = function(){
 
-    FacturaNormal.rfcCondonado($scope.selectos[0].rfcemisor).success(function (data){
 
-        swal({
-          title: "Emisor Condonado, Antes de procesar esta factura, notifica al Lic. Jose Sanchez o Ing. Alfredo", 
-          text: "Clave Maestra", 
-          type: "input",
-          inputType: "password",
-          showCancelButton: true,
-          closeOnConfirm: false
-        }, function(typedPassword){
+        $scope.OPago = {
 
-            if (typedPassword === "") {
-                swal.showInputError("Debes escribir alguna clave!");
-                return false;
-            }
+        seleccionados : $scope.selectos,
+        archivos : $scope.archivos,
+        usucarpeta: $rootScope.user,
+        factura: $scope.selectos,
+        subtotaltotal: $scope.totalsubtotal,
+        iva: $scope.totaltasa,
+        total: $scope.totalimporte,
+        usuario: $rootScope.id,
+        unidad: $scope.unidad,
+        clavemaestra: typedPassword
 
-            var rutaClave = api+'PagoManual/claveMaestra';
+    }
 
-            $.ajax({
-                url: rutaClave,
-                data: { password: typedPassword },
-                type: "POST"
-            })
-            .done(function(data){
+    var areaRecibe = 6;
+    var areaEntrega = 6;
+    var usuarioRecibe = $rootScope.id;
 
-                if (data.claveMaestraAlfred == typedPassword || data.claveMaestraMartha == typedPassword) {
-                   
-                    $scope.OPago = {
+    var ruta = api+'OPFactura/ordenPagoIndividual';
 
-                        seleccionados : $scope.selectos,
-                        archivos : $scope.archivos,
-                        usucarpeta: $rootScope.user,
-                        factura: $scope.selectos,
-                        subtotaltotal: $scope.totalsubtotal,
-                        iva: $scope.totaltasa,
-                        total: $scope.totalimporte,
-                        usuario: $rootScope.id,
-                        unidad: $scope.unidad,
-                        clavemaestra: typedPassword
+    $http.post(ruta,$scope.OPago).success(function (data){
 
-                    }
-
-                    var areaRecibe = 6;
-                    var areaEntrega = 6;
-                    var usuarioRecibe = $rootScope.id;
-
-                    var ruta = api+'OPFactura/ordenPagoIndividual';
-
-                    $http.post(ruta,$scope.OPago).success(function (data){
-
-                        $scope.borratemporales();
-                        swal("ok","Se Genero una Orden de Pago","success");
-                        location.reload();
+        $scope.borratemporales();
+        swal("ok","Se Genero una Orden de Pago","success");
+        location.reload();
 
 
-                    }).error( function (data){
+    }).error( function (data){
 
-                        alert('Error, Intentalo de Nuevo');
-
-                    });
-
-
-
-                }else{
-
-                    swal("Upss", "Clave incorrecta", "error");
-
-
-                }
-
-    })
-
-        .error(function(data) {
-            swal.showInputError("Tu clave es incorrecta!");
-        });
-      
-    });
+        alert('Error, Intentalo de Nuevo');
 
     });
-
 
     // $scope.OPago = {
 
