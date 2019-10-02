@@ -1829,7 +1829,7 @@ $scope.enviaOrdenPagoInd = function(){
                         tipoconcepto: $scope.PagoI.NC
                     }
 
-                    // var ruta = api+'PagoManual/ordenPagoIndividual'; 
+                    var ruta = api+'PagoManual/ordenPagoIndividual'; 
 
                             $http.post(ruta,$scope.OPago).success(function (data){
 
