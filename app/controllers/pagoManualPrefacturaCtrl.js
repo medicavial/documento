@@ -1689,7 +1689,9 @@ $scope.subeXMLInd = function($files){
 }
 
 $scope.enviaOrdenPagoInd = function(){
-    console.log($scope.PagoI);
+
+    $scope.PagoI.TotalFSN = parseFloat($scope.PagoI.TotalF) - parseFloat($scope.PagoI.total);
+    $scope.PagoI.TotalFCN = 0;
 
     if ($scope.PagoI.TotalFSN == undefined) {$scope.PagoI.TotalFSN = 0;};
 
@@ -1697,7 +1699,7 @@ $scope.enviaOrdenPagoInd = function(){
     console.log($scope.PagoI.TotalFCN);
 
 
-    if($scope.PagoI.TotalFSN != 0 || $scope.PagoI.TotalFCN != 0){
+    if(($scope.PagoI.TotalFSN != 0 &&  $scope.PagoI.TotalFSN >= 2 ) || $scope.PagoI.TotalFCN != 0){
 
     swal({
       title: "Monto diferente a tu Factura", 

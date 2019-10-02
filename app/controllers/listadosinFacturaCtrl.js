@@ -1075,7 +1075,6 @@ $scope.subeXML = function($files){
                alert('La extensión debe ser xml');
         }
 }
-
 $scope.enviaOrdenPagoGlo = function(){
 
 
