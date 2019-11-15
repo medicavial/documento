@@ -149,7 +149,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
 
             if (data.length == 0){
 
-                $scope.PagoI.folio = '';
+                // $scope.PagoI.folio = '';
                 $scope.listado = [];
 
                 $scope.mensaje = "No hay prefacturas, para este Folio, realiza la orden en el modulo correcto";
@@ -173,7 +173,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
 
             if (data.length == 0){
 
-                $scope.PagoM.folio = '';
+                // $scope.PagoM.folio = '';
                 $scope.listado = [];
 
                 $scope.mensaje = "No hay prefacturas, para este Folio, realiza la orden en el modulo correcto";
@@ -889,9 +889,11 @@ $scope.enviaOrdenPago = function(){
                             tipoconcepto: $scope.PagoM.NC
                         }
 
-                        // console.log($scope.OPago);
+                        console.log($scope.OPago);
 
-            var ruta = api+'PagoManual/ordenPago'; 
+                        
+
+            // var ruta = api+'PagoManual/ordenPago'; 
 
             $http.post(ruta,$scope.OPago).success(function (data){
 
@@ -938,6 +940,7 @@ $scope.enviaOrdenPago = function(){
 
                 $scope.eliminaxml();
                 $scope.Pagos = [];
+                $scope.listado = [];
                 $scope.listadoPre();
 
                 swal("ok","Se Genero una Orden de Pago","success");
