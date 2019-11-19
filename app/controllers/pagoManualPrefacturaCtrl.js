@@ -149,7 +149,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
 
             if (data.length == 0){
 
-                // $scope.PagoI.folio = '';
+                $scope.PagoI.folio = '';
                 $scope.listado = [];
 
                 $scope.mensaje = "No hay prefacturas, para este Folio, realiza la orden en el modulo correcto";
@@ -173,7 +173,7 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
 
             if (data.length == 0){
 
-                // $scope.PagoM.folio = '';
+                $scope.PagoM.folio = '';
                 $scope.listado = [];
 
                 $scope.mensaje = "No hay prefacturas, para este Folio, realiza la orden en el modulo correcto";
