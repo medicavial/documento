@@ -545,8 +545,9 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
                                     }else{
 
 
-                                    $scope.PagoM.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.PagoM.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.PagoM.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.PagoM.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    
                                     }
 
 
@@ -761,8 +762,8 @@ function pagoManualPrefacturaCtrl($scope, $rootScope, loading,$filter,$location,
                                     }else{
 
 
-                                    $scope.PagoM.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.PagoM.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.PagoM.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.PagoM.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
                                     }
 
 
@@ -1387,8 +1388,8 @@ $scope.subeXMLInd = function($files){
                                     }else{
 
 
-                                    $scope.PagoI.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.PagoI.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.PagoI.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.PagoI.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
                                     }
 
 
@@ -1625,8 +1626,8 @@ $scope.subeXMLInd = function($files){
                                     
                                     }else{
 
-                                    $scope.PagoI.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.PagoI.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.PagoI.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.PagoI.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
                                     }
 
                                 }
@@ -2147,8 +2148,8 @@ $scope.subeNCI = function($files){
                                 }else{
 
 
-                                    $scope.NCI.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.NCI.importeisr = courses.comprobante._totaimpuestosretenidos;
+                                    $scope.NCI.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.NCI.importeisr = courses.comprobante._totalimpuestosretenidos;
 
                                 }
 
@@ -2365,8 +2366,8 @@ $scope.subeNCI = function($files){
                                 }else{
 
 
-                                    $scope.NCI.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.NCI.importeisr = courses.comprobante._totaimpuestosretenidos;
+                                    $scope.NCI.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.NCI.importeisr = courses.comprobante._totalimpuestosretenidos;
 
                                 }
 
@@ -2663,8 +2664,8 @@ $scope.subeNCG = function($files, index){
                                 }else{
 
 
-                                    $scope.NCG.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.NCG.importeisr = courses.comprobante._totaimpuestosretenidos;
+                                    $scope.NCG.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.NCG.importeisr = courses.comprobante._totalimpuestosretenidos;
 
                                 }
 
@@ -2863,8 +2864,8 @@ $scope.subeNCG = function($files, index){
                                 }else{
 
 
-                                    $scope.NCG.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.NCG.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.NCG.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.NCG.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
 
                                 }
 

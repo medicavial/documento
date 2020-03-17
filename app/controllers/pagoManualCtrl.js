@@ -333,23 +333,25 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                 var courses =  x2js.json2xml_str($.parseJSON(prueba));
                 courses  = x2js.xml_str2json(courses);
 
+                console.log(courses);
 
-                PagoManual.consultaFolioFiscal(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
-                    if (data[0].count != 0){
 
-                        swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
-                        $scope.PagoM.importe = '';
-                        $scope.PagoM.total = '';
-                        $scope.PagoM.foliofiscal = '';
-                        $scope.PagoM.fechaemision = '';
-                        $scope.PagoM.descuento = '';
-                        $scope.PagoM.emisor = '';
-                        $scope.PagoM.descuento = '';
-                        $scope.PagoM.serie = '';
-                        $scope.PagoM.elimina = false;
+                // PagoManual.consultaFolioFiscal(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
+                //     if (data[0].count != 0){
 
-                    }
-                });
+                //         swal('Upss','Ya existe una Factura con ese Folio Fiscal','error');
+                //         $scope.PagoM.importe = '';
+                //         $scope.PagoM.total = '';
+                //         $scope.PagoM.foliofiscal = '';
+                //         $scope.PagoM.fechaemision = '';
+                //         $scope.PagoM.descuento = '';
+                //         $scope.PagoM.emisor = '';
+                //         $scope.PagoM.descuento = '';
+                //         $scope.PagoM.serie = '';
+                //         $scope.PagoM.elimina = false;
+
+                //     }
+                // });
 
 ///////////////////
 //////////////////        VERIFICAMOS QUE LA UNIDAD NO SE ENCUENTRE EN LA LISTA DE CONDONADOS
@@ -504,8 +506,8 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                                     }else{
 
 
-                                    $scope.PagoM.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.PagoM.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.PagoM.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.PagoM.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
                                     }
 
 
@@ -557,6 +559,8 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                 
                 var courses =  x2js.json2xml_str($.parseJSON(prueba));
                 courses  = x2js.xml_str2json(courses);
+
+                console.log(courses);
 
                 PagoManual.consultaFolioFiscal(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
                     if (data[0].count != 0){
@@ -728,12 +732,13 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
                                     }else{
 
 
-                                    $scope.PagoM.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.PagoM.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.PagoM.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.PagoM.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
                                     }
 
 
                                 }
+
                                 $scope.PagoM.usuarioentrega = Number($rootScope.id);
                                 // $scope.PagoM.areaentrega =Number(areaEntrega);
                                 // $scope.PagoM.usuariorecibe =Number(usuarioRecibe);
@@ -790,6 +795,8 @@ function pagoManualCtrl($scope, $rootScope, loading,$filter,$location,$http,chec
 }
 
 $scope.enviaOrdenPago = function(){
+
+    console.log($scope.PagoM);
 
    if($scope.NCG.total == ''){ $scope.NCG.total = 0;}
 
@@ -1382,8 +1389,8 @@ $scope.subeXMLInd = function($files){
                                     }else{
 
 
-                                    $scope.PagoI.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.PagoI.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.PagoI.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.PagoI.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
                                     }
 
 
@@ -1436,6 +1443,8 @@ $scope.subeXMLInd = function($files){
                 
                 var courses =  x2js.json2xml_str($.parseJSON(prueba));
                 courses  = x2js.xml_str2json(courses);
+
+                console.log(courses);
 
 
                 PagoManual.consultaFolioFiscal(courses.comprobante.complemento.timbrefiscaldigital._uuid).success(function (data){     
@@ -1607,9 +1616,11 @@ $scope.subeXMLInd = function($files){
                                     
                                     }else{
 
+                                        console.log(courses.comprobante.impuestos._totalimpuestosretenidos);
 
-                                    $scope.PagoI.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.PagoI.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+
+                                    $scope.PagoI.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.PagoI.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
                                     }
 
 
@@ -1673,6 +1684,8 @@ $scope.subeXMLInd = function($files){
 }
 
 $scope.enviaOrdenPagoInd = function(){
+
+    console.log($scope.PagoI);
 
     $scope.PagoI.TotalFSN = parseFloat($scope.PagoI.TotalF) - parseFloat($scope.PagoI.total);
     $scope.PagoI.TotalFCN = 0;
@@ -2121,8 +2134,8 @@ $scope.subeNCI = function($files){
                                 }else{
 
 
-                                    $scope.NCI.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.NCI.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.NCI.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.NCI.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
 
                                 }
 
@@ -2339,8 +2352,8 @@ $scope.subeNCI = function($files){
                                 }else{
 
 
-                                    $scope.NCI.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.NCI.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.NCI.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.NCI.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
 
                                 }
 
@@ -2635,8 +2648,8 @@ $scope.subeNCG = function($files, index){
                                 }else{
 
 
-                                    $scope.NCG.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.NCG.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.NCG.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.NCG.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
 
                                 }
 
@@ -2835,8 +2848,8 @@ $scope.subeNCG = function($files, index){
                                 }else{
 
 
-                                    $scope.NCG.isr = courses.comprobante.impuestos._totaimpuestosretenidos;
-                                    $scope.NCG.importeisr = courses.comprobante.impuestos._totaimpuestosretenidos;
+                                    $scope.NCG.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.NCG.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
 
                                 }
 

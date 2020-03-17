@@ -1001,8 +1001,8 @@ $scope.subeXML = function($files){
                                 }else{
 
 
-                                    $scope.PagoG.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
-                                    $scope.PagoG.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                    $scope.PagoG.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                    $scope.PagoG.importeisr = courses.comprobante.impuestos._totalimpuestosretenidos;
 
                                 }
 
@@ -1472,14 +1472,13 @@ console.log($files);
                                     }else{
 
 
-                                        row.entity.isr = courses.comprobante.impuestos.retenciones.retencion._impuesto;
-                                        row.entity.importeisr = courses.comprobante.impuestos.retenciones.retencion._importe;
+                                        row.entity.isr = courses.comprobante.impuestos._totalimpuestosretenidos;
+                                        row.entity.importeisr = ccourses.comprobante.impuestos._totalimpuestosretenidos;
 
                                     }
                                     row.entity.elimina = true;
                                     $scope.btndelete = true;
 
-                                    console.log();
 
 
                                 }
